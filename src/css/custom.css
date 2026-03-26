@@ -1,30 +1,359 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /**
- * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
- * work well for content-centric websites.
+ * Minimal design system with red accent.
+ * Content-first, mobile-first, Stripe/Linear-inspired.
  */
 
-/* You can override the default Infima variables here. */
+/* ============================================
+   DESIGN TOKENS
+   ============================================ */
+
 :root {
-  --ifm-color-primary: #2e8555;
-  --ifm-color-primary-dark: #29784c;
-  --ifm-color-primary-darker: #277148;
-  --ifm-color-primary-darkest: #205d3b;
-  --ifm-color-primary-light: #33925d;
-  --ifm-color-primary-lighter: #359962;
-  --ifm-color-primary-lightest: #3cad6e;
-  --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  /* Red accent palette (Infima overrides) */
+  --ifm-color-primary: #dc2626;
+  --ifm-color-primary-dark: #c52222;
+  --ifm-color-primary-darker: #ba2020;
+  --ifm-color-primary-darkest: #991b1b;
+  --ifm-color-primary-light: #e04343;
+  --ifm-color-primary-lighter: #e34f4f;
+  --ifm-color-primary-lightest: #ea7272;
+
+  /* Layout */
+  --ifm-container-width-xl: 960px;
+
+  /* Typography */
+  --ifm-font-size-base: 16px;
+  --ifm-line-height-base: 1.75;
+  --ifm-heading-font-weight: 600;
+  --ifm-font-weight-semibold: 600;
+
+  /* Spacing */
+  --ifm-spacing-horizontal: 1.5rem;
+  --ifm-global-spacing: 1.5rem;
+
+  /* Borders & Radius */
+  --ifm-global-radius: 6px;
+  --ifm-card-border-radius: 6px;
+
+  /* Code */
+  --ifm-code-font-size: 90%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.06);
+
+  /* Surfaces */
+  --ifm-background-color: #ffffff;
+  --ifm-color-secondary-contrast-background: #f9fafb;
+
+  /* Navbar */
+  --ifm-navbar-height: 3.5rem;
+  --ifm-navbar-shadow: none;
+
+  /* Footer */
+  --ifm-footer-padding-vertical: 2rem;
+
+  /* Custom tokens */
+  --color-border: #e5e7eb;
+  --color-text-muted: #6b7280;
+  --color-surface: #f9fafb;
+  --color-card-hover: #fef2f2;
 }
 
-/* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: #21af90;
-  --ifm-color-primary-darker: #1fa588;
-  --ifm-color-primary-darkest: #1a8870;
-  --ifm-color-primary-light: #29d5b0;
-  --ifm-color-primary-lighter: #32d8b4;
-  --ifm-color-primary-lightest: #4fddbf;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+  --ifm-color-primary: #ef4444;
+  --ifm-color-primary-dark: #e02424;
+  --ifm-color-primary-darker: #d42020;
+  --ifm-color-primary-darkest: #b91c1c;
+  --ifm-color-primary-light: #f16464;
+  --ifm-color-primary-lighter: #f37272;
+  --ifm-color-primary-lightest: #f8a0a0;
+
+  --ifm-background-color: #0b0b0c;
+  --ifm-font-color-base: #e5e7eb;
+  --ifm-color-emphasis-300: #3a3a3a;
+  --docusaurus-highlighted-code-line-bg: rgba(255, 255, 255, 0.07);
+
+  --color-border: #232323;
+  --color-text-muted: #9ca3af;
+  --color-surface: #111113;
+  --color-card-hover: #1a1214;
+}
+
+/* ============================================
+   GLOBAL
+   ============================================ */
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* ============================================
+   NAVBAR
+   ============================================ */
+
+.navbar {
+  border-bottom: 1px solid var(--color-border);
+  background: var(--ifm-background-color);
+  backdrop-filter: blur(8px);
+}
+
+.navbar__title {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.navbar__link {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.navbar__link--active {
+  color: var(--ifm-color-primary);
+}
+
+/* ============================================
+   SIDEBAR
+   ============================================ */
+
+.menu__link {
+  font-size: 0.875rem;
+  border-radius: var(--ifm-global-radius);
+}
+
+.menu__link--active:not(.menu__link--sublist) {
+  color: var(--ifm-color-primary);
+  background: var(--color-card-hover);
+}
+
+/* ============================================
+   CONTENT
+   ============================================ */
+
+.markdown {
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+
+.markdown h2 {
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.markdown h3 {
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.markdown a {
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.15s ease;
+}
+
+.markdown a:hover {
+  border-bottom-color: var(--ifm-color-primary);
+}
+
+/* ============================================
+   CARDS (global)
+   ============================================ */
+
+.card {
+  border: 1px solid var(--color-border);
+  box-shadow: none;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.card:hover {
+  border-color: var(--ifm-color-primary);
+  background: var(--color-card-hover);
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+
+.footer {
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  color: var(--ifm-font-color-base);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.footer--dark,
+[data-theme='dark'] .footer {
+  --ifm-footer-background-color: var(--color-surface);
+  background: var(--color-surface);
+  color: var(--ifm-font-color-base);
+}
+
+.footer__title {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+}
+
+.footer__link-item {
+  font-size: 0.875rem;
+  color: var(--ifm-font-color-base);
+}
+
+.footer__link-item:hover {
+  color: var(--ifm-color-primary);
+  text-decoration: none;
+}
+
+.footer__copyright {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+
+.button--primary {
+  background: var(--ifm-color-primary);
+  border-color: var(--ifm-color-primary);
+}
+
+.button--outline {
+  border: 1px solid var(--color-border);
+  color: var(--ifm-font-color-base);
+  background: transparent;
+}
+
+.button--outline:hover {
+  border-color: var(--ifm-color-primary);
+  color: var(--ifm-color-primary);
+  background: var(--color-card-hover);
+}
+
+/* ============================================
+   TABLE
+   ============================================ */
+
+table {
+  font-size: 0.9375rem;
+}
+
+table th {
+  font-weight: 600;
+  text-transform: none;
+}
+
+/* ============================================
+   PAGINATION
+   ============================================ */
+
+.pagination-nav__link {
+  border: 1px solid var(--color-border);
+  transition: border-color 0.15s ease;
+}
+
+.pagination-nav__link:hover {
+  border-color: var(--ifm-color-primary);
+}
+
+/* ============================================
+   CODE BLOCKS
+   ============================================ */
+
+.prism-code {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  border-radius: var(--ifm-global-radius);
+}
+
+[data-theme='dark'] .prism-code {
+  border: 1px solid var(--color-border);
+}
+
+/* ============================================
+   THEME TOGGLE
+   ============================================ */
+
+[data-theme='dark'] .navbar__toggle {
+  color: var(--ifm-font-color-base);
+}
+
+.clean-btn[class*='toggleButton'] {
+  border: 1px solid var(--color-border);
+  border-radius: var(--ifm-global-radius);
+  padding: 0.25rem;
+  transition: border-color 0.15s ease;
+}
+
+.clean-btn[class*='toggleButton']:hover {
+  border-color: var(--ifm-color-primary);
+  background: var(--color-card-hover);
+}
+
+/* ============================================
+   THEME TRANSITION
+   ============================================ */
+
+.navbar,
+.footer,
+.main-wrapper {
+  transition: background-color 0.2s ease, color 0.2s ease,
+              border-color 0.2s ease;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+  .markdown {
+    font-size: 1rem;
+  }
+
+  .markdown h2 {
+    margin-top: 2rem;
+  }
+}
+
+/* ============================================
+   HOMEPAGE LAYOUT OVERRIDES
+   ============================================ */
+
+/* On desktop homepage, hide navbar link items — sidebar handles navigation.
+   Uses :has() to detect the homepage wrapper class on a sibling element. */
+@media (min-width: 997px) {
+  html:has(.homepage) .navbar__items--left > *:not(:first-child) {
+    display: none;
+  }
+
+  html:has(.homepage) .navbar__items--left {
+    flex: 0;
+  }
+}
+
+/* Full-width container on homepage (sidebar handles constraint) */
+html:has(.homepage) .footer {
+  border-left: none;
+}
+
+/* ============================================
+   DOC PAGE CLEANUP
+   ============================================ */
+
+/* Hide Docusaurus doc UI clutter */
+.theme-doc-footer-edit-meta-row,
+.theme-edit-this-page,
+.theme-last-updated,
+.pagination-nav {
+  display: none !important;
+}
+
+/* Article-style max-width for doc content */
+.theme-doc-markdown {
+  max-width: 720px;
 }

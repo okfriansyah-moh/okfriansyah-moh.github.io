@@ -1,19 +1,24 @@
-facebook:
-  label: Facebook
-  permalink: /facebook
-  description: Facebook tag description
+announcement:
+  label: Announcement
+  permalink: /announcement
+  description: Site announcements
 
-hello:
-  label: Hello
-  permalink: /hello
-  description: Hello tag description
+ai-systems:
+  label: AI Systems
+  permalink: /ai-systems
+  description: AI system architecture and engineering
 
-docusaurus:
-  label: Docusaurus
-  permalink: /docusaurus
-  description: Docusaurus tag description
+distributed-systems:
+  label: Distributed Systems
+  permalink: /distributed-systems
+  description: Distributed system design and patterns
 
-hola:
-  label: Hola
-  permalink: /hola
-  description: Hola tag description
+autonomous-systems:
+  label: Autonomous Systems
+  permalink: /autonomous-systems
+  description: Self-running production systems
+
+engineering-lessons:
+  label: Engineering Lessons
+  permalink: /engineering-lessons
+  description: Lessons learned from building systems

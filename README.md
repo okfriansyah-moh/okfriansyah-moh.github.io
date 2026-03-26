@@ -1,41 +1,50 @@
-# Website
+# AI Systems Engineering Knowledge Hub
 
-This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+Public engineering knowledge base by **Muhammad Okfriansyah** — documenting the architecture, patterns, and trade-offs behind autonomous AI systems built for production.
 
-## Installation
+**Site:** [okfriansyah-moh.github.io](https://okfriansyah-moh.github.io)
 
-```bash
-yarn
+## What This Is
+
+A structured technical knowledge hub covering real systems I design and build. Not a blog. Not a portfolio. An engineering record of systems thinking applied to AI and distributed software.
+
+## Systems Covered
+
+- **MD-AME** — Autonomous YouTube production engine using deterministic pipelines and database-backed state machines
+- **Polymarket Trading Agent** — Autonomous prediction market agent with signal processing and risk management
+
+## Focus Areas
+
+- **Deterministic AI Pipelines** — Reliable, repeatable AI workflows using idempotent workers
+- **Autonomous Systems** — Self-running production systems that operate without human intervention
+- **Distributed Backend Architecture** — Scalable systems for data-intensive AI applications
+- **AI Orchestration & Reliability** — Production-grade coordination of AI workers and models
+- **LLM Guardrails** — Engineering constraints for LLM behavior in production
+
+## Architecture
+
+```
+docs/
+  systems/     → Full system architecture breakdowns
+  concepts/    → Reusable engineering patterns
+  projects/    → Implementation references + repos
+blog/          → Narrative writing and engineering insights
+src/pages/     → Homepage + About
 ```
 
-## Local Development
+Content model:
+- **Blog** → narrative insights and lessons learned
+- **Systems** → complete architecture breakdowns
+- **Concepts** → reusable engineering patterns
+- **Projects** → implementations with links to source
+
+## Stack
+
+Built with [Docusaurus](https://docusaurus.io/), deployed on GitHub Pages.
+
+## Development
 
 ```bash
-yarn start
+npm install
+npm start
 ```
-
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
-
-## Build
-
-```bash
-yarn build
-```
-
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
-
-## Deployment
-
-Using SSH:
-
-```bash
-USE_SSH=true yarn deploy
-```
-
-Not using SSH:
-
-```bash
-GIT_USER=<Your GitHub username> yarn deploy
-```
-
-If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
