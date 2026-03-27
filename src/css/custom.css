@@ -100,9 +100,22 @@ html {
   backdrop-filter: blur(8px);
 }
 
+.navbar__brand {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+
 .navbar__title {
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.95rem;
+}
+
+.navbar__brand::after {
+  content: 'AI Systems Architect';
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--color-text-muted);
 }
 
 .navbar__link {
@@ -324,19 +337,7 @@ table th {
    HOMEPAGE LAYOUT OVERRIDES
    ============================================ */
 
-/* On desktop homepage, hide navbar link items — sidebar handles navigation.
-   Uses :has() to detect the homepage wrapper class on a sibling element. */
-@media (min-width: 997px) {
-  html:has(.homepage) .navbar__items--left > *:not(:first-child) {
-    display: none;
-  }
-
-  html:has(.homepage) .navbar__items--left {
-    flex: 0;
-  }
-}
-
-/* Full-width container on homepage (sidebar handles constraint) */
+/* Homepage: no footer left border when sidebar is present */
 html:has(.homepage) .footer {
   border-left: none;
 }

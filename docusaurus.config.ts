@@ -59,14 +59,8 @@ const config: Config = {
       respectPrefersColorScheme: false,
     },
     navbar: {
-      title: 'Okfriansyah',
-      items: [
-        {
-          href: 'https://github.com/okfriansyah-moh',
-          label: 'GitHub',
-          position: 'right',
-        },
-      ],
+      title: 'Muhammad Okfriansyah',
+      items: [],
     },
     footer: {
       style: 'light',
@@ -90,7 +84,8 @@ const config: Config = {
           title: 'Connect',
           items: [
             {label: 'GitHub', href: 'https://github.com/okfriansyah-moh'},
-            {label: 'LinkedIn', href: 'https://linkedin.com/in/okfriansyah'},
+            {label: 'LinkedIn', href: 'https://www.linkedin.com/in/muhammad-okfriansyah-74092671'},
+            {label: 'Instagram', href: 'https://instagram.com/okfriansyah'},
           ],
         },
       ],
