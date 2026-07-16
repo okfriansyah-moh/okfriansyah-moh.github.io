@@ -1,7 +1,15 @@
 {
   "version": 1,
-  "last_successful_scan_at": null,
-  "processed_pull_requests": [],
+  "last_successful_scan_at": "2026-07-16T14:30:00+07:00",
+  "processed_pull_requests": [
+    "okfriansyah-moh/shorts-generator#8@bootstrap",
+    "okfriansyah-moh/shorts-generator#10@bootstrap",
+    "okfriansyah-moh/shorts-generator#11@bootstrap",
+    "okfriansyah-moh/a2a-brainstormer#8@bootstrap",
+    "okfriansyah-moh/a2a-brainstormer#12@bootstrap",
+    "okfriansyah-moh/skeleton-parallel#1@bootstrap",
+    "okfriansyah-moh/skeleton-parallel#2@bootstrap"
+  ],
   "processed_commits": [],
   "ignored_activity": [],
   "pending_pull_requests": []
