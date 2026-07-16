@@ -10,6 +10,30 @@ import Sidebar from '@site/src/components/Sidebar';
    ────────────────────────────────────────── */
 const feedItems: CardItem[] = [
   {
+    title: 'Building a Restartable Long-Video Processing Pipeline',
+    description:
+      'How Shorts Factory uses a 16-stage deterministic pipeline with SQLite checkpointing to process hour-long videos.',
+    link: '/docs/systems/shorts-generator-pipeline',
+    type: 'system',
+    date: '2026-07-16',
+  },
+  {
+    title: 'How to Prevent Contradictions in AI-Generated Documents',
+    description:
+      'Section-sequential generation with cross-section coherence audits and guarded micro-fixes from A2A Brainstorm.',
+    link: '/docs/concepts/ai-document-coherence',
+    type: 'concept',
+    date: '2026-07-16',
+  },
+  {
+    title: 'Designing a Deterministic Agentic Coding Orchestrator',
+    description:
+      'Task-based agent loops with bounded retries, checkpoint rollback, and quality gates in skeleton-parallel.',
+    link: '/docs/concepts/deterministic-agentic-orchestrator',
+    type: 'concept',
+    date: '2026-07-16',
+  },
+  {
     title: 'Welcome to the AI Systems Engineering Knowledge Hub',
     description:
       'Introduction to this engineering knowledge base — what it covers and what\'s coming.',

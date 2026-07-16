@@ -97,6 +97,8 @@ Never invent metrics, user counts, performance improvements, revenue, benchmarks
 Prefer updating an existing article when the project or concept already has a page.
 Do not create duplicate articles describing the same capability.
 Update sidebars.ts whenever a new docs page is added.
+Update src/pages/index.tsx feedItems whenever a new docs page or blog post should appear on the homepage card grid.
+Update src/pages/index.tsx feedItems whenever a new docs page or blog post should appear on the homepage card grid.
 
 ## ARTICLE REQUIREMENTS
 
