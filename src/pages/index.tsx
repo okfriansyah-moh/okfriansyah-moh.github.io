@@ -1,5 +1,6 @@
 import {type ReactNode, useMemo, useState} from 'react';
 import Layout from '@theme/Layout';
+import ArchiveChips from '@site/src/components/ArchiveChips';
 import Hero from '@site/src/components/Hero';
 import HubStatsBar, {computeHubStats} from '@site/src/components/HubStatsBar';
 import SectionHeader from '@site/src/components/SectionHeader';
@@ -46,7 +47,7 @@ export default function Home(): ReactNode {
       <Hero featured={featured} />
       <HubStatsBar stats={stats} />
 
-      <div id="writing" className="flex min-h-[60vh]">
+      <div id="writing" className="writing-layout flex min-h-[55vh] scroll-mt-[calc(var(--ifm-navbar-height)+0.5rem)]">
         <TimelineNav
           className="hidden lg:flex"
           months={months}
@@ -75,7 +76,7 @@ export default function Home(): ReactNode {
               onClick={() => setDrawerOpen(false)}
             />
             <TimelineNav
-              className="lg:hidden fixed left-0 top-[var(--ifm-navbar-height)] z-50 flex bg-[var(--ifm-background-color)] shadow-2xl"
+              className="lg:hidden fixed left-0 top-[var(--ifm-navbar-height)] z-50 flex bg-[var(--ifm-background-color)] shadow-2xl archive-drawer"
               months={months}
               selectedMonth={selectedMonth}
               onSelectMonth={(key) => {
@@ -87,11 +88,19 @@ export default function Home(): ReactNode {
           </>
         )}
 
-        <main className="flex-1 px-4 sm:px-6 lg:px-10 py-10 lg:py-12 max-w-shell mx-auto w-full">
+        <main
+          id="main-content"
+          className="writing-main flex-1 page-shell section-y w-full max-w-shell mx-auto">
           <SectionHeader
             eyebrow="Writing"
             title="Engineering editions"
             description="Browse by year and month, or filter by systems architecture, reusable concepts, and blog notes."
+          />
+          <ArchiveChips
+            months={months}
+            selectedMonth={selectedMonth}
+            onSelectMonth={setSelectedMonth}
+            totalCount={CONTENT_FEED.length}
           />
           <TypeFilter selected={selectedType} onSelect={setSelectedType} counts={typeCounts} />
           <TimelineFeed

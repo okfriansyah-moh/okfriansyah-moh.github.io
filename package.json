@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
-    "start": "docusaurus start",
-    "build": "docusaurus build",
+    "sync:feed": "node scripts/sync-content-feed.mjs",
+    "start": "npm run sync:feed && docusaurus start",
+    "build": "npm run sync:feed && docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",

@@ -1,6 +1,7 @@
 import {type ReactNode} from 'react';
 import Layout from '@theme/Layout';
-import SocialLinks, {AboutButton} from '@site/src/components/SocialLinks';
+import {WritingLinkButton} from '@site/src/components/Hero';
+import SocialLinks from '@site/src/components/SocialLinks';
 import SectionHeader from '@site/src/components/SectionHeader';
 
 const PRINCIPLES = [
@@ -37,7 +38,7 @@ export default function About(): ReactNode {
       description="Muhammad Okfriansyah — AI Systems Architect building reliable autonomous systems and deterministic pipelines."
       wrapperClassName="about-page">
       <div className="about-hero">
-        <div className="max-w-content mx-auto px-4 sm:px-6 py-14 sm:py-16">
+        <div className="page-shell section-y max-w-content mx-auto">
           <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-accent mb-4 m-0">
             About
           </p>
@@ -59,7 +60,7 @@ export default function About(): ReactNode {
         </div>
       </div>
 
-      <div className="max-w-content mx-auto px-4 sm:px-6 py-12 sm:py-16 space-y-16">
+      <div className="page-shell section-y max-w-content mx-auto space-y-14 md:space-y-16">
         <section>
           <SectionHeader
             eyebrow="Focus"
@@ -124,9 +125,7 @@ export default function About(): ReactNode {
             Architecture breakdowns and patterns from real repositories — updated through an
             automated knowledge pipeline grounded in public GitHub work.
           </p>
-          <a href="/" className="inline-flex items-center justify-center min-h-[44px] px-5 py-2.5 rounded-md text-sm font-medium bg-accent text-white no-underline hover:text-white hover:bg-accent-dark transition-colors duration-200">
-            Browse editions
-          </a>
+          <WritingLinkButton />
         </section>
       </div>
     </Layout>

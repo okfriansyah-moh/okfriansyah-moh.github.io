@@ -21,9 +21,9 @@ export default function TimelineNav({
     <nav
       aria-label="Browse by date"
       className={[
-        'w-[248px] shrink-0 sticky top-[var(--ifm-navbar-height)]',
-        'h-[calc(100vh-var(--ifm-navbar-height))] overflow-y-auto',
-        'border-r border-border py-8 px-5',
+        'w-[min(260px,22vw)] shrink-0 sticky top-[var(--ifm-navbar-height)]',
+        'h-[calc(100dvh-var(--ifm-navbar-height))] overflow-y-auto',
+        'border-r border-border py-6 px-4 xl:py-8 xl:px-5',
         className,
       ]
         .filter(Boolean)
@@ -76,8 +76,8 @@ export default function TimelineNav({
 
 function navButtonClass(active: boolean): string {
   return [
-    'flex items-center justify-between w-full px-2.5 py-2 rounded-md text-[13px]',
-    'cursor-pointer border-0 bg-transparent transition-colors duration-150 text-left min-h-[36px]',
+    'flex items-center justify-between w-full px-2.5 py-2 rounded-md text-sm',
+    'cursor-pointer border-0 bg-transparent transition-colors duration-150 text-left min-h-[44px]',
     active
       ? 'text-accent font-medium bg-[var(--color-card-hover)]'
       : 'text-muted hover:text-[var(--ifm-font-color-base)] hover:bg-[var(--color-card-hover)]',

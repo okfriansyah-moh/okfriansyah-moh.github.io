@@ -43,7 +43,7 @@ export default function TimelineFeed({items, selectedMonth, excludeLinks = []}: 
             {yearGroup.months.map((month) => (
               <div key={month.key}>
                 <h3 className="month-label">{month.label}</h3>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div className="feed-grid grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-4 md:gap-5">
                   {month.items.map((item, index) => (
                     <ContentCard
                       key={item.link}

@@ -1,7 +1,9 @@
 /**
- * Single source of truth for the homepage content feed.
- * Automation: add new entries here when publishing articles.
+ * Homepage content feed — metadata in content-feed.meta.json.
+ * New topic-index documents are merged in via scripts/sync-content-feed.mjs (prebuild).
  */
+import meta from './content-feed.meta.json';
+
 export type ContentType = 'system' | 'concept' | 'project' | 'blog';
 
 export type ContentItem = {
@@ -12,88 +14,9 @@ export type ContentItem = {
   date: string; // ISO YYYY-MM-DD
 };
 
-export const CONTENT_FEED: ContentItem[] = [
-  {
-    title: 'Building a Restartable Long-Video Processing Pipeline',
-    description:
-      'How Shorts Factory uses a 16-stage deterministic pipeline with SQLite checkpointing to process hour-long videos into publishable shorts.',
-    link: '/docs/systems/shorts-generator-pipeline',
-    type: 'system',
-    date: '2026-07-16',
-  },
-  {
-    title: 'How to Prevent Contradictions in AI-Generated Documents',
-    description:
-      'Section-sequential generation with cross-section coherence audits and guarded micro-fixes from A2A Brainstorm.',
-    link: '/docs/concepts/ai-document-coherence',
-    type: 'concept',
-    date: '2026-07-16',
-  },
-  {
-    title: 'Designing a Deterministic Agentic Coding Orchestrator',
-    description:
-      'Task-based agent loops with bounded retries, checkpoint rollback, and quality gates in skeleton-parallel.',
-    link: '/docs/concepts/deterministic-agentic-orchestrator',
-    type: 'concept',
-    date: '2026-07-16',
-  },
-  {
-    title: 'Welcome to the AI Systems Engineering Knowledge Hub',
-    description:
-      'What this knowledge base covers — systems architecture, production patterns, and lessons from real engineering work.',
-    link: '/blog/2025/03/26/welcome',
-    type: 'blog',
-    date: '2025-03-26',
-  },
-  {
-    title: 'MD-AME: Autonomous Media Engine',
-    description:
-      'Architecture of an autonomous YouTube production system built on deterministic pipelines and database-backed state machines.',
-    link: '/docs/systems/md-ame-autonomous-media-engine',
-    type: 'system',
-    date: '2025-03-20',
-  },
-  {
-    title: 'Polymarket Trading Agent',
-    description:
-      'Autonomous prediction market agent with signal processing, risk gates, and real-time capital protection.',
-    link: '/docs/systems/polymarket-trading-agent',
-    type: 'system',
-    date: '2025-03-18',
-  },
-  {
-    title: 'Deterministic AI Pipelines',
-    description:
-      'Why most AI pipelines fail in production — and how idempotent workers plus database state make them reliable.',
-    link: '/docs/concepts/deterministic-ai-pipelines',
-    type: 'concept',
-    date: '2025-03-15',
-  },
-  {
-    title: 'Database-Backed State Machines',
-    description:
-      'Using the database as the single source of truth to drive reliable workflow execution in distributed systems.',
-    link: '/docs/concepts/database-state-machines',
-    type: 'concept',
-    date: '2025-03-12',
-  },
-  {
-    title: 'AI Orchestration Patterns',
-    description:
-      'Central orchestrator patterns for coordinating AI workers, models, and pipelines without agent chaos.',
-    link: '/docs/concepts/ai-orchestration-patterns',
-    type: 'concept',
-    date: '2025-03-10',
-  },
-  {
-    title: 'LLM Guardrails',
-    description:
-      'Engineering patterns for constraining LLM behavior — boundaries, validation, and rollback in production AI.',
-    link: '/docs/concepts/llm-guardrails',
-    type: 'concept',
-    date: '2025-03-08',
-  },
-];
+export const CONTENT_FEED: ContentItem[] = (meta.items as ContentItem[]).sort((a, b) =>
+  b.date.localeCompare(a.date),
+);
 
 export const TYPE_LABELS: Record<ContentType, string> = {
   system: 'System',

@@ -19,9 +19,13 @@ module.exports = {
         mono: ['var(--font-mono)', 'ui-monospace', 'monospace'],
       },
       maxWidth: {
-        shell: '1280px',
-        editorial: '1200px',
-        content: '720px',
+        shell: 'var(--layout-shell-max)',
+        editorial: 'var(--layout-editorial-max)',
+        content: 'var(--layout-content-max)',
+      },
+      screens: {
+        '3xl': '1920px',
+        '4xl': '2560px',
       },
     },
   },

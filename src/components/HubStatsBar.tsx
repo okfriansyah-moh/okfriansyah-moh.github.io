@@ -33,20 +33,20 @@ export default function HubStatsBar({stats}: HubStatsBarProps) {
 
   return (
     <div className="border-y border-border bg-surface/60">
-      <div className="max-w-shell mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
-          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted">
+      <div className="page-shell py-3 md:py-4">
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-2 md:gap-x-6">
+          <span className="font-mono text-meta uppercase tracking-[0.18em] text-muted">
             Knowledge base
           </span>
           {chips.map(({label, value}) => (
             <div key={label} className="flex items-baseline gap-1.5">
-              <span className="font-display text-lg font-bold text-[var(--ifm-font-color-base)]">
+              <span className="font-display text-lg md:text-xl font-bold text-[var(--ifm-font-color-base)] tabular-nums">
                 {value}
               </span>
-              <span className="font-mono text-[11px] text-muted">{label}</span>
+              <span className="font-mono text-meta text-muted">{label}</span>
             </div>
           ))}
-          <span className="hidden sm:inline font-mono text-[11px] text-muted ml-auto">
+          <span className="hidden md:inline font-mono text-meta text-muted md:ml-auto">
             Updated from public GitHub engineering work
           </span>
         </div>

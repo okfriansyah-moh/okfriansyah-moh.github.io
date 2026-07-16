@@ -60,31 +60,21 @@ const config: Config = {
     },
     navbar: {
       title: 'Muhammad Okfriansyah',
+      hideOnScroll: false,
       items: [
-        {to: '/', label: 'Writing', position: 'right'},
+        {
+          to: '/',
+          label: 'Writing',
+          position: 'right',
+          activeBaseRegex: '^/$',
+        },
         {to: '/about', label: 'About', position: 'right'},
       ],
     },
     footer: {
       style: 'light',
-      links: [
-        {
-          title: 'Explore',
-          items: [
-            {label: 'Systems', to: '/docs/systems/shorts-generator-pipeline'},
-            {label: 'Concepts', to: '/docs/concepts/deterministic-ai-pipelines'},
-            {label: 'About', to: '/about'},
-          ],
-        },
-        {
-          title: 'Connect',
-          items: [
-            {label: 'GitHub', href: 'https://github.com/okfriansyah-moh'},
-            {label: 'LinkedIn', href: 'https://www.linkedin.com/in/muhammad-okfriansyah-74092671'},
-          ],
-        },
-      ],
-      copyright: `Copyright © ${new Date().getFullYear()} Muhammad Okfriansyah. Built with Docusaurus.`,
+      links: [],
+      copyright: `© ${new Date().getFullYear()} Muhammad Okfriansyah`,
     },
     prism: {
       theme: prismThemes.github,
