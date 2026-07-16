@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   corePlugins: {
-    preflight: false, // Disable Tailwind reset — Docusaurus has its own
+    preflight: false,
   },
   content: [
     './src/**/*.{js,jsx,ts,tsx}',
@@ -13,13 +13,19 @@ module.exports = {
     extend: {
       colors: {
         accent: 'var(--ifm-color-primary)',
+        'accent-dark': 'var(--color-accent-dark)',
         border: 'var(--color-border)',
         muted: 'var(--color-text-muted)',
         surface: 'var(--color-surface)',
       },
+      fontFamily: {
+        display: ['var(--font-display)', 'Georgia', 'serif'],
+        body: ['var(--font-body)', 'Georgia', 'serif'],
+        mono: ['var(--font-mono)', 'ui-monospace', 'monospace'],
+      },
       maxWidth: {
+        editorial: '1200px',
         content: '720px',
-        grid: '1100px',
       },
       borderRadius: {
         card: '10px',

@@ -49,6 +49,7 @@ See `.automation/content-policy.md` for the full policy. Summary:
 - `blog/` — narratives and retrospectives
 
 Update `sidebars.ts` when adding new docs pages.
+Update `src/data/content-feed.ts` when adding homepage feed entries.
 
 ## Known Article Candidates
 

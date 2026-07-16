@@ -60,23 +60,18 @@ const config: Config = {
     },
     navbar: {
       title: 'Muhammad Okfriansyah',
-      items: [],
+      items: [
+        {to: '/about', label: 'About', position: 'right'},
+      ],
     },
     footer: {
       style: 'light',
       links: [
         {
-          title: 'Knowledge',
+          title: 'Explore',
           items: [
-            {label: 'Systems', to: '/docs/systems/md-ame-autonomous-media-engine'},
+            {label: 'Systems', to: '/docs/systems/shorts-generator-pipeline'},
             {label: 'Concepts', to: '/docs/concepts/deterministic-ai-pipelines'},
-            {label: 'Projects', to: '/docs/projects/md-ame'},
-          ],
-        },
-        {
-          title: 'Content',
-          items: [
-            {label: 'Blog', to: '/blog'},
             {label: 'About', to: '/about'},
           ],
         },
@@ -85,7 +80,6 @@ const config: Config = {
           items: [
             {label: 'GitHub', href: 'https://github.com/okfriansyah-moh'},
             {label: 'LinkedIn', href: 'https://www.linkedin.com/in/muhammad-okfriansyah-74092671'},
-            {label: 'Instagram', href: 'https://instagram.com/okfriansyah'},
           ],
         },
       ],
