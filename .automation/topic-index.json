@@ -3,15 +3,25 @@
   "topics": {
     "shorts-generator:pipeline-reliability": {
       "document": "docs/systems/shorts-generator-pipeline.md",
-      "sources": []
+      "sources": [
+        "okfriansyah-moh/shorts-generator#8",
+        "okfriansyah-moh/shorts-generator#10",
+        "okfriansyah-moh/shorts-generator#11"
+      ]
     },
     "a2a-brainstormer:document-coherence": {
       "document": "docs/concepts/ai-document-coherence.md",
-      "sources": []
+      "sources": [
+        "okfriansyah-moh/a2a-brainstormer#8",
+        "okfriansyah-moh/a2a-brainstormer#12"
+      ]
     },
     "skeleton-parallel:agentic-orchestrator": {
       "document": "docs/concepts/deterministic-agentic-orchestrator.md",
-      "sources": []
+      "sources": [
+        "okfriansyah-moh/skeleton-parallel#1",
+        "okfriansyah-moh/skeleton-parallel#2"
+      ]
     },
     "ares:provider-neutral-standards": {
       "document": "docs/projects/ares.md",

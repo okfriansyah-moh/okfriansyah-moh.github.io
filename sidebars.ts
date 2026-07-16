@@ -8,6 +8,7 @@ const sidebars: SidebarsConfig = {
       items: [
         'systems/md-ame-autonomous-media-engine',
         'systems/polymarket-trading-agent',
+        'systems/shorts-generator-pipeline',
       ],
     },
     {
@@ -18,6 +19,8 @@ const sidebars: SidebarsConfig = {
         'concepts/database-state-machines',
         'concepts/ai-orchestration-patterns',
         'concepts/llm-guardrails',
+        'concepts/ai-document-coherence',
+        'concepts/deterministic-agentic-orchestrator',
       ],
     },
     {
