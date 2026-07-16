@@ -1,13 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  corePlugins: {
-    preflight: false,
-  },
-  content: [
-    './src/**/*.{js,jsx,ts,tsx}',
-    './docs/**/*.{md,mdx}',
-    './blog/**/*.{md,mdx}',
-  ],
+  corePlugins: { preflight: false },
+  content: ['./src/**/*.{js,jsx,ts,tsx}', './docs/**/*.{md,mdx}', './blog/**/*.{md,mdx}'],
   darkMode: ['class', '[data-theme="dark"]'],
   theme: {
     extend: {
@@ -21,14 +15,13 @@ module.exports = {
       fontFamily: {
         display: ['var(--font-display)', 'Georgia', 'serif'],
         body: ['var(--font-body)', 'Georgia', 'serif'],
+        ui: ['var(--font-ui)', 'system-ui', 'sans-serif'],
         mono: ['var(--font-mono)', 'ui-monospace', 'monospace'],
       },
       maxWidth: {
+        shell: '1280px',
         editorial: '1200px',
         content: '720px',
-      },
-      borderRadius: {
-        card: '10px',
       },
     },
   },

@@ -5,29 +5,32 @@ import {groupByYearMonth} from '@site/src/lib/feed';
 type TimelineFeedProps = {
   items: ContentItem[];
   selectedMonth: string | null;
+  excludeLinks?: string[];
 };
 
-export default function TimelineFeed({items, selectedMonth}: TimelineFeedProps) {
-  if (items.length === 0) {
+export default function TimelineFeed({items, selectedMonth, excludeLinks = []}: TimelineFeedProps) {
+  const visible = items.filter((item) => !excludeLinks.includes(item.link));
+
+  if (visible.length === 0) {
     return (
-      <div className="rounded-lg border border-dashed border-border px-6 py-16 text-center">
-        <p className="text-muted text-sm m-0">No articles match this filter.</p>
-        <p className="text-muted text-xs mt-2 m-0">Try a different month or content type.</p>
+      <div className="empty-state">
+        <p className="text-muted text-sm m-0 font-medium">No articles match this filter.</p>
+        <p className="text-muted text-xs mt-2 m-0">Try another month or content type.</p>
       </div>
     );
   }
 
-  const groups = groupByYearMonth(items);
+  const groups = groupByYearMonth(visible);
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-14">
       {groups.map((yearGroup) => (
         <section key={yearGroup.year} aria-labelledby={`feed-year-${yearGroup.year}`}>
           {!selectedMonth && (
-            <div className="flex items-baseline gap-3 mb-6 pb-3 border-b border-border">
+            <div className="year-divider mb-8">
               <h2
                 id={`feed-year-${yearGroup.year}`}
-                className="font-display text-2xl font-bold text-[var(--ifm-font-color-base)] m-0">
+                className="font-display text-3xl font-bold text-[var(--ifm-font-color-base)] m-0">
                 {yearGroup.year}
               </h2>
               <span className="font-mono text-xs text-muted">
@@ -36,15 +39,17 @@ export default function TimelineFeed({items, selectedMonth}: TimelineFeedProps) 
             </div>
           )}
 
-          <div className="space-y-10">
+          <div className="space-y-12">
             {yearGroup.months.map((month) => (
               <div key={month.key}>
-                <h3 className="font-mono text-xs uppercase tracking-[0.15em] text-muted mb-4 m-0">
-                  {month.label} {month.year}
-                </h3>
+                <h3 className="month-label">{month.label}</h3>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                  {month.items.map((item) => (
-                    <ContentCard key={item.link} {...item} />
+                  {month.items.map((item, index) => (
+                    <ContentCard
+                      key={item.link}
+                      {...item}
+                      featured={!selectedMonth && index === 0 && month.items.length === 1}
+                    />
                   ))}
                 </div>
               </div>

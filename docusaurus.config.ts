@@ -61,6 +61,7 @@ const config: Config = {
     navbar: {
       title: 'Muhammad Okfriansyah',
       items: [
+        {to: '/', label: 'Writing', position: 'right'},
         {to: '/about', label: 'About', position: 'right'},
       ],
     },

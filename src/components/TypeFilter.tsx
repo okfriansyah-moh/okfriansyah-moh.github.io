@@ -9,10 +9,7 @@ type TypeFilterProps = {
 
 export default function TypeFilter({selected, onSelect, counts}: TypeFilterProps) {
   return (
-    <div
-      className="flex flex-wrap gap-2 mb-8"
-      role="tablist"
-      aria-label="Filter by content type">
+    <div className="filter-bar" role="tablist" aria-label="Filter by content type">
       {TYPE_FILTERS.map(({id, label}) => {
         const active = selected === id;
         return (
@@ -22,21 +19,9 @@ export default function TypeFilter({selected, onSelect, counts}: TypeFilterProps
             role="tab"
             aria-selected={active}
             onClick={() => onSelect(id)}
-            className={[
-              'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium',
-              'border cursor-pointer transition-colors duration-150',
-              active
-                ? 'bg-accent text-white border-accent'
-                : 'bg-transparent text-muted border-border hover:border-accent hover:text-accent',
-            ].join(' ')}>
-            {label}
-            <span
-              className={[
-                'font-mono text-[10px]',
-                active ? 'text-white/80' : 'text-muted',
-              ].join(' ')}>
-              {counts[id]}
-            </span>
+            className={['filter-pill', active ? 'filter-pill-active' : ''].filter(Boolean).join(' ')}>
+            <span>{label}</span>
+            <span className="count-badge">{counts[id]}</span>
           </button>
         );
       })}

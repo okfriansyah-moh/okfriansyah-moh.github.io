@@ -1,41 +1,51 @@
 import Link from '@docusaurus/Link';
+import FeaturedArticle from '@site/src/components/FeaturedArticle';
+import SocialLinks, {AboutButton} from '@site/src/components/SocialLinks';
+import type {ContentItem} from '@site/src/data/content-feed';
 
-const SOCIAL = [
-  {label: 'GitHub', href: 'https://github.com/okfriansyah-moh'},
-  {label: 'LinkedIn', href: 'https://www.linkedin.com/in/muhammad-okfriansyah-74092671'},
-] as const;
+type HeroProps = {
+  featured: ContentItem;
+};
 
-export default function Hero() {
+export default function Hero({featured}: HeroProps) {
   return (
-    <header className="border-b border-border bg-surface/50">
-      <div className="max-w-editorial mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 lg:py-14">
-        <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted mb-4">
-          AI Systems Engineering · Knowledge Hub
-        </p>
-        <h1 className="font-display text-3xl sm:text-4xl lg:text-[2.75rem] font-bold leading-[1.15] tracking-tight text-[var(--ifm-font-color-base)] mb-4 max-w-3xl">
-          Engineering knowledge from systems that ship.
-        </h1>
-        <p className="text-base sm:text-lg leading-relaxed text-muted max-w-2xl mb-6">
-          Architecture breakdowns, production patterns, and lessons from building autonomous
-          pipelines — written for engineers who care about reliability first. New articles are
-          published from real public GitHub work.
-        </p>
-        <div className="flex flex-wrap items-center gap-3">
-          <Link
-            to="/about"
-            className="inline-flex items-center justify-center px-4 py-2.5 rounded-md text-sm font-medium bg-accent text-white no-underline hover:text-white hover:bg-accent-dark transition-colors duration-200">
-            About me
-          </Link>
-          {SOCIAL.map(({label, href}) => (
-            <a
-              key={label}
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center px-4 py-2.5 rounded-md text-sm font-medium border border-border text-[var(--ifm-font-color-base)] no-underline hover:border-accent hover:text-accent transition-colors duration-200">
-              {label}
-            </a>
-          ))}
+    <header className="relative overflow-hidden border-b border-border">
+      <div
+        className="absolute inset-0 opacity-[0.35] dark:opacity-[0.12] pointer-events-none"
+        style={{
+          backgroundImage:
+            'linear-gradient(var(--color-border) 1px, transparent 1px), linear-gradient(90deg, var(--color-border) 1px, transparent 1px)',
+          backgroundSize: '48px 48px',
+        }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--ifm-background-color)]/40 to-[var(--ifm-background-color)] pointer-events-none" />
+
+      <div className="relative max-w-shell mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-14 lg:py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+          <div className="lg:col-span-7">
+            <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-accent mb-5 m-0">
+              Muhammad Okfriansyah
+            </p>
+            <h1 className="font-display text-[2rem] sm:text-4xl lg:text-[2.85rem] font-bold leading-[1.08] tracking-tight text-[var(--ifm-font-color-base)] mb-5 m-0 max-w-xl">
+              I build autonomous systems that survive production.
+            </h1>
+            <p className="text-base sm:text-[1.125rem] leading-[1.75] text-muted max-w-xl mb-3 m-0">
+              This is my engineering journal — architecture breakdowns, reliability patterns,
+              and lessons from shipping deterministic AI pipelines, orchestrators, and
+              distributed backends.
+            </p>
+            <p className="font-mono text-xs text-muted mb-8 m-0">
+              New writing is published from real public GitHub work via an automated knowledge pipeline.
+            </p>
+            <div className="flex flex-wrap items-center gap-3">
+              <AboutButton />
+              <SocialLinks />
+            </div>
+          </div>
+
+          <div className="lg:col-span-5">
+            <FeaturedArticle item={featured} />
+          </div>
         </div>
       </div>
     </header>

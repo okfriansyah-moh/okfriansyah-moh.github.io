@@ -1,6 +1,8 @@
 import {type ReactNode, useMemo, useState} from 'react';
 import Layout from '@theme/Layout';
 import Hero from '@site/src/components/Hero';
+import HubStatsBar, {computeHubStats} from '@site/src/components/HubStatsBar';
+import SectionHeader from '@site/src/components/SectionHeader';
 import TimelineFeed from '@site/src/components/TimelineFeed';
 import TimelineNav from '@site/src/components/TimelineNav';
 import TypeFilter from '@site/src/components/TypeFilter';
@@ -13,7 +15,9 @@ export default function Home(): ReactNode {
   const [selectedType, setSelectedType] = useState<ContentType | 'all'>('all');
   const [drawerOpen, setDrawerOpen] = useState(false);
 
+  const featured = CONTENT_FEED[0];
   const months = useMemo(() => buildMonthIndex(CONTENT_FEED), []);
+  const stats = useMemo(() => computeHubStats(CONTENT_FEED), []);
 
   const filtered = useMemo(
     () => filterFeed(CONTENT_FEED, selectedType, selectedMonth),
@@ -31,14 +35,18 @@ export default function Home(): ReactNode {
     };
   }, [selectedMonth]);
 
+  const showHeroFeatured = selectedType === 'all' && selectedMonth === null;
+  const excludeFromFeed = showHeroFeatured ? [featured.link] : [];
+
   return (
     <Layout
       title="AI Systems Engineering Knowledge Hub"
       description="Architecture breakdowns, production patterns, and lessons from building autonomous AI systems — by Muhammad Okfriansyah."
       wrapperClassName="homepage">
-      <Hero />
+      <Hero featured={featured} />
+      <HubStatsBar stats={stats} />
 
-      <div className="flex min-h-[calc(100vh-var(--ifm-navbar-height)-1px)]">
+      <div id="writing" className="flex min-h-[60vh]">
         <TimelineNav
           className="hidden lg:flex"
           months={months}
@@ -50,7 +58,7 @@ export default function Home(): ReactNode {
         <button
           type="button"
           onClick={() => setDrawerOpen(!drawerOpen)}
-          className="lg:hidden fixed bottom-5 left-5 z-50 w-11 h-11 rounded-full bg-accent text-white flex items-center justify-center shadow-lg border-0 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          className="archive-fab lg:hidden"
           aria-label={drawerOpen ? 'Close archive' : 'Open archive'}
           aria-expanded={drawerOpen}>
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
@@ -62,12 +70,12 @@ export default function Home(): ReactNode {
           <>
             <button
               type="button"
-              className="lg:hidden fixed inset-0 z-40 bg-black/40 border-0 cursor-default"
+              className="drawer-scrim lg:hidden"
               aria-label="Close archive overlay"
               onClick={() => setDrawerOpen(false)}
             />
             <TimelineNav
-              className="lg:hidden fixed left-0 top-[var(--ifm-navbar-height)] z-50 flex bg-[var(--ifm-background-color)] shadow-xl"
+              className="lg:hidden fixed left-0 top-[var(--ifm-navbar-height)] z-50 flex bg-[var(--ifm-background-color)] shadow-2xl"
               months={months}
               selectedMonth={selectedMonth}
               onSelectMonth={(key) => {
@@ -79,13 +87,18 @@ export default function Home(): ReactNode {
           </>
         )}
 
-        <main className="flex-1 px-4 sm:px-6 lg:px-10 py-8 lg:py-10 max-w-editorial mx-auto w-full">
-          <TypeFilter
-            selected={selectedType}
-            onSelect={setSelectedType}
-            counts={typeCounts}
+        <main className="flex-1 px-4 sm:px-6 lg:px-10 py-10 lg:py-12 max-w-shell mx-auto w-full">
+          <SectionHeader
+            eyebrow="Writing"
+            title="Engineering editions"
+            description="Browse by year and month, or filter by systems architecture, reusable concepts, and blog notes."
           />
-          <TimelineFeed items={filtered} selectedMonth={selectedMonth} />
+          <TypeFilter selected={selectedType} onSelect={setSelectedType} counts={typeCounts} />
+          <TimelineFeed
+            items={filtered}
+            selectedMonth={selectedMonth}
+            excludeLinks={excludeFromFeed}
+          />
         </main>
       </div>
     </Layout>

@@ -21,14 +21,14 @@ export default function TimelineNav({
     <nav
       aria-label="Browse by date"
       className={[
-        'w-[240px] shrink-0 sticky top-[var(--ifm-navbar-height)]',
+        'w-[248px] shrink-0 sticky top-[var(--ifm-navbar-height)]',
         'h-[calc(100vh-var(--ifm-navbar-height))] overflow-y-auto',
         'border-r border-border py-8 px-5',
         className,
       ]
         .filter(Boolean)
         .join(' ')}>
-      <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted mb-4">
+      <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted mb-5 m-0">
         Archive
       </p>
 
@@ -37,23 +37,23 @@ export default function TimelineNav({
         onClick={() => onSelectMonth(null)}
         className={navButtonClass(selectedMonth === null)}>
         <span>All editions</span>
-        <span className="font-mono text-[10px] text-muted">{totalCount}</span>
+        <span className="count-badge">{totalCount}</span>
       </button>
 
-      <div className="mt-6 space-y-6">
+      <div className="mt-8 space-y-8 relative before:absolute before:left-[9px] before:top-2 before:bottom-2 before:w-px before:bg-border">
         {years.map((year) => {
           const yearMonths = months.filter((m) => m.year === year);
           const yearCount = yearMonths.reduce((sum, m) => sum + m.count, 0);
 
           return (
-            <section key={year} aria-labelledby={`year-${year}`}>
+            <section key={year} aria-labelledby={`year-${year}`} className="relative">
               <h2
                 id={`year-${year}`}
-                className="flex items-center justify-between px-2 mb-2 font-mono text-xs font-semibold text-[var(--ifm-font-color-base)]">
+                className="flex items-center justify-between pl-0 pr-2 mb-3 font-display text-base font-bold text-[var(--ifm-font-color-base)] m-0">
                 <span>{year}</span>
-                <span className="text-muted font-normal">{yearCount}</span>
+                <span className="count-badge">{yearCount}</span>
               </h2>
-              <ul className="space-y-0.5 list-none m-0 p-0">
+              <ul className="space-y-1 list-none m-0 p-0 pl-4 border-l border-border ml-1">
                 {yearMonths.map((m) => (
                   <li key={m.key}>
                     <button
@@ -61,7 +61,7 @@ export default function TimelineNav({
                       onClick={() => onSelectMonth(m.key === selectedMonth ? null : m.key)}
                       className={navButtonClass(selectedMonth === m.key)}>
                       <span>{m.label}</span>
-                      <span className="font-mono text-[10px] text-muted">{m.count}</span>
+                      <span className="count-badge">{m.count}</span>
                     </button>
                   </li>
                 ))}
@@ -76,9 +76,8 @@ export default function TimelineNav({
 
 function navButtonClass(active: boolean): string {
   return [
-    'flex items-center justify-between w-full px-2 py-1.5 rounded-md text-[13px]',
-    'cursor-pointer border-0 bg-transparent transition-colors duration-150',
-    'text-left',
+    'flex items-center justify-between w-full px-2.5 py-2 rounded-md text-[13px]',
+    'cursor-pointer border-0 bg-transparent transition-colors duration-150 text-left min-h-[36px]',
     active
       ? 'text-accent font-medium bg-[var(--color-card-hover)]'
       : 'text-muted hover:text-[var(--ifm-font-color-base)] hover:bg-[var(--color-card-hover)]',
