@@ -20,21 +20,18 @@ export default function Hero({featured}: HeroProps) {
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--ifm-background-color)]/40 to-[var(--ifm-background-color)] pointer-events-none" />
 
       <div className="relative page-shell hero-section__inner">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-12 items-center">
           <div className="lg:col-span-7">
-            <p className="hero-eyebrow font-mono uppercase tracking-[0.22em] text-accent mb-4 m-0">
+            <p className="hero-eyebrow font-mono uppercase tracking-[0.22em] text-accent mb-3 m-0">
               Muhammad Okfriansyah
             </p>
-            <h1 className="hero-title font-display font-bold leading-[1.08] tracking-tight text-[var(--ifm-font-color-base)] mb-4 m-0 max-w-xl">
+            <h1 className="hero-title font-display font-bold leading-[1.08] tracking-tight text-[var(--ifm-font-color-base)] mb-3 m-0 max-w-xl">
               I build autonomous systems that survive production.
             </h1>
-            <p className="hero-lead text-muted max-w-xl mb-3 m-0">
+            <p className="hero-lead text-muted max-w-xl mb-5 m-0">
               This is my engineering journal — architecture breakdowns, reliability patterns,
               and lessons from shipping deterministic AI pipelines, orchestrators, and
               distributed backends.
-            </p>
-            <p className="font-mono text-meta text-muted mb-6 m-0">
-              New writing is published from real public GitHub work via an automated knowledge pipeline.
             </p>
             <a
               href="#writing"

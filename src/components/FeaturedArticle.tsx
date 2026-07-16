@@ -35,9 +35,10 @@ export default function FeaturedArticle({item, compact = false}: FeaturedArticle
           {item.description}
         </p>
         <div className="flex items-center justify-between gap-3 mt-auto pt-2 border-t border-border/80">
-          <time className="font-mono text-[11px] text-muted" dateTime={item.date}>
-            {formatDisplayDate(item.date)}
-          </time>
+          <span className="font-mono text-[11px] text-muted">
+            <time dateTime={item.date}>{formatDisplayDate(item.date)}</time>
+            {item.readingTime != null && <> · {item.readingTime} min read</>}
+          </span>
           <span className="font-mono text-[11px] font-medium text-accent group-hover:translate-x-0.5 transition-transform duration-200">
             Read article →
           </span>

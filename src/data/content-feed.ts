@@ -12,6 +12,7 @@ export type ContentItem = {
   link: string;
   type: ContentType;
   date: string; // ISO YYYY-MM-DD
+  readingTime?: number; // minutes, computed by scripts/sync-content-feed.mjs
 };
 
 export const CONTENT_FEED: ContentItem[] = (meta.items as ContentItem[]).sort((a, b) =>

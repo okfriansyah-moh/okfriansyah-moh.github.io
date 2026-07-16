@@ -53,6 +53,31 @@ function loadJson(filePath, fallback) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
 }
 
+function resolveDocFile(link) {
+  const base = path.join(ROOT, link.slice(1));
+  for (const ext of ['.md', '.mdx']) {
+    if (fs.existsSync(`${base}${ext}`)) return `${base}${ext}`;
+  }
+  return null;
+}
+
+/** Reading time at 200 wpm from markdown body (frontmatter/code fences stripped). */
+function computeReadingTime(item) {
+  if (item.link.startsWith('/docs/')) {
+    const file = resolveDocFile(item.link);
+    if (file) {
+      const body = fs
+        .readFileSync(file, 'utf8')
+        .replace(/^---\r?\n[\s\S]*?\r?\n---/, '')
+        .replace(/```[\s\S]*?```/g, '');
+      const words = body.split(/\s+/).filter(Boolean).length;
+      return Math.max(1, Math.round(words / 200));
+    }
+  }
+  const descWords = (item.description ?? '').split(/\s+/).filter(Boolean).length;
+  return Math.max(2, Math.round(descWords / 20));
+}
+
 const meta = loadJson(META_PATH, {items: []});
 const topicIndex = loadJson(TOPIC_INDEX_PATH, {topics: {}});
 const links = new Set(meta.items.map((item) => item.link));
@@ -105,6 +130,10 @@ meta.items = meta.items.filter((item) => {
 
 if (beforeCount !== meta.items.length) {
   console.log(`[sync-content-feed] Pruned ${beforeCount - meta.items.length} stale entr${beforeCount - meta.items.length === 1 ? 'y' : 'ies'}.`);
+}
+
+for (const item of meta.items) {
+  item.readingTime = computeReadingTime(item);
 }
 
 fs.writeFileSync(META_PATH, `${JSON.stringify(meta, null, 2)}\n`);

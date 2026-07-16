@@ -1,5 +1,24 @@
 import type {ContentItem, ContentType} from '@site/src/data/content-feed';
 
+export type HubStats = {
+  total: number;
+  systems: number;
+  concepts: number;
+  blog: number;
+  years: number;
+};
+
+export function computeHubStats(items: ContentItem[]): HubStats {
+  const years = new Set(items.map((i) => new Date(i.date + 'T00:00:00').getFullYear()));
+  return {
+    total: items.length,
+    systems: items.filter((i) => i.type === 'system').length,
+    concepts: items.filter((i) => i.type === 'concept').length,
+    blog: items.filter((i) => i.type === 'blog').length,
+    years: years.size,
+  };
+}
+
 const MONTH_NAMES = [
   'January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December',

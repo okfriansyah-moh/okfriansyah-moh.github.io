@@ -1,4 +1,4 @@
-import ContentCard from '@site/src/components/ContentCard';
+import FeedRow from '@site/src/components/FeedRow';
 import type {ContentItem} from '@site/src/data/content-feed';
 import {groupByYearMonth} from '@site/src/lib/feed';
 
@@ -23,35 +23,33 @@ export default function TimelineFeed({items, selectedMonth, excludeLinks = []}: 
   const groups = groupByYearMonth(visible);
 
   return (
-    <div className="space-y-14">
+    <div className="space-y-10">
       {groups.map((yearGroup) => (
         <section key={yearGroup.year} aria-labelledby={`feed-year-${yearGroup.year}`}>
           {!selectedMonth && (
-            <div className="year-divider mb-8">
+            <div className="year-divider mb-2">
               <h2
                 id={`feed-year-${yearGroup.year}`}
-                className="font-display text-3xl font-bold text-[var(--ifm-font-color-base)] m-0">
+                className="font-display text-xl font-bold text-[var(--ifm-font-color-base)] m-0">
                 {yearGroup.year}
               </h2>
-              <span className="font-mono text-xs text-muted">
+              <span className="font-mono text-meta text-muted">
                 {yearGroup.count} {yearGroup.count === 1 ? 'article' : 'articles'}
               </span>
             </div>
           )}
 
-          <div className="space-y-12">
+          <div>
             {yearGroup.months.map((month) => (
               <div key={month.key}>
-                <h3 className="month-label">{month.label}</h3>
-                <div className="feed-grid grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-4 md:gap-5">
-                  {month.items.map((item, index) => (
-                    <ContentCard
-                      key={item.link}
-                      {...item}
-                      featured={!selectedMonth && index === 0 && month.items.length === 1}
-                    />
-                  ))}
-                </div>
+                {selectedMonth && (
+                  <h3 className="month-label mt-2">
+                    {month.label} {month.year}
+                  </h3>
+                )}
+                {month.items.map((item) => (
+                  <FeedRow key={item.link} {...item} />
+                ))}
               </div>
             ))}
           </div>

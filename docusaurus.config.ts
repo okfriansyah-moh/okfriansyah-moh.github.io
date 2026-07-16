@@ -18,6 +18,10 @@ const config: Config = {
 
   onBrokenLinks: 'throw',
 
+  markdown: {
+    mermaid: true,
+  },
+
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
@@ -25,6 +29,21 @@ const config: Config = {
 
   plugins: [
     './plugins/tailwind-plugin.cjs',
+  ],
+
+  themes: [
+    '@docusaurus/theme-mermaid',
+    [
+      '@easyops-cn/docusaurus-search-local',
+      {
+        hashed: true,
+        indexDocs: true,
+        indexBlog: true,
+        indexPages: true,
+        highlightSearchTermsOnTargetPage: true,
+        searchBarShortcutHint: false,
+      },
+    ],
   ],
 
   presets: [
@@ -79,6 +98,20 @@ const config: Config = {
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
+    },
+    mermaid: {
+      theme: {light: 'neutral', dark: 'dark'},
+      options: {
+        fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
+        themeVariables: {
+          primaryColor: '#f0ebe4',
+          primaryTextColor: '#1c1917',
+          primaryBorderColor: '#c42b2b',
+          lineColor: '#78716c',
+          secondaryColor: '#fdf5f4',
+          tertiaryColor: '#f8f6f3',
+        },
+      },
     },
   } satisfies Preset.ThemeConfig,
 };

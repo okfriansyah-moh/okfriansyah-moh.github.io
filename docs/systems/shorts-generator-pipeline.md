@@ -84,7 +84,7 @@ flowchart TD
   SCH --> PUB[Publisher]
 
   ORCH[Orchestrator] -.-> IN & SS & TR & FD & AA & SC & CB & HG & TTS & SUB & CMP & REN & TH & MD & ST & SCH & PUB
-  DB[(SQLite)] <-- ORCH
+  ORCH <--> DB[(SQLite)]
 ```
 
 The orchestrator executes stages in strict order. Every module is stateless between

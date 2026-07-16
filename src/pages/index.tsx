@@ -2,19 +2,18 @@ import {type ReactNode, useMemo, useState} from 'react';
 import Layout from '@theme/Layout';
 import ArchiveChips from '@site/src/components/ArchiveChips';
 import Hero from '@site/src/components/Hero';
-import HubStatsBar, {computeHubStats} from '@site/src/components/HubStatsBar';
+import ProfileCard from '@site/src/components/ProfileCard';
+import RailArchive from '@site/src/components/RailArchive';
 import SectionHeader from '@site/src/components/SectionHeader';
 import TimelineFeed from '@site/src/components/TimelineFeed';
-import TimelineNav from '@site/src/components/TimelineNav';
 import TypeFilter from '@site/src/components/TypeFilter';
 import {CONTENT_FEED} from '@site/src/data/content-feed';
 import type {ContentType} from '@site/src/data/content-feed';
-import {buildMonthIndex, filterFeed} from '@site/src/lib/feed';
+import {buildMonthIndex, computeHubStats, filterFeed} from '@site/src/lib/feed';
 
 export default function Home(): ReactNode {
   const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
   const [selectedType, setSelectedType] = useState<ContentType | 'all'>('all');
-  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const featured = CONTENT_FEED[0];
   const months = useMemo(() => buildMonthIndex(CONTENT_FEED), []);
@@ -45,70 +44,59 @@ export default function Home(): ReactNode {
       description="Architecture breakdowns, production patterns, and lessons from building autonomous AI systems — by Muhammad Okfriansyah."
       wrapperClassName="homepage">
       <Hero featured={featured} />
-      <HubStatsBar stats={stats} />
 
-      <div id="writing" className="writing-layout flex min-h-[55vh] scroll-mt-[calc(var(--ifm-navbar-height)+0.5rem)]">
-        <TimelineNav
-          className="hidden lg:flex"
-          months={months}
-          selectedMonth={selectedMonth}
-          onSelectMonth={setSelectedMonth}
-          totalCount={CONTENT_FEED.length}
-        />
-
-        <button
-          type="button"
-          onClick={() => setDrawerOpen(!drawerOpen)}
-          className="archive-fab lg:hidden"
-          aria-label={drawerOpen ? 'Close archive' : 'Open archive'}
-          aria-expanded={drawerOpen}>
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-            <path d="M3 5h12M3 9h12M3 13h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-          </svg>
-        </button>
-
-        {drawerOpen && (
-          <>
-            <button
-              type="button"
-              className="drawer-scrim lg:hidden"
-              aria-label="Close archive overlay"
-              onClick={() => setDrawerOpen(false)}
+      <div
+        id="writing"
+        className="page-shell section-y scroll-mt-[calc(var(--ifm-navbar-height)+0.5rem)]">
+        <div className="flex justify-center gap-10 xl:gap-16">
+          <main id="main-content" className="flex-1 min-w-0 max-w-[44rem]">
+            <SectionHeader
+              eyebrow="Writing"
+              title="Engineering editions"
+              description="Architecture breakdowns, reusable concepts, and notes from real engineering work."
             />
-            <TimelineNav
-              className="lg:hidden fixed left-0 top-[var(--ifm-navbar-height)] z-50 flex bg-[var(--ifm-background-color)] shadow-2xl archive-drawer"
-              months={months}
+
+            <div className="lg:hidden mb-6 space-y-4">
+              <ProfileCard stats={stats} variant="strip" />
+              <ArchiveChips
+                months={months}
+                selectedMonth={selectedMonth}
+                onSelectMonth={setSelectedMonth}
+                totalCount={CONTENT_FEED.length}
+              />
+              <TypeFilter selected={selectedType} onSelect={setSelectedType} counts={typeCounts} />
+            </div>
+
+            <TimelineFeed
+              items={filtered}
               selectedMonth={selectedMonth}
-              onSelectMonth={(key) => {
-                setSelectedMonth(key);
-                setDrawerOpen(false);
-              }}
-              totalCount={CONTENT_FEED.length}
+              excludeLinks={excludeFromFeed}
             />
-          </>
-        )}
+          </main>
 
-        <main
-          id="main-content"
-          className="writing-main flex-1 page-shell section-y w-full max-w-shell mx-auto">
-          <SectionHeader
-            eyebrow="Writing"
-            title="Engineering editions"
-            description="Browse by year and month, or filter by systems architecture, reusable concepts, and blog notes."
-          />
-          <ArchiveChips
-            months={months}
-            selectedMonth={selectedMonth}
-            onSelectMonth={setSelectedMonth}
-            totalCount={CONTENT_FEED.length}
-          />
-          <TypeFilter selected={selectedType} onSelect={setSelectedType} counts={typeCounts} />
-          <TimelineFeed
-            items={filtered}
-            selectedMonth={selectedMonth}
-            excludeLinks={excludeFromFeed}
-          />
-        </main>
+          <aside
+            className="hidden lg:block w-[320px] shrink-0"
+            aria-label="Profile and filters">
+            <div className="sticky top-[calc(var(--ifm-navbar-height)+1.5rem)] space-y-5">
+              <ProfileCard stats={stats} />
+              <section className="rail-module" aria-label="Filter by type">
+                <p className="rail-module-title m-0 mb-3">Discover by type</p>
+                <TypeFilter
+                  selected={selectedType}
+                  onSelect={setSelectedType}
+                  counts={typeCounts}
+                  compact
+                />
+              </section>
+              <RailArchive
+                months={months}
+                selectedMonth={selectedMonth}
+                onSelectMonth={setSelectedMonth}
+                totalCount={CONTENT_FEED.length}
+              />
+            </div>
+          </aside>
+        </div>
       </div>
     </Layout>
   );
