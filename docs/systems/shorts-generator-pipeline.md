@@ -53,14 +53,14 @@ the last completed station, and resumes from the next one.
 
 ## Requirements and Constraints
 
-| Requirement | How it is met |
-|-------------|---------------|
-| Deterministic output | No randomness; rule-based scoring; same input + config = same output |
-| Idempotent reruns | Content-addressable `video_id` from SHA256; `ON CONFLICT DO NOTHING` |
-| Module isolation | Modules communicate only via frozen DTOs in `contracts/` |
-| Orchestrator authority | Only `core/orchestrator.py` calls modules and writes to DB |
-| Zero cloud cost | Local FFmpeg, faster-whisper, Edge TTS, SQLite |
-| Platform failure isolation | One platform upload failure does not block others |
+| Requirement                | How it is met                                                        |
+| -------------------------- | -------------------------------------------------------------------- |
+| Deterministic output       | No randomness; rule-based scoring; same input + config = same output |
+| Idempotent reruns          | Content-addressable `video_id` from SHA256; `ON CONFLICT DO NOTHING` |
+| Module isolation           | Modules communicate only via frozen DTOs in `contracts/`             |
+| Orchestrator authority     | Only `core/orchestrator.py` calls modules and writes to DB           |
+| Zero cloud cost            | Local FFmpeg, faster-whisper, Edge TTS, SQLite                       |
+| Platform failure isolation | One platform upload failure does not block others                    |
 
 ## Architecture Overview
 
@@ -111,15 +111,15 @@ calls; persistence happens through the database adapter in `database/adapter.py`
 
 ## Important Components
 
-| Component | Responsibility |
-|-----------|----------------|
-| `core/orchestrator.py` | Stage ordering, checkpointing, error handling |
-| `contracts/*.py` | Frozen dataclass DTOs between stages |
-| `database/adapter.py` | Sole database access layer |
-| `core/account_loader.py` | Deep-merge per-account config overrides |
-| `modules/publisher/multi_platform.py` | Concurrent per-platform upload threads |
-| `scripts/upload_scheduler.py` | Cron-driven publish runner |
-| `scripts/generation_scheduler.py` | Picks next raw video and runs pipeline |
+| Component                             | Responsibility                                |
+| ------------------------------------- | --------------------------------------------- |
+| `core/orchestrator.py`                | Stage ordering, checkpointing, error handling |
+| `contracts/*.py`                      | Frozen dataclass DTOs between stages          |
+| `database/adapter.py`                 | Sole database access layer                    |
+| `core/account_loader.py`              | Deep-merge per-account config overrides       |
+| `modules/publisher/multi_platform.py` | Concurrent per-platform upload threads        |
+| `scripts/upload_scheduler.py`         | Cron-driven publish runner                    |
+| `scripts/generation_scheduler.py`     | Picks next raw video and runs pipeline        |
 
 ## Simplified Implementation Examples
 
@@ -151,22 +151,22 @@ for stage in STAGES[last_stage_index + 1:]:
 
 ## Failure Modes
 
-| Failure | Behaviour |
-|---------|-----------|
-| Crash mid-pipeline | Resume from last recorded stage in SQLite |
+| Failure                   | Behaviour                                                        |
+| ------------------------- | ---------------------------------------------------------------- |
+| Crash mid-pipeline        | Resume from last recorded stage in SQLite                        |
 | One platform upload fails | Other platforms continue; clip marked `published` if any succeed |
-| All platforms fail | Clip status → `failed`; error logged |
-| Missing credentials | Platform skipped entirely (no auth attempt) |
-| GPU unavailable | Automatic CPU fallback for transcription and encoding |
+| All platforms fail        | Clip status → `failed`; error logged                             |
+| Missing credentials       | Platform skipped entirely (no auth attempt)                      |
+| GPU unavailable           | Automatic CPU fallback for transcription and encoding            |
 
 ## Trade-offs and Rejected Alternatives
 
-| Choice | Why | Rejected alternative |
-|--------|-----|-------------------|
-| Modular monolith | Zero orchestration overhead, shared SQLite | Microservices — adds network cost and complexity |
-| SQLite | Single-file, local, no server | PostgreSQL — unnecessary for single-machine pipeline |
-| Rule-based scoring | Deterministic, reproducible | LLM scoring — non-deterministic, adds API cost |
-| Separate generation/upload schedulers | CPU work vs lightweight API calls | Single cron — cannot optimize for different workloads |
+| Choice                                | Why                                        | Rejected alternative                                  |
+| ------------------------------------- | ------------------------------------------ | ----------------------------------------------------- |
+| Modular monolith                      | Zero orchestration overhead, shared SQLite | Microservices — adds network cost and complexity      |
+| SQLite                                | Single-file, local, no server              | PostgreSQL — unnecessary for single-machine pipeline  |
+| Rule-based scoring                    | Deterministic, reproducible                | LLM scoring — non-deterministic, adds API cost        |
+| Separate generation/upload schedulers | CPU work vs lightweight API calls          | Single cron — cannot optimize for different workloads |
 
 ## Testing
 

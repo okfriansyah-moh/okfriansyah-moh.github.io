@@ -12,13 +12,10 @@ export default function Footer(): ReactNode {
         <div className="site-footer__brand">
           <p className="site-footer__name">{siteConfig.title}</p>
           <p className="site-footer__tagline">
-            Engineering journal — architecture, reliability, and lessons from production AI systems.
+            Engineering portfolio — production software, open source, and architecture writing.
           </p>
         </div>
-        <div className="site-footer__connect">
-          <p className="site-footer__label">Connect</p>
-          <SocialLinks variant="inline" />
-        </div>
+        <SocialLinks variant="inline" />
       </div>
       <p className="site-footer__copyright">
         © {year} Muhammad Okfriansyah. Built with Docusaurus.

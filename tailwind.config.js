@@ -13,19 +13,13 @@ module.exports = {
         surface: 'var(--color-surface)',
       },
       fontFamily: {
-        display: ['var(--font-display)', 'Georgia', 'serif'],
-        body: ['var(--font-body)', 'Georgia', 'serif'],
+        display: ['var(--font-display)', 'system-ui', 'sans-serif'],
+        body: ['var(--font-body)', 'system-ui', 'sans-serif'],
         ui: ['var(--font-ui)', 'system-ui', 'sans-serif'],
         mono: ['var(--font-mono)', 'ui-monospace', 'monospace'],
       },
       maxWidth: {
         shell: 'var(--layout-shell-max)',
-        editorial: 'var(--layout-editorial-max)',
-        content: 'var(--layout-content-max)',
-      },
-      screens: {
-        '3xl': '1920px',
-        '4xl': '2560px',
       },
     },
   },

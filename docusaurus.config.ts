@@ -52,7 +52,7 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          breadcrumbs: false,
+          breadcrumbs: true,
         },
         blog: {
           showReadingTime: true,
@@ -78,17 +78,9 @@ const config: Config = {
       respectPrefersColorScheme: false,
     },
     navbar: {
-      title: 'Muhammad Okfriansyah',
+      title: 'okfriansyah',
       hideOnScroll: false,
-      items: [
-        {
-          to: '/',
-          label: 'Writing',
-          position: 'right',
-          activeBaseRegex: '^/$',
-        },
-        {to: '/about', label: 'About', position: 'right'},
-      ],
+      items: [],
     },
     footer: {
       style: 'light',
@@ -100,16 +92,16 @@ const config: Config = {
       darkTheme: prismThemes.dracula,
     },
     mermaid: {
-      theme: {light: 'neutral', dark: 'dark'},
+      theme: {light: 'neutral', dark: 'base'},
       options: {
-        fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
+        fontFamily: "'Inter', system-ui, sans-serif",
         themeVariables: {
-          primaryColor: '#f0ebe4',
-          primaryTextColor: '#1c1917',
-          primaryBorderColor: '#c42b2b',
-          lineColor: '#78716c',
-          secondaryColor: '#fdf5f4',
-          tertiaryColor: '#f8f6f3',
+          primaryColor: '#EFF6FF',
+          primaryTextColor: '#111827',
+          primaryBorderColor: '#3B82F6',
+          lineColor: '#6B7280',
+          secondaryColor: '#F5F3FF',
+          tertiaryColor: '#F9FAFB',
         },
       },
     },

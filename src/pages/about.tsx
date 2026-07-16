@@ -1,6 +1,6 @@
 import {type ReactNode} from 'react';
 import Layout from '@theme/Layout';
-import {WritingLinkButton} from '@site/src/components/Hero';
+import Link from '@docusaurus/Link';
 import SectionHeader from '@site/src/components/SectionHeader';
 
 const METRICS = [
@@ -209,7 +209,7 @@ export default function About(): ReactNode {
           />
           <div className="grid sm:grid-cols-2 gap-4">
             {SKILLS.map(({group, items}) => (
-              <div key={group} className="card-surface p-5">
+              <div key={group} className="card-pro p-5">
                 <p className="font-mono text-meta uppercase tracking-[0.14em] text-muted m-0 mb-3">
                   {group}
                 </p>
@@ -229,7 +229,7 @@ export default function About(): ReactNode {
           <SectionHeader eyebrow="Education" title="Foundations" />
           <div className="grid sm:grid-cols-2 gap-4">
             {EDUCATION.map(({school, program, period}) => (
-              <div key={school} className="card-surface p-5">
+              <div key={school} className="card-pro p-5">
                 <h3 className="font-display text-lg font-bold m-0 mb-0.5">{school}</h3>
                 <p className="m-0 text-body-sm text-[var(--ifm-font-color-base)]">{program}</p>
                 <p className="font-mono text-meta text-muted m-0 mt-2">{period}</p>
@@ -256,13 +256,15 @@ export default function About(): ReactNode {
           </div>
         </section>
 
-        <section className="card-surface p-8 text-center">
+        <section className="card-pro p-8 text-center">
           <h2 className="font-display text-2xl font-bold m-0 mb-3">Read the engineering journal</h2>
           <p className="text-muted m-0 mb-6 max-w-lg mx-auto">
             Architecture breakdowns and patterns from real repositories — updated through an
             automated knowledge pipeline grounded in public GitHub work.
           </p>
-          <WritingLinkButton />
+          <Link to="/articles" className="btn btn-primary">
+            Browse Articles
+          </Link>
         </section>
       </div>
     </Layout>
