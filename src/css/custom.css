@@ -492,10 +492,18 @@ html.navbar-scrolled .navbar { box-shadow: var(--shadow-navbar); }
 }
 
 .navbar-search-pro .navbar__search > span,
-.navbar-search-pro .navbar__search [class*='searchBar'] {
+.navbar-search-pro .navbar__search [class*='searchBar']:not([class*='LoadingRing']) {
   display: block;
   width: 100%;
   max-width: 100%;
+}
+
+.navbar-search-pro [class*='searchBarLoadingRing'] {
+  display: none;
+}
+
+.navbar-search-pro [class*='searchIndexLoading'] [class*='searchBarLoadingRing'] {
+  display: inline-block;
 }
 
 .navbar-search-pro .navbar__search-input {

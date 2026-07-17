@@ -24,9 +24,6 @@ export default function SocialLinks({variant = 'buttons', className = ''}: Socia
             {linkSuffix(external)}
           </a>
         ))}
-        <Link to="/about" className="site-footer__link">
-          About me
-        </Link>
       </nav>
     );
   }
