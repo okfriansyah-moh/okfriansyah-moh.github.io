@@ -4,7 +4,7 @@ import Link from '@docusaurus/Link';
 import SectionHeading from '@site/src/components/ui/SectionHeading';
 import {CONTENT_FEED} from '@site/src/data/content-feed';
 import {TYPE_LABELS} from '@site/src/data/content-feed';
-import {difficultyForItem, formatArticleDate, thumbForType} from '@site/src/lib/content';
+import {difficultyForItem, formatArticleDate, thumbForItem} from '@site/src/lib/content';
 
 export default function ArticlesPage(): ReactNode {
   return (
@@ -14,7 +14,7 @@ export default function ArticlesPage(): ReactNode {
         <div className="article-list">
           {CONTENT_FEED.map((item) => (
             <Link key={item.link} to={item.link} className="card-pro article-list__item">
-              <img src={thumbForType(item.type)} alt="" className="article-list__thumb" />
+              <img src={thumbForItem(item)} alt="" className="article-list__thumb" />
               <div>
                 <p className="article-list__meta">
                   {TYPE_LABELS[item.type]} · {item.readingTime ?? 5} min · {difficultyForItem(item)} ·{' '}

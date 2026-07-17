@@ -1,0 +1,16 @@
+.tocCollapsibleButton {
+  font-size: inherit;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.4rem 0.8rem;
+  width: 100%;
+}
+
+.tocCollapsibleButton::after {
+  content: none;
+}
+
+.tocCollapsibleButtonExpanded::after {
+  content: none;
+}

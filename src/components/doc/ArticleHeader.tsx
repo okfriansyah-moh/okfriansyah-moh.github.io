@@ -1,7 +1,8 @@
 import {type ReactNode} from 'react';
 import {useDoc} from '@docusaurus/plugin-content-docs/client';
 import {TYPE_LABELS} from '@site/src/data/content-feed';
-import {difficultyForItem, formatArticleDate} from '@site/src/lib/content';
+import {difficultyForItem, formatArticleDate, thumbForDifficulty} from '@site/src/lib/content';
+import type {Difficulty} from '@site/src/lib/content';
 import type {ContentItem} from '@site/src/data/content-feed';
 
 type DocMetaExtra = {
@@ -37,7 +38,7 @@ export default function ArticleHeader(): ReactNode {
   const fm = frontMatter as DocFrontMatterExtra;
   const meta = metadata as typeof metadata & DocMetaExtra;
   const item = itemFromDoc(meta, fm);
-  const difficulty = fm.difficulty ?? difficultyForItem(item);
+  const difficulty = (fm.difficulty ?? difficultyForItem(item)) as Difficulty;
   const tags = fm.tags ?? [];
   const featured = Boolean(fm.featured);
 
@@ -69,7 +70,7 @@ export default function ArticleHeader(): ReactNode {
         )}
       </div>
       <div className="article-header__visual">
-        <img src="/img/featured-shield.png" alt="" loading="lazy" />
+        <img src={thumbForDifficulty(difficulty)} alt="" loading="lazy" />
       </div>
     </header>
   );

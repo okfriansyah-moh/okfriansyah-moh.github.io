@@ -1,5 +1,6 @@
 import React, {type ReactNode} from 'react';
 import Link from '@docusaurus/Link';
+import {useLocation} from '@docusaurus/router';
 import {useThemeConfig, ErrorCauseBoundary} from '@docusaurus/theme-common';
 import {
   splitNavbarItems,
@@ -66,14 +67,17 @@ function ProfileAvatar(): ReactNode {
 }
 
 export default function NavbarContent(): ReactNode {
+  const location = useLocation();
   const mobileSidebar = useNavbarMobileSidebar();
   const items = useNavbarItems();
   const [leftItems, rightItems] = splitNavbarItems(items);
+  const isDocArticle = location.pathname.startsWith('/docs/');
+  const showMobileMenu = !mobileSidebar.disabled && !isDocArticle;
 
   return (
     <div className="navbar__inner navbar-pro">
       <div className="navbar__items navbar-pro__left">
-        {!mobileSidebar.disabled && <NavbarMobileSidebarToggle />}
+        {showMobileMenu && <NavbarMobileSidebarToggle />}
         <NavbarBrand />
         <div className="navbar-pro__desktop-only">
           <NavLinks />
@@ -81,12 +85,14 @@ export default function NavbarContent(): ReactNode {
         <NavbarItems items={leftItems} />
       </div>
       <div className="navbar__items navbar__items--right navbar-pro__right">
+        <NavbarColorModeToggle className="navbar-color-toggle" />
         <NavbarSearch className="navbar-search-pro">
           <SearchBar />
         </NavbarSearch>
         <NavbarItems items={rightItems} />
-        <NavbarColorModeToggle className="navbar-color-toggle" />
-        <ProfileAvatar />
+        <div className="navbar-pro__desktop-only">
+          <ProfileAvatar />
+        </div>
       </div>
     </div>
   );

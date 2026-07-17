@@ -1,7 +1,7 @@
 import Link from '@docusaurus/Link';
 import SectionHeading from '@site/src/components/ui/SectionHeading';
 import type {ContentItem} from '@site/src/data/content-feed';
-import {difficultyForItem, thumbForType} from '@site/src/lib/content';
+import {difficultyForItem, thumbForDifficulty, thumbForItem} from '@site/src/lib/content';
 
 type RecentArticlesGridProps = {
   items: ContentItem[];
@@ -15,7 +15,7 @@ function ArticleCard({item}: {item: ContentItem}) {
     <article className="card-pro article-card">
       <Link to={item.link} className="article-card__link">
         <div className="article-card__thumb">
-          <img src={thumbForType(item.type)} alt="" loading="lazy" />
+          <img src={thumbForItem(item)} alt="" loading="lazy" />
         </div>
         <span className={`badge badge-difficulty badge-difficulty--${difficulty.toLowerCase()}`}>
           {difficulty}

@@ -9,6 +9,12 @@ const config: Config = {
   tagline: 'AI Systems Architect — Autonomous Systems, Deterministic Pipelines, Distributed Architecture',
   favicon: 'img/favicon.ico',
 
+  headTags: [
+    {tagName: 'link', attributes: {rel: 'icon', href: '/img/favicon.svg', type: 'image/svg+xml'}},
+    {tagName: 'link', attributes: {rel: 'apple-touch-icon', href: '/img/icon-192.png'}},
+    {tagName: 'meta', attributes: {name: 'theme-color', content: '#3B82F6'}},
+  ],
+
   organizationName: 'okfriansyah-moh',
   projectName: 'okfriansyah-moh.github.io',
 

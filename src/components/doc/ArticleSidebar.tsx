@@ -1,7 +1,7 @@
 import Link from '@docusaurus/Link';
 import {useDoc} from '@docusaurus/plugin-content-docs/client';
 import {CONTENT_FEED} from '@site/src/data/content-feed';
-import {difficultyForItem, formatArticleDate, relatedArticles, thumbForType} from '@site/src/lib/content';
+import {difficultyForItem, formatArticleDate, relatedArticles, thumbForItem} from '@site/src/lib/content';
 import type {ContentItem} from '@site/src/data/content-feed';
 
 type DocMetaExtra = { readingTime?: number };
@@ -84,7 +84,7 @@ export default function ArticleSidebar() {
             {related.map((r) => (
               <li key={r.link}>
                 <Link to={r.link} className="related-articles__item">
-                  <img src={thumbForType(r.type)} alt="" />
+                  <img src={thumbForItem(r)} alt="" />
                   <span>{r.title}</span>
                 </Link>
               </li>

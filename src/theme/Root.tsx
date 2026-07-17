@@ -1,6 +1,7 @@
 import React, {type ReactNode, useEffect} from 'react';
 import {useLocation} from '@docusaurus/router';
 import Root from '@theme-original/Root';
+import BackToTop from '@site/src/components/ui/BackToTop';
 
 const WRITING_SCROLL_KEY = 'scroll-to-writing';
 
@@ -50,6 +51,7 @@ export default function RootWrapper(props: Props): ReactNode {
         Skip to content
       </a>
       <Root {...props} />
+      <BackToTop />
     </>
   );
 }
