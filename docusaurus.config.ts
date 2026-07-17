@@ -12,7 +12,7 @@ const config: Config = {
   headTags: [
     {tagName: 'link', attributes: {rel: 'icon', href: '/img/favicon.svg', type: 'image/svg+xml'}},
     {tagName: 'link', attributes: {rel: 'apple-touch-icon', href: '/img/icon-192.png'}},
-    {tagName: 'meta', attributes: {name: 'theme-color', content: '#3B82F6'}},
+    {tagName: 'meta', attributes: {name: 'theme-color', content: '#1D4ED8'}},
   ],
 
   organizationName: 'okfriansyah-moh',
