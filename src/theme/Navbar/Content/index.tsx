@@ -40,7 +40,7 @@ function NavbarItems({items}: {items: NavbarItemConfig[]}): ReactNode {
 function NavbarBrand(): ReactNode {
   return (
     <Link to="/" className="navbar-brand-pro" aria-label="Home">
-      <span className="navbar-logo-box">ok</span>
+      <span className="navbar-logo-box">opi</span>
       <span className="navbar-brand-name">okfriansyah</span>
     </Link>
   );

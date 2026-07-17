@@ -375,14 +375,22 @@ html.navbar-scrolled .navbar { box-shadow: var(--shadow-navbar); }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2rem;
+  min-width: 2.35rem;
   height: 2rem;
+  padding-inline: 0.4rem;
   border-radius: 8px;
-  background: var(--ifm-color-primary);
+  background: #1D4ED8;
   color: #fff;
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-size: 0.625rem;
+  font-weight: 800;
   font-family: var(--font-mono);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12) inset;
+}
+[data-theme='dark'] .navbar-logo-box {
+  background: #2563EB;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2) inset;
 }
 .navbar-brand-name { font-weight: 700; font-size: 1rem; color: var(--ifm-font-color-base); }
 .navbar-center-links { display: none; gap: 0.15rem; margin-left: 1.5rem; }
