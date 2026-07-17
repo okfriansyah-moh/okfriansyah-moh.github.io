@@ -14,7 +14,7 @@ const config: Config = {
       tagName: 'link',
       attributes: {
         rel: 'icon',
-        href: '/img/favicon.svg?v=opi',
+        href: '/img/favicon.svg?v=opi-xl',
         type: 'image/svg+xml',
       },
     },
@@ -22,7 +22,16 @@ const config: Config = {
       tagName: 'link',
       attributes: {
         rel: 'icon',
-        href: '/img/favicon-32.png?v=opi',
+        href: '/img/favicon-48.png?v=opi-xl',
+        sizes: '48x48',
+        type: 'image/png',
+      },
+    },
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'icon',
+        href: '/img/favicon-32.png?v=opi-xl',
         sizes: '32x32',
         type: 'image/png',
       },
@@ -31,7 +40,7 @@ const config: Config = {
       tagName: 'link',
       attributes: {
         rel: 'icon',
-        href: '/img/favicon-16.png?v=opi',
+        href: '/img/favicon-16.png?v=opi-xl',
         sizes: '16x16',
         type: 'image/png',
       },
@@ -40,7 +49,7 @@ const config: Config = {
       tagName: 'link',
       attributes: {
         rel: 'shortcut icon',
-        href: '/img/favicon.ico?v=opi',
+        href: '/img/favicon.ico?v=opi-xl',
         type: 'image/x-icon',
       },
     },
@@ -48,10 +57,10 @@ const config: Config = {
       tagName: 'link',
       attributes: {
         rel: 'apple-touch-icon',
-        href: '/img/icon-192.png?v=opi',
+        href: '/img/icon-192.png?v=opi-xl',
       },
     },
-    {tagName: 'meta', attributes: {name: 'theme-color', content: '#1D4ED8'}},
+    {tagName: 'meta', attributes: {name: 'theme-color', content: '#1E3A8A'}},
   ],
 
   organizationName: 'okfriansyah-moh',
