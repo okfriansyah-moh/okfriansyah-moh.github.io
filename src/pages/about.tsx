@@ -3,9 +3,12 @@ import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import SectionHeader from '@site/src/components/SectionHeader';
 import {CONTACT_LINKS} from '@site/src/data/contact-links';
+import {engineeringYearsPlus} from '@site/src/lib/career';
+
+const YEARS_ENGINEERING = engineeringYearsPlus();
 
 const METRICS = [
-  {value: '12+', label: 'Years engineering'},
+  {value: YEARS_ENGINEERING, label: 'Years engineering'},
   {value: '98.7% → 99.9%', label: 'Platform SLO'},
   {value: '+70%', label: 'DORA metrics'},
   {value: '−40%', label: 'Cloud cost'},
@@ -116,7 +119,7 @@ export default function About(): ReactNode {
   return (
     <Layout
       title="About"
-      description="Muhammad Okfriansyah — Engineering Manager and AI Systems Architect with 12+ years building payment infrastructure and autonomous systems."
+      description={`Muhammad Okfriansyah — Engineering Manager and AI Systems Architect with ${YEARS_ENGINEERING} years building payment infrastructure and autonomous systems.`}
       wrapperClassName="about-page">
       <div className="about-hero">
         <div className="page-shell section-y max-w-editorial mx-auto">
@@ -133,7 +136,7 @@ export default function About(): ReactNode {
             Jakarta, Indonesia — open to US remote
           </p>
           <p className="text-lg leading-relaxed text-[var(--ifm-font-color-base)] max-w-2xl m-0 mb-8">
-            Engineering leader with 12+ years of software engineering experience, including 6+
+            Engineering leader with {YEARS_ENGINEERING} years of software engineering experience, including 6+
             years leading high-performing fintech and SaaS teams. I ship payment infrastructure
             at scale — payment gateways, banking APIs (SNAP), and KYC systems — and apply that
             reliability discipline to autonomous AI systems: deterministic pipelines,
@@ -168,7 +171,7 @@ export default function About(): ReactNode {
         <section>
           <SectionHeader
             eyebrow="Experience"
-            title="Twelve years, five roles"
+            title={`${YEARS_ENGINEERING} years, five roles`}
             description="From SMS gateways to national payment infrastructure to autonomous AI systems."
           />
           <div className="about-timeline">
