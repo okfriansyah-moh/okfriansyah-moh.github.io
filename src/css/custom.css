@@ -625,6 +625,23 @@ code { font-family: var(--font-mono); font-size: 0.88em; border-radius: 4px; pad
 .site-footer__inner { max-width: var(--layout-shell-max); margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; }
 .site-footer__name { font-weight: 700; margin: 0 0 0.25rem; }
 .site-footer__tagline { font-size: 0.875rem; color: var(--color-text-muted); margin: 0; }
+.site-footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem 1.25rem;
+  align-items: center;
+}
+.site-footer__link {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  text-decoration: none !important;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.15s ease;
+}
+.site-footer__link:hover { color: var(--ifm-color-primary); }
 .site-footer__copyright { max-width: var(--layout-shell-max); margin: 1.25rem auto 0; padding-top: 1rem; border-top: 1px solid var(--color-border); text-align: center; font-size: 0.75rem; color: var(--color-text-muted); }
 
 /* ── About page retheme ── */

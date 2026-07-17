@@ -2,6 +2,7 @@ import {type ReactNode} from 'react';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import SectionHeader from '@site/src/components/SectionHeader';
+import {CONTACT_LINKS} from '@site/src/data/contact-links';
 
 const METRICS = [
   {value: '12+', label: 'Years engineering'},
@@ -111,12 +112,6 @@ const PRINCIPLES = [
   },
 ];
 
-const CONTACTS = [
-  {label: 'GitHub', href: 'https://github.com/okfriansyah-moh'},
-  {label: 'LinkedIn', href: 'https://www.linkedin.com/in/muhammad-okfriansyah-74092671'},
-  {label: 'Email', href: 'mailto:okfriansyah@gmail.com'},
-];
-
 export default function About(): ReactNode {
   return (
     <Layout
@@ -145,13 +140,11 @@ export default function About(): ReactNode {
             orchestrators, and production workflows that don&apos;t break when left unattended.
           </p>
           <div className="flex flex-wrap gap-2.5">
-            {CONTACTS.map(({label, href}) => (
+            {CONTACT_LINKS.map(({label, href, external}) => (
               <a
                 key={label}
                 href={href}
-                {...(href.startsWith('http')
-                  ? {target: '_blank', rel: 'noopener noreferrer'}
-                  : {})}
+                {...(external ? {target: '_blank', rel: 'noopener noreferrer'} : {})}
                 className="inline-flex items-center justify-center min-h-[44px] px-4 py-2 rounded-md text-sm font-medium border border-border text-[var(--ifm-font-color-base)] no-underline hover:border-accent hover:text-accent transition-colors duration-200">
                 {label}
               </a>
