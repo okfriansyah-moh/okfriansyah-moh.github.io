@@ -1,17 +1,22 @@
 import {type ReactNode} from 'react';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
-import paths from '@site/src/data/learning-paths.json';
 import SectionHeading from '@site/src/components/ui/SectionHeading';
 import {titleForLink} from '@site/src/lib/content';
+import {useLocaleData} from '@site/src/lib/locale-data';
 
 export default function LearningPathsPage(): ReactNode {
+  const {learningPaths, contentFeed, ui} = useLocaleData();
+
   return (
-    <Layout title="Learning Paths" description="Curated paths through systems, AI, and backend engineering." wrapperClassName="hub-page">
+    <Layout
+      title={ui.pages.learningPaths.title}
+      description={ui.pages.learningPaths.description}
+      wrapperClassName="hub-page">
       <div className="page-shell hub-page__inner">
-        <SectionHeading title="Learning Paths" />
+        <SectionHeading title={ui.pages.learningPaths.title} />
         <div className="grid-2">
-          {paths.map((path) => (
+          {learningPaths.map((path) => (
             <article key={path.id} className="card-pro path-card path-card--wide">
               <div className="path-card__icon">
                 <img src={path.image} alt="" />
@@ -23,7 +28,9 @@ export default function LearningPathsPage(): ReactNode {
                 <ul className="path-card__links">
                   {path.links.map((link) => (
                     <li key={link}>
-                      <Link to={link}>{titleForLink(link)} →</Link>
+                      <Link to={link}>
+                        {titleForLink(link, contentFeed, ui.common.readArticle)} →
+                      </Link>
                     </li>
                   ))}
                 </ul>

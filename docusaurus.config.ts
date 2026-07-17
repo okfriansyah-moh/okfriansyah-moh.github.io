@@ -78,7 +78,11 @@ const config: Config = {
 
   i18n: {
     defaultLocale: 'en',
-    locales: ['en'],
+    locales: ['en', 'id'],
+    localeConfigs: {
+      en: {label: 'English', direction: 'ltr'},
+      id: {label: 'Bahasa Indonesia', direction: 'ltr'},
+    },
   },
 
   plugins: [

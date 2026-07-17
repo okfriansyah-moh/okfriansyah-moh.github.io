@@ -1,0 +1,123 @@
+{
+  "site": {
+    "title": "Muhammad Okfriansyah",
+    "tagline": "AI Systems Architect — Autonomous Systems, Deterministic Pipelines, Distributed Architecture"
+  },
+  "typeLabels": {
+    "system": "System",
+    "concept": "Concept",
+    "project": "Project",
+    "blog": "Blog"
+  },
+  "typeFilters": [
+    {"id": "all", "label": "All"},
+    {"id": "system", "label": "Systems"},
+    {"id": "concept", "label": "Concepts"},
+    {"id": "blog", "label": "Blog"}
+  ],
+  "difficulty": {
+    "beginner": "Beginner",
+    "intermediate": "Intermediate",
+    "advanced": "Advanced"
+  },
+  "hero": {
+    "eyebrow": "ENGINEERING · BUILDING · SHARING",
+    "title": "I build production software, open source projects, and explain how they work.",
+    "lead": "Engineering Manager & Backend Engineer — I write about systems architecture, deterministic AI pipelines, and lessons from shipping at scale.",
+    "browseArticles": "Browse Articles",
+    "exploreProjects": "Explore Projects",
+    "aboutMe": "About Me"
+  },
+  "sections": {
+    "currentlyBuilding": "Currently Building",
+    "recentArticles": "Recent Articles",
+    "learningPaths": "Learning Paths",
+    "caseStudies": "Case Studies",
+    "openSource": "Open Source",
+    "featured": "Featured"
+  },
+  "common": {
+    "viewAll": "View all",
+    "minRead": "min read",
+    "min": "min",
+    "readArticle": "Read article",
+    "github": "GitHub",
+    "featuredBadge": "FEATURED",
+    "activeProject": "Active project",
+    "backToTop": "Back to top",
+    "tableOfContents": "Table of contents",
+    "openToc": "Open table of contents",
+    "closeToc": "Close table of contents"
+  },
+  "footer": {
+    "tagline": "Engineering portfolio — production software, open source, and architecture writing.",
+    "copyright": "Built with Docusaurus.",
+    "aboutMe": "About me"
+  },
+  "pages": {
+    "articles": {
+      "title": "Articles",
+      "description": "All engineering articles and notes."
+    },
+    "projects": {
+      "title": "Projects",
+      "description": "Open source and active engineering projects.",
+      "viewDocs": "View project docs →"
+    },
+    "caseStudies": {
+      "title": "Case Studies",
+      "description": "System architecture breakdowns from production engineering work."
+    },
+    "learningPaths": {
+      "title": "Learning Paths",
+      "description": "Curated reading paths by engineering topic."
+    },
+    "openSource": {
+      "title": "Open Source",
+      "description": "Public repositories and contributions."
+    },
+    "home": {
+      "title": "Muhammad Okfriansyah — Engineering Portfolio",
+      "description": "Production software, open source projects, and architecture breakdowns from real engineering work."
+    },
+    "openSourceHub": {
+      "eyebrow": "OPEN SOURCE",
+      "title": "Repositories & tools",
+      "lead": "Production-oriented projects shared publicly — pipelines, agents, and developer tooling."
+    }
+  },
+  "article": {
+    "infoTitle": "Article info",
+    "difficulty": "Difficulty",
+    "readingTime": "Reading time",
+    "published": "Published",
+    "updated": "Updated",
+    "repository": "Repository",
+    "relatedTitle": "Related articles"
+  },
+  "about": {
+    "title": "About",
+    "eyebrow": "About",
+    "role": "Engineering Manager · AI Systems Architect",
+    "location": "Jakarta, Indonesia — open to US remote",
+    "metaDescription": "Engineering Manager and AI Systems Architect with {years} years building payment infrastructure and autonomous systems.",
+    "experienceEyebrow": "Experience",
+    "experienceDescription": "From SMS gateways to national payment infrastructure to autonomous AI systems.",
+    "skillsEyebrow": "Skills",
+    "skillsTitle": "Core toolkit",
+    "skillsDescription": "The stack behind payment platforms, distributed backends, and AI pipelines.",
+    "educationEyebrow": "Education",
+    "educationTitle": "Foundations",
+    "principlesEyebrow": "Principles",
+    "principlesTitle": "Engineering constraints I enforce",
+    "ctaTitle": "Read the engineering journal",
+    "ctaBody": "Architecture breakdowns and patterns from real repositories — updated through an automated knowledge pipeline grounded in public GitHub work.",
+    "ctaButton": "Browse Articles"
+  },
+  "metrics": {
+    "yearsEngineering": "Years engineering",
+    "platformSlo": "Platform SLO",
+    "doraMetrics": "DORA metrics",
+    "cloudCost": "Cloud cost"
+  }
+}

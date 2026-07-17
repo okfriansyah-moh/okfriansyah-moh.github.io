@@ -3,12 +3,14 @@ import Link from '@docusaurus/Link';
 import NavbarColorModeToggle from '@theme/Navbar/ColorModeToggle';
 import SearchBar from '@theme/SearchBar';
 import NavbarSearch from '@theme/Navbar/Search';
-import {NAV_LINKS} from '@site/src/data/nav-links';
+import LocaleToggle from '@site/src/components/ui/LocaleToggle';
+import {useLocaleData} from '@site/src/lib/locale-data';
 
 function NavLinks(): ReactNode {
+  const {navLinks} = useLocaleData();
   return (
     <nav className="navbar-center-links" aria-label="Main">
-      {NAV_LINKS.map(({to, label}) => (
+      {navLinks.map(({to, label}) => (
         <Link key={to} to={to} className="navbar-center-link">
           {label}
         </Link>
@@ -39,6 +41,7 @@ export default function NavbarContent(): ReactNode {
         <NavbarSearch className="navbar-search-pro">
           <SearchBar />
         </NavbarSearch>
+        <LocaleToggle />
         <NavbarColorModeToggle className="navbar-color-toggle" />
       </div>
     </div>

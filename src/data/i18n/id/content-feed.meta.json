@@ -1,0 +1,84 @@
+{
+  "items": [
+    {
+      "title": "Membangun Pipeline Pemrosesan Video Panjang yang Dapat Dilanjutkan",
+      "description": "Bagaimana Shorts Factory menggunakan pipeline deterministik 16 tahap dengan checkpointing SQLite untuk memproses video berjam-jam menjadi short siap publikasi.",
+      "link": "/docs/systems/shorts-generator-pipeline",
+      "type": "system",
+      "date": "2026-07-16",
+      "readingTime": 5
+    },
+    {
+      "title": "Cara Mencegah Kontradiksi dalam Dokumen yang Dihasilkan AI",
+      "description": "Generasi per-seksi dengan audit koherensi antar-seksi dan micro-fix terjaga dari A2A Brainstorm.",
+      "link": "/docs/concepts/ai-document-coherence",
+      "type": "concept",
+      "date": "2026-07-16",
+      "readingTime": 4
+    },
+    {
+      "title": "Merancang Orchestrator Coding Agentik yang Deterministik",
+      "description": "Loop agent berbasis tugas dengan retry terbatas, rollback checkpoint, dan quality gate di skeleton-parallel.",
+      "link": "/docs/concepts/deterministic-agentic-orchestrator",
+      "type": "concept",
+      "date": "2026-07-16",
+      "readingTime": 5
+    },
+    {
+      "title": "Selamat Datang di Hub Pengetahuan Rekayasa Sistem AI",
+      "description": "Cakupan basis pengetahuan ini — arsitektur sistem, pola produksi, dan pelajaran dari pekerjaan engineering nyata.",
+      "link": "/blog/2025/03/26/welcome",
+      "type": "blog",
+      "date": "2025-03-26",
+      "readingTime": 2
+    },
+    {
+      "title": "MD-AME: Mesin Media Otonom",
+      "description": "Arsitektur sistem produksi YouTube otonom yang dibangun di atas pipeline deterministik dan state machine berbasis database.",
+      "link": "/docs/systems/md-ame-autonomous-media-engine",
+      "type": "system",
+      "date": "2025-03-20",
+      "readingTime": 1
+    },
+    {
+      "title": "Agen Trading Polymarket",
+      "description": "Agen pasar prediksi otonom dengan pemrosesan sinyal, risk gate, dan perlindungan modal real-time.",
+      "link": "/docs/systems/polymarket-trading-agent",
+      "type": "system",
+      "date": "2025-03-18",
+      "readingTime": 1
+    },
+    {
+      "title": "Pipeline AI Deterministik",
+      "description": "Mengapa kebanyakan pipeline AI gagal di produksi — dan bagaimana worker idempoten plus state database membuatnya andal.",
+      "link": "/docs/concepts/deterministic-ai-pipelines",
+      "type": "concept",
+      "date": "2025-03-15",
+      "readingTime": 1
+    },
+    {
+      "title": "State Machine Berbasis Database",
+      "description": "Menggunakan database sebagai single source of truth untuk menjalankan alur kerja andal di sistem terdistribusi.",
+      "link": "/docs/concepts/database-state-machines",
+      "type": "concept",
+      "date": "2025-03-12",
+      "readingTime": 1
+    },
+    {
+      "title": "Pola Orkestrasi AI",
+      "description": "Pola orchestrator pusat untuk mengoordinasikan worker AI, model, dan pipeline tanpa kekacauan agent.",
+      "link": "/docs/concepts/ai-orchestration-patterns",
+      "type": "concept",
+      "date": "2025-03-10",
+      "readingTime": 1
+    },
+    {
+      "title": "Guardrail LLM",
+      "description": "Pola engineering untuk membatasi perilaku LLM — batasan, validasi, dan rollback di AI produksi.",
+      "link": "/docs/concepts/llm-guardrails",
+      "type": "concept",
+      "date": "2025-03-08",
+      "readingTime": 1
+    }
+  ]
+}

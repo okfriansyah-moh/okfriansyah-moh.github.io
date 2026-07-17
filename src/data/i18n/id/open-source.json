@@ -1,0 +1,30 @@
+[
+  {
+    "name": "shorts-generator",
+    "description": "Pipeline pemrosesan video panjang yang dapat dilanjutkan dengan checkpointing SQLite.",
+    "repo": "https://github.com/okfriansyah-moh/shorts-generator",
+    "stars": 12,
+    "language": "Python"
+  },
+  {
+    "name": "skeleton-parallel",
+    "description": "Orchestrator coding agentik deterministik dengan quality gate.",
+    "repo": "https://github.com/okfriansyah-moh/skeleton-parallel",
+    "stars": 8,
+    "language": "TypeScript"
+  },
+  {
+    "name": "a2a-brainstormer",
+    "description": "Generasi dokumen per-seksi dengan audit koherensi.",
+    "repo": "https://github.com/okfriansyah-moh/a2a-brainstormer",
+    "stars": 6,
+    "language": "TypeScript"
+  },
+  {
+    "name": "okfriansyah-moh.github.io",
+    "description": "Hub pengetahuan engineering ini — situs portofolio Docusaurus.",
+    "repo": "https://github.com/okfriansyah-moh/okfriansyah-moh.github.io",
+    "stars": 4,
+    "language": "TypeScript"
+  }
+]

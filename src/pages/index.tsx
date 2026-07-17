@@ -7,22 +7,23 @@ import HomeHero from '@site/src/components/home/HomeHero';
 import LearningPaths from '@site/src/components/home/LearningPaths';
 import OpenSourceGrid from '@site/src/components/home/OpenSourceGrid';
 import RecentArticlesGrid from '@site/src/components/home/RecentArticlesGrid';
-import {CONTENT_FEED} from '@site/src/data/content-feed';
+import {useLocaleData} from '@site/src/lib/locale-data';
 
 export default function Home(): ReactNode {
-  const featured = CONTENT_FEED[0];
+  const {contentFeed, ui} = useLocaleData();
+  const featured = contentFeed[0];
 
   return (
     <Layout
-      title="Muhammad Okfriansyah — Engineering Portfolio"
-      description="Production software, open source projects, and architecture breakdowns from real engineering work."
+      title={ui.pages.home.title}
+      description={ui.pages.home.description}
       wrapperClassName="homepage">
       <HomeHero />
       <CurrentlyBuilding />
-      <FeaturedArticleCard item={featured} />
-      <RecentArticlesGrid items={CONTENT_FEED} excludeLink={featured.link} />
+      {featured && <FeaturedArticleCard item={featured} />}
+      <RecentArticlesGrid items={contentFeed} excludeLink={featured?.link} />
       <LearningPaths />
-      <CaseStudiesRow items={CONTENT_FEED} />
+      <CaseStudiesRow items={contentFeed} />
       <OpenSourceGrid />
     </Layout>
   );

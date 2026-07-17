@@ -1,0 +1,26 @@
+[
+  {
+    "id": "shorts-generator",
+    "title": "Shorts Generator",
+    "description": "Pipeline deterministik 16 tahap yang mengubah video panjang menjadi klip pendek siap publikasi dengan checkpointing SQLite.",
+    "tech": ["Python", "SQLite", "FFmpeg"],
+    "repo": "https://github.com/okfriansyah-moh/shorts-generator",
+    "status": "active"
+  },
+  {
+    "id": "skeleton-parallel",
+    "title": "Skeleton Parallel",
+    "description": "Orchestrator coding agentik deterministik dengan retry terbatas, rollback checkpoint, dan quality gate.",
+    "tech": ["TypeScript", "Node.js"],
+    "repo": "https://github.com/okfriansyah-moh/skeleton-parallel",
+    "status": "active"
+  },
+  {
+    "id": "md-ame",
+    "title": "MD-AME",
+    "description": "Mesin media otonom untuk produksi YouTube — state machine berbasis database dan pipeline deterministik.",
+    "tech": ["Go", "PostgreSQL"],
+    "repo": "https://github.com/okfriansyah-moh",
+    "status": "active"
+  }
+]

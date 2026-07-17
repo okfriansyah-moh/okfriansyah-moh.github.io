@@ -11,12 +11,12 @@ beginner-friendly engineering documentation derived from public GitHub activity.
 
 ## Automation Control Files
 
-| File | Purpose |
-|------|---------|
-| `.automation/github-docs-state.json` | Idempotency and processed-activity ledger |
-| `.automation/topic-index.json` | Maps engineering topics to existing articles |
-| `.automation/content-policy.md` | Editorial rules, scoring, and security boundaries |
-| `.automation/article-template.md` | Required article structure for new pages |
+| File                                 | Purpose                                           |
+| ------------------------------------ | ------------------------------------------------- |
+| `.automation/github-docs-state.json` | Idempotency and processed-activity ledger         |
+| `.automation/topic-index.json`       | Maps engineering topics to existing articles      |
+| `.automation/content-policy.md`      | Editorial rules, scoring, and security boundaries |
+| `.automation/article-template.md`    | Required article structure for new pages          |
 
 ## Bootstrap Sequence
 
@@ -55,8 +55,12 @@ All `/docs/*` pages automatically use the shared article layout (TOC + article s
 1. Write markdown under the correct `docs/` subdirectory (or `blog/`).
 2. Add the doc id to `sidebars.ts` in the matching category.
 3. Add or update `.automation/topic-index.json` (document path + sources).
-4. Optionally add metadata to `src/data/content-feed.meta.json`, or run `npm run sync:feed` to merge from frontmatter.
-5. Validate with `npm ci`, `npm run typecheck`, `npm run build`.
+4. Optionally add metadata to `src/data/i18n/en/content-feed.meta.json` and
+   `src/data/i18n/id/content-feed.meta.json`, or run `npm run sync:feed` to merge from frontmatter.
+5. Validate with `npm ci`, `npm run typecheck`, `npm run build` (all locales).
+
+Site supports **English** (`/`) and **Bahasa Indonesia** (`/id/`). Automation must write
+both `docs/...` (EN) and `i18n/id/docusaurus-plugin-content-docs/current/...` (ID) for every article.
 
 Do **not** edit homepage components, theme swizzles, navbar, footer, CSS, or `src/data/content-feed.ts`. The feed sync script keeps the homepage and `/articles` in sync at build time.
 
@@ -66,9 +70,9 @@ See `.automation/content-policy.md` for the full safe-change scope.
 
 Initial high-signal topics (see `topic-index.json`):
 
-| Topic | Proposed focus |
-|-------|----------------|
-| Shorts Generator | Restartable long-video processing pipeline |
-| A2A Brainstormer | Preventing contradictions in AI-generated documents |
-| Skeleton Parallel | Deterministic agentic coding orchestrator |
-| ARES | Provider-neutral AI repository standards |
+| Topic             | Proposed focus                                      |
+| ----------------- | --------------------------------------------------- |
+| Shorts Generator  | Restartable long-video processing pipeline          |
+| A2A Brainstormer  | Preventing contradictions in AI-generated documents |
+| Skeleton Parallel | Deterministic agentic coding orchestrator           |
+| ARES              | Provider-neutral AI repository standards            |

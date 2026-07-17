@@ -1,0 +1,30 @@
+[
+  {
+    "name": "shorts-generator",
+    "description": "Restartable long-video processing pipeline with SQLite checkpointing.",
+    "repo": "https://github.com/okfriansyah-moh/shorts-generator",
+    "stars": 12,
+    "language": "Python"
+  },
+  {
+    "name": "skeleton-parallel",
+    "description": "Deterministic agentic coding orchestrator with quality gates.",
+    "repo": "https://github.com/okfriansyah-moh/skeleton-parallel",
+    "stars": 8,
+    "language": "TypeScript"
+  },
+  {
+    "name": "a2a-brainstormer",
+    "description": "Section-sequential document generation with coherence audits.",
+    "repo": "https://github.com/okfriansyah-moh/a2a-brainstormer",
+    "stars": 6,
+    "language": "TypeScript"
+  },
+  {
+    "name": "okfriansyah-moh.github.io",
+    "description": "This engineering knowledge hub — Docusaurus portfolio site.",
+    "repo": "https://github.com/okfriansyah-moh/okfriansyah-moh.github.io",
+    "stars": 4,
+    "language": "TypeScript"
+  }
+]

@@ -1,12 +1,14 @@
-import repos from '@site/src/data/open-source.json';
 import SectionHeading from '@site/src/components/ui/SectionHeading';
+import {useLocaleData} from '@site/src/lib/locale-data';
 
 export default function OpenSourceGrid() {
+  const {openSource, ui} = useLocaleData();
+
   return (
     <section className="page-shell home-section" id="open-source">
-      <SectionHeading title="Open Source" viewAllHref="https://github.com/okfriansyah-moh" />
+      <SectionHeading title={ui.sections.openSource} viewAllHref="https://github.com/okfriansyah-moh" />
       <div className="grid-2">
-        {repos.map((repo) => (
+        {openSource.map((repo) => (
           <a
             key={repo.name}
             href={repo.repo}

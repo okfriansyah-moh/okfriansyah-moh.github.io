@@ -1,0 +1,78 @@
+{
+  "bio": "Engineering leader with {years} years of software engineering experience, including 6+ years leading high-performing fintech and SaaS teams. I ship payment infrastructure at scale — payment gateways, banking APIs (SNAP), and KYC systems — and apply that reliability discipline to autonomous AI systems: deterministic pipelines, orchestrators, and production workflows that don't break when left unattended.",
+  "experienceTitle": "{years} years, five roles",
+  "metrics": [
+    {"valueKey": "yearsEngineering", "labelKey": "yearsEngineering"},
+    {"value": "98.7% → 99.9%", "labelKey": "platformSlo"},
+    {"value": "+70%", "labelKey": "doraMetrics"},
+    {"value": "−40%", "labelKey": "cloudCost"}
+  ],
+  "experience": [
+    {
+      "company": "Mekari",
+      "role": "Engineering Manager — Core & Report Squads",
+      "period": "Jan 2025 – Present · Jakarta",
+      "highlights": [
+        "Lead two squads building foundational services, APIs, and data reporting infrastructure for the Mekari Officeless platform.",
+        "Directing design and delivery of a fully customizable report builder for the Officeless product suite.",
+        "Own team health, delivery velocity, and cross-functional alignment across product and business."
+      ]
+    },
+    {
+      "company": "Mekari",
+      "role": "Lead Software Engineer — Financial Services",
+      "period": "Apr 2022 – Dec 2024 · Jakarta",
+      "highlights": [
+        "Led Core Payment, Kredigram, KYC, Expense Management, and Banking-as-a-Service teams.",
+        "Improved DORA metrics 70% — 90% deployment frequency, ~70% shorter lead time, <1% failure rate, <30 min MTTR — and elevated platform SLO from 98.7% to 99.9%.",
+        "Reduced cloud costs ~40% via provider migration; cut resource consumption 50% by rewriting key services in Go.",
+        "Integrated Xendit, Midtrans, Ayoconnect, and NIUM payments; standardized H2H banking via SNAP API with BNI, BRI, and Permata.",
+        "Maintained 96% code coverage; led the Bank Indonesia PJP Level 3 compliance audit for Kredigram."
+      ]
+    },
+    {
+      "company": "DOKU",
+      "role": "Technical Lead Developer — Core Payment",
+      "period": "Feb 2016 – Mar 2022 · Jakarta",
+      "highlights": [
+        "Led the Core Payment team for Indonesia's leading payment gateway — API design and integration for Internet Banking, Virtual Accounts, Credit Cards, Rate Management, and Bank Transfers.",
+        "Spearheaded the Jokul platform rewrite as Tech Lead (Angular + Spring Boot/Java), improving scalability, performance, and UX."
+      ]
+    },
+    {
+      "company": "PT Samz Solutions",
+      "role": "Java Developer",
+      "period": "Nov 2013 – Dec 2015 · Jakarta",
+      "highlights": [
+        "Built ERP modules (Prepaid Revenue Data, POS, Sales Order) for Telkomsel, automating revenue workflows.",
+        "Developed Individual Learning Plan and Training Request modules for Pertamina's e-learning platform."
+      ]
+    },
+    {
+      "company": "KMK Online",
+      "role": "Mobile Developer",
+      "period": "May 2013 – Sep 2013 · Jakarta",
+      "highlights": [
+        "Managed the SMS gateway for SCTV and Indosiar; developed an SMS verification scheduler and maintained GlassFish servers."
+      ]
+    }
+  ],
+  "skills": [
+    {"group": "Languages", "items": ["Go", "Java", "TypeScript", "Swift", "SQL"]},
+    {"group": "Frameworks", "items": ["Spring Boot", "Angular", "Node.js"]},
+    {"group": "Infrastructure", "items": ["Docker", "Jenkins", "Grafana", "SonarQube", "Alibaba Cloud"]},
+    {"group": "Databases", "items": ["MySQL", "PostgreSQL"]},
+    {"group": "Payments", "items": ["Xendit", "Midtrans", "Ayoconnect", "NIUM", "BNI/BRI/Permata SNAP API"]},
+    {"group": "Leadership", "items": ["Engineering Management", "DORA Metrics", "OKRs", "Agile/Scrum", "Architecture Design"]}
+  ],
+  "education": [
+    {"school": "Universitas Gunadarma", "program": "B.S., Informatics Engineering", "period": "2008 – 2012 · Jakarta"},
+    {"school": "Apple Developer Academy", "program": "1st Batch", "period": "Jun 2018 – Mar 2019 · Jakarta"}
+  ],
+  "principles": [
+    {"title": "Deterministic over probabilistic", "body": "Given the same input, produce the same output. Pipelines must be reproducible."},
+    {"title": "Idempotent operations", "body": "Every worker, stage, and retry produces the same result without compounding side effects."},
+    {"title": "Database-backed state", "body": "The database is the single source of truth. No in-memory-only state for what matters."},
+    {"title": "Orchestrator over agent chaos", "body": "A central coordinator owns execution flow. Workers stay stateless and replaceable."}
+  ]
+}

@@ -1,8 +1,11 @@
 {
-  "version": 1,
+  "version": 2,
   "topics": {
     "shorts-generator:pipeline-reliability": {
-      "document": "docs/systems/shorts-generator-pipeline.md",
+      "document": {
+        "en": "docs/systems/shorts-generator-pipeline.md",
+        "id": "i18n/id/docusaurus-plugin-content-docs/current/systems/shorts-generator-pipeline.md"
+      },
       "sources": [
         "okfriansyah-moh/shorts-generator#8",
         "okfriansyah-moh/shorts-generator#10",
@@ -10,29 +13,44 @@
       ]
     },
     "a2a-brainstormer:document-coherence": {
-      "document": "docs/concepts/ai-document-coherence.md",
+      "document": {
+        "en": "docs/concepts/ai-document-coherence.md",
+        "id": "i18n/id/docusaurus-plugin-content-docs/current/concepts/ai-document-coherence.md"
+      },
       "sources": [
         "okfriansyah-moh/a2a-brainstormer#8",
         "okfriansyah-moh/a2a-brainstormer#12"
       ]
     },
     "skeleton-parallel:agentic-orchestrator": {
-      "document": "docs/concepts/deterministic-agentic-orchestrator.md",
+      "document": {
+        "en": "docs/concepts/deterministic-agentic-orchestrator.md",
+        "id": "i18n/id/docusaurus-plugin-content-docs/current/concepts/deterministic-agentic-orchestrator.md"
+      },
       "sources": [
         "okfriansyah-moh/skeleton-parallel#1",
         "okfriansyah-moh/skeleton-parallel#2"
       ]
     },
     "ares:provider-neutral-standards": {
-      "document": "docs/projects/ares.md",
+      "document": {
+        "en": "docs/projects/ares.md",
+        "id": "i18n/id/docusaurus-plugin-content-docs/current/projects/ares.md"
+      },
       "sources": []
     },
     "md-ame:autonomous-media-engine": {
-      "document": "docs/systems/md-ame-autonomous-media-engine.md",
+      "document": {
+        "en": "docs/systems/md-ame-autonomous-media-engine.md",
+        "id": "i18n/id/docusaurus-plugin-content-docs/current/systems/md-ame-autonomous-media-engine.md"
+      },
       "sources": []
     },
     "polymarket-agent:trading-system": {
-      "document": "docs/systems/polymarket-trading-agent.md",
+      "document": {
+        "en": "docs/systems/polymarket-trading-agent.md",
+        "id": "i18n/id/docusaurus-plugin-content-docs/current/systems/polymarket-trading-agent.md"
+      },
       "sources": []
     }
   }

@@ -1,8 +1,14 @@
 import Link from '@docusaurus/Link';
 import {useDoc} from '@docusaurus/plugin-content-docs/client';
-import {CONTENT_FEED} from '@site/src/data/content-feed';
-import {difficultyForItem, formatArticleDate, relatedArticles, thumbForItem} from '@site/src/lib/content';
+import {
+  difficultyForItem,
+  difficultyLabel,
+  formatArticleDate,
+  relatedArticles,
+  thumbForItem,
+} from '@site/src/lib/content';
 import type {ContentItem} from '@site/src/data/content-feed';
+import {useLocaleData} from '@site/src/lib/locale-data';
 
 type DocMetaExtra = { readingTime?: number };
 type DocFrontMatterExtra = {
@@ -12,15 +18,16 @@ type DocFrontMatterExtra = {
   tech?: string[];
 };
 
-function matchFeedItem(link: string): ContentItem | undefined {
-  return CONTENT_FEED.find((i) => i.link === link);
+function matchFeedItem(link: string, feed: ContentItem[]): ContentItem | undefined {
+  return feed.find((i) => i.link === link);
 }
 
 export default function ArticleSidebar() {
   const {metadata, frontMatter} = useDoc();
+  const {contentFeed, ui, locale} = useLocaleData();
   const fm = frontMatter as DocFrontMatterExtra;
   const meta = metadata as typeof metadata & DocMetaExtra;
-  const feedItem = matchFeedItem(metadata.permalink);
+  const feedItem = matchFeedItem(metadata.permalink, contentFeed);
   const item: ContentItem = feedItem ?? {
     title: metadata.title,
     description: fm.description ?? '',
@@ -32,36 +39,40 @@ export default function ArticleSidebar() {
   const difficulty = fm.difficulty ?? difficultyForItem(item);
   const repo = fm.repo ?? 'https://github.com/okfriansyah-moh';
   const tech = fm.tech ?? [];
-  const related = relatedArticles(item, 3);
+  const related = relatedArticles(item, contentFeed, 3);
 
   return (
     <div className="article-sidebar">
       <div className="card-pro article-info">
-        <h2 className="article-info__title">Article info</h2>
+        <h2 className="article-info__title">{ui.article.infoTitle}</h2>
         <dl className="article-info__list">
           <div>
-            <dt>Difficulty</dt>
-            <dd>{difficulty}</dd>
+            <dt>{ui.article.difficulty}</dt>
+            <dd>{difficultyLabel(difficulty as 'Beginner' | 'Intermediate' | 'Advanced', locale)}</dd>
           </div>
           <div>
-            <dt>Reading time</dt>
-            <dd>{item.readingTime ?? 5} min</dd>
+            <dt>{ui.article.readingTime}</dt>
+            <dd>
+              {item.readingTime ?? 5} {ui.common.min}
+            </dd>
           </div>
           <div>
-            <dt>Published</dt>
-            <dd>{formatArticleDate(item.date)}</dd>
+            <dt>{ui.article.published}</dt>
+            <dd>{formatArticleDate(item.date, locale)}</dd>
           </div>
           {metadata.lastUpdatedAt && (
             <div>
-              <dt>Updated</dt>
-              <dd>{formatArticleDate(new Date(metadata.lastUpdatedAt).toISOString().slice(0, 10))}</dd>
+              <dt>{ui.article.updated}</dt>
+              <dd>
+                {formatArticleDate(new Date(metadata.lastUpdatedAt).toISOString().slice(0, 10), locale)}
+              </dd>
             </div>
           )}
           <div>
-            <dt>Repository</dt>
+            <dt>{ui.article.repository}</dt>
             <dd>
               <a href={repo} target="_blank" rel="noopener noreferrer">
-                GitHub ↗
+                {ui.common.github} ↗
               </a>
             </dd>
           </div>
@@ -79,7 +90,7 @@ export default function ArticleSidebar() {
 
       {related.length > 0 && (
         <div className="card-pro related-articles">
-          <h2 className="related-articles__title">Related articles</h2>
+          <h2 className="related-articles__title">{ui.article.relatedTitle}</h2>
           <ul className="related-articles__list">
             {related.map((r) => (
               <li key={r.link}>

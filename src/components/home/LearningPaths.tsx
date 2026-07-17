@@ -1,13 +1,15 @@
 import Link from '@docusaurus/Link';
-import paths from '@site/src/data/learning-paths.json';
 import SectionHeading from '@site/src/components/ui/SectionHeading';
+import {useLocaleData} from '@site/src/lib/locale-data';
 
 export default function LearningPaths() {
+  const {learningPaths, ui} = useLocaleData();
+
   return (
     <section className="page-shell home-section" id="learning-paths">
-      <SectionHeading title="Learning Paths" viewAllHref="/learning-paths" />
+      <SectionHeading title={ui.sections.learningPaths} viewAllHref="/learning-paths" />
       <div className="grid-4">
-        {paths.map((path) => (
+        {learningPaths.map((path) => (
           <Link key={path.id} to={path.links[0]} className="card-pro path-card">
             <div className="path-card__icon">
               <img src={path.image} alt="" loading="lazy" />

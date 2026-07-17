@@ -1,0 +1,8 @@
+[
+  {"to": "/articles", "label": "Artikel"},
+  {"to": "/projects", "label": "Proyek"},
+  {"to": "/case-studies", "label": "Studi Kasus"},
+  {"to": "/learning-paths", "label": "Jalur Belajar"},
+  {"to": "/open-source", "label": "Open Source"},
+  {"to": "/about", "label": "Tentang saya"}
+]

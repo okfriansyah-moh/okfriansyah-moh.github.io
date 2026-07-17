@@ -1,0 +1,46 @@
+[
+  {
+    "id": "backend",
+    "title": "Backend Engineering",
+    "subtitle": "Start here",
+    "description": "API design, idempotency, and production reliability patterns.",
+    "image": "/img/path-backend.png",
+    "links": [
+      "/docs/concepts/deterministic-ai-pipelines",
+      "/docs/concepts/database-state-machines"
+    ]
+  },
+  {
+    "id": "distributed",
+    "title": "Distributed Systems",
+    "subtitle": "Scale and reliability",
+    "description": "State machines, orchestration, and fault-tolerant workflows.",
+    "image": "/img/path-distributed.png",
+    "links": [
+      "/docs/concepts/ai-orchestration-patterns",
+      "/docs/concepts/deterministic-agentic-orchestrator"
+    ]
+  },
+  {
+    "id": "ai-systems",
+    "title": "AI Systems",
+    "subtitle": "Production AI",
+    "description": "Guardrails, coherence, and deterministic agent pipelines.",
+    "image": "/img/path-ai.png",
+    "links": [
+      "/docs/concepts/llm-guardrails",
+      "/docs/concepts/ai-document-coherence"
+    ]
+  },
+  {
+    "id": "payments",
+    "title": "Payments & Fintech",
+    "subtitle": "From the field",
+    "description": "Payment gateways, SNAP banking APIs, and compliance at scale.",
+    "image": "/img/path-payments.png",
+    "links": [
+      "/docs/systems/polymarket-trading-agent",
+      "/docs/systems/md-ame-autonomous-media-engine"
+    ]
+  }
+]
