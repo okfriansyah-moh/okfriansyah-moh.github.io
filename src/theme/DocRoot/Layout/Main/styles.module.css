@@ -1,0 +1,28 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ * Modified: full-width doc main — no reserved default sidebar column.
+ */
+
+.docMainContainer {
+  display: flex;
+  width: 100%;
+  max-width: 100%;
+  flex: 1 1 auto;
+}
+
+.docItemWrapper {
+  width: 100%;
+  max-width: 100%;
+}
+
+@media (min-width: 997px) {
+  .docMainContainer,
+  .docMainContainerEnhanced {
+    max-width: 100%;
+  }
+
+  .docItemWrapper,
+  .docItemWrapperEnhanced {
+    max-width: 100% !important;
+  }
+}

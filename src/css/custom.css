@@ -466,7 +466,19 @@ html.navbar-scrolled .navbar { box-shadow: var(--shadow-navbar); }
   margin-left: 0.35rem;
 }
 
-/* ── Doc layout (3-column) ── */
+/* ── Article framework (all /docs/* pages, current + future) ── */
+.article-framework-shell.container {
+  width: 100% !important;
+  max-width: var(--layout-shell-max) !important;
+  margin-inline: auto !important;
+  padding-inline: var(--space-page-x) !important;
+}
+
+.article-framework-main {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
 html.docs-wrapper .theme-doc-sidebar-container {
   display: none !important;
   width: 0 !important;
@@ -474,24 +486,12 @@ html.docs-wrapper .theme-doc-sidebar-container {
   overflow: hidden !important;
 }
 
-html.docs-wrapper main[class*='docMainContainer'],
-html.docs-wrapper main[class*='docMainContainerEnhanced'] {
-  flex: 1 1 auto !important;
-  width: 100% !important;
-  max-width: 100% !important;
+.article-framework.doc-layout {
+  padding-block: 1.5rem 3rem;
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 0;
 }
-
-html.docs-wrapper main[class*='docMainContainer'] > .container {
-  width: 100% !important;
-  max-width: var(--layout-shell-max) !important;
-  margin-inline: auto !important;
-  padding-inline: var(--space-page-x) !important;
-}
-
-html.docs-wrapper main[class*='docMainContainer'] [class*='docItemWrapper'] {
-  max-width: 100% !important;
-}
-
 .doc-layout {
   padding-block: 1.5rem 3rem;
   width: 100%;
