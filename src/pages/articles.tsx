@@ -14,7 +14,9 @@ export default function ArticlesPage(): ReactNode {
         <div className="article-list">
           {CONTENT_FEED.map((item) => (
             <Link key={item.link} to={item.link} className="card-pro article-list__item">
-              <img src={thumbForItem(item)} alt="" className="article-list__thumb" />
+              <div className="article-list__thumb-wrap">
+                <img src={thumbForItem(item)} alt="" className="article-list__thumb" />
+              </div>
               <div>
                 <p className="article-list__meta">
                   {TYPE_LABELS[item.type]} · {item.readingTime ?? 5} min · {difficultyForItem(item)} ·{' '}

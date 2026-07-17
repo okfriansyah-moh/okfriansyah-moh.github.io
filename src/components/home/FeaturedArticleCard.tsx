@@ -18,9 +18,7 @@ export default function FeaturedArticleCard({item}: FeaturedArticleCardProps) {
           <p className="featured-card__meta">
             {TYPE_LABELS[item.type]} · {item.readingTime ?? 5} min read · {difficulty}
           </p>
-          <h2 className="featured-card__title">
-            <Link to={item.link}>{item.title}</Link>
-          </h2>
+          <h2 className="featured-card__title">{item.title}</h2>
           <p className="featured-card__desc">{item.description}</p>
           <Link to={item.link} className="btn btn-primary">
             Read Article

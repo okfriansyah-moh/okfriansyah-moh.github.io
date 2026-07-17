@@ -22,11 +22,12 @@ export default function DocItemLayout({children}: Props): ReactNode {
     <div className="doc-layout page-shell">
       <ContentVisibility metadata={metadata} />
       <DocVersionBanner />
-      <DocBreadcrumbs />
-      <DocVersionBadge />
-      <ArticleHeader />
+      <div className="doc-layout__stage">
+        <DocBreadcrumbs />
+        <DocVersionBadge />
+        <ArticleHeader />
 
-      <div className="doc-layout__grid">
+        <div className="doc-layout__grid">
         <div className="doc-layout__left">
           {!hideToc && <DocItemTOCDesktop />}
           <DocEngagement />
@@ -42,6 +43,7 @@ export default function DocItemLayout({children}: Props): ReactNode {
         <aside className="doc-layout__right">
           <ArticleSidebar />
         </aside>
+      </div>
       </div>
     </div>
   );

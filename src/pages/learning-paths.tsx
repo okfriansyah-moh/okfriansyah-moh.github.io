@@ -3,6 +3,7 @@ import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import paths from '@site/src/data/learning-paths.json';
 import SectionHeading from '@site/src/components/ui/SectionHeading';
+import {titleForLink} from '@site/src/lib/content';
 
 export default function LearningPathsPage(): ReactNode {
   return (
@@ -22,7 +23,7 @@ export default function LearningPathsPage(): ReactNode {
                 <ul className="path-card__links">
                   {path.links.map((link) => (
                     <li key={link}>
-                      <Link to={link}>Read article →</Link>
+                      <Link to={link}>{titleForLink(link)} →</Link>
                     </li>
                   ))}
                 </ul>

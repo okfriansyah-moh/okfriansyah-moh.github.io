@@ -58,3 +58,11 @@ export function formatArticleDate(date: string): string {
     year: 'numeric',
   });
 }
+
+export function feedItemByLink(link: string): ContentItem | undefined {
+  return CONTENT_FEED.find((item) => item.link === link);
+}
+
+export function titleForLink(link: string): string {
+  return feedItemByLink(link)?.title ?? 'Read article';
+}
