@@ -7,11 +7,50 @@ const config: Config = {
   baseUrl: '/',
   title: 'Muhammad Okfriansyah',
   tagline: 'AI Systems Architect — Autonomous Systems, Deterministic Pipelines, Distributed Architecture',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/favicon.svg',
 
   headTags: [
-    {tagName: 'link', attributes: {rel: 'icon', href: '/img/favicon.svg', type: 'image/svg+xml'}},
-    {tagName: 'link', attributes: {rel: 'apple-touch-icon', href: '/img/icon-192.png'}},
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'icon',
+        href: '/img/favicon.svg?v=opi',
+        type: 'image/svg+xml',
+      },
+    },
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'icon',
+        href: '/img/favicon-32.png?v=opi',
+        sizes: '32x32',
+        type: 'image/png',
+      },
+    },
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'icon',
+        href: '/img/favicon-16.png?v=opi',
+        sizes: '16x16',
+        type: 'image/png',
+      },
+    },
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'shortcut icon',
+        href: '/img/favicon.ico?v=opi',
+        type: 'image/x-icon',
+      },
+    },
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'apple-touch-icon',
+        href: '/img/icon-192.png?v=opi',
+      },
+    },
     {tagName: 'meta', attributes: {name: 'theme-color', content: '#1D4ED8'}},
   ],
 
