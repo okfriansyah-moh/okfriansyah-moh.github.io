@@ -28,6 +28,9 @@ export default function HomeHero({onBrowseArticles}: HomeHeroProps) {
               Explore Projects
               <span aria-hidden="true"> →</span>
             </Link>
+            <Link to="/about" className="btn btn-secondary home-hero__about">
+              About Me
+            </Link>
           </div>
         </div>
         <div className="home-hero__visual" aria-hidden="true">

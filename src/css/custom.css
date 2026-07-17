@@ -244,6 +244,7 @@ a.card-pro { text-decoration: none !important; color: inherit; display: block; }
   max-width: 36rem;
 }
 .home-hero__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.home-hero__about { min-height: 44px; }
 .home-hero__image { width: 100%; max-width: 520px; border-radius: var(--ifm-global-radius); }
 
 /* ── Project cards ── */
@@ -396,6 +397,7 @@ html.navbar-scrolled .navbar { box-shadow: var(--shadow-navbar); }
 .navbar-center-links { display: none; gap: 0.15rem; margin-left: 1.5rem; }
 @media (min-width: 1100px) { .navbar-center-links { display: flex; } }
 .navbar-pro__desktop-only { display: contents; }
+.navbar-pro__mobile-only { display: none; }
 .navbar-center-link {
   padding: 0.45rem 0.65rem;
   font-size: 0.875rem;
@@ -409,7 +411,7 @@ html.navbar-scrolled .navbar { box-shadow: var(--shadow-navbar); }
 }
 .navbar-center-link:hover { color: var(--ifm-font-color-base) !important; background: var(--ifm-background-color); }
 .navbar-center-link[aria-current='page'] { color: var(--ifm-color-primary) !important; }
-.navbar-search-pro { flex: 0 0 auto; max-width: 220px; margin-left: auto; }
+.navbar-search-pro { flex: 0 0 auto; max-width: 220px; }
 .navbar-pro__right {
   display: flex;
   align-items: center;
@@ -418,7 +420,7 @@ html.navbar-scrolled .navbar { box-shadow: var(--shadow-navbar); }
 }
 .navbar-color-toggle {
   position: relative;
-  z-index: 3;
+  z-index: 2;
   flex-shrink: 0;
   min-width: 44px;
   min-height: 44px;
@@ -429,16 +431,39 @@ html.navbar-scrolled .navbar { box-shadow: var(--shadow-navbar); }
 .navbar__items--right { gap: 0.35rem; }
 
 @media (max-width: 1099px) {
-  .navbar-pro__right { gap: 0.5rem; }
+  .navbar-pro__mobile-only {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .navbar-pro__desktop-only .navbar-profile-avatar {
+    display: none;
+  }
+  .navbar-pro__right {
+    flex: 1 1 auto;
+    justify-content: flex-end;
+    gap: 0.35rem;
+    min-width: 0;
+    margin-left: 0.35rem;
+  }
+  /* Docusaurus positions search absolute on mobile — that stacks it on the theme toggle. */
   .navbar-search-pro {
-    flex: 0 0 auto;
+    position: relative !important;
+    right: auto !important;
+    left: auto !important;
+    flex: 0 1 auto;
+    min-width: 0;
     max-width: none;
     margin-left: 0;
-    position: relative;
     z-index: 1;
+  }
+  .navbar-search-pro:focus-within {
+    flex: 1 1 auto;
+    max-width: calc(100% - 6.75rem);
   }
   .navbar-search-pro :global(.navbar__search) {
     margin: 0;
+    width: 100%;
   }
   .navbar-search-pro :global(.navbar__search-input) {
     width: 2.75rem !important;
@@ -447,8 +472,22 @@ html.navbar-scrolled .navbar { box-shadow: var(--shadow-navbar); }
     padding-inline: 0.65rem !important;
     margin: 0 !important;
   }
+  .navbar-search-pro:focus-within :global(.navbar__search-input) {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
   .navbar-search-pro :global(.navbar__search-input):not(:focus) {
     width: 2.75rem !important;
+  }
+  .navbar-color-toggle {
+    z-index: 3;
+    margin-left: 0.1rem;
+  }
+  .navbar-profile-avatar {
+    width: 2.05rem;
+    height: 2.05rem;
+    margin-left: 0;
+    flex-shrink: 0;
   }
   .navbar-pro .navbar__inner {
     gap: 0.35rem;
