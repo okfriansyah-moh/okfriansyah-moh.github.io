@@ -25,6 +25,34 @@ Do not create one article per commit.
 
 Evaluate every discovered activity, but only publish documentation for meaningful engineering changes.
 
+## SAFE CHANGE SCOPE (DO NOT BREAK THE SITE)
+
+This repository is a Docusaurus 3 portfolio with a custom homepage, navbar, footer, and shared article layout. **Your job is content only.** Touch only the files listed below unless you are fixing a build failure caused directly by content you added.
+
+### Files you MAY modify
+
+| File / path | When |
+|-------------|------|
+| `docs/**/*.md` / `docs/**/*.mdx` | New or updated article body |
+| `blog/**/*.md` / `blog/**/*.mdx` | New or updated blog posts |
+| `sidebars.ts` | Register a new docs page in the correct category |
+| `.automation/topic-index.json` | Map topic → document + source PRs/commits |
+| `.automation/github-docs-state.json` | After validation succeeds, before opening PR |
+| `src/data/content-feed.meta.json` | Optional: set title, description, date for a new article (see Feed integration) |
+| `docs/CONTENT_BACKLOG.md` | Mark backlog items done or reprioritize |
+
+### Files you MUST NOT modify
+
+Never edit portfolio UI, theme, or build configuration:
+
+- `src/pages/**`, `src/components/**`, `src/theme/**`, `src/css/**`, `src/lib/**`
+- `docusaurus.config.ts`, `sidebars.ts` except adding doc ids (do not restructure categories)
+- `src/data/content-feed.ts`, `src/data/nav-links.ts`, `src/data/learning-paths.json`, `src/data/contact-links.ts`
+- `static/**`, `package.json`, `package-lock.json`, `.github/**`
+- Any favicon, navbar, footer, homepage, or layout code
+
+If a new article needs homepage visibility, use **topic-index + feed sync** — not manual homepage edits.
+
 ## SOURCE SCOPE
 
 Use the GitHub MCP to inspect repositories owned by:
@@ -94,18 +122,41 @@ Before writing an article:
 Never infer unsupported production results.
 Never invent metrics, user counts, performance improvements, revenue, benchmarks, production adoption, or architecture components not present in the repository.
 
-## CONTENT PLACEMENT
+## CONTENT PLACEMENT AND CLASSIFICATION
 
-- docs/systems/ — full architecture of substantial systems
-- docs/concepts/ — reusable engineering patterns
-- docs/projects/ — project overviews and journeys
-- blog/ — narratives and retrospectives
+| Directory | Article type | Default difficulty | Homepage label |
+|-----------|--------------|-------------------|----------------|
+| `docs/systems/` | system | Advanced | Systems |
+| `docs/concepts/` | concept | Intermediate | Concepts |
+| `docs/projects/` | project | Intermediate | Projects |
+| `blog/` | blog | Beginner | Blog |
 
-Prefer updating an existing article when the project or concept already has a page.
+- `docs/systems/` — full architecture of substantial systems
+- `docs/concepts/` — reusable engineering patterns
+- `docs/projects/` — project overviews and journeys
+- `blog/` — narratives and retrospectives
+
+Prefer updating an existing article when the project or concept already has a page (check `.automation/topic-index.json` and `docs/CONTENT_BACKLOG.md`).
 Do not create duplicate articles describing the same capability.
-Update sidebars.ts whenever a new docs page is added.
-Update src/data/content-feed.ts whenever a new article should appear on the homepage feed.
-Update src/pages/index.tsx feedItems whenever a new docs page or blog post should appear on the homepage card grid.
+
+### Article layout (automatic)
+
+All `/docs/*` pages use the shared article framework (centered content, TOC, article sidebar) via theme swizzles. **No per-article layout setup is required.** Write standard markdown with frontmatter only.
+
+## PUBLISHING CHECKLIST FOR EACH NEW OR UPDATED ARTICLE
+
+Complete every step:
+
+1. **Write content** — follow `.automation/article-template.md` with valid frontmatter (`title`, `description`, `sidebar_position`, `tags`, `keywords`; optional `difficulty`).
+2. **Register in sidebar** — add the doc id to the correct category in `sidebars.ts` (e.g. `systems/my-article`, not the `.md` path).
+3. **Register topic** — add or update an entry in `.automation/topic-index.json` with `document` path and `sources` list.
+4. **Feed metadata (optional)** — either:
+   - add an item to `src/data/content-feed.meta.json` with `title`, `description`, `link`, `type`, `date`, or
+   - rely on `scripts/sync-content-feed.mjs` to create a feed entry from frontmatter when the topic-index document exists.
+5. **Sync feed** — run `npm run sync:feed` (also runs automatically before `npm run build`).
+6. **Validate** — see Validation section below.
+
+Do **not** edit `src/data/content-feed.ts` or `src/pages/index.tsx` — the homepage, `/articles`, featured card, and related-articles rail all read from the synced feed automatically.
 
 ## ARTICLE REQUIREMENTS
 
@@ -120,13 +171,15 @@ Write for a software engineer who understands basic programming but is new to ba
 
 Before opening a pull request:
 
-1. Run npm ci
-2. Run npm run typecheck
-3. Run npm run build
-4. Confirm all internal links resolve
-5. Confirm all referenced source repositories and pull requests exist
-6. Confirm no private information, tokens, credentials, or company source code is present
-7. Review the final diff for duplication and unsupported claims
+1. Run `npm ci`
+2. Run `npm run sync:feed`
+3. Run `npm run typecheck`
+4. Run `npm run build`
+5. Confirm all internal links resolve
+6. Confirm all referenced source repositories and pull requests exist
+7. Confirm no private information, tokens, credentials, or company source code is present
+8. Review the final diff — ensure **only** safe-scope files changed (no UI/theme/config edits)
+9. Confirm new docs pages appear under the correct sidebar category
 
 If validation fails: attempt a bounded fix (maximum two repair attempts). If validation still fails, do not open a pull request, report the failure, and do not advance last_successful_scan_at.
 

@@ -1,6 +1,6 @@
 ---
 title: "<Article Title>"
-description: "<One-sentence description for SEO and sidebar>"
+description: "<One-sentence description for SEO, feed cards, and article header>"
 sidebar_position: <number>
 tags:
   - <tag-1>
@@ -8,9 +8,17 @@ tags:
 keywords:
   - <keyword-1>
   - <keyword-2>
+difficulty: <Beginner|Intermediate|Advanced>  # optional; inferred from docs/ path if omitted
 ---
 
 # <Article Title>
+
+<!-- Frontmatter notes for automation:
+  - title + description are required and feed the homepage /articles cards.
+  - Place the file under docs/systems/, docs/concepts/, or docs/projects/ (or blog/).
+  - Register the doc id (no extension) in sidebars.ts and topic-index.json.
+  - Article layout (TOC, sidebar, related links) is applied automatically — no extra setup.
+-->
 
 ## What Was Built
 

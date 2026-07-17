@@ -43,13 +43,24 @@ See `.automation/content-policy.md` for the full policy. Summary:
 
 ## Content Types
 
-- `docs/systems/` — substantial system architectures
-- `docs/concepts/` — reusable patterns
-- `docs/projects/` — project overviews and journeys
-- `blog/` — narratives and retrospectives
+- `docs/systems/` — substantial system architectures (type: **system**, difficulty: Advanced)
+- `docs/concepts/` — reusable patterns (type: **concept**, difficulty: Intermediate)
+- `docs/projects/` — project overviews and journeys (type: **project**, difficulty: Intermediate)
+- `blog/` — narratives and retrospectives (type: **blog**, difficulty: Beginner)
 
-Update `sidebars.ts` when adding new docs pages.
-Update `src/data/content-feed.ts` when adding homepage feed entries.
+All `/docs/*` pages automatically use the shared article layout (TOC + article sidebar). No per-article UI setup is required.
+
+## Publishing New Articles (automation checklist)
+
+1. Write markdown under the correct `docs/` subdirectory (or `blog/`).
+2. Add the doc id to `sidebars.ts` in the matching category.
+3. Add or update `.automation/topic-index.json` (document path + sources).
+4. Optionally add metadata to `src/data/content-feed.meta.json`, or run `npm run sync:feed` to merge from frontmatter.
+5. Validate with `npm ci`, `npm run typecheck`, `npm run build`.
+
+Do **not** edit homepage components, theme swizzles, navbar, footer, CSS, or `src/data/content-feed.ts`. The feed sync script keeps the homepage and `/articles` in sync at build time.
+
+See `.automation/content-policy.md` for the full safe-change scope.
 
 ## Known Article Candidates
 

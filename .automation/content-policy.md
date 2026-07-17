@@ -89,6 +89,48 @@ Process in this order:
 Prefer updating an existing article over creating a duplicate. Update
 `sidebars.ts` whenever a new docs page is added.
 
+## Safe Change Scope
+
+The portfolio UI (homepage, navbar, footer, article shell, CSS, theme swizzles)
+is **out of scope** for the daily automation. Only modify content and indexing
+files listed below.
+
+### Allowed paths
+
+| Path | Purpose |
+|------|---------|
+| `docs/**`, `blog/**` | Article content |
+| `sidebars.ts` | Register new doc ids in existing categories |
+| `.automation/topic-index.json` | Topic → document mapping |
+| `.automation/github-docs-state.json` | Processed-activity ledger |
+| `src/data/content-feed.meta.json` | Optional feed metadata |
+| `docs/CONTENT_BACKLOG.md` | Backlog status |
+
+### Forbidden paths
+
+Do not modify: `src/pages/**`, `src/components/**`, `src/theme/**`,
+`src/css/**`, `src/lib/**`, `docusaurus.config.ts`, `static/**`,
+`package.json`, `src/data/content-feed.ts`, `src/data/nav-links.ts`,
+`src/data/learning-paths.json`, or any `.github/**` workflow.
+
+## Feed Integration
+
+Homepage and `/articles` read from `src/data/content-feed.meta.json`. The
+prebuild script `scripts/sync-content-feed.mjs` automatically:
+
+- Adds feed entries for documents listed in `topic-index.json`
+- Computes `readingTime` from article word count
+- Prunes stale entries when doc files are removed
+
+Run `npm run sync:feed` after adding a topic-index entry. Do not hand-edit
+`src/data/content-feed.ts` or homepage React components.
+
+## Article Classification
+
+Placement in `docs/systems|concepts|projects/` determines feed `type` and default
+difficulty badge. Optional frontmatter `difficulty: Beginner | Intermediate | Advanced`
+overrides the default on the article page header.
+
 ## Evidence Rules
 
 Never invent metrics, user counts, performance improvements, revenue, benchmarks,
