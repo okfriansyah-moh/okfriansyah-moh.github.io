@@ -485,20 +485,20 @@ html.navbar-scrolled .navbar { box-shadow: var(--shadow-navbar); }
 .navbar__items--right { gap: 0.5rem; }
 
 /* Search dropdown — keep within viewport on all breakpoints */
-.navbar-search-pro :global(.navbar__search) {
+.navbar-search-pro .navbar__search {
   margin-left: 0 !important;
   width: 100%;
   max-width: 100%;
 }
 
-.navbar-search-pro :global(.navbar__search) > span,
-.navbar-search-pro :global(.navbar__search) [class*='searchBar'] {
+.navbar-search-pro .navbar__search > span,
+.navbar-search-pro .navbar__search [class*='searchBar'] {
   display: block;
   width: 100%;
   max-width: 100%;
 }
 
-.navbar-search-pro :global(.navbar__search-input) {
+.navbar-search-pro .navbar__search-input {
   border-radius: 8px;
   width: 100% !important;
   max-width: 100%;
@@ -552,18 +552,18 @@ html.navbar-scrolled .navbar { box-shadow: var(--shadow-navbar); }
     overflow: visible;
   }
 
-  .navbar-search-pro :global(.navbar__search-input) {
+  .navbar-search-pro .navbar__search-input {
     min-width: 2.75rem !important;
     min-height: 44px;
     padding-inline: 0.65rem !important;
     margin: 0 !important;
   }
 
-  .navbar-search-pro:focus-within :global(.navbar__search-input) {
+  .navbar-search-pro:focus-within .navbar__search-input {
     padding-inline: 2rem 2.25rem !important;
   }
 
-  .navbar-search-pro :global(.navbar__search-input):not(:focus) {
+  .navbar-search-pro .navbar__search-input:not(:focus) {
     width: 2.75rem !important;
   }
 

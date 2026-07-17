@@ -6,6 +6,7 @@ import {
   formatArticleDate,
   relatedArticles,
   thumbForItem,
+  type Difficulty,
 } from '@site/src/lib/content';
 import type {ContentItem} from '@site/src/data/content-feed';
 import {useLocaleData} from '@site/src/lib/locale-data';
@@ -36,7 +37,13 @@ export default function ArticleSidebar() {
     date: new Date().toISOString().slice(0, 10),
     readingTime: meta.readingTime ? Math.ceil(meta.readingTime) : 5,
   };
-  const difficulty = fm.difficulty ?? difficultyForItem(item);
+  const inferredDifficulty = difficultyForItem(item);
+  const difficulty: Difficulty =
+    fm.difficulty === 'Beginner' ||
+    fm.difficulty === 'Intermediate' ||
+    fm.difficulty === 'Advanced'
+      ? fm.difficulty
+      : inferredDifficulty;
   const repo = fm.repo ?? 'https://github.com/okfriansyah-moh';
   const tech = fm.tech ?? [];
   const related = relatedArticles(item, contentFeed, 3);
@@ -48,7 +55,7 @@ export default function ArticleSidebar() {
         <dl className="article-info__list">
           <div>
             <dt>{ui.article.difficulty}</dt>
-            <dd>{difficultyLabel(difficulty as 'Beginner' | 'Intermediate' | 'Advanced', locale)}</dd>
+            <dd>{difficultyLabel(difficulty, locale)}</dd>
           </div>
           <div>
             <dt>{ui.article.readingTime}</dt>

@@ -115,7 +115,7 @@ function isSiteLocale(value: string): value is SiteLocale {
 export function getLocaleData(locale: string): LocaleData {
   const key = isSiteLocale(locale) ? locale : 'en';
   const pack = PACKS[key];
-  const feed = [...FEED_META[key].items].sort((a, b) => b.date.localeCompare(a.date));
+  const feed = FEED_META[key].items;
   return {
     locale: key,
     ...pack,

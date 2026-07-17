@@ -68,11 +68,14 @@ function resolveDocFileFromPath(docPath) {
   return null;
 }
 
-function resolveDocFileFromLink(link) {
+function resolveDocFileFromLink(link, locale = 'en') {
   if (link.startsWith('/docs/')) {
     const relative = link.slice('/docs/'.length);
     const enPath = `docs/${relative}.md`;
     const idPath = `i18n/id/docusaurus-plugin-content-docs/current/${relative}.md`;
+    if (locale === 'id') {
+      return resolveDocFileFromPath(idPath) ?? resolveDocFileFromPath(enPath);
+    }
     return resolveDocFileFromPath(enPath) ?? resolveDocFileFromPath(idPath);
   }
   const base = path.join(ROOT, link.slice(1));
@@ -96,9 +99,9 @@ function documentPathsForTopic(topic) {
   return doc;
 }
 
-function computeReadingTime(item) {
+function computeReadingTime(item, locale = 'en') {
   if (item.link.startsWith('/docs/')) {
-    const file = resolveDocFileFromLink(item.link);
+    const file = resolveDocFileFromLink(item.link, locale);
     if (file) {
       const body = fs
         .readFileSync(file, 'utf8')
@@ -183,7 +186,7 @@ function syncLocale(locale, topicIndex) {
   }
 
   for (const item of meta.items) {
-    item.readingTime = computeReadingTime(item);
+    item.readingTime = computeReadingTime(item, locale);
   }
 
   fs.mkdirSync(path.dirname(metaPath), {recursive: true});
