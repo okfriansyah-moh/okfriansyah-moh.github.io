@@ -8,15 +8,17 @@ tags:
 keywords:
   - <keyword-1>
   - <keyword-2>
-difficulty: <Beginner|Intermediate|Advanced>  # optional; inferred from docs/ path if omitted
+difficulty: <Beginner|Intermediate|Advanced> # optional; inferred from docs/ path if omitted
 ---
 
 # <Article Title>
 
 <!-- Frontmatter notes for automation:
   - title + description are required and feed the homepage /articles cards.
-  - Place the file under docs/systems/, docs/concepts/, or docs/projects/ (or blog/).
+  - Place the English file under docs/systems/, docs/concepts/, or docs/projects/ (or blog/).
   - Register the doc id (no extension) in sidebars.ts and topic-index.json.
+  - **Also write the Indonesian mirror** at:
+    i18n/id/docusaurus-plugin-content-docs/current/{same-relative-path}.md
   - Article layout (TOC, sidebar, related links) is applied automatically — no extra setup.
 -->
 
@@ -59,9 +61,9 @@ flowchart TD
 
 ## Important Components
 
-| Component | Responsibility |
-|-----------|----------------|
-| <!-- name --> | <!-- role --> |
+| Component     | Responsibility |
+| ------------- | -------------- |
+| <!-- name --> | <!-- role -->  |
 
 ## Simplified Implementation Examples
 

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "shorts-generator",
+    "title": "Shorts Generator",
+    "description": "16-stage deterministic pipeline that turns long-form video into publishable short clips with SQLite checkpointing.",
+    "tech": ["Python", "SQLite", "FFmpeg"],
+    "repo": "https://github.com/okfriansyah-moh/shorts-generator",
+    "status": "active"
+  },
+  {
+    "id": "skeleton-parallel",
+    "title": "Skeleton Parallel",
+    "description": "Deterministic agentic coding orchestrator with bounded retries, checkpoint rollback, and quality gates.",
+    "tech": ["TypeScript", "Node.js"],
+    "repo": "https://github.com/okfriansyah-moh/skeleton-parallel",
+    "status": "active"
+  },
+  {
+    "id": "md-ame",
+    "title": "MD-AME",
+    "description": "Autonomous media engine for YouTube production — database-backed state machines and deterministic pipelines.",
+    "tech": ["Go", "PostgreSQL"],
+    "repo": "https://github.com/okfriansyah-moh",
+    "status": "active"
+  }
+]

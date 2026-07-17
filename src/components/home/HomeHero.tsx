@@ -1,35 +1,33 @@
 import Link from '@docusaurus/Link';
+import {useLocaleData} from '@site/src/lib/locale-data';
 
 type HomeHeroProps = {
   onBrowseArticles?: () => void;
 };
 
 export default function HomeHero({onBrowseArticles}: HomeHeroProps) {
+  const {ui} = useLocaleData();
+
   return (
     <section className="home-hero page-shell">
       <div className="home-hero__grid">
         <div className="home-hero__copy">
-          <p className="home-hero__eyebrow">ENGINEERING · BUILDING · SHARING</p>
-          <h1 className="home-hero__title">
-            I build production software, open source projects, and explain how they work.
-          </h1>
-          <p className="home-hero__lead">
-            Engineering Manager &amp; Backend Engineer — I write about systems architecture,
-            deterministic AI pipelines, and lessons from shipping at scale.
-          </p>
+          <p className="home-hero__eyebrow">{ui.hero.eyebrow}</p>
+          <h1 className="home-hero__title">{ui.hero.title}</h1>
+          <p className="home-hero__lead">{ui.hero.lead}</p>
           <div className="home-hero__actions">
             <a
               href="#articles"
               className="btn btn-primary"
               onClick={onBrowseArticles}>
-              Browse Articles
+              {ui.hero.browseArticles}
             </a>
             <Link to="/projects" className="btn btn-secondary">
-              Explore Projects
+              {ui.hero.exploreProjects}
               <span aria-hidden="true"> →</span>
             </Link>
             <Link to="/about" className="btn btn-secondary home-hero__about">
-              About Me
+              {ui.hero.aboutMe}
             </Link>
           </div>
         </div>

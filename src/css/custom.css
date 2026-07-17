@@ -410,12 +410,29 @@ html.navbar-scrolled .navbar { box-shadow: var(--shadow-navbar); }
 }
 .navbar-center-link:hover { color: var(--ifm-font-color-base) !important; background: var(--ifm-background-color); }
 .navbar-center-link[aria-current='page'] { color: var(--ifm-color-primary) !important; }
-.navbar-search-pro { flex: 0 0 auto; max-width: 220px; }
+.navbar-search-pro {
+  position: relative !important;
+  right: auto !important;
+  left: auto !important;
+  top: auto !important;
+  flex: 0 0 auto;
+  width: 11.25rem;
+  max-width: 11.25rem;
+  min-width: 0;
+  padding: 0 !important;
+  margin: 0;
+  overflow: hidden;
+  isolation: isolate;
+}
 .navbar-pro__right {
   display: flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.625rem;
   flex-shrink: 0;
+  padding-left: 0.25rem;
+}
+.navbar-pro__right > * {
+  flex: 0 0 auto;
 }
 .navbar-color-toggle {
   position: relative;
@@ -427,58 +444,176 @@ html.navbar-scrolled .navbar { box-shadow: var(--shadow-navbar); }
   align-items: center;
   justify-content: center;
 }
-.navbar__items--right { gap: 0.35rem; }
+.locale-toggle {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+  min-height: 44px;
+  position: relative;
+  z-index: 3;
+}
+.locale-toggle__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.25rem;
+  min-height: 42px;
+  padding: 0 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted) !important;
+  text-decoration: none !important;
+  background: transparent;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.locale-toggle__btn:hover {
+  color: var(--ifm-font-color-base) !important;
+  background: var(--ifm-background-color);
+}
+.locale-toggle__btn--active {
+  color: #fff !important;
+  background: #1E3A8A;
+}
+[data-theme='dark'] .locale-toggle__btn--active {
+  background: #2563EB;
+}
+.navbar__items--right { gap: 0.5rem; }
+
+/* Search dropdown — keep within viewport on all breakpoints */
+.navbar-search-pro .navbar__search {
+  margin-left: 0 !important;
+  width: 100%;
+  max-width: 100%;
+}
+
+.navbar-search-pro .navbar__search > span,
+.navbar-search-pro .navbar__search [class*='searchBar'] {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+}
+
+.navbar-search-pro .navbar__search-input {
+  border-radius: 8px;
+  width: 100% !important;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding-inline: 2rem 0.75rem !important;
+}
+
+.navbar-search-pro [class*='dropdownMenu'] {
+  box-sizing: border-box;
+  max-width: min(var(--search-local-modal-width, 560px), calc(100vw - 2 * var(--space-page-x)));
+}
+
+.navbar-search-pro [class*='hitWrapper'] {
+  min-width: 0;
+  width: auto !important;
+}
 
 @media (max-width: 1099px) {
+  .navbar-pro .navbar__inner {
+    align-items: center;
+    gap: 0.5rem;
+    padding-inline: max(0.875rem, var(--space-page-x));
+  }
+
+  .navbar-pro__left {
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+
   .navbar-pro__right {
     flex: 1 1 auto;
     justify-content: flex-end;
-    gap: 0.35rem;
+    gap: 0.5rem;
     min-width: 0;
-    margin-left: 0.35rem;
+    margin-left: 0.5rem;
+    padding-left: 0;
   }
-  /* Docusaurus positions search absolute on mobile — that stacks it on the theme toggle. */
+
   .navbar-search-pro {
-    position: relative !important;
-    right: auto !important;
-    left: auto !important;
-    flex: 0 1 auto;
-    min-width: 0;
-    max-width: none;
-    margin-left: 0;
-    z-index: 1;
+    width: 2.75rem;
+    max-width: 2.75rem;
+    flex-basis: 2.75rem;
+    overflow: hidden;
   }
+
   .navbar-search-pro:focus-within {
     flex: 1 1 auto;
-    max-width: calc(100% - 5.25rem);
+    width: auto;
+    max-width: min(11.25rem, calc(100% - 10rem));
+    flex-basis: auto;
+    overflow: visible;
   }
-  .navbar-search-pro :global(.navbar__search) {
-    margin: 0;
-    width: 100%;
-  }
-  .navbar-search-pro :global(.navbar__search-input) {
-    width: 2.75rem !important;
+
+  .navbar-search-pro .navbar__search-input {
     min-width: 2.75rem !important;
     min-height: 44px;
     padding-inline: 0.65rem !important;
     margin: 0 !important;
   }
-  .navbar-search-pro:focus-within :global(.navbar__search-input) {
-    width: 100% !important;
-    max-width: 100% !important;
+
+  .navbar-search-pro:focus-within .navbar__search-input {
+    padding-inline: 2rem 2.25rem !important;
   }
-  .navbar-search-pro :global(.navbar__search-input):not(:focus) {
+
+  .navbar-search-pro .navbar__search-input:not(:focus) {
     width: 2.75rem !important;
   }
+
+  /* Pin results panel to viewport — avoids clipping off-screen on narrow layouts */
+  .navbar-search-pro [class*='dropdownMenu'] {
+    position: fixed !important;
+    left: var(--space-page-x) !important;
+    right: var(--space-page-x) !important;
+    width: auto !important;
+    max-width: none !important;
+    top: calc(var(--ifm-navbar-height) + 0.35rem) !important;
+    margin-top: 0 !important;
+    z-index: 500;
+  }
+
   .navbar-color-toggle {
     z-index: 3;
-    margin-left: 0.1rem;
+    margin-left: 0;
   }
-  .navbar-pro .navbar__inner {
-    gap: 0.35rem;
-  }
+
   .navbar-brand-name {
     font-size: 0.9375rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-pro .navbar__inner {
+    padding-inline: 0.875rem;
+    gap: 0.4rem;
+  }
+
+  .navbar-brand-name {
+    max-width: 7rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .locale-toggle__btn {
+    min-width: 2rem;
+    padding-inline: 0.35rem;
+  }
+
+  .navbar-pro__right {
+    gap: 0.35rem;
+    margin-left: 0.35rem;
+  }
+
+  .navbar-search-pro:focus-within {
+    max-width: calc(100% - 8.25rem);
   }
 }
 @media (max-width: 1099px) { .navbar-pro__left .menu { display: flex; } }

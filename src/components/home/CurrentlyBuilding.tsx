@@ -1,13 +1,12 @@
-import projects from '@site/src/data/projects-building.json';
 import SectionHeading from '@site/src/components/ui/SectionHeading';
+import {useLocaleData} from '@site/src/lib/locale-data';
+import type {BuildingProject} from '@site/src/lib/locale-data';
 
-type Project = (typeof projects)[number];
-
-function ProjectCard({project}: {project: Project}) {
+function ProjectCard({project, labels}: {project: BuildingProject; labels: {github: string; activeProject: string}}) {
   return (
     <article className="card-pro project-card">
       <div className="project-card__head">
-        <span className="project-card__status" aria-label="Active project" />
+        <span className="project-card__status" aria-label={labels.activeProject} />
         <h3 className="project-card__title">{project.title}</h3>
       </div>
       <p className="project-card__desc">{project.description}</p>
@@ -23,19 +22,25 @@ function ProjectCard({project}: {project: Project}) {
         target="_blank"
         rel="noopener noreferrer"
         className="project-card__link">
-        GitHub ↗
+        {labels.github} ↗
       </a>
     </article>
   );
 }
 
 export default function CurrentlyBuilding() {
+  const {projectsBuilding, ui} = useLocaleData();
+
   return (
     <section className="page-shell home-section" id="building">
-      <SectionHeading title="Currently Building" viewAllHref="/projects" />
+      <SectionHeading title={ui.sections.currentlyBuilding} viewAllHref="/projects" />
       <div className="grid-3">
-        {projects.map((p) => (
-          <ProjectCard key={p.id} project={p} />
+        {projectsBuilding.map((p) => (
+          <ProjectCard
+            key={p.id}
+            project={p}
+            labels={{github: ui.common.github, activeProject: ui.common.activeProject}}
+          />
         ))}
       </div>
     </section>

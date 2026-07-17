@@ -1,5 +1,5 @@
 import type {ContentItem, ContentType} from '@site/src/data/content-feed';
-import {CONTENT_FEED} from '@site/src/data/content-feed';
+import {getLocaleData, type SiteLocale} from '@site/src/lib/locale-data';
 
 export type Difficulty = 'Beginner' | 'Intermediate' | 'Advanced';
 
@@ -9,13 +9,6 @@ const THUMB_BY_DIFFICULTY: Record<Difficulty, string> = {
   Advanced: '/img/thumb-advanced.png',
 };
 
-const THUMB_BY_TYPE: Record<ContentType, string> = {
-  system: '/img/thumb-advanced.png',
-  concept: '/img/thumb-intermediate.png',
-  project: '/img/thumb-intermediate.png',
-  blog: '/img/thumb-beginner.png',
-};
-
 const DIFFICULTY_BY_TYPE: Record<ContentType, Difficulty> = {
   system: 'Advanced',
   concept: 'Intermediate',
@@ -23,10 +16,11 @@ const DIFFICULTY_BY_TYPE: Record<ContentType, Difficulty> = {
   blog: 'Beginner',
 };
 
-/** @deprecated Use thumbForItem instead */
-export function thumbForType(type: ContentType): string {
-  return THUMB_BY_TYPE[type];
-}
+const DIFFICULTY_LABEL_KEYS: Record<Difficulty, keyof ReturnType<typeof getLocaleData>['ui']['difficulty']> = {
+  Beginner: 'beginner',
+  Intermediate: 'intermediate',
+  Advanced: 'advanced',
+};
 
 export function thumbForItem(item: ContentItem): string {
   return THUMB_BY_DIFFICULTY[difficultyForItem(item)];
@@ -40,29 +34,35 @@ export function difficultyForItem(item: ContentItem): Difficulty {
   return DIFFICULTY_BY_TYPE[item.type];
 }
 
-export function relatedArticles(item: ContentItem, limit = 3): ContentItem[] {
-  return CONTENT_FEED.filter((i) => i.link !== item.link && i.type === item.type).slice(
-    0,
-    limit,
-  );
+export function difficultyLabel(difficulty: Difficulty, locale: SiteLocale = 'en'): string {
+  const key = DIFFICULTY_LABEL_KEYS[difficulty];
+  return getLocaleData(locale).ui.difficulty[key];
 }
 
-export function articlesByType(type: ContentType): ContentItem[] {
-  return CONTENT_FEED.filter((i) => i.type === type);
+export function relatedArticles(
+  item: ContentItem,
+  feed: ContentItem[],
+  limit = 3,
+): ContentItem[] {
+  return feed.filter((i) => i.link !== item.link && i.type === item.type).slice(0, limit);
 }
 
-export function formatArticleDate(date: string): string {
-  return new Date(date + 'T00:00:00').toLocaleDateString('en-US', {
+export function articlesByType(type: ContentType, feed: ContentItem[]): ContentItem[] {
+  return feed.filter((i) => i.type === type);
+}
+
+export function formatArticleDate(date: string, locale: SiteLocale = 'en'): string {
+  return new Date(date + 'T00:00:00').toLocaleDateString(locale === 'id' ? 'id-ID' : 'en-US', {
     month: 'short',
     day: 'numeric',
     year: 'numeric',
   });
 }
 
-export function feedItemByLink(link: string): ContentItem | undefined {
-  return CONTENT_FEED.find((item) => item.link === link);
+export function feedItemByLink(link: string, feed: ContentItem[]): ContentItem | undefined {
+  return feed.find((item) => item.link === link);
 }
 
-export function titleForLink(link: string): string {
-  return feedItemByLink(link)?.title ?? 'Read article';
+export function titleForLink(link: string, feed: ContentItem[], fallback = 'Read article'): string {
+  return feedItemByLink(link, feed)?.title ?? fallback;
 }

@@ -1,0 +1,18 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.docsSidebar.category.Systems": {
+    "message": "Sistem",
+    "description": "The label for category 'Systems' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Concepts": {
+    "message": "Konsep",
+    "description": "The label for category 'Concepts' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Projects": {
+    "message": "Proyek",
+    "description": "The label for category 'Projects' in sidebar 'docsSidebar'"
+  }
+}

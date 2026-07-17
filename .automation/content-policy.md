@@ -14,12 +14,12 @@ create one article per commit or per pull request.
 
 Only inspect repositories that satisfy **all** of the following:
 
-| Rule | Value |
-|------|-------|
-| Owner | `okfriansyah-moh` |
-| Visibility | public |
-| Archived | no |
-| Fork | no |
+| Rule       | Value             |
+| ---------- | ----------------- |
+| Owner      | `okfriansyah-moh` |
+| Visibility | public            |
+| Archived   | no                |
+| Fork       | no                |
 
 ### Explicit Exclusions
 
@@ -36,18 +36,18 @@ Never inspect, quote, summarize, or expose:
 
 Score each candidate activity:
 
-| Signal | Points |
-|--------|--------|
-| New product capability or substantial feature | +3 |
-| Major architectural change | +3 |
-| Reliability, consistency, security, or data-integrity mechanism | +3 |
-| New orchestration, state-machine, caching, concurrency, or retry pattern | +2 |
-| Important performance or scalability improvement | +2 |
-| Significant data model change | +2 |
-| Meaningful testing or observability improvement | +1 |
-| Deployment or operational improvement | +1 |
-| Dependency-only, formatting, generated, or administrative change | −3 |
-| Change cannot be explained accurately from available evidence | −2 |
+| Signal                                                                   | Points |
+| ------------------------------------------------------------------------ | ------ |
+| New product capability or substantial feature                            | +3     |
+| Major architectural change                                               | +3     |
+| Reliability, consistency, security, or data-integrity mechanism          | +3     |
+| New orchestration, state-machine, caching, concurrency, or retry pattern | +2     |
+| Important performance or scalability improvement                         | +2     |
+| Significant data model change                                            | +2     |
+| Meaningful testing or observability improvement                          | +1     |
+| Deployment or operational improvement                                    | +1     |
+| Dependency-only, formatting, generated, or administrative change         | −3     |
+| Change cannot be explained accurately from available evidence            | −2     |
 
 **Publish threshold:** score ≥ 3.
 
@@ -79,12 +79,12 @@ Process in this order:
 
 ## Content Placement
 
-| Directory | Use for |
-|-----------|---------|
-| `docs/systems/` | Full architecture of substantial systems |
-| `docs/concepts/` | Reusable engineering patterns |
-| `docs/projects/` | Project overviews and evolution |
-| `blog/` | Narrative lessons, experiments, retrospectives |
+| Directory        | Use for                                        |
+| ---------------- | ---------------------------------------------- |
+| `docs/systems/`  | Full architecture of substantial systems       |
+| `docs/concepts/` | Reusable engineering patterns                  |
+| `docs/projects/` | Project overviews and evolution                |
+| `blog/`          | Narrative lessons, experiments, retrospectives |
 
 Prefer updating an existing article over creating a duplicate. Update
 `sidebars.ts` whenever a new docs page is added.
@@ -97,14 +97,17 @@ files listed below.
 
 ### Allowed paths
 
-| Path | Purpose |
-|------|---------|
-| `docs/**`, `blog/**` | Article content |
-| `sidebars.ts` | Register new doc ids in existing categories |
-| `.automation/topic-index.json` | Topic → document mapping |
-| `.automation/github-docs-state.json` | Processed-activity ledger |
-| `src/data/content-feed.meta.json` | Optional feed metadata |
-| `docs/CONTENT_BACKLOG.md` | Backlog status |
+| Path                                                | Purpose                                     |
+| --------------------------------------------------- | ------------------------------------------- |
+| `docs/**`, `blog/**`                                | English article content                     |
+| `i18n/id/docusaurus-plugin-content-docs/current/**` | Indonesian docs mirrors                     |
+| `i18n/id/docusaurus-plugin-content-blog/**`         | Indonesian blog posts                       |
+| `sidebars.ts`                                       | Register new doc ids in existing categories |
+| `.automation/topic-index.json`                      | Topic → `{en,id}` document mapping          |
+| `.automation/github-docs-state.json`                | Processed-activity ledger                   |
+| `src/data/i18n/en/content-feed.meta.json`           | Optional English feed metadata              |
+| `src/data/i18n/id/content-feed.meta.json`           | Optional Indonesian feed metadata           |
+| `docs/CONTENT_BACKLOG.md`                           | Backlog status                              |
 
 ### Forbidden paths
 
@@ -115,8 +118,9 @@ Do not modify: `src/pages/**`, `src/components/**`, `src/theme/**`,
 
 ## Feed Integration
 
-Homepage and `/articles` read from `src/data/content-feed.meta.json`. The
-prebuild script `scripts/sync-content-feed.mjs` automatically:
+Homepage and `/articles` read from `src/data/i18n/{locale}/content-feed.meta.json`. The
+prebuild script `scripts/sync-content-feed.mjs` automatically syncs **both** `en` and
+`id` locales:
 
 - Adds feed entries for documents listed in `topic-index.json`
 - Computes `readingTime` from article word count
@@ -130,6 +134,12 @@ Run `npm run sync:feed` after adding a topic-index entry. Do not hand-edit
 Placement in `docs/systems|concepts|projects/` determines feed `type` and default
 difficulty badge. Optional frontmatter `difficulty: Beginner | Intermediate | Advanced`
 overrides the default on the article page header.
+
+## Bilingual requirement
+
+Every new or updated engineering article must ship as an **English + Indonesian pair**.
+Do not open a pull request with English-only docs. Indonesian files live under
+`i18n/id/docusaurus-plugin-content-docs/current/` mirroring the `docs/` tree.
 
 ## Evidence Rules
 
@@ -159,12 +169,12 @@ repair attempts. Do not open a pull request if validation still fails.
 
 ## Operational Limits
 
-| Setting | Value |
-|---------|-------|
-| Schedule | Daily 09:00 GMT+7 |
-| Maximum source activities inspected | 50 |
-| Maximum new/updated articles | 2 |
-| Maximum pull requests | 1 |
-| First-run history window | 14 days |
-| Repair attempts | 2 |
-| Direct merge | Disabled |
+| Setting                             | Value             |
+| ----------------------------------- | ----------------- |
+| Schedule                            | Daily 09:00 GMT+7 |
+| Maximum source activities inspected | 50                |
+| Maximum new/updated articles        | 2                 |
+| Maximum pull requests               | 1                 |
+| First-run history window            | 14 days           |
+| Repair attempts                     | 2                 |
+| Direct merge                        | Disabled          |

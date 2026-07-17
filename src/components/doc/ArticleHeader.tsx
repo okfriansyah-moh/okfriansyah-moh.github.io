@@ -1,9 +1,14 @@
 import {type ReactNode} from 'react';
 import {useDoc} from '@docusaurus/plugin-content-docs/client';
-import {TYPE_LABELS} from '@site/src/data/content-feed';
-import {difficultyForItem, formatArticleDate, thumbForDifficulty} from '@site/src/lib/content';
+import {
+  difficultyForItem,
+  difficultyLabel,
+  formatArticleDate,
+  thumbForDifficulty,
+} from '@site/src/lib/content';
 import type {Difficulty} from '@site/src/lib/content';
 import type {ContentItem} from '@site/src/data/content-feed';
+import {useLocaleData} from '@site/src/lib/locale-data';
 
 type DocMetaExtra = {
   readingTime?: number;
@@ -35,6 +40,7 @@ function itemFromDoc(
 
 export default function ArticleHeader(): ReactNode {
   const {metadata, frontMatter} = useDoc();
+  const {typeLabels, ui, locale} = useLocaleData();
   const fm = frontMatter as DocFrontMatterExtra;
   const meta = metadata as typeof metadata & DocMetaExtra;
   const item = itemFromDoc(meta, fm);
@@ -45,19 +51,21 @@ export default function ArticleHeader(): ReactNode {
   return (
     <header className="article-header card-pro">
       <div className="article-header__copy">
-        {featured && <span className="badge badge-featured">FEATURED</span>}
+        {featured && <span className="badge badge-featured">{ui.common.featuredBadge}</span>}
         <h1 className="article-header__title">{metadata.title}</h1>
         {fm.description && (
           <p className="article-header__desc">{fm.description}</p>
         )}
         <div className="article-header__meta">
-          <span>{item.readingTime ?? 5} min read</span>
+          <span>
+            {item.readingTime ?? 5} {ui.common.minRead}
+          </span>
           <span>·</span>
-          <span>{difficulty}</span>
+          <span>{difficultyLabel(difficulty, locale)}</span>
           <span>·</span>
-          <span>{TYPE_LABELS[item.type]}</span>
+          <span>{typeLabels[item.type]}</span>
           <span>·</span>
-          <span>{formatArticleDate(item.date)}</span>
+          <span>{formatArticleDate(item.date, locale)}</span>
         </div>
         {tags.length > 0 && (
           <div className="tag-row">

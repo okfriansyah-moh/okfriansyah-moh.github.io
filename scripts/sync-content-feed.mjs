@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Ensures content-feed.meta.json includes every document from topic-index.json.
+ * Ensures per-locale content-feed.meta.json includes every document from topic-index.json.
  * Run automatically before dev/build; automation can update meta for new articles.
  */
 import fs from 'node:fs';
@@ -9,10 +9,15 @@ import {fileURLToPath} from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
-const META_PATH = path.join(ROOT, 'src/data/content-feed.meta.json');
 const TOPIC_INDEX_PATH = path.join(ROOT, '.automation/topic-index.json');
+const LOCALES = ['en', 'id'];
 
 function docPathToLink(docPath) {
+  if (docPath.startsWith('i18n/')) {
+    const relative = docPath
+      .replace(/^i18n\/[^/]+\/docusaurus-plugin-content-docs\/current\//, '');
+    return `/docs/${relative.replace(/\.mdx?$/, '')}`;
+  }
   return `/${docPath.replace(/\.mdx?$/, '')}`;
 }
 
@@ -53,7 +58,26 @@ function loadJson(filePath, fallback) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
 }
 
-function resolveDocFile(link) {
+function resolveDocFileFromPath(docPath) {
+  const abs = path.join(ROOT, docPath);
+  if (fs.existsSync(abs)) return abs;
+  const base = abs.replace(/\.mdx?$/, '');
+  for (const ext of ['.md', '.mdx']) {
+    if (fs.existsSync(`${base}${ext}`)) return `${base}${ext}`;
+  }
+  return null;
+}
+
+function resolveDocFileFromLink(link, locale = 'en') {
+  if (link.startsWith('/docs/')) {
+    const relative = link.slice('/docs/'.length);
+    const enPath = `docs/${relative}.md`;
+    const idPath = `i18n/id/docusaurus-plugin-content-docs/current/${relative}.md`;
+    if (locale === 'id') {
+      return resolveDocFileFromPath(idPath) ?? resolveDocFileFromPath(enPath);
+    }
+    return resolveDocFileFromPath(enPath) ?? resolveDocFileFromPath(idPath);
+  }
   const base = path.join(ROOT, link.slice(1));
   for (const ext of ['.md', '.mdx']) {
     if (fs.existsSync(`${base}${ext}`)) return `${base}${ext}`;
@@ -61,10 +85,23 @@ function resolveDocFile(link) {
   return null;
 }
 
-/** Reading time at 200 wpm from markdown body (frontmatter/code fences stripped). */
-function computeReadingTime(item) {
+function documentPathsForTopic(topic) {
+  const doc = topic?.document;
+  if (!doc) return {};
+  if (typeof doc === 'string') {
+    const en = doc;
+    const relative = en.replace(/^docs\//, '').replace(/\.mdx?$/, '');
+    return {
+      en,
+      id: `i18n/id/docusaurus-plugin-content-docs/current/${relative}.md`,
+    };
+  }
+  return doc;
+}
+
+function computeReadingTime(item, locale = 'en') {
   if (item.link.startsWith('/docs/')) {
-    const file = resolveDocFile(item.link);
+    const file = resolveDocFileFromLink(item.link, locale);
     if (file) {
       const body = fs
         .readFileSync(file, 'utf8')
@@ -78,68 +115,98 @@ function computeReadingTime(item) {
   return Math.max(2, Math.round(descWords / 20));
 }
 
-const meta = loadJson(META_PATH, {items: []});
-const topicIndex = loadJson(TOPIC_INDEX_PATH, {topics: {}});
-const links = new Set(meta.items.map((item) => item.link));
-let added = 0;
+function syncLocale(locale, topicIndex) {
+  const metaPath = path.join(ROOT, `src/data/i18n/${locale}/content-feed.meta.json`);
+  const meta = loadJson(metaPath, {items: []});
+  const links = new Set(meta.items.map((item) => item.link));
+  let added = 0;
 
-for (const topic of Object.values(topicIndex.topics ?? {})) {
-  const document = topic?.document;
-  if (!document) continue;
+  for (const topic of Object.values(topicIndex.topics ?? {})) {
+    const paths = documentPathsForTopic(topic);
+    const docPath = paths[locale];
+    if (!docPath) continue;
 
-  const link = docPathToLink(document);
-  if (links.has(link)) continue;
+    const link = docPathToLink(docPath);
+    if (links.has(link)) continue;
 
-  const absDoc = path.join(ROOT, document);
-  if (!fs.existsSync(absDoc)) {
-    console.log(`[sync-content-feed] Skipping ${link} — document file not found yet.`);
-    continue;
+    const absDoc = resolveDocFileFromPath(docPath);
+    if (!absDoc) {
+      console.log(`[sync-content-feed:${locale}] Skipping ${link} — document file not found yet.`);
+      continue;
+    }
+
+    const fm = parseFrontmatter(absDoc);
+    const stat = fs.statSync(absDoc);
+
+    meta.items.push({
+      title: fm.title || titleFromSlug(link),
+      description:
+        fm.description ||
+        (locale === 'id'
+          ? 'Artikel engineering baru — metadata akan disempurnakan saat konten diterbitkan.'
+          : 'New engineering article — metadata will be refined when content is published.'),
+      link,
+      type: inferType(link),
+      date: stat.mtime.toISOString().slice(0, 10),
+    });
+    links.add(link);
+    added += 1;
+    console.log(`[sync-content-feed:${locale}] Added feed entry for ${link}`);
   }
 
-  const fm = parseFrontmatter(absDoc);
-  const stat = fs.statSync(absDoc);
+  meta.items.sort((a, b) => b.date.localeCompare(a.date));
 
-  meta.items.push({
-    title: fm.title || titleFromSlug(link),
-    description:
-      fm.description ||
-      'New engineering article — metadata will be refined when content is published.',
-    link,
-    type: inferType(link),
-    date: stat.mtime.toISOString().slice(0, 10),
+  const beforeCount = meta.items.length;
+  meta.items = meta.items.filter((item) => {
+    if (item.link.startsWith('/blog/')) return true;
+    if (!item.link.startsWith('/docs/')) return true;
+    const relative = item.link.slice('/docs/'.length);
+    const enExists =
+      fs.existsSync(path.join(ROOT, `docs/${relative}.md`)) ||
+      fs.existsSync(path.join(ROOT, `docs/${relative}.mdx`));
+    const idExists =
+      fs.existsSync(
+        path.join(ROOT, `i18n/id/docusaurus-plugin-content-docs/current/${relative}.md`),
+      ) ||
+      fs.existsSync(
+        path.join(ROOT, `i18n/id/docusaurus-plugin-content-docs/current/${relative}.mdx`),
+      );
+    const exists = locale === 'en' ? enExists : idExists;
+    if (!exists) {
+      console.log(`[sync-content-feed:${locale}] Removed stale feed entry ${item.link}`);
+    }
+    return exists;
   });
-  links.add(link);
-  added += 1;
-  console.log(`[sync-content-feed] Added feed entry for ${link}`);
-}
 
-meta.items.sort((a, b) => b.date.localeCompare(a.date));
-
-const beforeCount = meta.items.length;
-meta.items = meta.items.filter((item) => {
-  if (item.link.startsWith('/blog/')) return true;
-  if (!item.link.startsWith('/docs/')) return true;
-  const docPath = path.join(ROOT, `${item.link.slice(1)}.md`);
-  const docPathMdx = path.join(ROOT, `${item.link.slice(1)}.mdx`);
-  const exists = fs.existsSync(docPath) || fs.existsSync(docPathMdx);
-  if (!exists) {
-    console.log(`[sync-content-feed] Removed stale feed entry ${item.link}`);
+  if (beforeCount !== meta.items.length) {
+    const pruned = beforeCount - meta.items.length;
+    console.log(
+      `[sync-content-feed:${locale}] Pruned ${pruned} stale entr${pruned === 1 ? 'y' : 'ies'}.`,
+    );
   }
-  return exists;
-});
 
-if (beforeCount !== meta.items.length) {
-  console.log(`[sync-content-feed] Pruned ${beforeCount - meta.items.length} stale entr${beforeCount - meta.items.length === 1 ? 'y' : 'ies'}.`);
+  for (const item of meta.items) {
+    item.readingTime = computeReadingTime(item, locale);
+  }
+
+  fs.mkdirSync(path.dirname(metaPath), {recursive: true});
+  fs.writeFileSync(metaPath, `${JSON.stringify(meta, null, 2)}\n`);
+
+  if (added === 0) {
+    console.log(`[sync-content-feed:${locale}] Feed is in sync with topic-index.`);
+  } else {
+    console.log(`[sync-content-feed:${locale}] Added ${added} entr${added === 1 ? 'y' : 'ies'}.`);
+  }
 }
 
-for (const item of meta.items) {
-  item.readingTime = computeReadingTime(item);
+const topicIndex = loadJson(TOPIC_INDEX_PATH, {topics: {}});
+for (const locale of LOCALES) {
+  syncLocale(locale, topicIndex);
 }
 
-fs.writeFileSync(META_PATH, `${JSON.stringify(meta, null, 2)}\n`);
-
-if (added === 0) {
-  console.log('[sync-content-feed] Feed is in sync with topic-index.');
-} else {
-  console.log(`[sync-content-feed] Added ${added} entr${added === 1 ? 'y' : 'ies'}.`);
+// Legacy single-file mirror for backward compatibility during transition
+const legacyPath = path.join(ROOT, 'src/data/content-feed.meta.json');
+const enMetaPath = path.join(ROOT, 'src/data/i18n/en/content-feed.meta.json');
+if (fs.existsSync(enMetaPath)) {
+  fs.copyFileSync(enMetaPath, legacyPath);
 }

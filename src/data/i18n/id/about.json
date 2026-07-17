@@ -1,0 +1,78 @@
+{
+  "bio": "Pemimpin engineering dengan pengalaman {years} tahun rekayasa perangkat lunak, termasuk 6+ tahun memimpin tim fintech dan SaaS berkinerja tinggi. Saya mengirimkan infrastruktur pembayaran skala besar — payment gateway, banking API (SNAP), dan sistem KYC — serta menerapkan disiplin keandalan itu pada sistem AI otonom: pipeline deterministik, orchestrator, dan alur kerja produksi yang tidak rusak saat ditinggalkan.",
+  "experienceTitle": "{years} tahun, lima peran",
+  "metrics": [
+    {"valueKey": "yearsEngineering", "labelKey": "yearsEngineering"},
+    {"value": "98.7% → 99.9%", "labelKey": "platformSlo"},
+    {"value": "+70%", "labelKey": "doraMetrics"},
+    {"value": "−40%", "labelKey": "cloudCost"}
+  ],
+  "experience": [
+    {
+      "company": "Mekari",
+      "role": "Engineering Manager — Core & Report Squads",
+      "period": "Jan 2025 – Sekarang · Jakarta",
+      "highlights": [
+        "Memimpin dua squad yang membangun layanan fondasi, API, dan infrastruktur pelaporan data untuk platform Mekari Officeless.",
+        "Mengarahkan desain dan pengiriman report builder yang sepenuhnya dapat dikustomisasi untuk rangkaian produk Officeless.",
+        "Bertanggung jawab atas kesehatan tim, kecepatan pengiriman, dan keselarasan lintas fungsi produk dan bisnis."
+      ]
+    },
+    {
+      "company": "Mekari",
+      "role": "Lead Software Engineer — Financial Services",
+      "period": "Apr 2022 – Des 2024 · Jakarta",
+      "highlights": [
+        "Memimpin tim Core Payment, Kredigram, KYC, Expense Management, dan Banking-as-a-Service.",
+        "Meningkatkan metrik DORA 70% — frekuensi deploy 90%, lead time ~70% lebih singkat, failure rate <1%, MTTR <30 menit — dan menaikkan SLO platform dari 98,7% menjadi 99,9%.",
+        "Mengurangi biaya cloud ~40% melalui migrasi provider; memangkas konsumsi resource 50% dengan menulis ulang layanan kunci dalam Go.",
+        "Mengintegrasikan pembayaran Xendit, Midtrans, Ayoconnect, dan NIUM; menstandarkan perbankan H2H via SNAP API dengan BNI, BRI, dan Permata.",
+        "Mempertahankan code coverage 96%; memimpin audit kepatuhan PJP Level 3 Bank Indonesia untuk Kredigram."
+      ]
+    },
+    {
+      "company": "DOKU",
+      "role": "Technical Lead Developer — Core Payment",
+      "period": "Feb 2016 – Mar 2022 · Jakarta",
+      "highlights": [
+        "Memimpin tim Core Payment untuk payment gateway terkemuka di Indonesia — desain API dan integrasi Internet Banking, Virtual Account, Kartu Kredit, Rate Management, dan Transfer Bank.",
+        "Memimpin penulisan ulang platform Jokul sebagai Tech Lead (Angular + Spring Boot/Java), meningkatkan skalabilitas, performa, dan UX."
+      ]
+    },
+    {
+      "company": "PT Samz Solutions",
+      "role": "Java Developer",
+      "period": "Nov 2013 – Des 2015 · Jakarta",
+      "highlights": [
+        "Membangun modul ERP (Prepaid Revenue Data, POS, Sales Order) untuk Telkomsel, mengotomatisasi alur pendapatan.",
+        "Mengembangkan modul Individual Learning Plan dan Training Request untuk platform e-learning Pertamina."
+      ]
+    },
+    {
+      "company": "KMK Online",
+      "role": "Mobile Developer",
+      "period": "Mei 2013 – Sep 2013 · Jakarta",
+      "highlights": [
+        "Mengelola SMS gateway untuk SCTV dan Indosiar; mengembangkan penjadwal verifikasi SMS dan memelihara server GlassFish."
+      ]
+    }
+  ],
+  "skills": [
+    {"group": "Bahasa", "items": ["Go", "Java", "TypeScript", "Swift", "SQL"]},
+    {"group": "Framework", "items": ["Spring Boot", "Angular", "Node.js"]},
+    {"group": "Infrastruktur", "items": ["Docker", "Jenkins", "Grafana", "SonarQube", "Alibaba Cloud"]},
+    {"group": "Database", "items": ["MySQL", "PostgreSQL"]},
+    {"group": "Pembayaran", "items": ["Xendit", "Midtrans", "Ayoconnect", "NIUM", "BNI/BRI/Permata SNAP API"]},
+    {"group": "Kepemimpinan", "items": ["Engineering Management", "DORA Metrics", "OKR", "Agile/Scrum", "Desain Arsitektur"]}
+  ],
+  "education": [
+    {"school": "Universitas Gunadarma", "program": "S1, Teknik Informatika", "period": "2008 – 2012 · Jakarta"},
+    {"school": "Apple Developer Academy", "program": "Angkatan 1", "period": "Jun 2018 – Mar 2019 · Jakarta"}
+  ],
+  "principles": [
+    {"title": "Deterministik di atas probabilistik", "body": "Input yang sama menghasilkan output yang sama. Pipeline harus dapat direproduksi."},
+    {"title": "Operasi idempoten", "body": "Setiap worker, stage, dan retry menghasilkan hasil yang sama tanpa efek samping yang menumpuk."},
+    {"title": "State berbasis database", "body": "Database adalah single source of truth. Tidak ada state penting yang hanya di memori."},
+    {"title": "Orchestrator di atas kekacauan agent", "body": "Koordinator pusat mengendalikan alur eksekusi. Worker tetap stateless dan dapat diganti."}
+  ]
+}

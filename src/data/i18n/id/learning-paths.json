@@ -1,0 +1,46 @@
+[
+  {
+    "id": "backend",
+    "title": "Rekayasa Backend",
+    "subtitle": "Mulai di sini",
+    "description": "Desain API, idempotensi, dan pola keandalan produksi.",
+    "image": "/img/path-backend.png",
+    "links": [
+      "/docs/concepts/deterministic-ai-pipelines",
+      "/docs/concepts/database-state-machines"
+    ]
+  },
+  {
+    "id": "distributed",
+    "title": "Sistem Terdistribusi",
+    "subtitle": "Skala dan keandalan",
+    "description": "State machine, orchestration, dan alur kerja fault-tolerant.",
+    "image": "/img/path-distributed.png",
+    "links": [
+      "/docs/concepts/ai-orchestration-patterns",
+      "/docs/concepts/deterministic-agentic-orchestrator"
+    ]
+  },
+  {
+    "id": "ai-systems",
+    "title": "Sistem AI",
+    "subtitle": "AI produksi",
+    "description": "Guardrail, koherensi, dan pipeline agent deterministik.",
+    "image": "/img/path-ai.png",
+    "links": [
+      "/docs/concepts/llm-guardrails",
+      "/docs/concepts/ai-document-coherence"
+    ]
+  },
+  {
+    "id": "payments",
+    "title": "Pembayaran & Fintech",
+    "subtitle": "Dari lapangan",
+    "description": "Payment gateway, banking API SNAP, dan kepatuhan skala besar.",
+    "image": "/img/path-payments.png",
+    "links": [
+      "/docs/systems/polymarket-trading-agent",
+      "/docs/systems/md-ame-autonomous-media-engine"
+    ]
+  }
+]

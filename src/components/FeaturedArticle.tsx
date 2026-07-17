@@ -1,7 +1,7 @@
 import Link from '@docusaurus/Link';
 import type {ContentItem} from '@site/src/data/content-feed';
-import {TYPE_LABELS} from '@site/src/data/content-feed';
 import {formatDisplayDate} from '@site/src/lib/feed';
+import {useLocaleData} from '@site/src/lib/locale-data';
 
 type FeaturedArticleProps = {
   item: ContentItem;
@@ -9,6 +9,7 @@ type FeaturedArticleProps = {
 };
 
 export default function FeaturedArticle({item, compact = false}: FeaturedArticleProps) {
+  const {typeLabels, ui} = useLocaleData();
   return (
     <article
       className={[
@@ -21,7 +22,7 @@ export default function FeaturedArticle({item, compact = false}: FeaturedArticle
         to={item.link}
         className="block h-full p-6 sm:p-7 no-underline text-inherit hover:no-underline hover:text-inherit group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
         <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent mb-3 m-0">
-          Latest · {TYPE_LABELS[item.type]}
+          Latest · {typeLabels[item.type]}
         </p>
         <h2
           className={[
@@ -37,10 +38,15 @@ export default function FeaturedArticle({item, compact = false}: FeaturedArticle
         <div className="flex items-center justify-between gap-3 mt-auto pt-2 border-t border-border/80">
           <span className="font-mono text-[11px] text-muted">
             <time dateTime={item.date}>{formatDisplayDate(item.date)}</time>
-            {item.readingTime != null && <> · {item.readingTime} min read</>}
+            {item.readingTime != null && (
+              <>
+                {' '}
+                · {item.readingTime} {ui.common.minRead}
+              </>
+            )}
           </span>
           <span className="font-mono text-[11px] font-medium text-accent group-hover:translate-x-0.5 transition-transform duration-200">
-            Read article →
+            {ui.common.readArticle} →
           </span>
         </div>
       </Link>

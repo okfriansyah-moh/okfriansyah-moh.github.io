@@ -1,0 +1,123 @@
+{
+  "site": {
+    "title": "Muhammad Okfriansyah",
+    "tagline": "Arsitek Sistem AI — Sistem Otonom, Pipeline Deterministik, Arsitektur Terdistribusi"
+  },
+  "typeLabels": {
+    "system": "Sistem",
+    "concept": "Konsep",
+    "project": "Proyek",
+    "blog": "Blog"
+  },
+  "typeFilters": [
+    {"id": "all", "label": "Semua"},
+    {"id": "system", "label": "Sistem"},
+    {"id": "concept", "label": "Konsep"},
+    {"id": "blog", "label": "Blog"}
+  ],
+  "difficulty": {
+    "beginner": "Pemula",
+    "intermediate": "Menengah",
+    "advanced": "Lanjutan"
+  },
+  "hero": {
+    "eyebrow": "ENGINEERING · MEMBANGUN · BERBAGI",
+    "title": "Saya membangun perangkat lunak produksi, proyek open source, dan menjelaskan cara kerjanya.",
+    "lead": "Engineering Manager & Backend Engineer — saya menulis tentang arsitektur sistem, pipeline AI deterministik, dan pelajaran dari pengiriman software skala besar.",
+    "browseArticles": "Jelajahi Artikel",
+    "exploreProjects": "Jelajahi Proyek",
+    "aboutMe": "Tentang Saya"
+  },
+  "sections": {
+    "currentlyBuilding": "Sedang Dibangun",
+    "recentArticles": "Artikel Terbaru",
+    "learningPaths": "Jalur Belajar",
+    "caseStudies": "Studi Kasus",
+    "openSource": "Open Source",
+    "featured": "Unggulan"
+  },
+  "common": {
+    "viewAll": "Lihat semua",
+    "minRead": "menit baca",
+    "min": "menit",
+    "readArticle": "Baca artikel",
+    "github": "GitHub",
+    "featuredBadge": "UNGGULAN",
+    "activeProject": "Proyek aktif",
+    "backToTop": "Kembali ke atas",
+    "tableOfContents": "Daftar isi",
+    "openToc": "Buka daftar isi",
+    "closeToc": "Tutup daftar isi"
+  },
+  "footer": {
+    "tagline": "Portofolio engineering — perangkat lunak produksi, open source, dan tulisan arsitektur.",
+    "copyright": "Dibangun dengan Docusaurus.",
+    "aboutMe": "Tentang saya"
+  },
+  "pages": {
+    "articles": {
+      "title": "Artikel",
+      "description": "Semua artikel dan catatan engineering."
+    },
+    "projects": {
+      "title": "Proyek",
+      "description": "Proyek engineering aktif dan open source.",
+      "viewDocs": "Lihat dokumentasi proyek →"
+    },
+    "caseStudies": {
+      "title": "Studi Kasus",
+      "description": "Uraian arsitektur sistem dari pekerjaan engineering produksi."
+    },
+    "learningPaths": {
+      "title": "Jalur Belajar",
+      "description": "Jalur bacaan kurasi berdasarkan topik engineering."
+    },
+    "openSource": {
+      "title": "Open Source",
+      "description": "Repositori publik dan kontribusi."
+    },
+    "home": {
+      "title": "Muhammad Okfriansyah — Portofolio Engineering",
+      "description": "Perangkat lunak produksi, proyek open source, dan uraian arsitektur dari pekerjaan engineering nyata."
+    },
+    "openSourceHub": {
+      "eyebrow": "OPEN SOURCE",
+      "title": "Repositori & alat",
+      "lead": "Proyek berorientasi produksi yang dibagikan secara publik — pipeline, agent, dan tooling developer."
+    }
+  },
+  "article": {
+    "infoTitle": "Info artikel",
+    "difficulty": "Tingkat",
+    "readingTime": "Waktu baca",
+    "published": "Diterbitkan",
+    "updated": "Diperbarui",
+    "repository": "Repositori",
+    "relatedTitle": "Artikel terkait"
+  },
+  "about": {
+    "title": "Tentang",
+    "eyebrow": "Tentang",
+    "role": "Engineering Manager · Arsitek Sistem AI",
+    "location": "Jakarta, Indonesia — terbuka untuk remote US",
+    "metaDescription": "Engineering Manager dan Arsitek Sistem AI dengan pengalaman {years} tahun membangun infrastruktur pembayaran dan sistem otonom.",
+    "experienceEyebrow": "Pengalaman",
+    "experienceDescription": "Dari SMS gateway hingga infrastruktur pembayaran nasional dan sistem AI otonom.",
+    "skillsEyebrow": "Keahlian",
+    "skillsTitle": "Toolkit inti",
+    "skillsDescription": "Stack di balik platform pembayaran, backend terdistribusi, dan pipeline AI.",
+    "educationEyebrow": "Pendidikan",
+    "educationTitle": "Fondasi",
+    "principlesEyebrow": "Prinsip",
+    "principlesTitle": "Kendala engineering yang saya tegakkan",
+    "ctaTitle": "Baca jurnal engineering",
+    "ctaBody": "Uraian arsitektur dan pola dari repositori nyata — diperbarui melalui pipeline pengetahuan otomatis yang berlandaskan pekerjaan GitHub publik.",
+    "ctaButton": "Jelajahi Artikel"
+  },
+  "metrics": {
+    "yearsEngineering": "Tahun engineering",
+    "platformSlo": "SLO platform",
+    "doraMetrics": "Metrik DORA",
+    "cloudCost": "Biaya cloud"
+  }
+}

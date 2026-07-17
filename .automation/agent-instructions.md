@@ -31,15 +31,18 @@ This repository is a Docusaurus 3 portfolio with a custom homepage, navbar, foot
 
 ### Files you MAY modify
 
-| File / path | When |
-|-------------|------|
-| `docs/**/*.md` / `docs/**/*.mdx` | New or updated article body |
-| `blog/**/*.md` / `blog/**/*.mdx` | New or updated blog posts |
-| `sidebars.ts` | Register a new docs page in the correct category |
-| `.automation/topic-index.json` | Map topic → document + source PRs/commits |
-| `.automation/github-docs-state.json` | After validation succeeds, before opening PR |
-| `src/data/content-feed.meta.json` | Optional: set title, description, date for a new article (see Feed integration) |
-| `docs/CONTENT_BACKLOG.md` | Mark backlog items done or reprioritize |
+| File / path                                              | When                                             |
+| -------------------------------------------------------- | ------------------------------------------------ |
+| `docs/**/*.md` / `docs/**/*.mdx`                         | New or updated English article body              |
+| `i18n/id/docusaurus-plugin-content-docs/current/**/*.md` | Indonesian mirror of each docs article           |
+| `i18n/id/docusaurus-plugin-content-blog/**`              | Indonesian blog posts                            |
+| `blog/**/*.md` / `blog/**/*.mdx`                         | English blog posts                               |
+| `sidebars.ts`                                            | Register a new docs page in the correct category |
+| `.automation/topic-index.json`                           | Map topic → `{en,id}` document paths + sources   |
+| `.automation/github-docs-state.json`                     | After validation succeeds, before opening PR     |
+| `src/data/i18n/en/content-feed.meta.json`                | Optional English feed metadata                   |
+| `src/data/i18n/id/content-feed.meta.json`                | Optional Indonesian feed metadata                |
+| `docs/CONTENT_BACKLOG.md`                                | Mark backlog items done or reprioritize          |
 
 ### Files you MUST NOT modify
 
@@ -48,6 +51,7 @@ Never edit portfolio UI, theme, or build configuration:
 - `src/pages/**`, `src/components/**`, `src/theme/**`, `src/css/**`, `src/lib/**`
 - `docusaurus.config.ts`, `sidebars.ts` except adding doc ids (do not restructure categories)
 - `src/data/content-feed.ts`, `src/data/nav-links.ts`, `src/data/learning-paths.json`, `src/data/contact-links.ts`
+- `src/data/i18n/**/ui.json`, `src/data/i18n/**/about.json` (UI copy is maintained separately from automation)
 - `static/**`, `package.json`, `package-lock.json`, `.github/**`
 - Any favicon, navbar, footer, homepage, or layout code
 
@@ -124,12 +128,12 @@ Never invent metrics, user counts, performance improvements, revenue, benchmarks
 
 ## CONTENT PLACEMENT AND CLASSIFICATION
 
-| Directory | Article type | Default difficulty | Homepage label |
-|-----------|--------------|-------------------|----------------|
-| `docs/systems/` | system | Advanced | Systems |
-| `docs/concepts/` | concept | Intermediate | Concepts |
-| `docs/projects/` | project | Intermediate | Projects |
-| `blog/` | blog | Beginner | Blog |
+| Directory        | Article type | Default difficulty | Homepage label |
+| ---------------- | ------------ | ------------------ | -------------- |
+| `docs/systems/`  | system       | Advanced           | Systems        |
+| `docs/concepts/` | concept      | Intermediate       | Concepts       |
+| `docs/projects/` | project      | Intermediate       | Projects       |
+| `blog/`          | blog         | Beginner           | Blog           |
 
 - `docs/systems/` — full architecture of substantial systems
 - `docs/concepts/` — reusable engineering patterns
@@ -145,18 +149,24 @@ All `/docs/*` pages use the shared article framework (centered content, TOC, art
 
 ## PUBLISHING CHECKLIST FOR EACH NEW OR UPDATED ARTICLE
 
-Complete every step:
+Complete every step for **both English and Indonesian**:
 
-1. **Write content** — follow `.automation/article-template.md` with valid frontmatter (`title`, `description`, `sidebar_position`, `tags`, `keywords`; optional `difficulty`).
-2. **Register in sidebar** — add the doc id to the correct category in `sidebars.ts` (e.g. `systems/my-article`, not the `.md` path).
-3. **Register topic** — add or update an entry in `.automation/topic-index.json` with `document` path and `sources` list.
-4. **Feed metadata (optional)** — either:
-   - add an item to `src/data/content-feed.meta.json` with `title`, `description`, `link`, `type`, `date`, or
-   - rely on `scripts/sync-content-feed.mjs` to create a feed entry from frontmatter when the topic-index document exists.
-5. **Sync feed** — run `npm run sync:feed` (also runs automatically before `npm run build`).
-6. **Validate** — see Validation section below.
+1. **Write English content** — `docs/...` following `.automation/article-template.md`.
+2. **Write Indonesian mirror** — `i18n/id/docusaurus-plugin-content-docs/current/...` with full Bahasa Indonesia translation (same structure, translated prose; keep code/PR links).
+3. **Register in sidebar** — add the doc id to the correct category in `sidebars.ts` (once per article).
+4. **Register topic** — update `.automation/topic-index.json`:
+   ```json
+   "document": {
+     "en": "docs/systems/my-article.md",
+     "id": "i18n/id/docusaurus-plugin-content-docs/current/systems/my-article.md"
+   }
+   ```
+5. **Sync feed** — run `npm run sync:feed` (updates `src/data/i18n/en/` and `src/data/i18n/id/` feed meta from frontmatter).
+6. **Validate** — `npm ci && npm run sync:feed && npm run typecheck && npm run build` (builds all locales).
 
-Do **not** edit `src/data/content-feed.ts` or `src/pages/index.tsx` — the homepage, `/articles`, featured card, and related-articles rail all read from the synced feed automatically.
+Never open a PR with an English-only article. Indonesian mirror is mandatory.
+
+Do **not** edit `src/data/content-feed.ts`, `src/lib/locale-data.ts`, or homepage React components.
 
 ## ARTICLE REQUIREMENTS
 
@@ -165,7 +175,7 @@ title, description, what was built, problem, why difficult, beginner mental mode
 
 ## WRITING STYLE
 
-Write for a software engineer who understands basic programming but is new to backend architecture, distributed systems, or AI systems. Use plain English, concrete examples, numbered flows, and real implementation evidence. Avoid marketing language, generic AI introductions, unverified claims, and huge code dumps.
+Write for a software engineer who understands basic programming but is new to backend architecture, distributed systems, or AI systems. Use plain English for EN articles and natural Bahasa Indonesia for ID articles. Keep concrete examples, numbered flows, and real implementation evidence. Avoid marketing language, generic AI introductions, unverified claims, and huge code dumps.
 
 ## VALIDATION
 
@@ -179,7 +189,7 @@ Before opening a pull request:
 6. Confirm all referenced source repositories and pull requests exist
 7. Confirm no private information, tokens, credentials, or company source code is present
 8. Review the final diff — ensure **only** safe-scope files changed (no UI/theme/config edits)
-9. Confirm new docs pages appear under the correct sidebar category
+9. Confirm new docs pages appear under the correct sidebar category in **both** `/docs/...` and `/id/docs/...`
 
 If validation fails: attempt a bounded fix (maximum two repair attempts). If validation still fails, do not open a pull request, report the failure, and do not advance last_successful_scan_at.
 
