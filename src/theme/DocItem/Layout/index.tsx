@@ -19,7 +19,7 @@ export default function DocItemLayout({children}: Props): ReactNode {
   const hideToc = frontMatter.hide_table_of_contents || toc.length === 0;
 
   return (
-    <div className="doc-layout page-shell">
+    <div className="doc-layout">
       <ContentVisibility metadata={metadata} />
       <DocVersionBanner />
       <div className="doc-layout__stage">
