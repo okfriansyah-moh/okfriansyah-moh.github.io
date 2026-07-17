@@ -17,9 +17,6 @@ export default function Footer(): ReactNode {
           </p>
         </div>
         <SocialLinks variant="inline" />
-        <Link to="/about" className="site-footer__link site-footer__about">
-          About
-        </Link>
       </div>
       <p className="site-footer__copyright">
         © {year} Muhammad Okfriansyah. Built with Docusaurus.
