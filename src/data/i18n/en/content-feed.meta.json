@@ -1,6 +1,30 @@
 {
   "items": [
     {
+      "title": "Portable AI Coding Knowledge with ARES",
+      "description": "Project overview of ARES — the reference CLI for the AI Repository Standard that composes provider-specific artifacts from a canonical .ai/ source.",
+      "link": "/docs/projects/ares",
+      "type": "project",
+      "date": "2026-07-18",
+      "readingTime": 2
+    },
+    {
+      "title": "MD-AME",
+      "description": "Autonomous YouTube production engine — dimension-parameterized media pipeline with PostgreSQL state machines.",
+      "link": "/docs/projects/md-ame",
+      "type": "project",
+      "date": "2026-07-18",
+      "readingTime": 2
+    },
+    {
+      "title": "Polymarket Agent",
+      "description": "Autonomous prediction-market trading system — modular monolith with Postgres event bus, probability gates, and adaptive risk controls.",
+      "link": "/docs/projects/polymarket-agent",
+      "type": "project",
+      "date": "2026-07-18",
+      "readingTime": 2
+    },
+    {
       "title": "Building a Restartable Long-Video Processing Pipeline",
       "description": "How Shorts Factory uses a 16-stage deterministic pipeline with SQLite checkpointing to process hour-long videos into publishable shorts.",
       "link": "/docs/systems/shorts-generator-pipeline",
@@ -38,7 +62,7 @@
       "link": "/docs/systems/md-ame-autonomous-media-engine",
       "type": "system",
       "date": "2025-03-20",
-      "readingTime": 1
+      "readingTime": 6
     },
     {
       "title": "Polymarket Trading Agent",
@@ -46,7 +70,7 @@
       "link": "/docs/systems/polymarket-trading-agent",
       "type": "system",
       "date": "2025-03-18",
-      "readingTime": 1
+      "readingTime": 6
     },
     {
       "title": "Deterministic AI Pipelines",
@@ -54,7 +78,7 @@
       "link": "/docs/concepts/deterministic-ai-pipelines",
       "type": "concept",
       "date": "2025-03-15",
-      "readingTime": 1
+      "readingTime": 5
     },
     {
       "title": "Database-Backed State Machines",
@@ -62,7 +86,7 @@
       "link": "/docs/concepts/database-state-machines",
       "type": "concept",
       "date": "2025-03-12",
-      "readingTime": 1
+      "readingTime": 5
     },
     {
       "title": "AI Orchestration Patterns",
@@ -70,7 +94,7 @@
       "link": "/docs/concepts/ai-orchestration-patterns",
       "type": "concept",
       "date": "2025-03-10",
-      "readingTime": 1
+      "readingTime": 5
     },
     {
       "title": "LLM Guardrails",
@@ -78,7 +102,7 @@
       "link": "/docs/concepts/llm-guardrails",
       "type": "concept",
       "date": "2025-03-08",
-      "readingTime": 1
+      "readingTime": 5
     }
   ]
 }

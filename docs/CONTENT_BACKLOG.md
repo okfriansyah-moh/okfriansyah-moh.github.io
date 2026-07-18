@@ -1,9 +1,22 @@
 # Engineering Knowledge Backlog
 
-Generated during the automation bootstrap pass on **2026-07-16**. This backlog ranks
-article opportunities discovered from public repositories owned by `okfriansyah-moh`.
-The daily automation should consult this file when deciding whether to update an
-existing page or create a new one.
+Generated during the automation bootstrap pass on **2026-07-16**. Updated **2026-07-18**
+after strengthening all stub articles to full template depth.
+
+This backlog ranks article opportunities discovered from public repositories owned by
+`okfriansyah-moh`. The daily automation should consult this file when deciding whether
+to update an existing page or create a new one.
+
+## Status Summary (2026-07-18)
+
+| Status | Count | Notes |
+|--------|------:|-------|
+| Complete (full template) | 12 | All EN + ID mirrors |
+| Stubs remaining | 0 | — |
+| Missing pages | 0 | ARES project page created |
+
+**Completed in strengthen pass:** MD-AME system, Polymarket system, 4 concept stubs,
+3 project pages (including ARES), welcome blog refresh.
 
 ## Priority Legend
 

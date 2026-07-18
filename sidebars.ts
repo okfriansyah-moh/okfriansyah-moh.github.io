@@ -29,6 +29,7 @@ const sidebars: SidebarsConfig = {
       items: [
         'projects/md-ame',
         'projects/polymarket-agent',
+        'projects/ares',
       ],
     },
   ],
