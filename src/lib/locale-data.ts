@@ -61,8 +61,6 @@ export type AboutExperience = {
 
 export type AboutData = {
   bio: string;
-  bioContactLead: string;
-  bioContactOr: string;
   experienceTitle: string;
   metrics: AboutMetric[];
   experience: AboutExperience[];

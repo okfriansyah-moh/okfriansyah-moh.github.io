@@ -2,52 +2,9 @@ import {type ReactNode} from 'react';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import SectionHeader from '@site/src/components/SectionHeader';
-import {CONTACT_LINKS} from '@site/src/data/contact-links';
+import SocialLinks from '@site/src/components/SocialLinks';
 import {engineeringYearsCount, engineeringYearsPlus} from '@site/src/lib/career';
 import {useLocaleData} from '@site/src/lib/locale-data';
-
-function AboutBio({
-  bio,
-  bioContactLead,
-  bioContactOr,
-  years,
-}: {
-  bio: string;
-  bioContactLead: string;
-  bioContactOr: string;
-  years: number;
-}): ReactNode {
-  const emailLink = CONTACT_LINKS.find((link) => link.label === 'Email');
-  const profileLinks = CONTACT_LINKS.filter((link) => link.label !== 'Email');
-
-  return (
-    <p className="text-lg leading-relaxed text-[var(--ifm-font-color-base)] max-w-2xl m-0 mb-8">
-      {bio.replace('{years}', String(years))}{' '}
-      {bioContactLead}{' '}
-      {profileLinks.map((link, index) => (
-        <span key={link.label}>
-          {index > 0 ? ', ' : ''}
-          <a
-            href={link.href}
-            {...(link.external ? {target: '_blank', rel: 'noopener noreferrer'} : {})}
-            className="text-accent no-underline hover:underline">
-            {link.label}
-          </a>
-        </span>
-      ))}
-      {emailLink ? (
-        <>
-          {', '}
-          {bioContactOr}{' '}
-          <a href={emailLink.href} className="text-accent no-underline hover:underline">
-            {emailLink.label.toLowerCase()}
-          </a>
-        </>
-      ) : null}
-      .
-    </p>
-  );
-}
 
 export default function About(): ReactNode {
   const {about, ui} = useLocaleData();
@@ -74,12 +31,10 @@ export default function About(): ReactNode {
           </h1>
           <p className="text-xl text-muted m-0 mb-2 max-w-2xl">{ui.about.role}</p>
           <p className="font-mono text-meta text-muted m-0 mb-6">{ui.about.location}</p>
-          <AboutBio
-            bio={about.bio}
-            bioContactLead={about.bioContactLead}
-            bioContactOr={about.bioContactOr}
-            years={years}
-          />
+          <p className="text-lg leading-relaxed text-[var(--ifm-font-color-base)] max-w-2xl m-0">
+            {about.bio.replace('{years}', String(years))}
+          </p>
+          <SocialLinks variant="inline" className="about-hero__links mb-8" />
 
           <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-3">
             {metrics.map(({value, label}) => (

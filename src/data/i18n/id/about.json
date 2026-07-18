@@ -1,7 +1,5 @@
 {
   "bio": "Pemimpin engineering dengan pengalaman {years} tahun rekayasa perangkat lunak, termasuk 6+ tahun memimpin tim fintech dan SaaS berkinerja tinggi. Saya mengirimkan infrastruktur pembayaran skala besar — payment gateway, banking API (SNAP), dan sistem KYC — serta menerapkan disiplin keandalan itu pada sistem AI otonom: pipeline deterministik, orchestrator, dan alur kerja produksi yang tidak rusak saat ditinggalkan.",
-  "bioContactLead": "Temukan saya di",
-  "bioContactOr": "atau",
   "experienceTitle": "{years} tahun, lima peran",
   "metrics": [
     {"valueKey": "yearsEngineering", "labelKey": "yearsEngineering"},

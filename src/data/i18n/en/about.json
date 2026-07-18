@@ -1,7 +1,5 @@
 {
   "bio": "Engineering leader with {years} years of software engineering experience, including 6+ years leading high-performing fintech and SaaS teams. I ship payment infrastructure at scale — payment gateways, banking APIs (SNAP), and KYC systems — and apply that reliability discipline to autonomous AI systems: deterministic pipelines, orchestrators, and production workflows that don't break when left unattended.",
-  "bioContactLead": "Find me on",
-  "bioContactOr": "or",
   "experienceTitle": "{years} years, five roles",
   "metrics": [
     {"valueKey": "yearsEngineering", "labelKey": "yearsEngineering"},
