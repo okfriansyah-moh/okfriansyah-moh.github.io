@@ -3,22 +3,66 @@ import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import SectionHeader from '@site/src/components/SectionHeader';
 import {CONTACT_LINKS} from '@site/src/data/contact-links';
-import {engineeringYearsPlus} from '@site/src/lib/career';
+import {engineeringYearsCount, engineeringYearsPlus} from '@site/src/lib/career';
 import {useLocaleData} from '@site/src/lib/locale-data';
+
+function AboutBio({
+  bio,
+  bioContactLead,
+  bioContactOr,
+  years,
+}: {
+  bio: string;
+  bioContactLead: string;
+  bioContactOr: string;
+  years: number;
+}): ReactNode {
+  const emailLink = CONTACT_LINKS.find((link) => link.label === 'Email');
+  const profileLinks = CONTACT_LINKS.filter((link) => link.label !== 'Email');
+
+  return (
+    <p className="text-lg leading-relaxed text-[var(--ifm-font-color-base)] max-w-2xl m-0 mb-8">
+      {bio.replace('{years}', String(years))}{' '}
+      {bioContactLead}{' '}
+      {profileLinks.map((link, index) => (
+        <span key={link.label}>
+          {index > 0 ? ', ' : ''}
+          <a
+            href={link.href}
+            {...(link.external ? {target: '_blank', rel: 'noopener noreferrer'} : {})}
+            className="text-accent no-underline hover:underline">
+            {link.label}
+          </a>
+        </span>
+      ))}
+      {emailLink ? (
+        <>
+          {', '}
+          {bioContactOr}{' '}
+          <a href={emailLink.href} className="text-accent no-underline hover:underline">
+            {emailLink.label.toLowerCase()}
+          </a>
+        </>
+      ) : null}
+      .
+    </p>
+  );
+}
 
 export default function About(): ReactNode {
   const {about, ui} = useLocaleData();
-  const years = engineeringYearsPlus();
+  const years = engineeringYearsCount();
+  const yearsPlus = engineeringYearsPlus();
 
   const metrics = about.metrics.map((metric) => ({
-    value: metric.valueKey === 'yearsEngineering' ? years : (metric.value ?? ''),
+    value: metric.valueKey === 'yearsEngineering' ? yearsPlus : (metric.value ?? ''),
     label: ui.metrics[metric.labelKey as keyof typeof ui.metrics],
   }));
 
   return (
     <Layout
       title={ui.about.title}
-      description={ui.about.metaDescription.replace('{years}', years)}
+      description={ui.about.metaDescription.replace('{years}', String(years))}
       wrapperClassName="about-page">
       <div className="about-hero">
         <div className="page-shell section-y max-w-editorial mx-auto">
@@ -30,20 +74,12 @@ export default function About(): ReactNode {
           </h1>
           <p className="text-xl text-muted m-0 mb-2 max-w-2xl">{ui.about.role}</p>
           <p className="font-mono text-meta text-muted m-0 mb-6">{ui.about.location}</p>
-          <p className="text-lg leading-relaxed text-[var(--ifm-font-color-base)] max-w-2xl m-0 mb-8">
-            {about.bio.replace('{years}', years)}
-          </p>
-          <div className="flex flex-wrap gap-2.5">
-            {CONTACT_LINKS.map(({label, href, external}) => (
-              <a
-                key={label}
-                href={href}
-                {...(external ? {target: '_blank', rel: 'noopener noreferrer'} : {})}
-                className="inline-flex items-center justify-center min-h-[44px] px-4 py-2 rounded-md text-sm font-medium border border-border text-[var(--ifm-font-color-base)] no-underline hover:border-accent hover:text-accent transition-colors duration-200">
-                {label}
-              </a>
-            ))}
-          </div>
+          <AboutBio
+            bio={about.bio}
+            bioContactLead={about.bioContactLead}
+            bioContactOr={about.bioContactOr}
+            years={years}
+          />
 
           <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-3">
             {metrics.map(({value, label}) => (
@@ -62,7 +98,7 @@ export default function About(): ReactNode {
         <section>
           <SectionHeader
             eyebrow={ui.about.experienceEyebrow}
-            title={about.experienceTitle.replace('{years}', years)}
+            title={about.experienceTitle.replace('{years}', String(years))}
             description={ui.about.experienceDescription}
           />
           <div className="about-timeline">
