@@ -37,21 +37,90 @@
         "en": "docs/projects/ares.md",
         "id": "i18n/id/docusaurus-plugin-content-docs/current/projects/ares.md"
       },
-      "sources": []
+      "sources": [
+        "okfriansyah-moh/ares#7",
+        "okfriansyah-moh/ares#8"
+      ]
     },
     "md-ame:autonomous-media-engine": {
       "document": {
         "en": "docs/systems/md-ame-autonomous-media-engine.md",
         "id": "i18n/id/docusaurus-plugin-content-docs/current/systems/md-ame-autonomous-media-engine.md"
       },
-      "sources": []
+      "sources": [
+        "okfriansyah-moh/md-ame"
+      ]
+    },
+    "md-ame:project-overview": {
+      "document": {
+        "en": "docs/projects/md-ame.md",
+        "id": "i18n/id/docusaurus-plugin-content-docs/current/projects/md-ame.md"
+      },
+      "sources": [
+        "okfriansyah-moh/md-ame"
+      ]
     },
     "polymarket-agent:trading-system": {
       "document": {
         "en": "docs/systems/polymarket-trading-agent.md",
         "id": "i18n/id/docusaurus-plugin-content-docs/current/systems/polymarket-trading-agent.md"
       },
-      "sources": []
+      "sources": [
+        "okfriansyah-moh/edge-polymarket-agent"
+      ]
+    },
+    "polymarket-agent:project-overview": {
+      "document": {
+        "en": "docs/projects/polymarket-agent.md",
+        "id": "i18n/id/docusaurus-plugin-content-docs/current/projects/polymarket-agent.md"
+      },
+      "sources": [
+        "okfriansyah-moh/edge-polymarket-agent"
+      ]
+    },
+    "deterministic-ai-pipelines:concept": {
+      "document": {
+        "en": "docs/concepts/deterministic-ai-pipelines.md",
+        "id": "i18n/id/docusaurus-plugin-content-docs/current/concepts/deterministic-ai-pipelines.md"
+      },
+      "sources": [
+        "okfriansyah-moh/shorts-generator#8",
+        "okfriansyah-moh/md-ame",
+        "okfriansyah-moh/skeleton-parallel#1"
+      ]
+    },
+    "database-state-machines:concept": {
+      "document": {
+        "en": "docs/concepts/database-state-machines.md",
+        "id": "i18n/id/docusaurus-plugin-content-docs/current/concepts/database-state-machines.md"
+      },
+      "sources": [
+        "okfriansyah-moh/shorts-generator",
+        "okfriansyah-moh/md-ame",
+        "okfriansyah-moh/edge-polymarket-agent"
+      ]
+    },
+    "ai-orchestration-patterns:concept": {
+      "document": {
+        "en": "docs/concepts/ai-orchestration-patterns.md",
+        "id": "i18n/id/docusaurus-plugin-content-docs/current/concepts/ai-orchestration-patterns.md"
+      },
+      "sources": [
+        "okfriansyah-moh/a2a-brainstormer#7",
+        "okfriansyah-moh/a2a-brainstormer#8"
+      ]
+    },
+    "llm-guardrails:concept": {
+      "document": {
+        "en": "docs/concepts/llm-guardrails.md",
+        "id": "i18n/id/docusaurus-plugin-content-docs/current/concepts/llm-guardrails.md"
+      },
+      "sources": [
+        "okfriansyah-moh/a2a-brainstormer#8",
+        "okfriansyah-moh/a2a-brainstormer#12",
+        "okfriansyah-moh/md-ame",
+        "okfriansyah-moh/edge-polymarket-agent"
+      ]
     }
   }
 }

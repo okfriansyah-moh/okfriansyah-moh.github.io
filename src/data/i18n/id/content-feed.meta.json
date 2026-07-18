@@ -1,6 +1,30 @@
 {
   "items": [
     {
+      "title": "Pengetahuan AI Coding Portabel dengan ARES",
+      "description": "Ringkasan proyek ARES — CLI referensi untuk AI Repository Standard yang mengomposisi artefak spesifik provider dari sumber kanonis .ai/.",
+      "link": "/docs/projects/ares",
+      "type": "project",
+      "date": "2026-07-18",
+      "readingTime": 2
+    },
+    {
+      "title": "MD-AME",
+      "description": "Mesin produksi YouTube otonom — pipeline media berparameter dimensi dengan state machine PostgreSQL.",
+      "link": "/docs/projects/md-ame",
+      "type": "project",
+      "date": "2026-07-18",
+      "readingTime": 2
+    },
+    {
+      "title": "Polymarket Agent",
+      "description": "Sistem trading prediction market otonom — modular monolith dengan event bus Postgres, gate probabilitas, dan kontrol risiko adaptif.",
+      "link": "/docs/projects/polymarket-agent",
+      "type": "project",
+      "date": "2026-07-18",
+      "readingTime": 2
+    },
+    {
       "title": "Membangun Pipeline Pemrosesan Video Panjang yang Dapat Dilanjutkan",
       "description": "Bagaimana Shorts Factory menggunakan pipeline deterministik 16 tahap dengan checkpointing SQLite untuk memproses video berjam-jam menjadi short siap publikasi.",
       "link": "/docs/systems/shorts-generator-pipeline",
@@ -38,7 +62,7 @@
       "link": "/docs/systems/md-ame-autonomous-media-engine",
       "type": "system",
       "date": "2025-03-20",
-      "readingTime": 1
+      "readingTime": 6
     },
     {
       "title": "Agen Trading Polymarket",
@@ -46,7 +70,7 @@
       "link": "/docs/systems/polymarket-trading-agent",
       "type": "system",
       "date": "2025-03-18",
-      "readingTime": 1
+      "readingTime": 6
     },
     {
       "title": "Pipeline AI Deterministik",
@@ -54,7 +78,7 @@
       "link": "/docs/concepts/deterministic-ai-pipelines",
       "type": "concept",
       "date": "2025-03-15",
-      "readingTime": 1
+      "readingTime": 5
     },
     {
       "title": "State Machine Berbasis Database",
@@ -62,7 +86,7 @@
       "link": "/docs/concepts/database-state-machines",
       "type": "concept",
       "date": "2025-03-12",
-      "readingTime": 1
+      "readingTime": 5
     },
     {
       "title": "Pola Orkestrasi AI",
@@ -70,7 +94,7 @@
       "link": "/docs/concepts/ai-orchestration-patterns",
       "type": "concept",
       "date": "2025-03-10",
-      "readingTime": 1
+      "readingTime": 5
     },
     {
       "title": "Guardrail LLM",
@@ -78,7 +102,7 @@
       "link": "/docs/concepts/llm-guardrails",
       "type": "concept",
       "date": "2025-03-08",
-      "readingTime": 1
+      "readingTime": 5
     }
   ]
 }
