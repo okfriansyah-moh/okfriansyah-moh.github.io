@@ -121,6 +121,25 @@
         "okfriansyah-moh/md-ame",
         "okfriansyah-moh/edge-polymarket-agent"
       ]
+    },
+    "delivery-foundry:control-plane": {
+      "document": {
+        "en": "docs/systems/delivery-foundry-control-plane.md",
+        "id": "i18n/id/docusaurus-plugin-content-docs/current/systems/delivery-foundry-control-plane.md"
+      },
+      "sources": [
+        "okfriansyah-moh/the-foundry@58632a0",
+        "okfriansyah-moh/the-foundry@9409080"
+      ]
+    },
+    "delivery-foundry:project-overview": {
+      "document": {
+        "en": "docs/projects/delivery-foundry.md",
+        "id": "i18n/id/docusaurus-plugin-content-docs/current/projects/delivery-foundry.md"
+      },
+      "sources": [
+        "okfriansyah-moh/the-foundry"
+      ]
     }
   }
 }

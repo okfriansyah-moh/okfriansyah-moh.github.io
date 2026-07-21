@@ -6,6 +6,7 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: 'Systems',
       items: [
+        'systems/delivery-foundry-control-plane',
         'systems/md-ame-autonomous-media-engine',
         'systems/polymarket-trading-agent',
         'systems/shorts-generator-pipeline',
@@ -27,6 +28,7 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: 'Projects',
       items: [
+        'projects/delivery-foundry',
         'projects/md-ame',
         'projects/polymarket-agent',
         'projects/ares',
