@@ -7,16 +7,15 @@ This backlog ranks article opportunities discovered from public repositories own
 `okfriansyah-moh`. The daily automation should consult this file when deciding whether
 to update an existing page or create a new one.
 
-## Status Summary (2026-07-18)
+## Status Summary (2026-07-21)
 
 | Status | Count | Notes |
 |--------|------:|-------|
-| Complete (full template) | 12 | All EN + ID mirrors |
+| Complete (full template) | 14 | All EN + ID mirrors |
 | Stubs remaining | 0 | — |
-| Missing pages | 0 | ARES project page created |
+| Missing pages | 0 | Delivery Foundry system + project pages added |
 
-**Completed in strengthen pass:** MD-AME system, Polymarket system, 4 concept stubs,
-3 project pages (including ARES), welcome blog refresh.
+**Completed in 2026-07-21 automation run:** Delivery Foundry control plane system article, Delivery Foundry project overview (new public repo `the-foundry`).
 
 ## Priority Legend
 
@@ -164,6 +163,11 @@ to update an existing page or create a new one.
 
 | Type: System | Repo: `the-collective-agent` | Path: `docs/systems/the-collective-agent.md` |
 | Learning: high-efficiency multi-agent on Bun | Diagram: agent pool + message bus |
+
+### 16. Delivery Foundry: Governed Control Plane (added 2026-07-21)
+
+| Type: System + Project | Repo: `the-foundry` | Path: `docs/systems/delivery-foundry-control-plane.md`, `docs/projects/delivery-foundry.md` |
+| Learning: kernel vs PEC authority split, six-status state model, dual-track roadmap | Status: **Complete** |
 
 ### 12. Sports Video Compositor Strategies
 

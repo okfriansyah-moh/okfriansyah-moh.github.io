@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "last_successful_scan_at": "2026-07-16T14:30:00+07:00",
+  "last_successful_scan_at": "2026-07-21T02:00:15+00:00",
   "processed_pull_requests": [
     "okfriansyah-moh/shorts-generator#8@bootstrap",
     "okfriansyah-moh/shorts-generator#10@bootstrap",
@@ -10,7 +10,10 @@
     "okfriansyah-moh/skeleton-parallel#1@bootstrap",
     "okfriansyah-moh/skeleton-parallel#2@bootstrap"
   ],
-  "processed_commits": [],
+  "processed_commits": [
+    "okfriansyah-moh/the-foundry@58632a0",
+    "okfriansyah-moh/the-foundry@9409080"
+  ],
   "ignored_activity": [],
   "pending_pull_requests": []
 }

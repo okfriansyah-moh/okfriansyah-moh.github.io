@@ -1,6 +1,22 @@
 {
   "items": [
     {
+      "title": "Delivery Foundry: Control Plane Terkelola untuk Pengiriman Perangkat Lunak AI",
+      "description": "Arsitektur control plane yang tahan lama, dapat dilanjutkan, dan terverifikasi bukti — kernel memiliki state dan side effect sementara Plan Execution Coordinator mengusulkan pekerjaan di bawah envelope kebijakan eksplisit.",
+      "link": "/docs/systems/delivery-foundry-control-plane",
+      "type": "system",
+      "date": "2026-07-21",
+      "readingTime": 8
+    },
+    {
+      "title": "Delivery Foundry: Loop Pengiriman Perangkat Lunak Otonom",
+      "description": "Ringkasan proyek Delivery Foundry — foundry dual-track untuk otonomi venture personal dan engineering 10x organisasi, dibangun di atas kernel terkelola bersama.",
+      "link": "/docs/projects/delivery-foundry",
+      "type": "project",
+      "date": "2026-07-21",
+      "readingTime": 4
+    },
+    {
       "title": "Pengetahuan AI Coding Portabel dengan ARES",
       "description": "Ringkasan proyek ARES — CLI referensi untuk AI Repository Standard yang mengomposisi artefak spesifik provider dari sumber kanonis .ai/.",
       "link": "/docs/projects/ares",
