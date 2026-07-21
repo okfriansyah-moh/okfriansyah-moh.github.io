@@ -1,6 +1,22 @@
 {
   "items": [
     {
+      "title": "Delivery Foundry: Governed Control Plane for AI Software Delivery",
+      "description": "Architecture of a durable, resumable, evidence-verified control plane where a kernel owns state and side effects while a Plan Execution Coordinator proposes work under explicit policy envelopes.",
+      "link": "/docs/systems/delivery-foundry-control-plane",
+      "type": "system",
+      "date": "2026-07-21",
+      "readingTime": 8
+    },
+    {
+      "title": "Delivery Foundry: Autonomous Software Delivery Loop",
+      "description": "Project overview of Delivery Foundry — a dual-track foundry for personal venture autonomy and organization 10x engineering, built on a shared governed kernel.",
+      "link": "/docs/projects/delivery-foundry",
+      "type": "project",
+      "date": "2026-07-21",
+      "readingTime": 4
+    },
+    {
       "title": "Portable AI Coding Knowledge with ARES",
       "description": "Project overview of ARES — the reference CLI for the AI Repository Standard that composes provider-specific artifacts from a canonical .ai/ source.",
       "link": "/docs/projects/ares",
