@@ -67,6 +67,7 @@ Always skip:
 - Minor typo fixes
 - Repeated work already documented
 - Work with insufficient evidence
+- New PRs whose capability fingerprint is already listed under related `covered_capabilities` in topic-index (unless they materially change the documented design — then UPDATE, do not CREATE)
 
 ## Activity Priority
 
@@ -76,6 +77,45 @@ Process in this order:
 2. New releases
 3. Significant commits on default branch without a pull request
 4. Newly created public repositories
+
+## Context Awareness — Update vs Create vs Skip
+
+Activity-level idempotency (`github-docs-state.json`) only prevents reprocessing the same
+PR/commit ID. It does **not** prevent a later PR in the same repo from spawning a
+near-duplicate article. Every candidate that scores ≥ 3 must pass this gate.
+
+### Steps
+
+1. Match the source repository against `repos` / `sources` in `.automation/topic-index.json`.
+2. Read the existing related EN articles (not titles alone).
+3. Derive a **capability fingerprint** (kebab-case slugs) for what the activity newly introduces.
+4. Compare to each related topic's `covered_capabilities` and `learning_objective`.
+5. Decide:
+
+| Decision   | Criteria                                                                                                    |
+| ---------- | ----------------------------------------------------------------------------------------------------------- |
+| **UPDATE** | Repo already has a system/project/concept page and the PR extends that topic                                |
+| **CREATE** | Distinct learning objective + uncovered capability fingerprint; cannot fit as a section of an existing page |
+| **SKIP**   | Fingerprint already covered or only incremental detail already implied                                      |
+
+### Hard rules
+
+- Default to **UPDATE** when the repository already appears in topic-index.
+- Never create a second **systems** or **project** article for the same repository.
+- A system + project pair for one repo is allowed (different jobs). A third page retelling the same architecture is not.
+- Concept pages require a reusable pattern whose learning objective is not already the focus of an existing concept article; prefer a section + cross-link when overlap is high.
+- Group related PRs from one repo that share a fingerprint into one decision per run.
+- Document the uniqueness decision in the automation PR body.
+
+### Topic-index fields (required on create/update)
+
+| Field                         | Purpose                                        |
+| ----------------------------- | ---------------------------------------------- |
+| `repos`                       | Owning source repositories (`owner/name`)      |
+| `learning_objective`          | One-sentence reader outcome                    |
+| `covered_capabilities`        | Kebab-case capability slugs already documented |
+| `sources`                     | Exact PRs/commits used as evidence             |
+| `document.en` / `document.id` | Article paths                                  |
 
 ## Content Placement
 
@@ -166,6 +206,8 @@ repair attempts. Do not open a pull request if validation still fails.
 - Maximum 1 pull request per run
 - Never push directly to `main`
 - Never merge the pull request
+- Body must include: activity window, sources, **uniqueness decision**, articles
+  created/updated, ignored activities, validation results, and known limitations
 
 ## Operational Limits
 

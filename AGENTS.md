@@ -11,12 +11,12 @@ beginner-friendly engineering documentation derived from public GitHub activity.
 
 ## Automation Control Files
 
-| File                                 | Purpose                                           |
-| ------------------------------------ | ------------------------------------------------- |
-| `.automation/github-docs-state.json` | Idempotency and processed-activity ledger         |
-| `.automation/topic-index.json`       | Maps engineering topics to existing articles      |
-| `.automation/content-policy.md`      | Editorial rules, scoring, and security boundaries |
-| `.automation/article-template.md`    | Required article structure for new pages          |
+| File                                 | Purpose                                          |
+| ------------------------------------ | ------------------------------------------------ |
+| `.automation/github-docs-state.json` | Idempotency and processed-activity ledger        |
+| `.automation/topic-index.json`       | Topic → docs + repos + covered capabilities      |
+| `.automation/content-policy.md`      | Editorial rules, scoring, uniqueness, boundaries |
+| `.automation/article-template.md`    | Required article structure for new pages         |
 
 ## Bootstrap Sequence
 
@@ -37,6 +37,10 @@ See `.automation/content-policy.md` for the full policy. Summary:
 - Discover public GitHub activity for owner `okfriansyah-moh` via GitHub MCP
 - Filter low-value and already-processed activity
 - Score candidates; document only those scoring ≥ 3
+- **Context-aware uniqueness:** match each candidate against `topic-index.json`
+  (`repos`, `covered_capabilities`, `learning_objective`); default to updating an
+  existing article when the repo is already covered; create only for a distinct
+  uncovered capability; skip when the fingerprint is already documented
 - Update existing articles or create at most 2 per run
 - Validate with `npm ci`, `npm run typecheck`, `npm run build`
 - Open one PR on branch `automation/github-knowledge-YYYY-MM-DD`
