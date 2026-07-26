@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "topics": {
     "shorts-generator:pipeline-reliability": {
       "document": {
@@ -10,6 +10,18 @@
         "okfriansyah-moh/shorts-generator#8",
         "okfriansyah-moh/shorts-generator#10",
         "okfriansyah-moh/shorts-generator#11"
+      ],
+      "repos": [
+        "okfriansyah-moh/shorts-generator"
+      ],
+      "learning_objective": "Design a restartable multi-stage video pipeline with checkpointing and idempotent stage caching",
+      "covered_capabilities": [
+        "multi-stage-deterministic-pipeline",
+        "sqlite-checkpoint-resume",
+        "idempotent-stage-caching",
+        "distributed-upload-scheduling",
+        "multi-platform-publish",
+        "sports-video-type"
       ]
     },
     "a2a-brainstormer:document-coherence": {
@@ -20,6 +32,16 @@
       "sources": [
         "okfriansyah-moh/a2a-brainstormer#8",
         "okfriansyah-moh/a2a-brainstormer#12"
+      ],
+      "repos": [
+        "okfriansyah-moh/a2a-brainstormer"
+      ],
+      "learning_objective": "Prevent contradictions in long AI-generated documents via section-sequential generation and coherence audits",
+      "covered_capabilities": [
+        "section-sequential-generation",
+        "cross-section-coherence-audit",
+        "guarded-micro-fixes",
+        "revert-on-failed-validation"
       ]
     },
     "skeleton-parallel:agentic-orchestrator": {
@@ -30,6 +52,17 @@
       "sources": [
         "okfriansyah-moh/skeleton-parallel#1",
         "okfriansyah-moh/skeleton-parallel#2"
+      ],
+      "repos": [
+        "okfriansyah-moh/skeleton-parallel"
+      ],
+      "learning_objective": "Build a task-based agentic coding loop with bounded retries, checkpoints, and quality gates",
+      "covered_capabilities": [
+        "task-based-agent-loop",
+        "bounded-retries",
+        "git-checkpoint-rollback",
+        "architecture-quality-gates",
+        "phase-to-task-migration"
       ]
     },
     "ares:provider-neutral-standards": {
@@ -40,6 +73,14 @@
       "sources": [
         "okfriansyah-moh/ares#7",
         "okfriansyah-moh/ares#8"
+      ],
+      "repos": [
+        "okfriansyah-moh/ares"
+      ],
+      "learning_objective": "Apply provider-neutral AI repository standards and governance conventions",
+      "covered_capabilities": [
+        "provider-neutral-repo-standards",
+        "ai-toolchain-conventions"
       ]
     },
     "md-ame:autonomous-media-engine": {
@@ -49,6 +90,16 @@
       },
       "sources": [
         "okfriansyah-moh/md-ame"
+      ],
+      "repos": [
+        "okfriansyah-moh/md-ame"
+      ],
+      "learning_objective": "Understand MD-AME's autonomous media generation architecture and safety layers",
+      "covered_capabilities": [
+        "autonomous-media-pipeline",
+        "prompt-firewall",
+        "gemini-safety-classifier",
+        "topic-to-script-generation"
       ]
     },
     "md-ame:project-overview": {
@@ -58,6 +109,14 @@
       },
       "sources": [
         "okfriansyah-moh/md-ame"
+      ],
+      "repos": [
+        "okfriansyah-moh/md-ame"
+      ],
+      "learning_objective": "Follow MD-AME's project journey, scope, and implementation status",
+      "covered_capabilities": [
+        "project-roadmap-status",
+        "product-scope-overview"
       ]
     },
     "polymarket-agent:trading-system": {
@@ -67,6 +126,15 @@
       },
       "sources": [
         "okfriansyah-moh/edge-polymarket-agent"
+      ],
+      "repos": [
+        "okfriansyah-moh/edge-polymarket-agent"
+      ],
+      "learning_objective": "Understand the Polymarket trading agent's execution path and AI advisor isolation",
+      "covered_capabilities": [
+        "trading-execution-loop",
+        "advisory-ai-isolation",
+        "market-state-machine"
       ]
     },
     "polymarket-agent:project-overview": {
@@ -76,6 +144,14 @@
       },
       "sources": [
         "okfriansyah-moh/edge-polymarket-agent"
+      ],
+      "repos": [
+        "okfriansyah-moh/edge-polymarket-agent"
+      ],
+      "learning_objective": "Follow the Polymarket agent project journey and status",
+      "covered_capabilities": [
+        "project-roadmap-status",
+        "product-scope-overview"
       ]
     },
     "deterministic-ai-pipelines:concept": {
@@ -87,6 +163,16 @@
         "okfriansyah-moh/shorts-generator#8",
         "okfriansyah-moh/md-ame",
         "okfriansyah-moh/skeleton-parallel#1"
+      ],
+      "repos": [
+        "okfriansyah-moh/shorts-generator",
+        "okfriansyah-moh/md-ame",
+        "okfriansyah-moh/skeleton-parallel"
+      ],
+      "learning_objective": "Recognize cross-project patterns for making AI pipelines deterministic and restartable",
+      "covered_capabilities": [
+        "cross-project-deterministic-pipeline-patterns",
+        "checkpointing-pattern-synthesis"
       ]
     },
     "database-state-machines:concept": {
@@ -98,6 +184,17 @@
         "okfriansyah-moh/shorts-generator",
         "okfriansyah-moh/md-ame",
         "okfriansyah-moh/edge-polymarket-agent"
+      ],
+      "repos": [
+        "okfriansyah-moh/shorts-generator",
+        "okfriansyah-moh/md-ame",
+        "okfriansyah-moh/edge-polymarket-agent"
+      ],
+      "learning_objective": "Model durable workflow state with database-backed state machines",
+      "covered_capabilities": [
+        "db-backed-workflow-states",
+        "transition-guards",
+        "durable-job-status"
       ]
     },
     "ai-orchestration-patterns:concept": {
@@ -108,6 +205,15 @@
       "sources": [
         "okfriansyah-moh/a2a-brainstormer#7",
         "okfriansyah-moh/a2a-brainstormer#8"
+      ],
+      "repos": [
+        "okfriansyah-moh/a2a-brainstormer"
+      ],
+      "learning_objective": "Coordinate fixed-role AI workers through sequential pipelines with immutable canonical state",
+      "covered_capabilities": [
+        "fixed-role-sequential-pipeline",
+        "immutable-canonical-state",
+        "bounded-iteration-orchestration"
       ]
     },
     "llm-guardrails:concept": {
@@ -120,6 +226,19 @@
         "okfriansyah-moh/a2a-brainstormer#12",
         "okfriansyah-moh/md-ame",
         "okfriansyah-moh/edge-polymarket-agent"
+      ],
+      "repos": [
+        "okfriansyah-moh/a2a-brainstormer",
+        "okfriansyah-moh/md-ame",
+        "okfriansyah-moh/edge-polymarket-agent"
+      ],
+      "learning_objective": "Constrain LLM behavior with input sanitization, output validation, revert-on-failure, and advisory isolation",
+      "covered_capabilities": [
+        "input-sanitization",
+        "output-validation",
+        "revert-on-failure",
+        "advisory-ai-isolation",
+        "prompt-firewall"
       ]
     },
     "delivery-foundry:control-plane": {
@@ -131,6 +250,22 @@
         "okfriansyah-moh/the-foundry@58632a0",
         "okfriansyah-moh/the-foundry@9409080",
         "okfriansyah-moh/the-foundry#1"
+      ],
+      "repos": [
+        "okfriansyah-moh/the-foundry"
+      ],
+      "learning_objective": "Understand Delivery Foundry's control-plane architecture: kernel vs PEC authority, six-status model, evidence-verified delivery loop",
+      "covered_capabilities": [
+        "kernel-vs-pec-authority",
+        "six-status-state-model",
+        "evidence-verified-delivery-loop",
+        "temporal-kernel-workflow",
+        "multi-provider-agent-harness",
+        "plan-runner",
+        "fitlint-constitution-checks",
+        "checkpoint-restart-proof",
+        "policy-compiler",
+        "cli-daemon"
       ]
     },
     "delivery-foundry:project-overview": {
@@ -141,6 +276,16 @@
       "sources": [
         "okfriansyah-moh/the-foundry",
         "okfriansyah-moh/the-foundry#1"
+      ],
+      "repos": [
+        "okfriansyah-moh/the-foundry"
+      ],
+      "learning_objective": "Follow Delivery Foundry's dual-track venture/10x roadmap and implementation status",
+      "covered_capabilities": [
+        "project-roadmap-status",
+        "dual-track-venture-10x",
+        "entry-types-overview",
+        "implementation-task-status"
       ]
     }
   }

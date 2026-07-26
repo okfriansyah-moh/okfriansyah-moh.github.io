@@ -90,6 +90,8 @@ Before processing an activity:
 3. Check automation memory for pending activity.
 4. Skip activity that was already processed or is already represented in an open pull request.
 
+**Activity idempotency is not enough.** Skipping a processed PR ID only prevents rewriting that exact PR. A later PR in the same repository can still introduce _unique_ content — or _repeat_ already-documented capabilities. You must also pass the **context-awareness gate** below before creating or updating articles.
+
 On the first run, inspect a maximum of the previous 14 days.
 On later runs, inspect activity after last_successful_scan_at.
 
@@ -111,6 +113,41 @@ Only document candidates scoring 3 or higher.
 Group related pull requests and commits into one coherent topic.
 Create a maximum of two new or substantially updated articles per run.
 
+## CONTEXT AWARENESS GATE (MANDATORY)
+
+Multiple merged PRs from the **same repository** must not produce near-duplicate articles. Same repo ≠ automatic new article. Same repo + **new capability** may deserve a new article or a targeted update.
+
+### Before writing anything, for every candidate that scores ≥ 3
+
+1. **Resolve related topics** — find every entry in `.automation/topic-index.json` whose `repos` or `sources` mention this repository (or a closely related concept).
+2. **Read existing articles** — open the linked `document.en` (and `document.id` if updating) pages. Do not rely on titles alone.
+3. **Extract a capability fingerprint** from the new activity — short kebab-case slugs for the _new_ engineering mechanisms (e.g. `temporal-kernel-workflow`, `checkpoint-resume`, `coherence-audit`). List only what the PR/commit actually introduces, not the whole product.
+4. **Compare against `covered_capabilities`** on related topics. If the fingerprint is a subset of (or synonymous with) already-covered capabilities, treat as **already documented**.
+5. **Choose exactly one action:**
+
+| Decision   | When                                                                                                           | What to do                                                                                                         |
+| ---------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| **UPDATE** | Same system/project/concept already has a page, and the PR extends or refines it                               | Edit the existing EN + ID articles; append the PR to `sources`; add new capability slugs to `covered_capabilities` |
+| **CREATE** | Learning objective is clearly new, cannot fit as a section of an existing page, and fingerprint is not covered | New EN + ID article + topic-index entry with `repos`, `covered_capabilities`, `learning_objective`, `sources`      |
+| **SKIP**   | Capability already covered, or only incremental feature detail already implied by an existing article          | Record in PR body / ignored_activity; do not open a content PR solely for this                                     |
+
+### Hard rules
+
+- **Default to UPDATE** when the repository already appears in `.automation/topic-index.json` (system and/or project pages).
+- **Do not create a second system article** for the same repository. Fold new architecture into the existing systems page (or a focused concept page only if the learning objective is reusable across projects).
+- **Do not create a second project overview** for the same repository.
+- **Concept articles** are allowed only when the PR teaches a reusable pattern whose learning objective is **not** already the focus of an existing concepts page. Prefer a short new section + cross-link over a whole new article when overlap is ≥ ~50%.
+- **System + project pair** for one repo is intentional (architecture depth vs journey/status). That is not duplication. Creating a third page that retells the same architecture **is** duplication.
+- Group related unprocessed PRs from the same repo into **one** topic decision per run when they share a capability fingerprint.
+- In the documentation PR body, include a **Uniqueness decision** section: related topics checked, capability fingerprint, and UPDATE / CREATE / SKIP with one-sentence rationale.
+
+### Examples
+
+- `shorts-generator` PR adding another publish platform → **UPDATE** pipeline article (same restartable pipeline capability).
+- `the-foundry` PR implementing Tasks 3–22 after bootstrap docs exist → **UPDATE** control-plane + project pages (already happened correctly).
+- `a2a-brainstormer` PR that only tightens existing coherence guards → **UPDATE** or **SKIP** `ai-document-coherence` / `llm-guardrails`; do **not** create a third coherence article.
+- New repo with a novel orchestration kernel and no topic-index hit → **CREATE** (typically one systems page; add project overview only if roadmap/status content is substantial and distinct).
+
 ## SOURCE INVESTIGATION
 
 Before writing an article:
@@ -122,6 +159,7 @@ Before writing an article:
 5. Inspect relevant tests.
 6. Identify the problem, design decision, execution flow, trade-offs, validation, and failure modes.
 7. Record the exact source pull requests and commits.
+8. Complete the context-awareness gate (related topics, fingerprint, UPDATE/CREATE/SKIP).
 
 Never infer unsupported production results.
 Never invent metrics, user counts, performance improvements, revenue, benchmarks, production adoption, or architecture components not present in the repository.
@@ -142,6 +180,7 @@ Never invent metrics, user counts, performance improvements, revenue, benchmarks
 
 Prefer updating an existing article when the project or concept already has a page (check `.automation/topic-index.json` and `docs/CONTENT_BACKLOG.md`).
 Do not create duplicate articles describing the same capability.
+Passing the context-awareness gate is required before CREATE.
 
 ### Article layout (automatic)
 
@@ -159,8 +198,13 @@ Complete every step for **both English and Indonesian**:
    "document": {
      "en": "docs/systems/my-article.md",
      "id": "i18n/id/docusaurus-plugin-content-docs/current/systems/my-article.md"
-   }
+   },
+   "repos": ["okfriansyah-moh/example-repo"],
+   "learning_objective": "One sentence: what the reader learns",
+   "covered_capabilities": ["capability-slug-a", "capability-slug-b"],
+   "sources": ["okfriansyah-moh/example-repo#12"]
    ```
+   On **UPDATE**, append new `sources` and any new `covered_capabilities` slugs; never wipe existing capabilities.
 5. **Sync feed** — run `npm run sync:feed` (updates `src/data/i18n/en/` and `src/data/i18n/id/` feed meta from frontmatter).
 6. **Validate** — `npm ci && npm run sync:feed && npm run typecheck && npm run build` (builds all locales).
 
@@ -199,7 +243,7 @@ Open no more than one pull request per automation run.
 Branch: automation/github-knowledge-YYYY-MM-DD
 Title: docs: publish engineering knowledge update YYYY-MM-DD
 
-The pull request body must include: activity window inspected, source repositories inspected, pull requests and commits used as evidence, articles created, articles updated, activities deliberately ignored and why, validation commands and results, and known limitations.
+The pull request body must include: activity window inspected, source repositories inspected, pull requests and commits used as evidence, **uniqueness decision** (related topics checked, capability fingerprint, UPDATE/CREATE/SKIP rationale), articles created, articles updated, activities deliberately ignored and why, validation commands and results, and known limitations.
 
 Do not merge the pull request.
 
