@@ -21,11 +21,23 @@ control plane** for loop-engineered software delivery. The V12 architecture defi
 durable, resumable, evidence-verified execution model for AI agents operating under
 explicit policy envelopes rather than implicit trust.
 
-As of the repository's initial public release (2026-07-20), **Task 1** is complete:
-Docker-wrapped Makefile toolchain, CI workflow, Go module scaffold, and nineteen
-`internal/*` package stubs each carrying an authority-limit `doc.go`. The normative
-architecture and workflow contracts live in `delivery_foundry.md` and the modular
-`docs/` tree; runtime implementation follows the 83-task plan in `PLAN_7.md`.
+The repository shipped **Task 1** on 2026-07-20 (Docker-wrapped Makefile, CI, Go
+scaffolds). [Pull request #1](https://github.com/okfriansyah-moh/the-foundry/pull/1)
+(merged 2026-07-25) completes **Tasks 2–22** through milestone M0 (Shared Kernel Proof)
+and the start of M1 (Foundation):
+
+- **Agent harness (Task 2)** — ARES-canonical [`.ai/`](https://github.com/okfriansyah-moh/the-foundry/tree/main/.ai) with six role agents, eleven skills, and multi-provider composition into `AGENTS.md` / `CLAUDE.md` / `.codex/` (Claude + Codex providers in `.ai/manifest.yaml`)
+- **Autonomous plan runner (Task 3)** — `tools/planrunner` with risk-tiered AUTO vs GATED paths and Telegram approval gates
+- **Runtime stack (Tasks 4–5)** — `postgres` + `temporal` in compose; canonical six-status state package (`internal/state`)
+- **Admission and provenance (Tasks 6–8)** — PLAN schema/parser, deterministic `AdmissionClassifier` v0, signed `ApprovedPlan` chain
+- **Execution substrate (Tasks 9–11)** — worktree manager, executor contract + fake executor, evidence bundle store
+- **Kernel workflow (Tasks 12–16)** — `foundryd` Temporal worker hosting `DeliverPlan`; checkpoint + forced-restart resume proof
+- **Operator surface (Tasks 13–15, 18–19)** — validation runner, PostgreSQL status projection, `foundry` CLI (`status`, `plan submit|approve|verify`, `projection rebuild`, `doctor`, `policy`, `evidence`, `principal`), and `fitlint` constitution checks
+- **Foundation layer (Tasks 20–22)** — migrations framework, profiles/principals/organizations, policy compiler v1
+
+Normative contracts remain in `docs/foundry/delivery_foundry.md` and the modular
+`docs/foundry/docs/` tree; the live implementation roadmap is `docs/PLAN.md`
+(Tasks 23–83 still open).
 
 ## The Problem
 
@@ -162,15 +174,22 @@ flowchart TB
 | **Plan Execution Coordinator (PEC)** | Interprets admitted plans; proposes waves, dispatch, remediation, progress |
 | **Admission classifier** | Deterministic tier assignment; prevents self-authorizing plans |
 | **State projection (PostgreSQL)** | Rebuildable read model — not execution authority |
-| **Temporal backend** | Durable execution history, timers, sequencing (planned Task 12) |
+| **Temporal backend (`foundryd`)** | Durable execution history, timers, sequencing — Task 12 worker on queue `foundry-core` |
+| **`foundry` CLI** | Operator commands: status (consistency levels), plan submit/approve/verify, projection rebuild, doctor, policy, evidence |
+| **`fitlint` + `make fitness`** | Constitution enforcement: enum lint (C1), superseded-term lint, import boundaries, doc-link resolver |
+| **`.ai/` agent harness** | Six executor roles, eleven skills, authority-boundary instructions; composed to provider-specific agent files |
+| **Plan runner (`tools/planrunner`)** | Bootstrap orchestrator for Tasks 4–22; retires once kernel admits its own backlog (Task 3 exit condition) |
 | **Evidence pipeline** | Typed verification bundles required for phase advancement |
 | **Operation ledger** | Idempotency keys and reconciliation for external side effects |
 | **Recovery Manager** | Bounded self-healing ladder with explicit prohibitions |
 | **Branch Integrator** | Kernel-owned SCM writes to isolated worktrees and 10x branches |
 
-Go package layout (scaffolded in Task 1): `internal/kernel`, `internal/pec`, `internal/state`,
-`internal/admission`, `internal/evidence`, `internal/recovery`, `internal/provenance`,
-`internal/worktree`, and others — each with a `doc.go` stating authority limits.
+Go packages now carry real implementations through Task 22 — each with a `doc.go`
+stating authority limits: `internal/kernel` (Temporal workflow), `internal/state`
+(six-status model), `internal/admission`, `internal/provenance`, `internal/evidence`,
+`internal/worktree`, `internal/executor/*`, `internal/projection`, `internal/policy`,
+`internal/profile`, and others. PEC packages remain proposal-only per C5; side-effect
+authority stays in kernel code paths exercised by `foundryd`.
 
 ## Simplified Implementation Examples
 
@@ -243,28 +262,34 @@ L7 — pause and escalate to human
 
 ## Testing
 
-Current Task 1 validation (implemented):
+Current validation (Tasks 1–22, implemented):
 
 - `make bootstrap test lint fitness` inside the `dev` Docker image
-- `scripts/fitness.sh` v0: `go vet ./...` and `doc.go` presence in every `internal/*` package
+- `make up` + `make doctor` — verifies Docker/Compose, PostgreSQL `SELECT 1`, Temporal `GetSystemInfo`
+- `scripts/fitness.sh` (Task 18): `go vet`, `doc.go` presence, plus `cmd/fitlint` checks for
+  enum lint (C1), superseded-term lint, SCM import boundaries, and doc-link resolution
+- `make skp-e2e` (Task 19) — Shared Kernel Proof end-to-end: admit plan → worktree → verify →
+  evidence bundle → **forced restart → resume from checkpoint**
+- `cmd/foundry/status_test.go` — CLI status output with consistency levels
 - GitHub Actions CI on push (`.github/workflows/ci.yaml`)
 
-Planned validation (constitution check at milestone exits):
+Planned validation (remaining milestones):
 
-- Enum lint, superseded-term lint, import-boundary checks
 - PEC prohibition conformance tests (Task 56)
-- Shared Kernel Proof e2e: admit one plan → worktree → verify → evidence → **resume after restart**
 - Fault-injection and security evaluations per V12 specification
+- Full OPA PDP integration and external-operation ledger (Tasks 23–26)
 
 ## Operations and Observability
 
-- **CLI entry** — `foundry` CLI (planned) with `make` targets: `bootstrap`, `test`, `lint`,
-  `fitness`, `skp-e2e`, `evidence-verify`, `projection-rebuild`
-- **Notifications** — Telegram engine for batched digests and gated approvals; high-risk
-  approvals require OIDC + WebAuthn (not Telegram-only)
-- **Cost accounting** — Reserve → incur → reconcile pattern with pre-execution budget enforcement
-- **Observability** — SLOs, alerts, and payload limits defined in `docs/operations/observability-and-alerts.md`
-- **Control-plane self-protection** — Separate contracts for capacity brokering and disaster recovery
+- **CLI entry** — `foundry` subcommands: `doctor`, `status`, `plan submit|approve|verify`,
+  `projection rebuild`, `principal create`, `keygen`, `policy`, `evidence`, `migrate`
+- **Daemon** — `foundryd` polls Temporal queue `foundry-core`; only process performing kernel side effects (C4)
+- **Make targets** — `bootstrap`, `up`, `down`, `doctor`, `test`, `lint`, `fitness`, `skp-e2e`,
+  `plan-run`, `evidence-verify`, `projection-rebuild` (all Docker-wrapped)
+- **Bootstrap notifications** — Plan runner (Task 3) uses a disposable Telegram bot for AUTO-path
+  digests and GATED-path `/approve` / `/reject` gates; production Telegram engine is Task 30
+- **Cost accounting** — Reserve → incur → reconcile pattern documented; enforcement lands in Tasks 29/69
+- **Observability** — SLOs, alerts, and payload limits defined in `docs/foundry/docs/operations/observability-and-alerts.md`
 
 ## Lessons Learned
 
@@ -278,6 +303,10 @@ Planned validation (constitution check at milestone exits):
    completion proofs; verification bundles gate phase advancement.
 5. **Architecture-first bootstrap** — Task 1 scaffolds authority boundaries in `doc.go`
    before implementation code, so CI can enforce package roles early.
+6. **Provider-neutral agent harness** — Task 2 keeps `.ai/` as the single canonical source;
+   `ars compose` projects skills and boundaries into Claude/Codex formats without duplicating policy.
+7. **Fitness earns the constitution** — Task 18's `fitlint` turns C1 articles into CI failures,
+   not documentation-only guidance.
 
 ## Related
 
@@ -288,6 +317,8 @@ Planned validation (constitution check at milestone exits):
 ## Sources
 
 - Repository: [okfriansyah-moh/the-foundry](https://github.com/okfriansyah-moh/the-foundry)
-- Commits: [`58632a0`](https://github.com/okfriansyah-moh/the-foundry/commit/58632a0) (first commit), [`9409080`](https://github.com/okfriansyah-moh/the-foundry/commit/9409080) (Task 1 scaffold)
-- Architecture: `delivery_foundry.md`, `docs/architecture/state-model.md`, `docs/architecture/authority-model.md`
-- Implementation plan: `PLAN_7.md` (Task 1 ✅, Tasks 2–83 pending)
+- Pull request: [#1 — Tasks 3–22](https://github.com/okfriansyah-moh/the-foundry/pull/1) (merge commit [`6efd492`](https://github.com/okfriansyah-moh/the-foundry/commit/6efd492d48d99672afea27da565699e8e8a3983d))
+- Earlier commits: [`58632a0`](https://github.com/okfriansyah-moh/the-foundry/commit/58632a0) (first commit), [`9409080`](https://github.com/okfriansyah-moh/the-foundry/commit/9409080) (Task 1 scaffold)
+- Architecture: `docs/foundry/delivery_foundry.md`, `docs/architecture.md`, `docs/foundry/docs/architecture/state-model.md`
+- Agent harness: `.ai/manifest.yaml`, `.ai/instructions/authority-boundaries.md`
+- Implementation plan: `docs/PLAN.md` (Tasks 1–22 ✅, Tasks 23–83 pending)

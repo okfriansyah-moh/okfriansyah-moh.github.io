@@ -23,16 +23,18 @@ improve until the work is honestly complete or provably blocked.
 
 The public repository (created 2026-07-20) contains:
 
-- **Normative architecture** — `delivery_foundry.md` master index plus modular contracts
-  under `docs/architecture/`, `docs/workflows/`, `docs/autonomy/`, `docs/security/`, and
-  `docs/operations/`
-- **Implementation roadmap** — 83 sequentially numbered tasks in `PLAN_7.md` with
+- **Normative architecture** — `docs/foundry/delivery_foundry.md` master index plus modular contracts
+  under `docs/foundry/docs/` (architecture, workflows, autonomy, security, operations)
+- **Implementation roadmap** — 83 sequentially numbered tasks in `docs/PLAN.md` with
   constitution articles C1–C22
-- **Task 1 bootstrap** — Docker-wrapped Makefile, CI, Go module, and package scaffolds
-  for the shared kernel
+- **Tasks 1–22 complete (2026-07-25)** — via [PR #1](https://github.com/okfriansyah-moh/the-foundry/pull/1):
+  agent harness, autonomous plan runner, Temporal kernel workflow, CLI/daemon, fitness suite,
+  migrations, profiles, and policy compiler v1
+- **Shared Kernel Proof (M0 exit)** — end-to-end demo proving admit → worktree → verify →
+  evidence → checkpoint restart
 
-Implementation beyond scaffolding is in progress; this page describes the project's
-design intent and roadmap as documented in source.
+Tasks 23–83 (OPA integration, full provenance chain, venture and 10x tracks) remain open;
+this page tracks project evolution as documented in source.
 
 ## The Problem
 
@@ -80,7 +82,9 @@ shared 10x branch with no PR, merge, or deployment in that workflow.
 | --------- | ---------------------- |
 | V12 documentation set | Modular normative contracts; V11 content preserved via migration map |
 | Task 1 (✅ 2026-07-20) | Docker dev toolchain, CI, Go package scaffolds, fitness v0 |
-| Shared Kernel Proof (planned) | Admit one plan → one repo → worktree → verify → evidence → resume after restart |
+| Tasks 2–22 (✅ 2026-07-25, PR #1) | Agent harness (`.ai/`), plan runner, Temporal kernel, CLI/daemon, SKP e2e, migrations + policy compiler |
+| M0 — Shared Kernel Proof (✅) | Admit one plan → worktree → verify → evidence → **resume after restart** |
+| M1 — Foundation (partial) | Tasks 20–22 done; OPA PDP, full provenance chain, ledger (Tasks 23–26) pending |
 | Venture MLS (Track A) | Mission → deployable product → billing observation → one bounded improvement cycle |
 | 10x MLS (Track B) | Approved plan → provenance → atomic group → direct 10x branch push |
 | Mission-capable venture | Autonomous improvement within drift governance envelope |
@@ -98,7 +102,9 @@ Roadmap estimates and builder assumptions are documented honestly in
 | PEC rename from "Forge" | Avoid collision with Atigravity Forge; kernel retains authority |
 | Docker-only host requirements | Docker + GNU make; no local Go/Node/Playwright install |
 | Constitution-gated tasks | Every plan task checked against C1–C22; `make fitness` at milestone exits |
-| Autonomous plan runner (Task 3) | Risk-tiered orchestrator replaces manual task triggering from Task 4 onward |
+| Autonomous plan runner (Task 3) | Risk-tiered AUTO/GATED orchestrator; bootstrap tool retires once kernel admits backlog |
+| Multi-provider agent harness (Task 2) | ARES `.ai/` canonical source composed to Claude/Codex; eleven skills mapped to six roles |
+| Constitution fitness (Task 18) | `fitlint` enforces C1 enum rules, import boundaries, and doc links in CI |
 | Four container image lineages | Anti-sprawl rule: dev, postgres/temporal, executor sandbox, release binary |
 
 ## Entry Types and Workflows
@@ -118,13 +124,19 @@ Recovery, retry, and honest completion semantics live in `docs/workflows/recover
 ## Repository Layout (current)
 
 ```text
-delivery_foundry.md          master architecture index
-docs/                      normative contracts (architecture, workflows, autonomy, security)
-PLAN_7.md                  83-task implementation plan
-deploy/                    Docker dev toolchain (Dockerfile.dev, docker-compose.yaml)
-internal/                  Go packages (kernel, pec, state, admission, evidence, …)
-scripts/fitness.sh         constitution check v0
-Makefile                   docker-wrapped targets: bootstrap, test, lint, fitness
+docs/foundry/delivery_foundry.md   master architecture index
+docs/PLAN.md                       83-task implementation plan (Tasks 1–22 ✅)
+docs/architecture.md               one-page constitution + link map
+.ai/                               canonical agent harness (ARES format)
+AGENTS.md / CLAUDE.md              composed provider views (do not hand-edit)
+cmd/foundry/                       operator CLI
+cmd/foundryd/                      Temporal kernel worker
+cmd/fitlint/                       constitution linter
+tools/planrunner/                  bootstrap autonomous task orchestrator
+deploy/                            Docker dev toolchain + postgres/temporal compose
+internal/                          Go packages (kernel, state, admission, evidence, …)
+scripts/fitness.sh                 constitution check suite
+Makefile                           docker-wrapped targets
 ```
 
 ## Lessons Learned
@@ -133,8 +145,8 @@ Makefile                   docker-wrapped targets: bootstrap, test, lint, fitnes
    so implementation agents receive only relevant normative sections.
 2. **Honest roadmap sizing** — Dual-track scope increases total effort; the architecture
    states this explicitly rather than hiding it behind a single-track estimate.
-3. **Bootstrap tasks are necessarily manual** — Tasks 1–3 require human (or later,
-   runner) trigger before the autonomous plan runner exists.
+3. **Bootstrap then kernel** — Tasks 1–3 required manual or runner trigger; PR #1 delivered
+   the runner and the first kernel workflow so later tasks can dogfood Foundry itself.
 4. **Fitness functions earn the design score** — The spec targets 10/10-quality design
    but declares the score is earned only when fault-injection, security, and SLO tests pass.
 5. **Legacy quarantine** — `docs/legacy/` is banner-marked superseded history and must
@@ -149,6 +161,8 @@ Makefile                   docker-wrapped targets: bootstrap, test, lint, fitnes
 ## Sources
 
 - Repository: [okfriansyah-moh/the-foundry](https://github.com/okfriansyah-moh/the-foundry)
-- Commits: [`58632a0`](https://github.com/okfriansyah-moh/the-foundry/commit/58632a0), [`9409080`](https://github.com/okfriansyah-moh/the-foundry/commit/9409080)
-- Review: `V12_REVIEW_REPORT.md` in source repo
-- Changelog: `CHANGELOG.md` in source repo
+- Pull request: [#1 — Tasks 3–22](https://github.com/okfriansyah-moh/the-foundry/pull/1) (merge [`6efd492`](https://github.com/okfriansyah-moh/the-foundry/commit/6efd492d48d99672afea27da565699e8e8a3983d))
+- Earlier commits: [`58632a0`](https://github.com/okfriansyah-moh/the-foundry/commit/58632a0), [`9409080`](https://github.com/okfriansyah-moh/the-foundry/commit/9409080)
+- Review: `docs/foundry/V12_REVIEW_REPORT.md` in source repo
+- Changelog: `docs/foundry/CHANGELOG.md` in source repo
+- Plan index: `docs/PLAN.md` §D Master Task Index

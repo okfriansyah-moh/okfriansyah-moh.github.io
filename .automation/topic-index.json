@@ -129,7 +129,8 @@
       },
       "sources": [
         "okfriansyah-moh/the-foundry@58632a0",
-        "okfriansyah-moh/the-foundry@9409080"
+        "okfriansyah-moh/the-foundry@9409080",
+        "okfriansyah-moh/the-foundry#1"
       ]
     },
     "delivery-foundry:project-overview": {
@@ -138,7 +139,8 @@
         "id": "i18n/id/docusaurus-plugin-content-docs/current/projects/delivery-foundry.md"
       },
       "sources": [
-        "okfriansyah-moh/the-foundry"
+        "okfriansyah-moh/the-foundry",
+        "okfriansyah-moh/the-foundry#1"
       ]
     }
   }

@@ -23,16 +23,18 @@ selesai secara jujur atau terbukti terblokir.
 
 Repositori publik (dibuat 2026-07-20) berisi:
 
-- **Arsitektur normatif** — indeks master `delivery_foundry.md` plus kontrak modular di
-  `docs/architecture/`, `docs/workflows/`, `docs/autonomy/`, `docs/security/`, dan
-  `docs/operations/`
-- **Roadmap implementasi** — 83 task bernomor berurutan di `PLAN_7.md` dengan artikel
+- **Arsitektur normatif** — indeks master `docs/foundry/delivery_foundry.md` plus kontrak modular di
+  `docs/foundry/docs/` (architecture, workflows, autonomy, security, operations)
+- **Roadmap implementasi** — 83 task bernomor berurutan di `docs/PLAN.md` dengan artikel
   konstitusi C1–C22
-- **Bootstrap Task 1** — Makefile berbasis Docker, CI, modul Go, dan scaffold paket
-  untuk kernel bersama
+- **Task 1–22 selesai (2026-07-25)** — via [PR #1](https://github.com/okfriansyah-moh/the-foundry/pull/1):
+  agent harness, plan runner otonom, workflow kernel Temporal, CLI/daemon, fitness suite,
+  migrasi, profiles, dan policy compiler v1
+- **Shared Kernel Proof (exit M0)** — demo end-to-end membuktikan admit → worktree → verify →
+  bukti → restart checkpoint
 
-Implementasi di luar scaffolding sedang berjalan; halaman ini mendeskripsikan intent
-desain dan roadmap proyek sebagaimana didokumentasikan di sumber.
+Task 23–83 (integrasi OPA, rantai provenance penuh, track venture dan 10x) masih terbuka;
+halaman ini melacak evolusi proyek sebagaimana didokumentasikan di sumber.
 
 ## Masalah
 
@@ -82,7 +84,9 @@ di branch 10x bersama tanpa PR, merge, atau deployment dalam workflow itu.
 | --------- | ----------------------------- |
 | Set dokumen V12 | Kontrak normatif modular; konten V11 dipertahankan via migration map |
 | Task 1 (✅ 2026-07-20) | Toolchain dev Docker, CI, scaffold paket Go, fitness v0 |
-| Shared Kernel Proof (direncanakan) | Admit satu rencana → satu repo → worktree → verify → bukti → lanjut setelah restart |
+| Task 2–22 (✅ 2026-07-25, PR #1) | Agent harness (`.ai/`), plan runner, kernel Temporal, CLI/daemon, SKP e2e, migrasi + policy compiler |
+| M0 — Shared Kernel Proof (✅) | Admit satu rencana → worktree → verify → bukti → **lanjut setelah restart** |
+| M1 — Foundation (parsial) | Task 20–22 selesai; OPA PDP, rantai provenance penuh, ledger (Task 23–26) pending |
 | Venture MLS (Track A) | Misi → produk deployable → observasi billing → satu siklus perbaikan terbatas |
 | 10x MLS (Track B) | Rencana disetujui → provenance → grup atomik → push branch 10x langsung |
 | Venture mission-capable | Perbaikan otonom dalam envelope drift governance |
@@ -100,7 +104,9 @@ Estimasi roadmap dan asumsi builder didokumentasikan secara jujur di
 | Rename PEC dari "Forge" | Menghindari bentrok dengan Atlassian Forge; kernel mempertahankan otoritas |
 | Persyaratan host hanya Docker | Docker + GNU make; tanpa instal Go/Node/Playwright lokal |
 | Task gated konstitusi | Setiap task rencana dicek terhadap C1–C22; `make fitness` di exit milestone |
-| Autonomous plan runner (Task 3) | Orchestrator ber-tier risiko menggantikan trigger task manual dari Task 4 |
+| Autonomous plan runner (Task 3) | Orchestrator AUTO/GATED ber-tier risiko; alat bootstrap pensiun setelah kernel admit backlog |
+| Agent harness multi-provider (Task 2) | Sumber canonical ARES `.ai/` dikomposisi ke Claude/Codex; sebelas skill untuk enam peran |
+| Constitution fitness (Task 18) | `fitlint` menegakkan aturan enum C1, batas import, dan doc link di CI |
 | Empat lineage image container | Aturan anti-sprawl: dev, postgres/temporal, executor sandbox, release binary |
 
 ## Tipe Entry dan Workflow
@@ -120,13 +126,19 @@ Semantik recovery, retry, dan penyelesaian jujur ada di `docs/workflows/recovery
 ## Layout Repositori (saat ini)
 
 ```text
-delivery_foundry.md          indeks arsitektur master
-docs/                      kontrak normatif (architecture, workflows, autonomy, security)
-PLAN_7.md                  rencana implementasi 83 task
-deploy/                    toolchain dev Docker (Dockerfile.dev, docker-compose.yaml)
-internal/                  paket Go (kernel, pec, state, admission, evidence, …)
-scripts/fitness.sh         constitution check v0
-Makefile                   target docker-wrapped: bootstrap, test, lint, fitness
+docs/foundry/delivery_foundry.md   indeks arsitektur master
+docs/PLAN.md                       rencana 83 task (Task 1–22 ✅)
+docs/architecture.md               konstitusi satu halaman + peta link
+.ai/                               agent harness canonical (format ARES)
+AGENTS.md / CLAUDE.md              tampilan provider terkomposisi (jangan edit manual)
+cmd/foundry/                       CLI operator
+cmd/foundryd/                      worker kernel Temporal
+cmd/fitlint/                       linter konstitusi
+tools/planrunner/                  orkestrator task otonom bootstrap
+deploy/                            toolchain dev Docker + compose postgres/temporal
+internal/                          paket Go (kernel, state, admission, evidence, …)
+scripts/fitness.sh                 suite pemeriksaan konstitusi
+Makefile                           target dibungkus docker
 ```
 
 ## Pelajaran
@@ -135,8 +147,8 @@ Makefile                   target docker-wrapped: bootstrap, test, lint, fitness
    sehingga agen implementasi hanya menerima bagian normatif yang relevan.
 2. **Estimasi roadmap jujur** — Scope dual-track meningkatkan total effort; arsitektur
    menyatakan ini secara eksplisit alih-alih menyembunyikannya di balik estimasi single-track.
-3. **Task bootstrap harus manual** — Task 1–3 membutuhkan trigger manusia (atau nanti,
-   runner) sebelum autonomous plan runner ada.
+3. **Bootstrap lalu kernel** — Task 1–3 membutuhkan trigger manual atau runner; PR #1
+   mengirim runner dan workflow kernel pertama sehingga task berikutnya dapat dogfood Foundry.
 4. **Fitness function memperoleh skor desain** — Spesifikasi menargetkan desain kualitas 10/10
    tetapi menyatakan skor diperoleh hanya saat fault-injection, keamanan, dan tes SLO lulus.
 5. **Karantina legacy** — `docs/legacy/` ditandai sebagai riwayat superseded dan tidak
@@ -151,6 +163,8 @@ Makefile                   target docker-wrapped: bootstrap, test, lint, fitness
 ## Sumber
 
 - Repository: [okfriansyah-moh/the-foundry](https://github.com/okfriansyah-moh/the-foundry)
-- Commit: [`58632a0`](https://github.com/okfriansyah-moh/the-foundry/commit/58632a0), [`9409080`](https://github.com/okfriansyah-moh/the-foundry/commit/9409080)
-- Review: `V12_REVIEW_REPORT.md` di repo sumber
-- Changelog: `CHANGELOG.md` di repo sumber
+- Pull request: [#1 — Task 3–22](https://github.com/okfriansyah-moh/the-foundry/pull/1) (merge [`6efd492`](https://github.com/okfriansyah-moh/the-foundry/commit/6efd492d48d99672afea27da565699e8e8a3983d))
+- Commit sebelumnya: [`58632a0`](https://github.com/okfriansyah-moh/the-foundry/commit/58632a0), [`9409080`](https://github.com/okfriansyah-moh/the-foundry/commit/9409080)
+- Review: `docs/foundry/V12_REVIEW_REPORT.md` di repo sumber
+- Changelog: `docs/foundry/CHANGELOG.md` di repo sumber
+- Indeks rencana: `docs/PLAN.md` §D Master Task Index

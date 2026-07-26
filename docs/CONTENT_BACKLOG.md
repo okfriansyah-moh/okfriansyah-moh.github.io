@@ -7,7 +7,7 @@ This backlog ranks article opportunities discovered from public repositories own
 `okfriansyah-moh`. The daily automation should consult this file when deciding whether
 to update an existing page or create a new one.
 
-## Status Summary (2026-07-21)
+## Status Summary (2026-07-26)
 
 | Status | Count | Notes |
 |--------|------:|-------|
@@ -16,6 +16,8 @@ to update an existing page or create a new one.
 | Missing pages | 0 | Delivery Foundry system + project pages added |
 
 **Completed in 2026-07-21 automation run:** Delivery Foundry control plane system article, Delivery Foundry project overview (new public repo `the-foundry`).
+
+**Updated in 2026-07-26 automation run:** Delivery Foundry system + project articles refreshed for merged PR #1 (Tasks 3–22: agent harness, kernel workflow, CLI/daemon, SKP e2e).
 
 ## Priority Legend
 
@@ -167,7 +169,7 @@ to update an existing page or create a new one.
 ### 16. Delivery Foundry: Governed Control Plane (added 2026-07-21)
 
 | Type: System + Project | Repo: `the-foundry` | Path: `docs/systems/delivery-foundry-control-plane.md`, `docs/projects/delivery-foundry.md` |
-| Learning: kernel vs PEC authority split, six-status state model, dual-track roadmap | Status: **Complete** |
+| Learning: kernel vs PEC authority split, six-status state model, dual-track roadmap | Status: **Complete** (updated 2026-07-26 for PR #1 Tasks 3–22) |
 
 ### 12. Sports Video Compositor Strategies
 
