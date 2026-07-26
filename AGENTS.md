@@ -37,7 +37,7 @@ See `.automation/content-policy.md` for the full policy. Summary:
 - Discover public GitHub activity for owner `okfriansyah-moh` via GitHub MCP
 - Filter low-value and already-processed activity
 - Score candidates; document only those scoring ≥ 3
-- **Context-aware uniqueness:** match each candidate against `topic-index.json`
+- **Context-aware uniqueness:** match each candidate against `.automation/topic-index.json`
   (`repos`, `covered_capabilities`, `learning_objective`); default to updating an
   existing article when the repo is already covered; create only for a distinct
   uncovered capability; skip when the fingerprint is already documented
