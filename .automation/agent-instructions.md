@@ -133,7 +133,7 @@ Multiple merged PRs from the **same repository** must not produce near-duplicate
 
 ### Hard rules
 
-- **Default to UPDATE** when the repository already appears in topic-index (system and/or project pages).
+- **Default to UPDATE** when the repository already appears in `.automation/topic-index.json` (system and/or project pages).
 - **Do not create a second system article** for the same repository. Fold new architecture into the existing systems page (or a focused concept page only if the learning objective is reusable across projects).
 - **Do not create a second project overview** for the same repository.
 - **Concept articles** are allowed only when the PR teaches a reusable pattern whose learning objective is **not** already the focus of an existing concepts page. Prefer a short new section + cross-link over a whole new article when overlap is ≥ ~50%.
