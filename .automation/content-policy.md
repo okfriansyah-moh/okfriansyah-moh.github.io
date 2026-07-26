@@ -67,7 +67,7 @@ Always skip:
 - Minor typo fixes
 - Repeated work already documented
 - Work with insufficient evidence
-- New PRs whose capability fingerprint is already listed under related `covered_capabilities` in topic-index (unless they materially change the documented design — then UPDATE, do not CREATE)
+- New PRs whose capability fingerprint is already listed under related `covered_capabilities` in `.automation/topic-index.json` (unless they materially change the documented design — then UPDATE, do not CREATE)
 
 ## Activity Priority
 
