@@ -38,9 +38,65 @@ awal M1 (Foundation). [Pull request #2](https://github.com/okfriansyah-moh/the-f
 - **Integrasi produksi (Task 30–33, 38)** — engine notifikasi Telegram dengan flood control, baseline observabilitas Prometheus/Grafana, backpressure/brownout control-plane, lint dokumentasi (`make doclint`) di CI
 - **Entry venture (Task 40)** — engine `MissionContract` dan schema misi untuk misi otonom Track A
 
+[Pull request #4](https://github.com/okfriansyah-moh/the-foundry/pull/4) (digabung 2026-07-28)
+mengirim **Task 41–50** — kesiapan venture dan scaffolding kebijakan:
+
+- **Mission Setup Ceremony (VEN-02)** — `foundry mission ceremony` menjalani checklist deterministik,
+  mengumpulkan bukti atau deferral, dan menyimpan `MissionReadinessArtifact` sebelum operasi tanpa pengawasan
+- **Engine template produk** — `foundry product new --from-template` menginstansiasi scaffold venture
+  dari `templates/product`
+- **Config pemetaan kebijakan/efek** — `effect-mapping.yaml`, `mission-decide-policy.yaml`, dan
+  `synthetic-canary-policy.yaml` menghubungkan tier admission ke side effect bertipe
+
+[Pull request #5](https://github.com/okfriansyah-moh/the-foundry/pull/5) (digabung 2026-07-28)
+menyelesaikan **Task 51–60** — **exit venture MLS Track A** dan **fondasi integrator Track B**:
+
+- **Siklus perbaikan terbatas (VEN-12)** — `RunImproveCycle` berbasis cassette dengan lease promosi
+  dan pemeriksaan envelope; digest veto mingguan dengan guard freeze-on-rollback-depth
+- **Track A MLS e2e** — harness venture 12 langkah dengan assertion `HUMAN_TOUCHES=0` melalui deploy → observe → improve
+- **Paket tata kelola organisasi (TX-01)** — profil `organization-10x.yaml` dengan bukti policy compiler tighten-only
+- **PEC v1 (TX-03)** — proposal gelombang via sort topologi Kahn, proposal remediasi, dan tes larangan CI (`check_pec_boundary.sh`)
+- **Grup atomik + Branch Integrator (TX-04–06)** — digest change-set deterministik, antrian integrasi, drift guard dengan semantik requeue `PROVEN_BLOCKED`
+- **Terminal handoff 10x (TX-07)** — `TEN_X_BRANCH_HANDOFF_READY` dengan pernyataan larangan C15 wajib di notifikasi
+
+[Pull request #6](https://github.com/okfriansyah-moh/the-foundry/pull/6) (digabung 2026-07-28)
+mengirim **Task 61–75** — **exit 10x MLS Track B**, **M2 Operational Hardening**, dan bootstrap M3:
+
+- **Bukti larangan 10x (TX-08)** — langkah fitness CI menolak simbol PR/merge/deploy di jalur panggilan TenX
+- **Adapter SCM Bitbucket (TX-09)** — adapter CAS-push/read opsional berbagi tes kontrak dengan GitHub
+- **Track B MLS e2e (TX-10)** — harness berbasis fixture melalui provenance org → grup atomik → integrator → push → terminal
+- **Hardening M2 (HRD-01–10)** — suite chaos, fairness quota/backpressure, sweeper retention/PII, verifikasi hash-chain audit + drill tamper,
+  alert SLO Prometheus, job rekonsiliasi cost, korpus red-team prompt-injection, drill DR otomatis, fuzz/soak Telegram,
+  goreleaser + upgrade drill — **exit M2** via `docs/notes/m2-exit-report.md`
+- **Pipeline auto-promosi L0 (EVO-01)** — registry tunable dan bootstrap pipeline promosi untuk M3
+
+[Pull request #7](https://github.com/okfriansyah-moh/the-foundry/pull/7) (digabung 2026-07-28)
+mengimplementasikan **Task 76–93** — **seleksi executor berbasis config**:
+
+- **Registry kapabilitas executor** — `config/executor-capabilities.yaml` mencatat fitur adapter, ketersediaan, dan timestamp verifikasi
+- **Routing berbasis kebijakan** — `executor-routing.yaml` dan `executor-models.yaml` memetakan kelas task ke executor/model preferen; `ExecutorSelector` kernel menggantikan nama hardcoded
+- **Adapter multi-provider** — OpenCode, Gemini CLI, Cursor, Copilot, Windsurf, OpenAI, dan Local executor terdaftar di `foundryd`
+- **Lint staleness kapabilitas** — `fitlint capability` gagal CI saat verifikasi provider melebihi 180 hari
+
+[Pull request #8](https://github.com/okfriansyah-moh/the-foundry/pull/8) (digabung 2026-07-30)
+menambahkan **Task 100–110** — UX operasional PLAN/mission dan gate CI:
+
+- **CLI/API Mission** — `foundry mission start|resume|list|status`, perintah opportunity, dan endpoint OpenAPI `/missions`
+- **Pengiriman PLAN** — `foundry plan run` dan API `/plans/{id}/deliver` terhubung ke workflow kernel
+- **Gate fitness PLAN** — pemeriksaan research-boundary, validasi, dan topologi (DAG) `fitlint` ditegakkan sebagai job CI wajib
+
+[Pull request #9](https://github.com/okfriansyah-moh/the-foundry/pull/9) (digabung 2026-07-31)
+menutup **Task 111–120 (M5 gap-closure)** — intake, keamanan, dan hardening cost:
+
+- **Intake bertahap dapat dilanjutkan (INT-03)** — `foundry mission start --idea` menjalankan opportunity → verdict → spec → PLAN → admission → approval → mission-start; REJECT/VALIDATE-MORE tidak membangun apa pun; tier H tidak pernah self-approve
+- **Transport inbound Telegram (INT-04–05)** — pacing offset tahan lama, `/idea`→`/confirm` dengan proteksi nonce/replay; teks pesan diperlakukan sebagai data tidak tepercaya
+- **Sandbox wajib + kebijakan fail-closed (SEC-01–02)** — kernel menolak eksekusi host saat sandbox tidak tersedia; loader kebijakan empat lapisan; allowlist URL kosong menolak
+- **Isolasi kredensial + tenancy profil (SEC-03–04)** — env per-child untuk subprocess; profile-kind `ApprovedPlan` menegakkan step-up org dan root worktree scoped
+- **Anggaran fail-closed + rekonsiliasi cost (COST-01–02)** — misi tanpa pengawasan tanpa envelope menolak; `RecordCost` terhubung ke `DeliverPlan` dengan tabel rate per-model dan `foundry cost reconcile`
+
 Kontrak normatif tetap di `docs/foundry/delivery_foundry.md` dan pohon modular
 `docs/foundry/docs/`; roadmap implementasi aktif ada di `docs/PLAN.md`
-(Task 41–93 masih terbuka — venture MLS, track 10x, dan hardening M2).
+(Task 1–120 ✅ melalui M5 gap-closure; milestone berikutnya tetap di indeks PLAN).
 
 ## Masalah
 
@@ -150,16 +206,18 @@ flowchart TB
 
 ## Alur Eksekusi
 
-1. **Entry** — Misi, mockup, requirement, spesifikasi, atau `PLAN.md` yang disetujui
-   tiba di API control plane.
-2. **Intake dan admission** — Classifier admission deterministik menetapkan tier
-   (A0/A1/A2/H) dan memverifikasi provenance untuk rencana disetujui.
+1. **Entry** — Misi, mockup, requirement, spesifikasi, `PLAN.md` yang disetujui, atau
+   teks `--idea` tiba di API control plane atau transport inbound Telegram.
+2. **Intake dan admission** — Untuk ide, pipeline intake bertahap menghasilkan opportunity →
+   spec → PLAN sebelum admission; classifier deterministik menetapkan tier (A0/A1/A2/H),
+   memverifikasi provenance untuk rencana org, dan menolak start tanpa pengawasan tanpa envelope anggaran.
 3. **Pembuatan workflow** — Kernel membuat workflow di `PENDING`, transisi ke
    `RUNNING` dengan phase `intake`, dan menetapkan checkpoint.
 4. **Interpretasi PEC** — PEC membaca rencana yang diadmit, mengusulkan gelombang
    aware dependensi dan dispatch task terbatas dalam envelope yang diberikan kernel.
-5. **Eksekusi terisolasi** — Runner membuat sandbox worktree ephemeral; agen
-   mengeksekusi task dan mengembalikan ringkasan ke PEC (bukan langsung ke state kernel).
+5. **Eksekusi terisolasi** — Runner **wajib** memakai sandbox OCI wajib (`requires_sandbox`);
+   eksekusi host ditolak saat sandbox tidak tersedia. Agen mengeksekusi di worktree
+   ephemeral scoped ke tenancy profil dan mengembalikan ringkasan ke PEC (bukan state kernel).
 6. **Verifikasi** — Pemeriksaan deterministik menghasilkan bundel bukti; kernel
    maju phase (mis. `implementation` → `verifying` → `integrating`).
 7. **Side effect** — Branch Integrator milik kernel melakukan SCM writes; operasi
@@ -192,9 +250,15 @@ flowchart TB
 | **Recovery Manager** | Tangga self-healing terbatas dengan larangan eksplisit dan supervisi liveness |
 | **Branch Integrator / SCM write** | Push GitHub milik kernel dengan verifikasi CAS dan token source berbasis secrets |
 | **Engine Telegram (`internal/notify`)** | Notifikasi ber-tier prioritas, batching, flood control, dead-letter queue |
-| **Engine mission (`internal/mission`)** | Schema MissionContract dan store untuk entry venture Track A |
+| **Engine mission (`internal/mission`)** | Schema MissionContract, ceremony readiness, siklus perbaikan terbatas, dan pipeline intake |
+| **Pipeline intake (`internal/intake`)** | Alur idea→mission bertahap dapat dilanjutkan dengan resume idempoten dan gate anggaran fail-closed |
+| **PEC (`internal/pec`)** | Proposal gelombang/remediasi saja; sort topologi + deteksi siklus; tes larangan batas CI |
+| **Branch Integrator (`internal/kernel/integrator`)** | Antrian push milik kernel, drift guard, validasi scope, `PROVEN_BLOCKED` pada drift tidak recoverable |
+| **Executor selector (`foundryd`)** | Memuat registry kapabilitas + kebijakan routing; memilih executor tersandbox per kelas task |
+| **Retention sweeper (`internal/retention`)** | Kelas TTL, legal hold, endpoint DSR — enforcement PII M2 |
+| **Audit verifier (`internal/audit`)** | Walker hash-chain dengan anchor inkremental; drill tamper `foundry audit verify` |
 
-Paket Go kini membawa implementasi nyata hingga Task 40 — masing-masing dengan `doc.go`
+Paket Go kini membawa implementasi nyata hingga Task 120 — masing-masing dengan `doc.go`
 batas otoritas: `internal/kernel`, `internal/state`, `internal/admission`,
 `internal/provenance`, `internal/evidence`, `internal/worktree`, `internal/executor/*`
 (termasuk `sandbox/`), `internal/projection`, `internal/policy/pdp`, `internal/api`,
@@ -273,39 +337,35 @@ L7 — pause dan eskalasi ke manusia
 
 ## Pengujian
 
-Validasi saat ini (Task 1–40, exit M1, diimplementasi):
+Validasi saat ini (Task 1–120, exit M1–M2, MLS Track A/B, M5 gap-closure):
 
 - `make bootstrap test lint fitness doclint` di dalam image Docker `dev`
 - `make up` + `make doctor` — verifikasi Docker/Compose, PostgreSQL `SELECT 1`, Temporal `GetSystemInfo`
-- `scripts/fitness.sh` (Task 18): `go vet`, kehadiran `doc.go`, plus pemeriksaan `cmd/fitlint` untuk
-  enum lint (C1), superseded-term lint, batas import SCM, dan resolusi doc-link
-- `make skp-e2e` (Task 19) — Shared Kernel Proof end-to-end: admit plan → worktree → verify →
-  evidence bundle → **forced restart → resume dari checkpoint**
-- `make m1-exit` (Task 39) — suite acceptance M1: GitHub SCM e2e, approval step-up WebAuthn,
-  soak notifikasi Telegram, rebuild proyeksi, verifikasi hash-chain audit, drill brownout, backup/restore
-- `make drill-backup-restore` — backup mid-flight saat workflow berjalan, destroy database, restore, lanjut
-- Lane sandbox CI — tes isolasi executor Docker dan verifikasi rootless Podman (Task 34, 97)
-- `internal/api/*_test.go`, `internal/authn/*_test.go`, `internal/executor/sandbox/*_test.go` — cakupan API, auth, sandbox
-- GitHub Actions CI saat push (`.github/workflows/ci.yaml`) termasuk `doclint`, `sandbox-tests`, `sandbox-tests-rootless`
+- `scripts/fitness.sh` — pemeriksaan konstitusi termasuk larangan TenX C15 (langkah i), batas PEC (langkah h), staleness kapabilitas executor, topologi/validasi/research-boundary PLAN, aturan sandbox subprocess, dan aturan isolasi env
+- `make skp-e2e` — Shared Kernel Proof: admit plan → worktree → verify → bukti → **forced restart → resume**
+- `make m1-exit`, `make m2-exit` — suite acceptance milestone dengan laporan exit di `docs/notes/`
+- `make e2e-venture`, `make e2e-tenx` — harness MLS Track A dan Track B (assertion zero human touches / larangan C15)
+- `make chaos`, `make redteam`, `make dr-drill`, `make soak-telegram`, `make soak-fairness` — drill hardening operasional M2
+- `test/improvement_cycle_e2e.sh`, skrip e2e intake/telegram — bukti perbaikan venture dan transport inbound
+- Workflow CI: `ci.yaml` (suite validasi PLAN wajib), `chaos.yml` (nightly), `dr-drill.yml` (bulanan)
+- Tes red-team isolasi profil, bukti anggaran fail-closed, dan tes isolasi kredensial `-race` N-way (Task 117–119)
 
 Keterbatasan diketahui (terdokumentasi di laporan exit M1): guard upsert proyeksi hanya
 membandingkan nomor sequence; konten stale pada sequence lebih tinggi dapat regresi phase
 terproyeksi — ditandai untuk follow-up, tidak disembunyikan.
 
-Validasi direncanakan (milestone tersisa):
-
-- Tes conformance larangan PEC (Task 56)
-- Evaluasi fault-injection dan keamanan per spesifikasi V12 (Task 64, 70)
-
 ## Operasi dan Observabilitas
 
-- **Entry CLI** — subperintah `foundry`: `doctor`, `status`, `plan submit|approve|verify|revoke`,
+- **Entry CLI** — subperintah `foundry`: `doctor`, `status`, `plan submit|approve|verify|revoke|run`,
   `projection rebuild`, `principal create`, `keygen`, `policy`, `evidence`, `migrate`, `login`,
-  `mission`, `budget`, `cost`, `audit verify`, plus paritas HTTP `/v1` via `foundryd`
+  `mission start|resume|list|status|ceremony`, `intake show|resume|list`, `product new`,
+  `opportunity list|show|report`, `budget`, `cost reconcile|show`, `audit verify`, plus paritas HTTP `/v1` via `foundryd`
 - **Daemon** — `foundryd` menghosting worker Temporal dan HTTP API; satu-satunya proses yang melakukan side effect kernel (C4)
 - **Target Make** — `bootstrap`, `up`, `down`, `doctor`, `test`, `lint`, `fitness`, `doclint`,
-  `skp-e2e`, `m1-exit`, `plan-run`, `evidence-verify`, `projection-rebuild`, `backup`, `restore`,
-  `drill-backup-restore`, `drill-brownout` (semua dibungkus Docker; profil `up obs` menambah Prometheus/Grafana)
+  `skp-e2e`, `m1-exit`, `m2-exit`, `e2e-venture`, `e2e-tenx`, `chaos`, `redteam`, `dr-drill`,
+  `soak-telegram`, `soak-fairness`, `plan-run`, `evidence-verify`, `projection-rebuild`, `backup`,
+  `restore`, `drill-backup-restore`, `drill-brownout`, `release-dryrun`, `upgrade-drill`
+  (semua dibungkus Docker; profil `up obs` menambah Prometheus/Grafana)
 - **Engine Telegram** — Notifikasi ber-tier prioritas (P0–P3), batching, flood control, dead-letter
   store; approval tier H memerlukan step-up WebAuthn, bukan Telegram saja (C11/C12)
 - **Cost accounting** — Reserve → incur → reconcile dengan tabel anggaran (`00009_budgets.sql`) dan CLI `budget`/`cost`
@@ -330,6 +390,10 @@ Validasi direncanakan (milestone tersisa):
    `ars compose` memproyeksikan skill dan batas ke format Claude/Codex tanpa menduplikasi kebijakan.
 7. **Fitness mewujudkan konstitusi** — `fitlint` Task 18 mengubah artikel C1 menjadi kegagalan CI,
    bukan panduan dokumentasi saja.
+8. **Routing berbasis config mengalahkan executor hardcoded** — Task 76–93 memindahkan seleksi provider
+   ke YAML versioned sehingga freshness kapabilitas dan kebijakan kelas task dapat diaudit tanpa redeploy logika kernel.
+9. **Default fail-closed bertahan pada config parsial** — M5 gap-closure menutup jalur allowlist kosong dan classifier nil;
+   misi tanpa pengawasan tanpa envelope anggaran berhenti alih-alih menghabiskan secara diam-diam.
 
 ## Terkait
 
@@ -340,10 +404,8 @@ Validasi direncanakan (milestone tersisa):
 ## Sumber
 
 - Repository: [okfriansyah-moh/the-foundry](https://github.com/okfriansyah-moh/the-foundry)
-- Pull request: [#2 — Task 22–40 (exit M1)](https://github.com/okfriansyah-moh/the-foundry/pull/2) (merge commit [`4b5f3c7`](https://github.com/okfriansyah-moh/the-foundry/commit/4b5f3c70a3b3befaf7942c80eb0c83a619b464ca))
-- Pull request: [#1 — Task 3–22](https://github.com/okfriansyah-moh/the-foundry/pull/1) (merge commit [`6efd492`](https://github.com/okfriansyah-moh/the-foundry/commit/6efd492d48d99672afea27da565699e8e8a3983d))
-- Commit sebelumnya: [`58632a0`](https://github.com/okfriansyah-moh/the-foundry/commit/58632a0), [`9409080`](https://github.com/okfriansyah-moh/the-foundry/commit/9409080)
-- Laporan exit M1: `docs/notes/m1-exit-report.md` di repo sumber
-- Arsitektur: `docs/foundry/delivery_foundry.md`, `docs/architecture.md`, `docs/foundry/docs/architecture/state-model.md`
+- Pull request: [#9 — Task 111–120 (M5 gap-closure)](https://github.com/okfriansyah-moh/the-foundry/pull/9), [#8 — Task 100–110](https://github.com/okfriansyah-moh/the-foundry/pull/8), [#7 — Task 76–93](https://github.com/okfriansyah-moh/the-foundry/pull/7), [#6 — Task 61–75 (exit M2, MLS Track B)](https://github.com/okfriansyah-moh/the-foundry/pull/6), [#5 — Task 51–60 (MLS Track A, PEC, integrator)](https://github.com/okfriansyah-moh/the-foundry/pull/5), [#4 — Task 41–50](https://github.com/okfriansyah-moh/the-foundry/pull/4), [#2 — Task 22–40 (exit M1)](https://github.com/okfriansyah-moh/the-foundry/pull/2), [#1 — Task 3–22](https://github.com/okfriansyah-moh/the-foundry/pull/1)
+- Laporan exit: `docs/notes/m1-exit-report.md`, `docs/notes/m2-exit-report.md`, `docs/notes/track-a-exit-report.md`, `docs/notes/track-b-exit-report.md` di repo sumber
+- Arsitektur: `docs/foundry/delivery_foundry.md`, `docs/architecture.md`, `docs/foundry/docs/architecture/state-model.md`, `docs/foundry/docs/architecture/authority-model.md`
 - Agent harness: `.ai/manifest.yaml`, `.ai/instructions/authority-boundaries.md`
-- Rencana implementasi: `docs/PLAN.md` (Task 1–40 ✅, exit M1; Task 41–93 pending)
+- Rencana implementasi: `docs/PLAN.md` (Task 1–120 ✅ melalui M5 gap-closure)

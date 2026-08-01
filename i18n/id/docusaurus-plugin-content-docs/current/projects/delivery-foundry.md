@@ -34,11 +34,24 @@ Repositori publik (dibuat 2026-07-20) berisi:
   OPA PDP, rantai provenance, auth OIDC/WebAuthn, ledger extops, SCM GitHub write, cost
   accounting, engine Telegram, stack observabilitas, sandbox OCI rootless, HTTP API, drill
   backup/restore, dan engine MissionContract — **exit M1 Production Foundation**
+- **Task 41–60 selesai (2026-07-28)** — via [PR #4](https://github.com/okfriansyah-moh/the-foundry/pull/4) dan
+  [PR #5](https://github.com/okfriansyah-moh/the-foundry/pull/5): Mission Setup Ceremony, template produk,
+  siklus perbaikan terbatas, **exit venture MLS Track A**, paket tata kelola org, PEC v1, grup atomik,
+  Branch Integrator, dan semantik terminal handoff 10x
+- **Task 61–75 selesai (2026-07-28)** — via [PR #6](https://github.com/okfriansyah-moh/the-foundry/pull/6):
+  bukti larangan TenX, adapter SCM Bitbucket, **exit 10x MLS Track B**, dan **exit M2 Operational Hardening**
+  (chaos, retention, drill tamper audit, alert SLO, drill DR, hardening Telegram, release versioned)
+- **Task 76–110 selesai (2026-07-28 – 2026-07-30)** — via [PR #7](https://github.com/okfriansyah-moh/the-foundry/pull/7) dan
+  [PR #8](https://github.com/okfriansyah-moh/the-foundry/pull/8): registry kapabilitas executor, routing
+  berbasis kebijakan, adapter multi-provider, UX CLI+API mission/plan, dan gate CI topologi PLAN
+- **Task 111–120 selesai (2026-07-31)** — via [PR #9](https://github.com/okfriansyah-moh/the-foundry/pull/9):
+  intake bertahap dapat dilanjutkan (`mission start --idea`), transport inbound Telegram, sandbox wajib,
+  jalur kebijakan fail-closed, isolasi profil, dan rekonsiliasi actual-cost — **M5 gap-closure**
 - **Shared Kernel Proof (exit M0)** — demo end-to-end membuktikan admit → worktree → verify →
   bukti → restart checkpoint
 
-Task 41–93 (venture MLS, track 10x, hardening M2, routing provider) masih terbuka;
-halaman ini melacak evolusi proyek sebagaimana didokumentasikan di sumber.
+Milestone PLAN setelah Task 120 tetap di indeks sumber; kedua track produk kini
+memiliki bukti exit MLS terdokumentasi.
 
 ## Masalah
 
@@ -92,11 +105,16 @@ di branch 10x bersama tanpa PR, merge, atau deployment dalam workflow itu.
 | M0 — Shared Kernel Proof (✅) | Admit satu rencana → worktree → verify → bukti → **lanjut setelah restart** |
 | Task 23–40 (✅ 2026-07-27, PR #2) | OPA PDP, rantai provenance/audit, strong auth, ledger extops, SCM write, cost/anggaran, Telegram, observabilitas, sandbox OCI, API server, backup/restore, mission |
 | M1 — Production Foundation (✅) | Acceptance `make m1-exit`: GitHub e2e, gate WebAuthn, soak notify, audit verify, drill brownout, backup/restore |
-| M1 — Foundation (parsial → **selesai**) | Task 20–40 selesai; venture MLS (Task 41–53) dan track 10x (Task 54–63) pending |
-| Venture MLS (Track A) | Misi → produk deployable → observasi billing → satu siklus perbaikan terbatas |
-| 10x MLS (Track B) | Rencana disetujui → provenance → grup atomik → push branch 10x langsung |
-| Venture mission-capable | Perbaikan otonom dalam envelope drift governance |
-| 10x org-production | Orkestrasi multi-repo dengan integrasi organisasi |
+| Task 41–50 (✅ 2026-07-28, PR #4) | Mission Setup Ceremony, template produk, config pemetaan kebijakan/efek |
+| Task 51–53 (✅ 2026-07-28, PR #5) | Siklus perbaikan terbatas, digest veto, **exit venture MLS Track A** (`make e2e-venture`) |
+| Task 54–60 (✅ 2026-07-28, PR #5) | Paket tata kelola org, validasi provenance org, PEC v1, grup atomik, Branch Integrator, drift guard, terminal handoff 10x |
+| Task 61–63 (✅ 2026-07-28, PR #6) | Bukti larangan TenX (C15), adapter SCM Bitbucket, **exit 10x MLS Track B** (`make e2e-tenx`) |
+| M2 — Operational Hardening (✅) | Task 64–73: suite chaos, fairness backpressure, retention/PII, drill tamper audit, alert SLO, rekonsiliasi cost, red-team, drill DR, soak Telegram, goreleaser — `make m2-exit` |
+| Bootstrap M3 (✅ parsial) | Task 74–75: pipeline auto-promosi L0 dan registry tunable (PR #6) |
+| Task 76–93 (✅ 2026-07-28, PR #7) | Registry kapabilitas executor, routing berbasis kebijakan, adapter multi-provider |
+| Task 100–110 (✅ 2026-07-30, PR #8) | UX CLI+API mission/plan, gate CI topologi/validasi/research-boundary PLAN |
+| M5 gap-closure (✅ 2026-07-31, PR #9) | Task 111–120: intake dapat dilanjutkan, inbound Telegram, sandbox wajib, kebijakan fail-closed, isolasi profil, rekonsiliasi cost |
+| Evolusi pasca-120 | Item indeks PLAN tersisa — dilacak di `docs/PLAN.md` sumber |
 
 Estimasi roadmap dan asumsi builder didokumentasikan secara jujur di
 `docs/architecture/overview.md` — rentang dengan tingkat keyakinan, bukan presisi palsu.
@@ -133,20 +151,25 @@ Semantik recovery, retry, dan penyelesaian jujur ada di `docs/workflows/recovery
 
 ```text
 docs/foundry/delivery_foundry.md   indeks arsitektur master
-docs/PLAN.md                       rencana 93 task (Task 1–40 ✅, exit M1)
+docs/PLAN.md                       rencana 120+ task (Task 1–120 ✅ melalui M5)
 docs/architecture.md               konstitusi satu halaman + peta link
-docs/notes/m1-exit-report.md       bukti acceptance M1 dan keterbatasan diketahui
+docs/notes/m1-exit-report.md       bukti acceptance M1
+docs/notes/m2-exit-report.md       bukti exit hardening operasional M2
+docs/notes/track-a-exit-report.md  bukti exit venture MLS Track A
+docs/notes/track-b-exit-report.md  bukti exit 10x MLS Track B
+config/executor-*.yaml             registry kapabilitas, routing, dan tabel model
+config/profiles/                   paket tata kelola personal vs organization-10x
 .ai/                               agent harness canonical (format ARES)
 AGENTS.md / CLAUDE.md              tampilan provider terkomposisi (jangan edit manual)
 api/openapi.yaml                   kontrak HTTP API /v1 (paritas CLI)
-cmd/foundry/                       CLI operator
-cmd/foundryd/                      worker kernel Temporal + HTTP API
-cmd/fitlint/                       linter konstitusi
+cmd/foundry/                       CLI operator (mission, intake, plan, cost, audit)
+cmd/foundryd/                      worker kernel Temporal + HTTP API + sandbox runner
+cmd/fitlint/                       linter konstitusi (capability, topology, env, subprocess)
 tools/planrunner/                  orkestrator task otonom bootstrap
 deploy/                            toolchain dev Docker, postgres/temporal, prometheus/grafana
-internal/                          paket Go (kernel, api, authn, sandbox, ledger, mission, …)
+internal/                          paket Go (kernel, pec, intake, integrator, retention, …)
 scripts/backup.sh, restore.sh      backup/restore dengan verifikasi manifest
-Makefile                           target dibungkus docker termasuk m1-exit, doclint
+Makefile                           target dibungkus docker termasuk m1-exit, m2-exit, e2e-venture, e2e-tenx
 ```
 
 ## Pelajaran
@@ -171,10 +194,8 @@ Makefile                           target dibungkus docker termasuk m1-exit, doc
 ## Sumber
 
 - Repository: [okfriansyah-moh/the-foundry](https://github.com/okfriansyah-moh/the-foundry)
-- Pull request: [#2 — Task 22–40 (exit M1)](https://github.com/okfriansyah-moh/the-foundry/pull/2) (merge [`4b5f3c7`](https://github.com/okfriansyah-moh/the-foundry/commit/4b5f3c70a3b3befaf7942c80eb0c83a619b464ca))
-- Pull request: [#1 — Task 3–22](https://github.com/okfriansyah-moh/the-foundry/pull/1) (merge [`6efd492`](https://github.com/okfriansyah-moh/the-foundry/commit/6efd492d48d99672afea27da565699e8e8a3983d))
-- Commit sebelumnya: [`58632a0`](https://github.com/okfriansyah-moh/the-foundry/commit/58632a0), [`9409080`](https://github.com/okfriansyah-moh/the-foundry/commit/9409080)
-- Laporan exit M1: `docs/notes/m1-exit-report.md` di repo sumber
+- Pull request: [#9](https://github.com/okfriansyah-moh/the-foundry/pull/9), [#8](https://github.com/okfriansyah-moh/the-foundry/pull/8), [#7](https://github.com/okfriansyah-moh/the-foundry/pull/7), [#6](https://github.com/okfriansyah-moh/the-foundry/pull/6), [#5](https://github.com/okfriansyah-moh/the-foundry/pull/5), [#4](https://github.com/okfriansyah-moh/the-foundry/pull/4), [#2](https://github.com/okfriansyah-moh/the-foundry/pull/2), [#1](https://github.com/okfriansyah-moh/the-foundry/pull/1)
+- Laporan exit: `docs/notes/m1-exit-report.md`, `docs/notes/m2-exit-report.md`, `docs/notes/track-a-exit-report.md`, `docs/notes/track-b-exit-report.md`
 - Review: `docs/foundry/V12_REVIEW_REPORT.md` di repo sumber
 - Changelog: `docs/foundry/CHANGELOG.md` di repo sumber
-- Indeks rencana: `docs/PLAN.md` §D Master Task Index
+- Indeks rencana: `docs/PLAN.md` §D Master Task Index (Task 1–120 ✅)

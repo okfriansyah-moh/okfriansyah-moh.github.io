@@ -7,19 +7,21 @@ This backlog ranks article opportunities discovered from public repositories own
 `okfriansyah-moh`. The daily automation should consult this file when deciding whether
 to update an existing page or create a new one.
 
-## Status Summary (2026-07-28)
+## Status Summary (2026-08-01)
 
 | Status | Count | Notes |
 |--------|------:|-------|
 | Complete (full template) | 14 | All EN + ID mirrors |
 | Stubs remaining | 0 | — |
-| Missing pages | 0 | Delivery Foundry system + project pages added |
+| Missing pages | 0 | Delivery Foundry system + project pages current through M5 |
 
 **Completed in 2026-07-21 automation run:** Delivery Foundry control plane system article, Delivery Foundry project overview (new public repo `the-foundry`).
 
 **Updated in 2026-07-26 automation run:** Delivery Foundry system + project articles refreshed for merged PR #1 (Tasks 3–22: agent harness, kernel workflow, CLI/daemon, SKP e2e).
 
 **Updated in 2026-07-28 automation run:** Delivery Foundry system + project articles refreshed for merged PR #2 (Tasks 23–40: OPA PDP, auth, sandbox, API, observability, backup/restore, M1 exit).
+
+**Updated in 2026-08-01 automation run:** Delivery Foundry system + project articles refreshed for merged PRs #4–#9 (Tasks 41–120: venture/10x MLS exits, M2 hardening, executor routing, intake pipeline, M5 gap-closure).
 
 ## Priority Legend
 
@@ -171,7 +173,7 @@ to update an existing page or create a new one.
 ### 16. Delivery Foundry: Governed Control Plane (added 2026-07-21)
 
 | Type: System + Project | Repo: `the-foundry` | Path: `docs/systems/delivery-foundry-control-plane.md`, `docs/projects/delivery-foundry.md` |
-| Learning: kernel vs PEC authority split, six-status state model, dual-track roadmap | Status: **Complete** (updated 2026-07-28 for PR #2 Tasks 23–40, M1 exit) |
+| Learning: kernel vs PEC authority split, six-status state model, dual-track roadmap | Status: **Complete** (updated 2026-08-01 for PRs #4–#9, Tasks 41–120 through M5 gap-closure) |
 
 ### 12. Sports Video Compositor Strategies
 

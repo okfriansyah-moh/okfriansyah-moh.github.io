@@ -250,7 +250,13 @@
         "okfriansyah-moh/the-foundry@58632a0",
         "okfriansyah-moh/the-foundry@9409080",
         "okfriansyah-moh/the-foundry#1",
-        "okfriansyah-moh/the-foundry#2"
+        "okfriansyah-moh/the-foundry#2",
+        "okfriansyah-moh/the-foundry#4",
+        "okfriansyah-moh/the-foundry#5",
+        "okfriansyah-moh/the-foundry#6",
+        "okfriansyah-moh/the-foundry#7",
+        "okfriansyah-moh/the-foundry#8",
+        "okfriansyah-moh/the-foundry#9"
       ],
       "repos": [
         "okfriansyah-moh/the-foundry"
@@ -283,7 +289,22 @@
         "doclint-ci-governance",
         "projection-v2-rebuild-lag",
         "backup-restore-drill",
-        "mission-contract-engine"
+        "mission-contract-engine",
+        "mission-setup-ceremony",
+        "product-template-engine",
+        "bounded-improvement-cycle",
+        "pec-wave-proposals",
+        "atomic-group-integrator",
+        "ten-x-prohibition-proof",
+        "m2-operational-hardening",
+        "executor-capability-registry",
+        "policy-driven-executor-routing",
+        "plan-topology-validation",
+        "staged-resumable-intake",
+        "mandatory-sandbox-execution",
+        "fail-closed-policy-enforcement",
+        "profile-isolation",
+        "actual-cost-reconciliation"
       ]
     },
     "delivery-foundry:project-overview": {
@@ -294,7 +315,13 @@
       "sources": [
         "okfriansyah-moh/the-foundry",
         "okfriansyah-moh/the-foundry#1",
-        "okfriansyah-moh/the-foundry#2"
+        "okfriansyah-moh/the-foundry#2",
+        "okfriansyah-moh/the-foundry#4",
+        "okfriansyah-moh/the-foundry#5",
+        "okfriansyah-moh/the-foundry#6",
+        "okfriansyah-moh/the-foundry#7",
+        "okfriansyah-moh/the-foundry#8",
+        "okfriansyah-moh/the-foundry#9"
       ],
       "repos": [
         "okfriansyah-moh/the-foundry"
@@ -305,7 +332,11 @@
         "dual-track-venture-10x",
         "entry-types-overview",
         "implementation-task-status",
-        "m1-production-foundation-exit"
+        "m1-production-foundation-exit",
+        "venture-mls-track-a-exit",
+        "ten-x-mls-track-b-exit",
+        "m2-operational-hardening-exit",
+        "m5-gap-closure"
       ]
     }
   }
