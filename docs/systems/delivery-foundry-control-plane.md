@@ -138,9 +138,50 @@ closes **Tasks 131–140** and the **V1 Evidence Gate (Task 136)**:
 - **Human-touch observability** — `internal/observe/humantouch.go` records operator interventions
   for benchmark and evidence-gate reporting
 
+[Pull request #12](https://github.com/okfriansyah-moh/the-foundry/pull/12) (merged 2026-08-02)
+closes **Tasks 141–152 (M6)** — authoritative runtime closure and the **Final V1 Evidence Gate (Task 152)**:
+
+- **Execution envelope (RTC-05, Task 141)** — kernel-resolved, immutable envelopes persisted in
+  PostgreSQL; replay tests prove deterministic resume without re-deriving side-effect authority
+- **Sandbox-compatible executor adapters (SEC-05, Task 142)** — production executor path requires
+  sandbox availability; adapters honor capability schema in `config/schemas/executor-capability.schema.json`
+- **Production plan/repository resolution (RTC-06, Task 143)** — kernel resolves approved PLAN sources
+  and repository registry entries before dispatch; no stub paths on the live intake route
+- **Live CLI idea-to-mission (INT-07, Task 144)** — `foundry mission start --idea` converges through
+  intake stages and starts `MissionLoop` via Temporal in `cmd/foundry/intake_live.go`
+- **Telegram production intake (INT-08, Task 145)** — durable command dispatch, draft store, and
+  attachment handling wired into production `foundryd` inbound transport
+- **Production validation signals (OPP-06, Task 146)** — allowlisted real-market signals gate venture
+  BUILD verdicts on the live path, not synthetic-only shortcuts
+- **Closed venture loop (VEN-19, Task 147)** — `ImprovementWorkflow` ties deploy → observe → improve
+  with freeze state, change budgets, and evidence bundles on the production stack
+- **Full 10x orchestration (TX-13, Task 148)** — approved PLAN through atomic groups, integrator queue,
+  and `TEN_X_BRANCH_HANDOFF_READY` terminal on the durable TenX workflow
+- **Profile isolation + cost closure (SEC-06, Task 149)** — runtime profile enforcement and
+  unreconciled-cost sweeper close M5 accounting gaps
+- **Unified input router (INT-09, Task 150)** — `internal/inputrouter` routes IDEA, PLAN, and MOCKUP
+  entries through one admission-aware pipeline with golden tests
+- **Mandatory V1 release proofs (PRF-03, Task 151)** — `make v1-proof` and `.github/workflows/v1-proof.yml`
+  fail closed when live infrastructure or credentials are absent; `V1_PROOF_ALLOW_SKIP=1` yields exit 2
+  and must never be archived as PASS evidence
+- **Final V1 Evidence Gate (V1-02, Task 152)** — integrates Tasks 141–151 plus benchmark baseline;
+  verdict documented in `docs/notes/v1-final-evidence-gate.md` and `benchmarks/report-v1-final.md`
+
+[Pull request #13](https://github.com/okfriansyah-moh/the-foundry/pull/13) (merged 2026-08-04)
+delivers **Tasks 153–155 (M7)** — product capability packaging:
+
+- **Agent/skill catalogs (CAP-01, Task 153)** — `agents/catalog.yaml` and `skills/catalog.yaml` define
+  canonical agents, skills, inputs, outputs, and bindings; `foundry catalog` lists and validates entries
+- **Runtime materialization (CAP-02, Task 154)** — provider-neutral `Materializer` interface in
+  `adapters/agent-runtime/`; Claude Code adapter projects enabled packages into `.claude/agents/` and
+  `.claude/skills/` with manifest-pinned digests; installation is idempotent and fail-closed on drift
+- **L1 skill evolution bridge (CAP-03, Task 155)** — bounded promotion from `SkillRegistry` to on-disk
+  package versions with append-only rollback; organization-profile candidates remain proposal-only;
+  e2e evidence in `test/e2e/skill_evolution/`
+
 Normative contracts remain in `docs/foundry/delivery_foundry.md` and the modular
 `docs/foundry/docs/` tree; the live implementation roadmap is `docs/PLAN.md`
-(Tasks 1–140 ✅ through the V1 Evidence Gate).
+(Tasks 1–155 ✅ through M7 capability packaging).
 
 ## The Problem
 
@@ -312,8 +353,17 @@ flowchart TB
 | **Validation signals (`internal/opportunity/signals/*`)** | Allowlisted ingestion of real-market validation signals with provenance |
 | **Mockup router (`internal/spec/mockup/*`)** | Multi-format mockup ingestion (Figma/HTML/PDF/image) into spec stages |
 | **SCM provider selector (`internal/kernel/scm_provider.go`)** | Fail-closed kernel selection of GitHub/Bitbucket write adapters |
+| **Execution envelope store (`internal/kernel/execution_envelope*.go`)** | Kernel-resolved immutable envelopes with replay-stable persistence (Task 141) |
+| **Input router (`internal/inputrouter/*`)** | Unified IDEA / PLAN / MOCKUP routing with admission-aware store (Task 150) |
+| **Profile runtime (`internal/profile/runtime.go`)** | Production profile isolation enforcement at dispatch boundaries (Task 149) |
+| **TenX orchestration (`internal/kernel/tenx_orchestration.go`)** | Durable approved-PLAN → 10x handoff workflow (Task 148) |
+| **Improvement workflow (`internal/mission/improvement_workflow.go`)** | Closed venture deploy → observe → improve loop with freeze gates (Task 147) |
+| **Cost unreconciled sweeper (`internal/ledger/cost/unreconciled.go`)** | Closes accounting gaps; pairs with budget fail-closed paths (Task 149) |
+| **Telegram draft store (`internal/notify/draft_store.go`)** | Production inbound command and attachment persistence (Task 145) |
+| **Agent runtime materializer (`adapters/agent-runtime/*`)** | Provider-neutral package projection; Claude Code adapter with manifest integrity (Tasks 154–155) |
+| **Capability packaging (`internal/packaging/*`, `internal/evolve/skill_packages.go`)** | Validate, install, and evolve canonical skill packages with rollback (Tasks 153–155) |
 
-Go packages now carry real implementations through Task 140 — each with a `doc.go`
+Go packages now carry real implementations through Task 155 — each with a `doc.go`
 stating authority limits: `internal/kernel`, `internal/state`, `internal/admission`,
 `internal/provenance`, `internal/evidence`, `internal/worktree`, `internal/executor/*`
 (including `sandbox/`), `internal/projection`, `internal/policy/pdp`, `internal/api`,
@@ -373,6 +423,10 @@ L7 — pause and escalate to human
   failures and route to supervisor instead of unbounded retry (Task 123).
 - **Provider failover** — Unavailable executors trip the health circuit breaker; kernel
   reselects the next policy-allowed provider or fails closed with a typed classification (Task 129).
+- **Execution envelopes** — Kernel-resolved envelopes persist before side effects; replay cannot
+  widen authority beyond the stored envelope (Task 141).
+- **Materialization integrity** — Runtime install accepts only absent files or byte-identical
+  projections; catalog drift fails closed rather than overwriting workspace-controlled files (Task 154).
 
 ## Failure Modes
 
@@ -389,6 +443,9 @@ L7 — pause and escalate to human
 | Provider capacity outage | HealthTracker open circuit | Reselect allowed executor or fail closed (Task 129) |
 | Missing SCM provider config | Kernel admission/refusal at dispatch | Fail closed — no silent downgrade (Task 140) |
 | Stripe webhook replay | Durable event store + signature verify | Idempotent event persistence (Task 126) |
+| Missing V1 proof credentials | `make v1-proof` preflight | Fail closed — exit non-zero; skip yields exit 2, never PASS (Task 151) |
+| Catalog / enablement drift | Manifest digest mismatch on reinstall | Fail closed; materialize into fresh workspace (Task 154) |
+| Skill promotion budget exceeded | PostgreSQL freeze store | Rollback and promotion halt before package activation (Task 155) |
 
 ## Trade-offs and Rejected Alternatives
 
@@ -404,10 +461,12 @@ L7 — pause and escalate to human
 | 9Router rejected (ADR-001) | Task 129 provider fallback satisfies routing intent without adding proxy dependency |
 | OpenHands deferred | Optional external adapter — not required for V1 evidence gate |
 | Measured acceleration (C25) | V1 exit requires benchmark evidence against recorded baseline, not self-reported speed claims |
+| Claude Code as sole M7 materializer | OpenHands and 9Router remain deferred; packaging validated without external adapter dependency |
+| Skill install ≠ execution authority | Materialization writes provider files only; kernel and policy retain side-effect decisions |
 
 ## Testing
 
-Current validation (Tasks 1–140, V1 Evidence Gate, live proofs, and benchmark baseline):
+Current validation (Tasks 1–155, Final V1 Evidence Gate, live proofs, capability packaging):
 
 - `make bootstrap test lint fitness doclint` inside the `dev` Docker image
 - `make up` + `make doctor` — verifies Docker/Compose, PostgreSQL `SELECT 1`, Temporal `GetSystemInfo`
@@ -427,6 +486,13 @@ Current validation (Tasks 1–140, V1 Evidence Gate, live proofs, and benchmark 
 - Scheduled CI workflows: `e2e-venture.yml`, `e2e-tenx.yml`, `e2e-bitbucket.yml` — manual/scheduled live proofs for Track A, Track B, and Bitbucket remote (Tasks 132–133)
 - `test/e2e/venture/live_test.go`, `test/e2e/tenx/live_test.go` — live end-to-end proofs wired into CI (Tasks 132–133)
 - V1 Evidence Gate verdict documented in `docs/notes/v1-evidence-gate.md` (Task 136)
+- `make v1-proof` and `.github/workflows/v1-proof.yml` — mandatory real release proofs; absent
+  credentials fail closed (Task 151); final gate verdict in `docs/notes/v1-final-evidence-gate.md` (Task 152)
+- `internal/kernel/execution_envelope_replay_test.go`, `internal/inputrouter/router_test.go` —
+  envelope replay determinism and unified router routing (Tasks 141, 150)
+- `test/e2e/product_packaging/` — product packaging install e2e (Task 154)
+- `test/e2e/skill_evolution/` — L1 promotion, rollback, profile isolation, and authority-boundary proofs (Task 155)
+- `adapters/agent-runtime/claudecode/materializer_test.go` — idempotent install, manifest integrity, symlink/collision protection
 
 Known limitation (documented in M1 exit report): projection upsert guard compares sequence
 numbers only; stale content at a higher sequence can regress projected phase — flagged for
@@ -437,13 +503,14 @@ follow-up, not hidden.
 - **CLI entry** — `foundry` subcommands: `doctor`, `status`, `plan submit|approve|verify|revoke|run`,
   `projection rebuild`, `principal create`, `keygen`, `policy`, `evidence`, `migrate`, `login`,
   `mission start|resume|list|status|ceremony`, `intake show|resume|list`, `product new`,
-  `opportunity list|show|report`, `budget`, `cost reconcile|show`, `audit verify`, plus HTTP `/v1` parity via `foundryd`
+  `opportunity list|show|report`, `budget`, `cost reconcile|show`, `audit verify`,
+  `catalog`, `agents install`, `skills install|rollback`, `promotions unfreeze`, plus HTTP `/v1` parity via `foundryd`
 - **Daemon** — `foundryd` hosts Temporal worker and HTTP API; only process performing kernel side effects (C4)
 - **Make targets** — `bootstrap`, `up`, `down`, `doctor`, `test`, `lint`, `fitness`, `doclint`,
   `skp-e2e`, `m1-exit`, `m2-exit`, `e2e-venture`, `e2e-tenx`, `chaos`, `redteam`, `dr-drill`,
   `soak-telegram`, `soak-fairness`, `plan-run`, `evidence-verify`, `projection-rebuild`, `backup`,
   `restore`, `drill-backup-restore`, `drill-brownout`, `release-dryrun`, `upgrade-drill`,
-  `bench-baseline`, `bench-foundry`, `e2e-bitbucket`
+  `bench-baseline`, `bench-foundry`, `e2e-bitbucket`, `v1-proof`
   (all Docker-wrapped; `up obs` profile adds Prometheus/Grafana)
 - **Telegram engine** — Priority-tiered notifications (P0–P3), batching, flood control, dead-letter
   store; H-tier approvals require WebAuthn step-up, never Telegram-only (C11/C12)
@@ -477,6 +544,10 @@ follow-up, not hidden.
     schedule fairness only when portfolio tables survive process death, not in-memory scheduling alone.
 11. **Acceleration claims require baselines** — Task 136's V1 Evidence Gate ties exit to mined control-arm
     deliveries and benchmark comparison (C25), rejecting narrative-only "we got faster" reports.
+12. **Live intake must start real workflows** — Task 144 replaces intake stubs with Temporal `MissionLoop`
+    starts so CLI convergence exercises the same kernel path production uses.
+13. **Packaging authority stays separate from execution** — Tasks 153–155 materialize agent/skill files
+    into executor workspaces without widening SCM, deploy, or executor allowlists.
 
 ## Related
 
@@ -487,8 +558,8 @@ follow-up, not hidden.
 ## Sources
 
 - Repository: [okfriansyah-moh/the-foundry](https://github.com/okfriansyah-moh/the-foundry)
-- Pull requests: [#11 — Tasks 131–140 (V1 Evidence Gate)](https://github.com/okfriansyah-moh/the-foundry/pull/11), [#10 — Tasks 121–130 (portfolio, concurrent waves, production integrations)](https://github.com/okfriansyah-moh/the-foundry/pull/10), [#9 — Tasks 111–120 (M5 gap-closure)](https://github.com/okfriansyah-moh/the-foundry/pull/9), [#8 — Tasks 100–110](https://github.com/okfriansyah-moh/the-foundry/pull/8), [#7 — Tasks 76–93](https://github.com/okfriansyah-moh/the-foundry/pull/7), [#6 — Tasks 61–75 (M2 exit, Track B MLS)](https://github.com/okfriansyah-moh/the-foundry/pull/6), [#5 — Tasks 51–60 (Track A MLS, PEC, integrator)](https://github.com/okfriansyah-moh/the-foundry/pull/5), [#4 — Tasks 41–50](https://github.com/okfriansyah-moh/the-foundry/pull/4), [#2 — Tasks 22–40 (M1 exit)](https://github.com/okfriansyah-moh/the-foundry/pull/2), [#1 — Tasks 3–22](https://github.com/okfriansyah-moh/the-foundry/pull/1)
-- Exit reports: `docs/notes/m1-exit-report.md`, `docs/notes/m2-exit-report.md`, `docs/notes/track-a-exit-report.md`, `docs/notes/track-b-exit-report.md`, `docs/notes/v1-evidence-gate.md`, `benchmarks/baseline/report.md` in source repo
+- Pull requests: [#13 — Tasks 153–155 (capability packaging)](https://github.com/okfriansyah-moh/the-foundry/pull/13), [#12 — Tasks 141–152 (M6 runtime closure, Final V1 gate)](https://github.com/okfriansyah-moh/the-foundry/pull/12), [#11 — Tasks 131–140 (V1 Evidence Gate)](https://github.com/okfriansyah-moh/the-foundry/pull/11), [#10 — Tasks 121–130 (portfolio, concurrent waves, production integrations)](https://github.com/okfriansyah-moh/the-foundry/pull/10), [#9 — Tasks 111–120 (M5 gap-closure)](https://github.com/okfriansyah-moh/the-foundry/pull/9), [#8 — Tasks 100–110](https://github.com/okfriansyah-moh/the-foundry/pull/8), [#7 — Tasks 76–93](https://github.com/okfriansyah-moh/the-foundry/pull/7), [#6 — Tasks 61–75 (M2 exit, Track B MLS)](https://github.com/okfriansyah-moh/the-foundry/pull/6), [#5 — Tasks 51–60 (Track A MLS, PEC, integrator)](https://github.com/okfriansyah-moh/the-foundry/pull/5), [#4 — Tasks 41–50](https://github.com/okfriansyah-moh/the-foundry/pull/4), [#2 — Tasks 22–40 (M1 exit)](https://github.com/okfriansyah-moh/the-foundry/pull/2), [#1 — Tasks 3–22](https://github.com/okfriansyah-moh/the-foundry/pull/1)
+- Exit reports: `docs/notes/m1-exit-report.md`, `docs/notes/m2-exit-report.md`, `docs/notes/track-a-exit-report.md`, `docs/notes/track-b-exit-report.md`, `docs/notes/v1-evidence-gate.md`, `docs/notes/v1-final-evidence-gate.md`, `docs/notes/v1-release-proof.md`, `docs/notes/capability-packaging.md`, `benchmarks/report-v1-final.md` in source repo
 - Architecture: `docs/foundry/delivery_foundry.md`, `docs/architecture.md`, `docs/foundry/docs/architecture/state-model.md`, `docs/foundry/docs/architecture/authority-model.md`
 - Agent harness: `.ai/manifest.yaml`, `.ai/instructions/authority-boundaries.md`
-- Implementation plan: `docs/PLAN.md` (Tasks 1–140 ✅ through V1 Evidence Gate)
+- Implementation plan: `docs/PLAN.md` (Tasks 1–155 ✅ through M7 capability packaging)

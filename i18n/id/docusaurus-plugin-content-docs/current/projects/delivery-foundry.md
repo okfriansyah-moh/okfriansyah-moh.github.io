@@ -54,11 +54,16 @@ Repositori publik (dibuat 2026-07-20) berisi:
 - **Task 131–140 selesai (2026-08-01)** — via [PR #11](https://github.com/okfriansyah-moh/the-foundry/pull/11):
   bukti venture + Bitbucket 10x live, baseline benchmark akselerasi V1, intake mockup terpadu,
   allowlist sinyal validasi, seleksi provider SCM fail-closed — **exit V1 Evidence Gate (Task 136)**
+- **Task 141–152 selesai (2026-08-02)** — via [PR #12](https://github.com/okfriansyah-moh/the-foundry/pull/12):
+  execution envelope, intake CLI/Telegram live, input router terpadu, loop venture tertutup, orkestrasi 10x penuh,
+  penutupan isolasi profil, bukti release wajib `make v1-proof` — **exit Final V1 Evidence Gate (Task 152)**
+- **Task 153–155 selesai (2026-08-04)** — via [PR #13](https://github.com/okfriansyah-moh/the-foundry/pull/13):
+  katalog agen/skill, materialisasi runtime Claude Code, jembatan evolusi skill L1 dengan rollback e2e
 - **Shared Kernel Proof (exit M0)** — demo end-to-end membuktikan admit → worktree → verify →
   bukti → restart checkpoint
 
-Semua 140 task PLAN bernomor berurutan ditandai selesai di `docs/PLAN.md` sumber.
-Kedua track produk kini memiliki bukti exit MLS plus workflow CI bukti live.
+Semua 155 task PLAN bernomor berurutan ditandai selesai di `docs/PLAN.md` sumber.
+Kedua track produk memiliki bukti exit MLS, workflow CI bukti live, dan kemasan kapabilitas M7.
 
 ## Masalah
 
@@ -123,6 +128,8 @@ di branch 10x bersama tanpa PR, merge, atau deployment dalam workflow itu.
 | M5 gap-closure (✅ 2026-07-31, PR #9) | Task 111–120: intake dapat dilanjutkan, inbound Telegram, sandbox wajib, kebijakan fail-closed, isolasi profil, rekonsiliasi cost |
 | Konvergensi runtime M5 (✅ 2026-08-01, PR #10) | Task 121–130: scheduler portfolio, idempotensi mission, recovery task teracun, gelombang konkuren, integrasi produksi Fly.io/Stripe/S3 |
 | V1 Evidence Gate (✅ 2026-08-01, PR #11) | Task 131–140: bukti venture + Bitbucket live, baseline benchmark, intake mockup, sinyal validasi, SCM fail-closed — `docs/notes/v1-evidence-gate.md` |
+| Penutupan runtime M6 (✅ 2026-08-02, PR #12) | Task 141–152: execution envelope, intake live, input router, loop venture/10x tertutup, `make v1-proof` — `docs/notes/v1-final-evidence-gate.md` |
+| Kemasan kapabilitas M7 (✅ 2026-08-04, PR #13) | Task 153–155: katalog agen/skill, materialisasi Claude Code, evolusi skill L1 dengan rollback e2e |
 
 Estimasi roadmap dan asumsi builder didokumentasikan secara jujur di
 `docs/architecture/overview.md` — rentang dengan tingkat keyakinan, bukan presisi palsu.
@@ -141,6 +148,8 @@ Estimasi roadmap dan asumsi builder didokumentasikan secara jujur di
 | Constitution fitness (Task 18) | `fitlint` menegakkan aturan enum C1, batas import, dan doc link di CI |
 | Empat lineage image container | Aturan anti-sprawl: dev, postgres/temporal, executor sandbox, release binary |
 | Akselerasi V1 terukur (C25) | Baseline benchmark ditambang dari delivery git control-arm; exit memerlukan perbandingan bukti, bukan klaim |
+| Bukti release V1 wajib (C9/C10) | `make v1-proof` fail closed tanpa infra live; exit skip kode 2 tidak pernah diarsipkan sebagai PASS |
+| Kemasan ≠ otoritas eksekusi | Instal agen/skill hanya mematerialisasi file provider; kernel mempertahankan keputusan SCM/deploy |
 | 9Router ditolak / OpenHands ditunda | ADR-001 mencatat disposisi eksplisit — fallback provider (Task 129) memenuhi intent routing |
 
 ## Tipe Entry dan Workflow
@@ -161,9 +170,14 @@ Semantik recovery, retry, dan penyelesaian jujur ada di `docs/workflows/recovery
 
 ```text
 docs/foundry/delivery_foundry.md   indeks arsitektur master
-docs/PLAN.md                       rencana 140 task (Task 1–140 ✅, V1 Evidence Gate)
+docs/PLAN.md                       rencana 155 task (Task 1–155 ✅, M7 selesai)
 docs/architecture.md               konstitusi satu halaman + peta link
 docs/notes/v1-evidence-gate.md     verdict V1 Evidence Gate (Task 136)
+docs/notes/v1-final-evidence-gate.md  verdict Final V1 Evidence Gate (Task 152)
+docs/notes/capability-packaging.md batas otoritas materialisasi runtime
+agents/catalog.yaml                katalog agen canonical (Task 153)
+skills/catalog.yaml                katalog skill canonical (Task 153)
+adapters/agent-runtime/            materializer provider-neutral + adapter Claude Code
 benchmarks/baseline/               delivery baseline control-arm + manifest untuk perbandingan akselerasi
 docs/notes/m1-exit-report.md       bukti acceptance M1
 docs/notes/m2-exit-report.md       bukti exit hardening operasional M2
@@ -181,8 +195,9 @@ tools/planrunner/                  orkestrator task otonom bootstrap
 deploy/                            toolchain dev Docker, postgres/temporal, prometheus/grafana
 internal/                          paket Go (kernel, pec, intake, integrator, retention, …)
 scripts/backup.sh, restore.sh      backup/restore dengan verifikasi manifest
-Makefile                           target dibungkus docker termasuk m1-exit, m2-exit, e2e-venture, e2e-tenx, bench-baseline, bench-foundry, e2e-bitbucket
+Makefile                           target dibungkus docker termasuk m1-exit, m2-exit, e2e-venture, e2e-tenx, bench-baseline, bench-foundry, e2e-bitbucket, v1-proof
 .github/workflows/e2e-*.yml        bukti live terjadwal/manual (venture, tenx, bitbucket)
+.github/workflows/v1-proof.yml     workflow bukti release nyata terlindungi (Task 151)
 ```
 
 ## Pelajaran
@@ -198,7 +213,9 @@ Makefile                           target dibungkus docker termasuk m1-exit, m2-
 5. **Karantina legacy** — `docs/legacy/` ditandai sebagai riwayat superseded dan tidak
    boleh diberikan ke agen implementasi.
 6. **Exit V1 adalah verdict bukti** — Task 136 memeriksa bukti live, perbandingan benchmark, dan
-   fitness konstitusi bersama; menyelesaikan task kode saja tidak mendeklarasikan V1.
+   fitness konstitusi bersama; Task 152 menambahkan bukti release wajib — menyelesaikan task kode saja tidak mendeklarasikan V1.
+7. **Katalog adalah sumber kebenaran, proyeksi adalah turunan** — M7 menjaga katalog Foundry sebagai canonical;
+   file workspace provider adalah artefak instalasi dengan digest manifest, bukan otoritas alternatif.
 
 ## Terkait
 
@@ -209,8 +226,8 @@ Makefile                           target dibungkus docker termasuk m1-exit, m2-
 ## Sumber
 
 - Repository: [okfriansyah-moh/the-foundry](https://github.com/okfriansyah-moh/the-foundry)
-- Pull request: [#11](https://github.com/okfriansyah-moh/the-foundry/pull/11), [#10](https://github.com/okfriansyah-moh/the-foundry/pull/10), [#9](https://github.com/okfriansyah-moh/the-foundry/pull/9), [#8](https://github.com/okfriansyah-moh/the-foundry/pull/8), [#7](https://github.com/okfriansyah-moh/the-foundry/pull/7), [#6](https://github.com/okfriansyah-moh/the-foundry/pull/6), [#5](https://github.com/okfriansyah-moh/the-foundry/pull/5), [#4](https://github.com/okfriansyah-moh/the-foundry/pull/4), [#2](https://github.com/okfriansyah-moh/the-foundry/pull/2), [#1](https://github.com/okfriansyah-moh/the-foundry/pull/1)
-- Laporan exit: `docs/notes/m1-exit-report.md`, `docs/notes/m2-exit-report.md`, `docs/notes/track-a-exit-report.md`, `docs/notes/track-b-exit-report.md`, `docs/notes/v1-evidence-gate.md`, `benchmarks/baseline/report.md`
+- Pull request: [#13](https://github.com/okfriansyah-moh/the-foundry/pull/13), [#12](https://github.com/okfriansyah-moh/the-foundry/pull/12), [#11](https://github.com/okfriansyah-moh/the-foundry/pull/11), [#10](https://github.com/okfriansyah-moh/the-foundry/pull/10), [#9](https://github.com/okfriansyah-moh/the-foundry/pull/9), [#8](https://github.com/okfriansyah-moh/the-foundry/pull/8), [#7](https://github.com/okfriansyah-moh/the-foundry/pull/7), [#6](https://github.com/okfriansyah-moh/the-foundry/pull/6), [#5](https://github.com/okfriansyah-moh/the-foundry/pull/5), [#4](https://github.com/okfriansyah-moh/the-foundry/pull/4), [#2](https://github.com/okfriansyah-moh/the-foundry/pull/2), [#1](https://github.com/okfriansyah-moh/the-foundry/pull/1)
+- Laporan exit: `docs/notes/m1-exit-report.md`, `docs/notes/m2-exit-report.md`, `docs/notes/track-a-exit-report.md`, `docs/notes/track-b-exit-report.md`, `docs/notes/v1-evidence-gate.md`, `docs/notes/v1-final-evidence-gate.md`, `docs/notes/capability-packaging.md`, `benchmarks/report-v1-final.md`
 - Review: `docs/foundry/V12_REVIEW_REPORT.md` di repo sumber
 - Changelog: `docs/foundry/CHANGELOG.md` di repo sumber
-- Indeks rencana: `docs/PLAN.md` §D Master Task Index (Task 1–140 ✅)
+- Indeks rencana: `docs/PLAN.md` §D Master Task Index (Task 1–155 ✅)
