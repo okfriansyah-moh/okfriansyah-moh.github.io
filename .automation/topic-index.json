@@ -22,7 +22,12 @@
         "idempotent-stage-caching",
         "distributed-upload-scheduling",
         "multi-platform-publish",
-        "sports-video-type"
+        "sports-video-type",
+        "db-backed-stage-cache",
+        "chunked-transcription-resume",
+        "scheduler-distributed-lock",
+        "large-video-dynamic-generation",
+        "signal-metadata-cache-tables"
       ]
     },
     "a2a-brainstormer:document-coherence": {
