@@ -7,7 +7,7 @@ This backlog ranks article opportunities discovered from public repositories own
 `okfriansyah-moh`. The daily automation should consult this file when deciding whether
 to update an existing page or create a new one.
 
-## Status Summary (2026-07-26)
+## Status Summary (2026-08-06)
 
 | Status | Count | Notes |
 |--------|------:|-------|
@@ -18,6 +18,8 @@ to update an existing page or create a new one.
 **Completed in 2026-07-21 automation run:** Delivery Foundry control plane system article, Delivery Foundry project overview (new public repo `the-foundry`).
 
 **Updated in 2026-07-26 automation run:** Delivery Foundry system + project articles refreshed for merged PR #1 (Tasks 3–22: agent harness, kernel workflow, CLI/daemon, SKP e2e).
+
+**Updated in 2026-08-06 automation run:** Shorts Generator pipeline article refreshed for merged PR #12 (large video support, DB stage cache, chunked transcription, scheduler locks, dynamic generation loop).
 
 ## Priority Legend
 
