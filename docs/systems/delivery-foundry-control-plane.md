@@ -34,10 +34,11 @@ and the start of M1 (Foundation):
 - **Kernel workflow (Tasks 12–16)** — `foundryd` Temporal worker hosting `DeliverPlan`; checkpoint + forced-restart resume proof
 - **Operator surface (Tasks 13–15, 18–19)** — validation runner, PostgreSQL status projection, `foundry` CLI (`status`, `plan submit|approve|verify`, `projection rebuild`, `doctor`, `policy`, `evidence`, `principal`), and `fitlint` constitution checks
 - **Foundation layer (Tasks 20–22)** — migrations framework, profiles/principals/organizations, policy compiler v1
+- **Operator config SoT (Tasks 156–161, [PR #14](https://github.com/okfriansyah-moh/the-foundry/pull/14))** — `internal/operatorcfg.Store` reads policy layers, quotas, model rates, opportunity thresholds, mission-decide policies, tunable values, and packaging catalogs from **PostgreSQL** as the source of truth; daemon startup seeds from disk when keys are empty; CLI catalog commands accept `-pg-dsn` for DB-backed catalogs and rollback
 
 Normative contracts remain in `docs/foundry/delivery_foundry.md` and the modular
 `docs/foundry/docs/` tree; the live implementation roadmap is `docs/PLAN.md`
-(Tasks 23–83 still open).
+(Tasks 23–155 and 162–83 still open beyond the CFG/CAP milestone).
 
 ## The Problem
 
@@ -107,6 +108,7 @@ flowchart TB
 
   subgraph ControlPlane["Foundry Control Plane (kernel authority)"]
     API[API and identity]
+    CFG[(Operator config store<br/>Postgres SoT)]
     POLICY[Policy decision point]
     WF[Durable workflow backend]
     LEDGER[Audit and event ledger]
@@ -131,7 +133,8 @@ flowchart TB
   CHAT --> API
   CI --> API
 
-  API --> POLICY
+  API --> CFG
+  CFG --> POLICY
   POLICY --> WF
   WF --> PEC
   PEC -->|proposes waves| WF
@@ -148,22 +151,26 @@ flowchart TB
 
 1. **Entry** — A mission, mockup, requirement, specification, or approved `PLAN.md`
    arrives at the control plane API.
-2. **Intake and admission** — The deterministic admission classifier assigns tier
+2. **Operator config readiness** — On `foundryd` startup, `operatorcfg.Store.EnsureSeeded`
+   loads disk YAML into Postgres when a config key has no active version; all subsequent
+   policy compilation, quota enforcement, model rates, opportunity gates, and packaging
+   catalog reads come from the database (versioned payloads + apply audit).
+3. **Intake and admission** — The deterministic admission classifier assigns tier
    (A0/A1/A2/H) and verifies provenance for approved plans.
-3. **Workflow creation** — Kernel creates a workflow in `PENDING`, transitions to
+4. **Workflow creation** — Kernel creates a workflow in `PENDING`, transitions to
    `RUNNING` with phase `intake`, and assigns a checkpoint.
-4. **PEC interpretation** — PEC reads the admitted plan, proposes dependency-aware
+5. **PEC interpretation** — PEC reads the admitted plan, proposes dependency-aware
    waves and bounded task dispatch within the kernel-granted envelope.
-5. **Isolated execution** — Runner spawns an ephemeral sandbox worktree; agents execute
+6. **Isolated execution** — Runner spawns an ephemeral sandbox worktree; agents execute
    tasks and return summaries to PEC (not directly to kernel state).
-6. **Verification** — Deterministic checks produce an evidence bundle; kernel advances
+7. **Verification** — Deterministic checks produce an evidence bundle; kernel advances
    phase (e.g., `implementation` → `verifying` → `integrating`).
-7. **Side effects** — Kernel-owned Branch Integrator performs SCM writes; external
+8. **Side effects** — Kernel-owned Branch Integrator performs SCM writes; external
    operations record idempotency keys in the ledger.
-8. **Terminal decision** — Kernel sets `SUCCEEDED` or `FAILED` with a registry-controlled
+9. **Terminal decision** — Kernel sets `SUCCEEDED` or `FAILED` with a registry-controlled
    `result_code` (e.g., `MISSION_TARGET_REACHED`, `TEN_X_BRANCH_HANDOFF_READY`,
    `PROVEN_BLOCKED`).
-9. **Recovery on failure** — Recovery Manager reads failure classification and climbs
+10. **Recovery on failure** — Recovery Manager reads failure classification and climbs
    the L0–L7 ladder; human gates pause at configured boundaries.
 
 ## Important Components
@@ -183,12 +190,15 @@ flowchart TB
 | **Operation ledger** | Idempotency keys and reconciliation for external side effects |
 | **Recovery Manager** | Bounded self-healing ladder with explicit prohibitions |
 | **Branch Integrator** | Kernel-owned SCM writes to isolated worktrees and 10x branches |
+| **`operatorcfg.Store` (Tasks 156–161)** | Postgres-backed operator-hot config SoT: versioned policy layers, quotas, model policy/rates, opportunity thresholds, mission-decide policy, tunable values, packaging catalogs/enablement; seeds from disk on first run |
+| **Packaging catalog loader** | File-backed fallback for local dev; `-pg-dsn` on `foundry catalog` subcommands loads catalogs and enablement from the config store |
 
-Go packages now carry real implementations through Task 22 — each with a `doc.go`
+Go packages now carry real implementations through Task 22 and the CFG/CAP milestone
+(Tasks 156–161) — each with a `doc.go`
 stating authority limits: `internal/kernel` (Temporal workflow), `internal/state`
 (six-status model), `internal/admission`, `internal/provenance`, `internal/evidence`,
 `internal/worktree`, `internal/executor/*`, `internal/projection`, `internal/policy`,
-`internal/profile`, and others. PEC packages remain proposal-only per C5; side-effect
+`internal/profile`, `internal/operatorcfg`, and others. PEC packages remain proposal-only per C5; side-effect
 authority stays in kernel code paths exercised by `foundryd`.
 
 ## Simplified Implementation Examples
@@ -223,6 +233,28 @@ L2 — focused debugging agent
 L7 — pause and escalate to human
 ```
 
+Operator config versioning (simplified from `internal/operatorcfg/store.go` and migration `00044_operator_config_sot.sql`):
+
+```sql
+-- Each config_key tracks an active_version pointer
+-- operator_config_versions stores immutable payload + SHA256 + apply metadata
+-- operator_config_apply_audit records who approved each promotion
+SELECT config_key, active_version FROM operator_config_entries;
+-- Keys include policy.layer.*, quotas, executor.models, packaging.catalog.*
+```
+
+Startup seed path (simplified from `cmd/foundryd/main.go`):
+
+```go
+cfgStore := operatorcfg.NewStore(db)
+cfgStore.EnsureSeeded(ctx, operatorcfg.SeedPaths{
+    PolicyOrganizationPath: "config/profiles/organization-10x.yaml",
+    PolicyPersonalPath:     "config/profiles/personal-autonomous-venture.yaml",
+    // ... quotas, model rates, catalogs, enablement ...
+})
+modelPolicy, err := cfgStore.LoadModelPolicy(ctx) // all runtime reads are DB-backed
+```
+
 ## Reliability and Idempotency
 
 - **Checkpoints** — Kernel records `checkpoint_id` on every meaningful transition;
@@ -235,6 +267,11 @@ L7 — pause and escalate to human
   disaster-recovery docs define checkpoint/restart semantics.
 - **Honest blocking** — `PROVEN_BLOCKED` on `FAILED` means verified evidence that work is
   unsatisfiable as scoped — not a generic error code.
+- **Versioned operator config** — Policy overlays, quotas, and packaging catalogs promote
+  through immutable version rows; `active_version` on `operator_config_entries` is the only
+  mutable pointer; apply audit enforces reviewer ≠ implementer on promotions.
+- **Seed-then-serve** — First `foundryd` boot copies disk YAML into Postgres when a key has
+  no versions; later changes must go through the config store apply path, not silent file edits.
 
 ## Failure Modes
 
@@ -245,6 +282,7 @@ L7 — pause and escalate to human
 | Policy violation | `FAILED`, result `ADMISSION_REJECTED` | No auto-retry; human review |
 | Budget exhaustion | `WAITING`, reason `budget` | Pause until budget reset or human override |
 | PEC overreach | CI prohibition tests | Build fails before merge |
+| Stale file-based config | Daemon reads DB; missing key fails startup with named error | Re-seed or apply new version via operatorcfg |
 | Process crash mid-phase | Liveness supervisor | Replay from checkpoint; resume at last committed phase |
 | Security hold | `WAITING`, reason `security-hold` | Recovery Manager cannot suppress alerts |
 
@@ -259,12 +297,14 @@ L7 — pause and escalate to human
 | V12 doc modularization | Preserves V11 content while adding normative contracts; size growth accepted |
 | Docker-only dev toolchain | Host needs only Docker + make; dev/CI parity from Task 1 |
 | 10x handoff without PR | `TEN_X_BRANCH_HANDOFF_READY` is success, not failure — org workflow stop boundary |
+| Postgres SoT for operator-hot config (Tasks 156–161) | Centralizes policy/quotas/catalogs with version history and audit; file paths become seed inputs only, reducing drift between CLI, daemon, and API |
 
 ## Testing
 
-Current validation (Tasks 1–22, implemented):
+Current validation (Tasks 1–22 and CFG/CAP Tasks 156–161, implemented):
 
 - `make bootstrap test lint fitness` inside the `dev` Docker image
+- `internal/operatorcfg/store_pg_test.go` — Postgres store seed, load, and version apply paths
 - `make up` + `make doctor` — verifies Docker/Compose, PostgreSQL `SELECT 1`, Temporal `GetSystemInfo`
 - `scripts/fitness.sh` (Task 18): `go vet`, `doc.go` presence, plus `cmd/fitlint` checks for
   enum lint (C1), superseded-term lint, SCM import boundaries, and doc-link resolution
@@ -282,8 +322,11 @@ Planned validation (remaining milestones):
 ## Operations and Observability
 
 - **CLI entry** — `foundry` subcommands: `doctor`, `status`, `plan submit|approve|verify`,
-  `projection rebuild`, `principal create`, `keygen`, `policy`, `evidence`, `migrate`
-- **Daemon** — `foundryd` polls Temporal queue `foundry-core`; only process performing kernel side effects (C4)
+  `projection rebuild`, `principal create`, `keygen`, `policy`, `evidence`, `migrate`,
+  `catalog list|validate|install|doctor` (optional `-pg-dsn` for DB-backed packaging config)
+- **Daemon** — `foundryd` seeds `operatorcfg.Store` on startup, then loads all policy,
+  quota, model, opportunity, and catalog config from Postgres before serving API/worker;
+  polls Temporal queue `foundry-core` as the only process performing kernel side effects (C4)
 - **Make targets** — `bootstrap`, `up`, `down`, `doctor`, `test`, `lint`, `fitness`, `skp-e2e`,
   `plan-run`, `evidence-verify`, `projection-rebuild` (all Docker-wrapped)
 - **Bootstrap notifications** — Plan runner (Task 3) uses a disposable Telegram bot for AUTO-path
@@ -307,6 +350,9 @@ Planned validation (remaining milestones):
    `ars compose` projects skills and boundaries into Claude/Codex formats without duplicating policy.
 7. **Fitness earns the constitution** — Task 18's `fitlint` turns C1 articles into CI failures,
    not documentation-only guidance.
+8. **Operator-hot config belongs in the database** — Tasks 156–161 move policy layers, quotas,
+   model tables, and packaging catalogs to Postgres with versioned apply metadata so CLI,
+   daemon, and API share one auditable source — disk files seed once, then promotions are explicit.
 
 ## Related
 
@@ -318,7 +364,8 @@ Planned validation (remaining milestones):
 
 - Repository: [okfriansyah-moh/the-foundry](https://github.com/okfriansyah-moh/the-foundry)
 - Pull request: [#1 — Tasks 3–22](https://github.com/okfriansyah-moh/the-foundry/pull/1) (merge commit [`6efd492`](https://github.com/okfriansyah-moh/the-foundry/commit/6efd492d48d99672afea27da565699e8e8a3983d))
+- Pull request: [#14 — Tasks 156–161 operator config Postgres SoT](https://github.com/okfriansyah-moh/the-foundry/pull/14) (merge commit [`5b01562`](https://github.com/okfriansyah-moh/the-foundry/commit/5b015620a5a676c47dfe806486e82137b7801834))
 - Earlier commits: [`58632a0`](https://github.com/okfriansyah-moh/the-foundry/commit/58632a0) (first commit), [`9409080`](https://github.com/okfriansyah-moh/the-foundry/commit/9409080) (Task 1 scaffold)
 - Architecture: `docs/foundry/delivery_foundry.md`, `docs/architecture.md`, `docs/foundry/docs/architecture/state-model.md`
 - Agent harness: `.ai/manifest.yaml`, `.ai/instructions/authority-boundaries.md`
-- Implementation plan: `docs/PLAN.md` (Tasks 1–22 ✅, Tasks 23–83 pending)
+- Implementation plan: `docs/PLAN.md` (Tasks 1–22 ✅, Tasks 156–161 ✅, remaining tasks pending)

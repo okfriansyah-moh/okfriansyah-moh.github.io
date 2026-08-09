@@ -19,6 +19,8 @@ to update an existing page or create a new one.
 
 **Updated in 2026-07-26 automation run:** Delivery Foundry system + project articles refreshed for merged PR #1 (Tasks 3–22: agent harness, kernel workflow, CLI/daemon, SKP e2e).
 
+**Updated in 2026-08-09 automation run:** Delivery Foundry system + project articles refreshed for merged PR #14 (Tasks 156–161: Postgres operator config SoT).
+
 ## Priority Legend
 
 | Priority | Meaning |

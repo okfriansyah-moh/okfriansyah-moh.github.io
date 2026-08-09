@@ -249,7 +249,8 @@
       "sources": [
         "okfriansyah-moh/the-foundry@58632a0",
         "okfriansyah-moh/the-foundry@9409080",
-        "okfriansyah-moh/the-foundry#1"
+        "okfriansyah-moh/the-foundry#1",
+        "okfriansyah-moh/the-foundry#14"
       ],
       "repos": [
         "okfriansyah-moh/the-foundry"
@@ -265,7 +266,12 @@
         "fitlint-constitution-checks",
         "checkpoint-restart-proof",
         "policy-compiler",
-        "cli-daemon"
+        "cli-daemon",
+        "postgres-operator-config-sot",
+        "operatorcfg-versioned-store",
+        "config-seed-from-disk",
+        "packaging-catalog-db-load",
+        "operator-config-apply-audit"
       ]
     },
     "delivery-foundry:project-overview": {
@@ -275,7 +281,8 @@
       },
       "sources": [
         "okfriansyah-moh/the-foundry",
-        "okfriansyah-moh/the-foundry#1"
+        "okfriansyah-moh/the-foundry#1",
+        "okfriansyah-moh/the-foundry#14"
       ],
       "repos": [
         "okfriansyah-moh/the-foundry"
@@ -285,7 +292,8 @@
         "project-roadmap-status",
         "dual-track-venture-10x",
         "entry-types-overview",
-        "implementation-task-status"
+        "implementation-task-status",
+        "postgres-operator-config-sot"
       ]
     }
   }
