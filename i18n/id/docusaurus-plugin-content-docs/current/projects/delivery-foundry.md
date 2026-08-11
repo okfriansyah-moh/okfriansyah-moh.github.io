@@ -30,10 +30,17 @@ Repositori publik (dibuat 2026-07-20) berisi:
 - **Task 1–22 selesai (2026-07-25)** — via [PR #1](https://github.com/okfriansyah-moh/the-foundry/pull/1):
   agent harness, plan runner otonom, workflow kernel Temporal, CLI/daemon, fitness suite,
   migrasi, profiles, dan policy compiler v1
+- **Task 156–161 selesai (2026-08-08)** — via [PR #14](https://github.com/okfriansyah-moh/the-foundry/pull/14):
+  store config operator berbasis Postgres (`operatorcfg.Store`), policy/kuota/model versi,
+  jalur load katalog packaging DB, dan `-pg-dsn` pada perintah `foundry catalog`
+- **Task 162–164 parsial (2026-08-10)** — via [PR #15](https://github.com/okfriansyah-moh/the-foundry/pull/15):
+  loop input unattended dengan `AutonomyPolicy`, transport `inputrouter`, kernel
+  `InputRouteWorkflow`, API mission brief, dan CI `loop-proof` terlindungi; **receipt live Path A/B
+  masih BLOCKED** per evidence gate sumber (LOCAL_MOCK dan tes unit lulus)
 - **Shared Kernel Proof (exit M0)** — demo end-to-end membuktikan admit → worktree → verify →
   bukti → restart checkpoint
 
-Task 23–83 (integrasi OPA, rantai provenance penuh, track venture dan 10x) masih terbuka;
+Task 23–155 dan 165–83 (integrasi OPA, rantai provenance penuh, track venture dan 10x) masih terbuka;
 halaman ini melacak evolusi proyek sebagaimana didokumentasikan di sumber.
 
 ## Masalah
@@ -85,6 +92,8 @@ di branch 10x bersama tanpa PR, merge, atau deployment dalam workflow itu.
 | Set dokumen V12 | Kontrak normatif modular; konten V11 dipertahankan via migration map |
 | Task 1 (✅ 2026-07-20) | Toolchain dev Docker, CI, scaffold paket Go, fitness v0 |
 | Task 2–22 (✅ 2026-07-25, PR #1) | Agent harness (`.ai/`), plan runner, kernel Temporal, CLI/daemon, SKP e2e, migrasi + policy compiler |
+| Task 156–161 (✅ 2026-08-08, PR #14) | SoT config operator-hot Postgres: `operatorcfg.Store`, policy/kuota/katalog versi, `foundry catalog` berbasis DB |
+| Task 162–164 (⚠️ parsial 2026-08-10, PR #15) | Loop input M9 unattended: AutonomyPolicy, InputRouteWorkflow, CI loop-proof; receipt e2e live belum tercapture |
 | M0 — Shared Kernel Proof (✅) | Admit satu rencana → worktree → verify → bukti → **lanjut setelah restart** |
 | M1 — Foundation (parsial) | Task 20–22 selesai; OPA PDP, rantai provenance penuh, ledger (Task 23–26) pending |
 | Venture MLS (Track A) | Misi → produk deployable → observasi billing → satu siklus perbaikan terbatas |
@@ -108,6 +117,8 @@ Estimasi roadmap dan asumsi builder didokumentasikan secara jujur di
 | Agent harness multi-provider (Task 2) | Sumber canonical ARES `.ai/` dikomposisi ke Claude/Codex; sebelas skill untuk enam peran |
 | Constitution fitness (Task 18) | `fitlint` menegakkan aturan enum C1, batas import, dan doc link di CI |
 | Empat lineage image container | Aturan anti-sprawl: dev, postgres/temporal, executor sandbox, release binary |
+| Postgres operator config SoT (Task 156–161) | Policy, kuota, tarif model, dan katalog packaging berbagi satu store versi; YAML disk seed sekali saat boot daemon |
+| Loop input unattended (Task 162–164) | Semua transport IDEA/MOCKUP/brief melewati input router persisten + workflow kernel di bawah AutonomyPolicy eksplisit; bukti parsial jujur sampai receipt live ada |
 
 ## Tipe Entry dan Workflow
 
@@ -136,8 +147,9 @@ cmd/foundryd/                      worker kernel Temporal
 cmd/fitlint/                       linter konstitusi
 tools/planrunner/                  orkestrator task otonom bootstrap
 deploy/                            toolchain dev Docker + compose postgres/temporal
-internal/                          paket Go (kernel, state, admission, evidence, …)
+internal/                          paket Go (kernel, state, admission, evidence, operatorcfg, inputrouter, autonomypolicy, …)
 scripts/fitness.sh                 suite pemeriksaan konstitusi
+scripts/loop_proof.sh              gate bukti loop unattended terlindungi
 Makefile                           target dibungkus docker
 ```
 
@@ -164,6 +176,9 @@ Makefile                           target dibungkus docker
 
 - Repository: [okfriansyah-moh/the-foundry](https://github.com/okfriansyah-moh/the-foundry)
 - Pull request: [#1 — Task 3–22](https://github.com/okfriansyah-moh/the-foundry/pull/1) (merge [`6efd492`](https://github.com/okfriansyah-moh/the-foundry/commit/6efd492d48d99672afea27da565699e8e8a3983d))
+- Pull request: [#14 — Task 156–161 operator config Postgres SoT](https://github.com/okfriansyah-moh/the-foundry/pull/14) (merge [`5b01562`](https://github.com/okfriansyah-moh/the-foundry/commit/5b015620a5a676c47dfe806486e82137b7801834))
+- Pull request: [#15 — Task 162–164 loop input unattended](https://github.com/okfriansyah-moh/the-foundry/pull/15) (merge [`58053fe`](https://github.com/okfriansyah-moh/the-foundry/commit/58053fe379007e4eef1a2b4a784792d1776355ce))
+- Evidence gate: `docs/notes/unattended-loop-evidence-gate.md` di repo sumber
 - Commit sebelumnya: [`58632a0`](https://github.com/okfriansyah-moh/the-foundry/commit/58632a0), [`9409080`](https://github.com/okfriansyah-moh/the-foundry/commit/9409080)
 - Review: `docs/foundry/V12_REVIEW_REPORT.md` di repo sumber
 - Changelog: `docs/foundry/CHANGELOG.md` di repo sumber
