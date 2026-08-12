@@ -36,10 +36,11 @@ and the start of M1 (Foundation):
 - **Foundation layer (Tasks 20–22)** — migrations framework, profiles/principals/organizations, policy compiler v1
 - **Operator config SoT (Tasks 156–161, [PR #14](https://github.com/okfriansyah-moh/the-foundry/pull/14))** — `internal/operatorcfg.Store` reads policy layers, quotas, model rates, opportunity thresholds, mission-decide policies, tunable values, and packaging catalogs from **PostgreSQL** as the source of truth; daemon startup seeds from disk when keys are empty; CLI catalog commands accept `-pg-dsn` for DB-backed catalogs and rollback
 - **Unattended input loop (Tasks 162–164, [PR #15](https://github.com/okfriansyah-moh/the-foundry/pull/15))** — versioned `AutonomyPolicy` store with owner-authenticated show/set/freeze/unfreeze; transport `inputrouter` that persists route decisions before starting kernel `InputRouteWorkflow`; mission brief API (`POST /v1/briefs`); idempotent intake keys; protected `loop-proof` CI suite with LOCAL_MOCK and honest live stubs that refuse PASS without receipts
+- **CLI executor receipt proof ([`cdc80eb`](https://github.com/okfriansyah-moh/the-foundry/commit/cdc80eb))** — subscription-based Claude CLI Path A/B live receipts captured in `evidence/task-164/raw/`; `make loop-proof-cli` / `scripts/loop_proof_cli.sh` entry point; macOS subscription auth fix (`USER`/`LOGNAME` in executor allowed env)
 
 Normative contracts remain in `docs/foundry/delivery_foundry.md` and the modular
 `docs/foundry/docs/` tree; the live implementation roadmap is `docs/PLAN.md`
-(Tasks 23–155 and 165–83 still open; M9 unattended loop is **partial** — live Path A/B receipts remain BLOCKED per `docs/notes/unattended-loop-evidence-gate.md`).
+(Tasks 23–155 and 165–83 still open; M9 unattended loop is **partial** — CLI executor layer **PARTIAL PASS** as of 2026-08-11; full Temporal+PostgreSQL loop with SCM/billing/deploy receipts still pending per `docs/notes/unattended-loop-evidence-gate.md`).
 
 ## The Problem
 
@@ -212,7 +213,8 @@ flowchart TB
 | **`InputRouteWorkflow` (Task 163)** | Kernel-owned durable entry for every IDEA/PLAN/MOCKUP submission after transport routing; loads AutonomyPolicy, dispatches Path A or B, records downstream workflow ID |
 | **`internal/inputrouter`** | Transport-facing router: persists route decisions, enforces idempotency keys, wires CLI/API/Telegram before Temporal handoff |
 | **`internal/autonomypolicy`** | Versioned Postgres store for `ModeUnattended` vs `ModeApproval`, effect authorization, freeze/unfreeze, and policy digest pinning on active envelopes |
-| **Loop-proof suite (Task 164)** | Protected e2e tests (`test/e2e/loop_proof/`) plus `scripts/loop_proof.sh` and `.github/workflows/loop-proof.yml`; LOCAL_MOCK passes; live harnesses fail closed without provider/deploy receipts |
+| **Loop-proof suite (Task 164)** | Protected e2e tests (`test/e2e/loop_proof/`) plus `scripts/loop_proof.sh`, `scripts/loop_proof_cli.sh`, and `.github/workflows/loop-proof.yml`; LOCAL_MOCK passes; CLI executor live receipts captured (2026-08-11); full Temporal+deploy live harnesses still fail closed without remaining receipts |
+| **`cli_receipt_test.go`** | Live Path A/B tests gated by `LOOP_PROOF_LIVE=1` + `FOUNDRY_LLM_PROVIDER`; proves executor adapters using subscription-based Claude CLI (no `ANTHROPIC_API_KEY`) |
 
 Go packages now carry real implementations through Task 22, the CFG/CAP milestone
 (Tasks 156–161), and the M9 unattended-input milestone (Tasks 162–164) — each with a
@@ -327,8 +329,9 @@ type InputRouteInput struct {
   `idempotency_key`; duplicate submissions return 409 instead of starting a second workflow.
 - **Policy digest pinning** — Active execution envelopes record the autonomy policy digest
   at dispatch time; policy updates do not retroactively widen permissions on in-flight work.
-- **Honest loop proof** — Task 164 protected tests label LOCAL_MOCK vs live; CI refuses live
-  PASS without Path A/B provider and deploy receipts (see evidence gate note in source repo).
+- **Honest loop proof** — Task 164 protected tests label LOCAL_MOCK vs live; CI refuses full
+  Temporal+deploy PASS without remaining receipts, but CLI executor Path A/B receipts are
+  captured honestly (2026-08-11) via `make loop-proof-cli` (see evidence gate note in source repo).
 
 ## Failure Modes
 
@@ -342,7 +345,8 @@ type InputRouteInput struct {
 | Stale file-based config | Daemon reads DB; missing key fails startup with named error | Re-seed or apply new version via operatorcfg |
 | Missing autonomy policy | InputRouteWorkflow refuses dispatch | Operator must seed or set policy via `foundry autonomy set` |
 | Policy frozen | Budget/deploy gates block side effects | Owner `foundry autonomy unfreeze` after review |
-| Live loop proof without receipts | Protected harness `t.Fatal` | Expected until live secrets and Path A/B bodies implemented |
+| Full Temporal loop proof without receipts | Protected harness `t.Fatal` for SCM/deploy/billing bars | CLI executor receipts captured; Temporal workflow history and deploy receipts still pending |
+| macOS Claude CLI "Not logged in" | Executor adapter missing `USER`/`LOGNAME` in allowed env | Fixed in claudecode/copilot adapters; subscription auth resolves via macOS mechanisms |
 | Process crash mid-phase | Liveness supervisor | Replay from checkpoint; resume at last committed phase |
 | Security hold | `WAITING`, reason `security-hold` | Recovery Manager cannot suppress alerts |
 
@@ -359,7 +363,7 @@ type InputRouteInput struct {
 | 10x handoff without PR | `TEN_X_BRANCH_HANDOFF_READY` is success, not failure — org workflow stop boundary |
 | Postgres SoT for operator-hot config (Tasks 156–161) | Centralizes policy/quotas/catalogs with version history and audit; file paths become seed inputs only, reducing drift between CLI, daemon, and API |
 | Kernel InputRouteWorkflow vs transport router | Transports may parse and normalize input, but only the kernel workflow may dispatch Path A/B after a durable policy gate — enforced by static bypass tests |
-| LOCAL_MOCK loop proof before live PASS | Task 164 ships CI protection immediately while live provider/deploy receipts remain a documented BLOCKED bar |
+| LOCAL_MOCK loop proof before live PASS | Task 164 ships CI protection immediately; CLI executor receipts now PARTIAL PASS while Temporal+SCM/deploy bars remain pending |
 
 ## Testing
 
@@ -371,7 +375,9 @@ Current validation (Tasks 1–22, CFG/CAP Tasks 156–161, and M9 Tasks 162–16
 - `internal/kernel/inputroute_workflow_test.go` — workflow determinism and path dispatch
 - `internal/inputrouter/submission_test.go` — idempotent route persistence
 - `test/e2e/loop_proof/*` — LOCAL_MOCK path A/B, static no-bypass, fault replay; live tests fail closed without env
+- `test/e2e/loop_proof/cli_receipt_test.go` — live CLI Path A/B receipts (subscription-based Claude CLI; gated by `LOOP_PROOF_LIVE=1`)
 - `make loop-proof` / `make loop-proof-local` — protected gate via `scripts/loop_proof.sh`
+- `make loop-proof-cli` — host-only CLI proof via `scripts/loop_proof_cli.sh` (no API key when Claude subscription is installed)
 - `make up` + `make doctor` — verifies Docker/Compose, PostgreSQL `SELECT 1`, Temporal `GetSystemInfo`
 - `scripts/fitness.sh` (Task 18): `go vet`, `doc.go` presence, plus `cmd/fitlint` checks for
   enum lint (C1), superseded-term lint, SCM import boundaries, and doc-link resolution
@@ -398,7 +404,8 @@ Planned validation (remaining milestones):
   kernel side effects (C4)
 - **Make targets** — `bootstrap`, `up`, `down`, `doctor`, `test`, `lint`, `fitness`, `skp-e2e`,
   `plan-run`, `evidence-verify`, `projection-rebuild`, `loop-proof`, `loop-proof-local`
-  (all Docker-wrapped where applicable)
+  (Docker-wrapped); `loop-proof-cli` runs on the host via `scripts/loop_proof_cli.sh` when a
+  Claude CLI subscription is available (outside the dev container)
 - **Bootstrap notifications** — Plan runner (Task 3) uses a disposable Telegram bot for AUTO-path
   digests and GATED-path `/approve` / `/reject` gates; production Telegram engine is Task 30
 - **Cost accounting** — Reserve → incur → reconcile pattern documented; enforcement lands in Tasks 29/69
@@ -426,8 +433,9 @@ Planned validation (remaining milestones):
 9. **Unattended autonomy is a policy object, not a transport hint** — PR #15 makes
    `AutonomyPolicy` authoritative over CLI/Telegram "unattended" hints; freeze and missing-policy
    paths refuse dispatch rather than silently falling back to inline execution.
-10. **Ship honest partial proof** — Task 164's evidence gate documents BLOCKED live status while
-    LOCAL_MOCK and static bypass tests still protect the constitution in CI.
+10. **Ship honest partial proof** — Task 164's evidence gate lifts BLOCKED on the CLI executor
+    layer (2026-08-11 receipts) while Temporal+SCM/deploy bars stay pending; LOCAL_MOCK and
+    static bypass tests still protect the constitution in CI.
 
 ## Related
 
@@ -441,7 +449,8 @@ Planned validation (remaining milestones):
 - Pull request: [#1 — Tasks 3–22](https://github.com/okfriansyah-moh/the-foundry/pull/1) (merge commit [`6efd492`](https://github.com/okfriansyah-moh/the-foundry/commit/6efd492d48d99672afea27da565699e8e8a3983d))
 - Pull request: [#14 — Tasks 156–161 operator config Postgres SoT](https://github.com/okfriansyah-moh/the-foundry/pull/14) (merge commit [`5b01562`](https://github.com/okfriansyah-moh/the-foundry/commit/5b015620a5a676c47dfe806486e82137b7801834))
 - Pull request: [#15 — Tasks 162–164 unattended input loop](https://github.com/okfriansyah-moh/the-foundry/pull/15) (merge commit [`58053fe`](https://github.com/okfriansyah-moh/the-foundry/commit/58053fe379007e4eef1a2b4a784792d1776355ce))
-- Evidence gate: `docs/notes/unattended-loop-evidence-gate.md` in source repo (M9 partial / live BLOCKED)
+- Commit: [`cdc80eb`](https://github.com/okfriansyah-moh/the-foundry/commit/cdc80eb) — CLI executor receipt proof, subscription auth env fix, `loop-proof-cli`
+- Evidence gate: `docs/notes/unattended-loop-evidence-gate.md` in source repo (M9 partial — CLI executor PARTIAL PASS 2026-08-11; full loop pending)
 - Earlier commits: [`58632a0`](https://github.com/okfriansyah-moh/the-foundry/commit/58632a0) (first commit), [`9409080`](https://github.com/okfriansyah-moh/the-foundry/commit/9409080) (Task 1 scaffold)
 - Architecture: `docs/foundry/delivery_foundry.md`, `docs/architecture.md`, `docs/foundry/docs/architecture/state-model.md`
 - Agent harness: `.ai/manifest.yaml`, `.ai/instructions/authority-boundaries.md`

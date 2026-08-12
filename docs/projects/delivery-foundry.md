@@ -33,10 +33,11 @@ The public repository (created 2026-07-20) contains:
 - **Tasks 156–161 complete (2026-08-08)** — via [PR #14](https://github.com/okfriansyah-moh/the-foundry/pull/14):
   Postgres-backed operator config store (`operatorcfg.Store`), versioned policy/quotas/model
   tables, packaging catalog DB load path, and `-pg-dsn` on `foundry catalog` commands
-- **Tasks 162–164 partial (2026-08-10)** — via [PR #15](https://github.com/okfriansyah-moh/the-foundry/pull/15):
+- **Tasks 162–164 partial (2026-08-10, updated 2026-08-11)** — via [PR #15](https://github.com/okfriansyah-moh/the-foundry/pull/15) and commit [`cdc80eb`](https://github.com/okfriansyah-moh/the-foundry/commit/cdc80eb):
   unattended input loop with `AutonomyPolicy`, transport `inputrouter`, kernel
-  `InputRouteWorkflow`, mission brief API, and protected `loop-proof` CI; **live Path A/B
-  receipts remain BLOCKED** per source evidence gate (LOCAL_MOCK and unit tests pass)
+  `InputRouteWorkflow`, mission brief API, and protected `loop-proof` CI; **CLI executor
+  layer PARTIAL PASS** (live Path A/B receipts captured 2026-08-11); full Temporal+PG loop
+  with SCM/billing/deploy receipts still pending per source evidence gate
 - **Shared Kernel Proof (M0 exit)** — end-to-end demo proving admit → worktree → verify →
   evidence → checkpoint restart
 
@@ -91,7 +92,7 @@ shared 10x branch with no PR, merge, or deployment in that workflow.
 | Task 1 (✅ 2026-07-20) | Docker dev toolchain, CI, Go package scaffolds, fitness v0 |
 | Tasks 2–22 (✅ 2026-07-25, PR #1) | Agent harness (`.ai/`), plan runner, Temporal kernel, CLI/daemon, SKP e2e, migrations + policy compiler |
 | Tasks 156–161 (✅ 2026-08-08, PR #14) | Operator-hot config Postgres SoT: `operatorcfg.Store`, versioned policy/quotas/catalogs, DB-backed `foundry catalog` |
-| Tasks 162–164 (⚠️ partial 2026-08-10, PR #15) | M9 unattended input loop: AutonomyPolicy, InputRouteWorkflow, loop-proof CI; live e2e receipts not yet captured |
+| Tasks 162–164 (⚠️ partial 2026-08-10, CLI receipts 2026-08-11, PR #15 + [`cdc80eb`](https://github.com/okfriansyah-moh/the-foundry/commit/cdc80eb)) | M9 unattended input loop: AutonomyPolicy, InputRouteWorkflow, loop-proof CI; CLI executor receipts captured; full Temporal e2e still pending |
 | M0 — Shared Kernel Proof (✅) | Admit one plan → worktree → verify → evidence → **resume after restart** |
 | M1 — Foundation (partial) | Tasks 20–22 done; OPA PDP, full provenance chain, ledger (Tasks 23–26) pending |
 | Venture MLS (Track A) | Mission → deployable product → billing observation → one bounded improvement cycle |
@@ -116,7 +117,7 @@ Roadmap estimates and builder assumptions are documented honestly in
 | Constitution fitness (Task 18) | `fitlint` enforces C1 enum rules, import boundaries, and doc links in CI |
 | Four container image lineages | Anti-sprawl rule: dev, postgres/temporal, executor sandbox, release binary |
 | Postgres operator config SoT (Tasks 156–161) | Policy, quotas, model rates, and packaging catalogs share one versioned store; disk YAML seeds once at daemon boot |
-| Unattended input loop (Tasks 162–164) | All IDEA/MOCKUP/brief transports route through persistent input router + kernel workflow under explicit AutonomyPolicy; honest partial proof until live receipts exist |
+| Unattended input loop (Tasks 162–164) | All IDEA/MOCKUP/brief transports route through persistent input router + kernel workflow under explicit AutonomyPolicy; CLI executor receipts PARTIAL PASS (2026-08-11); full Temporal+deploy proof still pending |
 
 ## Entry Types and Workflows
 
@@ -148,6 +149,7 @@ deploy/                            Docker dev toolchain + postgres/temporal comp
 internal/                          Go packages (kernel, state, admission, evidence, operatorcfg, inputrouter, autonomypolicy, …)
 scripts/fitness.sh                 constitution check suite
 scripts/loop_proof.sh              protected unattended-loop proof gate
+scripts/loop_proof_cli.sh          host-only CLI executor receipt proof (subscription Claude CLI)
 Makefile                           docker-wrapped targets
 ```
 
@@ -176,7 +178,8 @@ Makefile                           docker-wrapped targets
 - Pull request: [#1 — Tasks 3–22](https://github.com/okfriansyah-moh/the-foundry/pull/1) (merge [`6efd492`](https://github.com/okfriansyah-moh/the-foundry/commit/6efd492d48d99672afea27da565699e8e8a3983d))
 - Pull request: [#14 — Tasks 156–161 operator config Postgres SoT](https://github.com/okfriansyah-moh/the-foundry/pull/14) (merge [`5b01562`](https://github.com/okfriansyah-moh/the-foundry/commit/5b015620a5a676c47dfe806486e82137b7801834))
 - Pull request: [#15 — Tasks 162–164 unattended input loop](https://github.com/okfriansyah-moh/the-foundry/pull/15) (merge [`58053fe`](https://github.com/okfriansyah-moh/the-foundry/commit/58053fe379007e4eef1a2b4a784792d1776355ce))
-- Evidence gate: `docs/notes/unattended-loop-evidence-gate.md` in source repo
+- Commit: [`cdc80eb`](https://github.com/okfriansyah-moh/the-foundry/commit/cdc80eb) — CLI executor receipt proof and `loop-proof-cli`
+- Evidence gate: `docs/notes/unattended-loop-evidence-gate.md` in source repo (CLI executor PARTIAL PASS 2026-08-11)
 - Earlier commits: [`58632a0`](https://github.com/okfriansyah-moh/the-foundry/commit/58632a0), [`9409080`](https://github.com/okfriansyah-moh/the-foundry/commit/9409080)
 - Review: `docs/foundry/V12_REVIEW_REPORT.md` in source repo
 - Changelog: `docs/foundry/CHANGELOG.md` in source repo

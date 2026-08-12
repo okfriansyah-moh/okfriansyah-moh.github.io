@@ -251,7 +251,8 @@
         "okfriansyah-moh/the-foundry@9409080",
         "okfriansyah-moh/the-foundry#1",
         "okfriansyah-moh/the-foundry#14",
-        "okfriansyah-moh/the-foundry#15"
+        "okfriansyah-moh/the-foundry#15",
+        "okfriansyah-moh/the-foundry@cdc80eb"
       ],
       "repos": [
         "okfriansyah-moh/the-foundry"
@@ -279,7 +280,10 @@
         "unattended-input-loop",
         "mission-brief-intake",
         "loop-proof-evidence-gate",
-        "idempotent-intake-keys"
+        "idempotent-intake-keys",
+        "cli-executor-receipt-proof",
+        "subscription-auth-env-fix",
+        "loop-proof-cli-entry"
       ]
     },
     "delivery-foundry:project-overview": {
@@ -291,7 +295,8 @@
         "okfriansyah-moh/the-foundry",
         "okfriansyah-moh/the-foundry#1",
         "okfriansyah-moh/the-foundry#14",
-        "okfriansyah-moh/the-foundry#15"
+        "okfriansyah-moh/the-foundry#15",
+        "okfriansyah-moh/the-foundry@cdc80eb"
       ],
       "repos": [
         "okfriansyah-moh/the-foundry"
