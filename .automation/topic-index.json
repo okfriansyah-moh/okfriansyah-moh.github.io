@@ -287,6 +287,49 @@
         "entry-types-overview",
         "implementation-task-status"
       ]
+    },
+    "go-remembers:project-overview": {
+      "document": {
+        "en": "docs/projects/go-remembers.md",
+        "id": "i18n/id/docusaurus-plugin-content-docs/current/projects/go-remembers.md"
+      },
+      "sources": [
+        "okfriansyah-moh/go-remembers@a99a204",
+        "okfriansyah-moh/go-remembers@1bbb318"
+      ],
+      "repos": [
+        "okfriansyah-moh/go-remembers"
+      ],
+      "learning_objective": "Build a self-registering Go learning repo where init() hooks plug concept files into a sorted example runner",
+      "covered_capabilities": [
+        "init-based-example-registry",
+        "sorted-example-runner",
+        "go-fundamentals-examples",
+        "channels-goroutines-select",
+        "isolated-concept-files"
+      ]
+    },
+    "data-structure-and-algorithm:project-overview": {
+      "document": {
+        "en": "docs/projects/data-structure-and-algorithm.md",
+        "id": "i18n/id/docusaurus-plugin-content-docs/current/projects/data-structure-and-algorithm.md"
+      },
+      "sources": [
+        "okfriansyah-moh/data-structure-and-algorithm@d1b8540",
+        "okfriansyah-moh/data-structure-and-algorithm@af6f156"
+      ],
+      "repos": [
+        "okfriansyah-moh/data-structure-and-algorithm"
+      ],
+      "learning_objective": "Organize 70+ runnable Java DSA implementations into a README-indexed catalog by algorithm and data-structure category",
+      "covered_capabilities": [
+        "readme-catalog-navigation",
+        "maven-dsa-layout",
+        "sorting-algorithm-implementations",
+        "linked-list-variants",
+        "array-interview-problems",
+        "graph-search-algorithms"
+      ]
     }
   }
 }
