@@ -24,20 +24,23 @@ yang beroperasi di bawah envelope kebijakan eksplisit, bukan kepercayaan implisi
 Repositori mengirim **Task 1** pada 2026-07-20 (Makefile berbasis Docker, CI, scaffold Go).
 [Pull request #1](https://github.com/okfriansyah-moh/the-foundry/pull/1) (digabung
 2026-07-25) menyelesaikan **Task 2–22** hingga milestone M0 (Shared Kernel Proof) dan
-awal M1 (Foundation):
+awal M1 (Foundation). [Pull request #2](https://github.com/okfriansyah-moh/the-foundry/pull/2)
+(digabung 2026-07-27) menyelesaikan **Task 23–40** dan keluar dari **M1 — Production Foundation**:
 
 - **Agent harness (Task 2)** — [`.ai/`](https://github.com/okfriansyah-moh/the-foundry/tree/main/.ai) canonical ARES dengan enam agen peran, sebelas skill, dan komposisi multi-provider ke `AGENTS.md` / `CLAUDE.md` / `.codex/` (provider Claude + Codex di `.ai/manifest.yaml`)
 - **Plan runner otonom (Task 3)** — `tools/planrunner` dengan jalur AUTO vs GATED berbasis risiko dan gate persetujuan Telegram
 - **Stack runtime (Task 4–5)** — `postgres` + `temporal` di compose; paket state enam-status canonical (`internal/state`)
-- **Admission dan provenance (Task 6–8)** — schema/parser PLAN, `AdmissionClassifier` deterministik v0, rantai `ApprovedPlan` bertanda tangan
-- **Substrat eksekusi (Task 9–11)** — worktree manager, kontrak executor + fake executor, penyimpanan evidence bundle
-- **Workflow kernel (Task 12–16)** — worker Temporal `foundryd` menghosting `DeliverPlan`; bukti resume checkpoint + forced-restart
-- **Permukaan operator (Task 13–15, 18–19)** — validation runner, proyeksi status PostgreSQL, CLI `foundry` (`status`, `plan submit|approve|verify`, `projection rebuild`, `doctor`, `policy`, `evidence`, `principal`), dan pemeriksaan konstitusi `fitlint`
-- **Lapisan foundation (Task 20–22)** — framework migrasi, profiles/principals/organizations, policy compiler v1
+- **Admission dan provenance (Task 6–8, 24)** — schema/parser PLAN, `AdmissionClassifier` deterministik v0, rantai `ApprovedPlan` bertanda tangan dengan audit log berantai hash
+- **Substrat eksekusi (Task 9–11, 34)** — worktree manager, kontrak executor, penyimpanan evidence bundle, dan **sandbox executor OCI rootless** (jail filesystem, jaringan default-deny dengan egress gate, cap cgroup)
+- **Workflow kernel (Task 12–16, 32)** — worker Temporal `foundryd` menghosting `DeliverPlan`; bukti resume checkpoint + forced-restart; supervisor liveness dan semantik terminal `PROVEN_BLOCKED` yang jujur
+- **Permukaan operator (Task 13–15, 18–19, 36)** — validation runner, proyeksi status PostgreSQL, CLI `foundry`, **HTTP API `/v1`** dengan paritas CLI, dan pemeriksaan konstitusi `fitlint`
+- **Lapisan foundation (Task 20–22, 23–29, 35–39)** — migrasi, profiles/principals/organizations, **PDP berbasis OPA**, ledger operasi eksternal, SCM GitHub write, cost accounting/anggaran, backend secrets file, **drill backup/restore**, projector v2 dengan alert lag
+- **Integrasi produksi (Task 30–33, 38)** — engine notifikasi Telegram dengan flood control, baseline observabilitas Prometheus/Grafana, backpressure/brownout control-plane, lint dokumentasi (`make doclint`) di CI
+- **Entry venture (Task 40)** — engine `MissionContract` dan schema misi untuk misi otonom Track A
 
 Kontrak normatif tetap di `docs/foundry/delivery_foundry.md` dan pohon modular
 `docs/foundry/docs/`; roadmap implementasi aktif ada di `docs/PLAN.md`
-(Task 23–83 masih terbuka).
+(Task 41–93 masih terbuka — venture MLS, track 10x, dan hardening M2).
 
 ## Masalah
 
@@ -174,23 +177,30 @@ flowchart TB
 | **Kernel** | State workflow otoritatif, sequencing, lease, checkpoint, kebijakan, anggaran, semua side effect |
 | **Plan Execution Coordinator (PEC)** | Menginterpretasi rencana diadmit; mengusulkan gelombang, dispatch, remediasi, progress |
 | **Admission classifier** | Penetapan tier deterministik; mencegah rencana mengotorisasi diri sendiri |
-| **State projection (PostgreSQL)** | Model baca dapat dibangun ulang — bukan otoritas eksekusi |
-| **Backend Temporal (`foundryd`)** | Riwayat eksekusi tahan lama, timer, sequencing — worker Task 12 pada queue `foundry-core` |
-| **CLI `foundry`** | Perintah operator: status (tingkat konsistensi), plan submit/approve/verify, projection rebuild, doctor, policy, evidence |
+| **State projection (PostgreSQL)** | Model baca dapat dibangun ulang dengan rebuild/lag alert v2 — bukan otoritas eksekusi |
+| **Backend Temporal (`foundryd`)** | Riwayat eksekusi tahan lama, timer, routing task-queue per-lane — worker pada queue `foundry-core` |
+| **CLI `foundry` + API `/v1`** | Perintah operator dan paritas HTTP: status, plan submit/approve/verify, projection rebuild, doctor, policy, evidence, mission, budget, audit verify |
+| **OPA PDP (`internal/policy/pdp`)** | Keputusan otorisasi berbasis Rego; route API memerlukan session JWT + PDP Allow sebelum handler berjalan |
+| **Strong auth (`internal/authn`)** | Session OIDC, WebAuthn step-up untuk approval tier H, binding identitas Telegram |
+| **Executor sandbox (`internal/executor/sandbox`)** | Container OCI rootless dengan topologi egress gate; CI memverifikasi lane Docker dan rootless Podman |
 | **`fitlint` + `make fitness`** | Penegakan konstitusi: enum lint (C1), superseded-term lint, batas import, resolver doc-link |
 | **Agent harness `.ai/`** | Enam peran executor, sebelas skill, instruksi batas otoritas; dikomposisi ke file agen per provider |
 | **Plan runner (`tools/planrunner`)** | Orkestrator bootstrap untuk Task 4–22; pensiun setelah kernel mengadmit backlog sendiri (exit condition Task 3) |
 | **Pipeline bukti** | Bundel verifikasi bertipe wajib untuk kemajuan phase |
-| **Operation ledger** | Kunci idempotency dan rekonsiliasi untuk side effect eksternal |
-| **Recovery Manager** | Tangga self-healing terbatas dengan larangan eksplisit |
-| **Branch Integrator** | SCM writes milik kernel ke worktree terisolasi dan branch 10x |
+| **Operation ledger (`internal/ledger/extops`)** | Kunci idempotency dan rekonsiliasi untuk side effect eksternal termasuk push SCM |
+| **Cost ledger (`internal/ledger/cost`)** | Akuntansi reserve → incur → reconcile dengan enforcement anggaran |
+| **Recovery Manager** | Tangga self-healing terbatas dengan larangan eksplisit dan supervisi liveness |
+| **Branch Integrator / SCM write** | Push GitHub milik kernel dengan verifikasi CAS dan token source berbasis secrets |
+| **Engine Telegram (`internal/notify`)** | Notifikasi ber-tier prioritas, batching, flood control, dead-letter queue |
+| **Engine mission (`internal/mission`)** | Schema MissionContract dan store untuk entry venture Track A |
 
-Paket Go kini membawa implementasi nyata hingga Task 22 — masing-masing dengan `doc.go`
-batas otoritas: `internal/kernel` (workflow Temporal), `internal/state` (model enam status),
-`internal/admission`, `internal/provenance`, `internal/evidence`, `internal/worktree`,
-`internal/executor/*`, `internal/projection`, `internal/policy`, `internal/profile`, dan
-lainnya. Paket PEC tetap proposal-only per C5; otoritas side effect ada di jalur kode
-kernel yang dijalankan `foundryd`.
+Paket Go kini membawa implementasi nyata hingga Task 40 — masing-masing dengan `doc.go`
+batas otoritas: `internal/kernel`, `internal/state`, `internal/admission`,
+`internal/provenance`, `internal/evidence`, `internal/worktree`, `internal/executor/*`
+(termasuk `sandbox/`), `internal/projection`, `internal/policy/pdp`, `internal/api`,
+`internal/authn`, `internal/ledger/*`, `internal/scm/write`, `internal/notify`,
+`internal/mission`, `internal/profile`, dan lainnya. Paket PEC tetap proposal-only
+per C5; otoritas side effect ada di jalur kode kernel yang dijalankan `foundryd`.
 
 ## Contoh Implementasi Disederhanakan
 
@@ -263,34 +273,46 @@ L7 — pause dan eskalasi ke manusia
 
 ## Pengujian
 
-Validasi saat ini (Task 1–22, diimplementasi):
+Validasi saat ini (Task 1–40, exit M1, diimplementasi):
 
-- `make bootstrap test lint fitness` di dalam image Docker `dev`
+- `make bootstrap test lint fitness doclint` di dalam image Docker `dev`
 - `make up` + `make doctor` — verifikasi Docker/Compose, PostgreSQL `SELECT 1`, Temporal `GetSystemInfo`
 - `scripts/fitness.sh` (Task 18): `go vet`, kehadiran `doc.go`, plus pemeriksaan `cmd/fitlint` untuk
   enum lint (C1), superseded-term lint, batas import SCM, dan resolusi doc-link
 - `make skp-e2e` (Task 19) — Shared Kernel Proof end-to-end: admit plan → worktree → verify →
   evidence bundle → **forced restart → resume dari checkpoint**
-- `cmd/foundry/status_test.go` — output CLI status dengan tingkat konsistensi
-- GitHub Actions CI saat push (`.github/workflows/ci.yaml`)
+- `make m1-exit` (Task 39) — suite acceptance M1: GitHub SCM e2e, approval step-up WebAuthn,
+  soak notifikasi Telegram, rebuild proyeksi, verifikasi hash-chain audit, drill brownout, backup/restore
+- `make drill-backup-restore` — backup mid-flight saat workflow berjalan, destroy database, restore, lanjut
+- Lane sandbox CI — tes isolasi executor Docker dan verifikasi rootless Podman (Task 34, 97)
+- `internal/api/*_test.go`, `internal/authn/*_test.go`, `internal/executor/sandbox/*_test.go` — cakupan API, auth, sandbox
+- GitHub Actions CI saat push (`.github/workflows/ci.yaml`) termasuk `doclint`, `sandbox-tests`, `sandbox-tests-rootless`
+
+Keterbatasan diketahui (terdokumentasi di laporan exit M1): guard upsert proyeksi hanya
+membandingkan nomor sequence; konten stale pada sequence lebih tinggi dapat regresi phase
+terproyeksi — ditandai untuk follow-up, tidak disembunyikan.
 
 Validasi direncanakan (milestone tersisa):
 
 - Tes conformance larangan PEC (Task 56)
-- Evaluasi fault-injection dan keamanan per spesifikasi V12
-- Integrasi OPA PDP penuh dan external-operation ledger (Task 23–26)
+- Evaluasi fault-injection dan keamanan per spesifikasi V12 (Task 64, 70)
 
 ## Operasi dan Observabilitas
 
-- **Entry CLI** — subperintah `foundry`: `doctor`, `status`, `plan submit|approve|verify`,
-  `projection rebuild`, `principal create`, `keygen`, `policy`, `evidence`, `migrate`
-- **Daemon** — `foundryd` polling queue Temporal `foundry-core`; satu-satunya proses yang melakukan side effect kernel (C4)
-- **Target Make** — `bootstrap`, `up`, `down`, `doctor`, `test`, `lint`, `fitness`, `skp-e2e`,
-  `plan-run`, `evidence-verify`, `projection-rebuild` (semua dibungkus Docker)
-- **Notifikasi bootstrap** — Plan runner (Task 3) memakai bot Telegram disposable untuk digest jalur AUTO
-  dan gate `/approve` / `/reject` jalur GATED; engine Telegram produksi adalah Task 30
-- **Cost accounting** — Pola reserve → incur → reconcile terdokumentasi; enforcement ada di Task 29/69
-- **Observabilitas** — SLO, alert, dan batas payload didefinisikan di `docs/foundry/docs/operations/observability-and-alerts.md`
+- **Entry CLI** — subperintah `foundry`: `doctor`, `status`, `plan submit|approve|verify|revoke`,
+  `projection rebuild`, `principal create`, `keygen`, `policy`, `evidence`, `migrate`, `login`,
+  `mission`, `budget`, `cost`, `audit verify`, plus paritas HTTP `/v1` via `foundryd`
+- **Daemon** — `foundryd` menghosting worker Temporal dan HTTP API; satu-satunya proses yang melakukan side effect kernel (C4)
+- **Target Make** — `bootstrap`, `up`, `down`, `doctor`, `test`, `lint`, `fitness`, `doclint`,
+  `skp-e2e`, `m1-exit`, `plan-run`, `evidence-verify`, `projection-rebuild`, `backup`, `restore`,
+  `drill-backup-restore`, `drill-brownout` (semua dibungkus Docker; profil `up obs` menambah Prometheus/Grafana)
+- **Engine Telegram** — Notifikasi ber-tier prioritas (P0–P3), batching, flood control, dead-letter
+  store; approval tier H memerlukan step-up WebAuthn, bukan Telegram saja (C11/C12)
+- **Cost accounting** — Reserve → incur → reconcile dengan tabel anggaran (`00009_budgets.sql`) dan CLI `budget`/`cost`
+- **Observabilitas** — Metrik Prometheus, dashboard Grafana (`deploy/dashboards/foundry-overview.json`),
+  runbook projection-lag; katalog SLO penuh tetap di `docs/foundry/docs/operations/observability-and-alerts.md`
+- **Backup/restore** — `scripts/backup.sh` / `scripts/restore.sh` dengan verifikasi manifest sha256 dan
+  re-verify audit-chain setelah restore; drill mid-flight membuktikan kontinuitas workflow setelah destroy/recover
 
 ## Pelajaran
 
@@ -318,8 +340,10 @@ Validasi direncanakan (milestone tersisa):
 ## Sumber
 
 - Repository: [okfriansyah-moh/the-foundry](https://github.com/okfriansyah-moh/the-foundry)
+- Pull request: [#2 — Task 22–40 (exit M1)](https://github.com/okfriansyah-moh/the-foundry/pull/2) (merge commit [`4b5f3c7`](https://github.com/okfriansyah-moh/the-foundry/commit/4b5f3c70a3b3befaf7942c80eb0c83a619b464ca))
 - Pull request: [#1 — Task 3–22](https://github.com/okfriansyah-moh/the-foundry/pull/1) (merge commit [`6efd492`](https://github.com/okfriansyah-moh/the-foundry/commit/6efd492d48d99672afea27da565699e8e8a3983d))
 - Commit sebelumnya: [`58632a0`](https://github.com/okfriansyah-moh/the-foundry/commit/58632a0), [`9409080`](https://github.com/okfriansyah-moh/the-foundry/commit/9409080)
+- Laporan exit M1: `docs/notes/m1-exit-report.md` di repo sumber
 - Arsitektur: `docs/foundry/delivery_foundry.md`, `docs/architecture.md`, `docs/foundry/docs/architecture/state-model.md`
 - Agent harness: `.ai/manifest.yaml`, `.ai/instructions/authority-boundaries.md`
-- Rencana implementasi: `docs/PLAN.md` (Task 1–22 ✅, Task 23–83 pending)
+- Rencana implementasi: `docs/PLAN.md` (Task 1–40 ✅, exit M1; Task 41–93 pending)

@@ -30,10 +30,14 @@ The public repository (created 2026-07-20) contains:
 - **Tasks 1–22 complete (2026-07-25)** — via [PR #1](https://github.com/okfriansyah-moh/the-foundry/pull/1):
   agent harness, autonomous plan runner, Temporal kernel workflow, CLI/daemon, fitness suite,
   migrations, profiles, and policy compiler v1
+- **Tasks 23–40 complete (2026-07-27)** — via [PR #2](https://github.com/okfriansyah-moh/the-foundry/pull/2):
+  OPA PDP, provenance chain, OIDC/WebAuthn auth, external-op ledger, SCM GitHub write, cost
+  accounting, Telegram engine, observability stack, rootless OCI sandbox, HTTP API, backup/restore
+  drills, and MissionContract engine — **M1 Production Foundation exit**
 - **Shared Kernel Proof (M0 exit)** — end-to-end demo proving admit → worktree → verify →
   evidence → checkpoint restart
 
-Tasks 23–83 (OPA integration, full provenance chain, venture and 10x tracks) remain open;
+Tasks 41–93 (venture MLS, 10x track, M2 hardening, provider routing) remain open;
 this page tracks project evolution as documented in source.
 
 ## The Problem
@@ -84,7 +88,9 @@ shared 10x branch with no PR, merge, or deployment in that workflow.
 | Task 1 (✅ 2026-07-20) | Docker dev toolchain, CI, Go package scaffolds, fitness v0 |
 | Tasks 2–22 (✅ 2026-07-25, PR #1) | Agent harness (`.ai/`), plan runner, Temporal kernel, CLI/daemon, SKP e2e, migrations + policy compiler |
 | M0 — Shared Kernel Proof (✅) | Admit one plan → worktree → verify → evidence → **resume after restart** |
-| M1 — Foundation (partial) | Tasks 20–22 done; OPA PDP, full provenance chain, ledger (Tasks 23–26) pending |
+| Tasks 23–40 (✅ 2026-07-27, PR #2) | OPA PDP, provenance/audit chain, strong auth, extops ledger, SCM write, cost/budgets, Telegram, observability, OCI sandbox, API server, backup/restore, missions |
+| M1 — Production Foundation (✅) | `make m1-exit` acceptance: GitHub e2e, WebAuthn gate, notify soak, audit verify, brownout drill, backup/restore |
+| M1 — Foundation (partial → **complete**) | Tasks 20–40 done; venture MLS (Tasks 41–53) and 10x track (Tasks 54–63) pending |
 | Venture MLS (Track A) | Mission → deployable product → billing observation → one bounded improvement cycle |
 | 10x MLS (Track B) | Approved plan → provenance → atomic group → direct 10x branch push |
 | Mission-capable venture | Autonomous improvement within drift governance envelope |
@@ -125,18 +131,20 @@ Recovery, retry, and honest completion semantics live in `docs/workflows/recover
 
 ```text
 docs/foundry/delivery_foundry.md   master architecture index
-docs/PLAN.md                       83-task implementation plan (Tasks 1–22 ✅)
+docs/PLAN.md                       93-task implementation plan (Tasks 1–40 ✅, M1 exit)
 docs/architecture.md               one-page constitution + link map
+docs/notes/m1-exit-report.md       M1 acceptance evidence and known limitations
 .ai/                               canonical agent harness (ARES format)
 AGENTS.md / CLAUDE.md              composed provider views (do not hand-edit)
+api/openapi.yaml                   /v1 HTTP API contract (CLI parity)
 cmd/foundry/                       operator CLI
-cmd/foundryd/                      Temporal kernel worker
+cmd/foundryd/                      Temporal kernel worker + HTTP API
 cmd/fitlint/                       constitution linter
 tools/planrunner/                  bootstrap autonomous task orchestrator
-deploy/                            Docker dev toolchain + postgres/temporal compose
-internal/                          Go packages (kernel, state, admission, evidence, …)
-scripts/fitness.sh                 constitution check suite
-Makefile                           docker-wrapped targets
+deploy/                            Docker dev toolchain, postgres/temporal, prometheus/grafana
+internal/                          Go packages (kernel, api, authn, sandbox, ledger, mission, …)
+scripts/backup.sh, restore.sh      backup/restore with manifest verification
+Makefile                           docker-wrapped targets including m1-exit, doclint
 ```
 
 ## Lessons Learned
@@ -161,8 +169,10 @@ Makefile                           docker-wrapped targets
 ## Sources
 
 - Repository: [okfriansyah-moh/the-foundry](https://github.com/okfriansyah-moh/the-foundry)
+- Pull request: [#2 — Tasks 22–40 (M1 exit)](https://github.com/okfriansyah-moh/the-foundry/pull/2) (merge [`4b5f3c7`](https://github.com/okfriansyah-moh/the-foundry/commit/4b5f3c70a3b3befaf7942c80eb0c83a619b464ca))
 - Pull request: [#1 — Tasks 3–22](https://github.com/okfriansyah-moh/the-foundry/pull/1) (merge [`6efd492`](https://github.com/okfriansyah-moh/the-foundry/commit/6efd492d48d99672afea27da565699e8e8a3983d))
 - Earlier commits: [`58632a0`](https://github.com/okfriansyah-moh/the-foundry/commit/58632a0), [`9409080`](https://github.com/okfriansyah-moh/the-foundry/commit/9409080)
+- M1 exit report: `docs/notes/m1-exit-report.md` in source repo
 - Review: `docs/foundry/V12_REVIEW_REPORT.md` in source repo
 - Changelog: `docs/foundry/CHANGELOG.md` in source repo
 - Plan index: `docs/PLAN.md` §D Master Task Index

@@ -24,20 +24,23 @@ explicit policy envelopes rather than implicit trust.
 The repository shipped **Task 1** on 2026-07-20 (Docker-wrapped Makefile, CI, Go
 scaffolds). [Pull request #1](https://github.com/okfriansyah-moh/the-foundry/pull/1)
 (merged 2026-07-25) completes **Tasks 2–22** through milestone M0 (Shared Kernel Proof)
-and the start of M1 (Foundation):
+and the start of M1 (Foundation). [Pull request #2](https://github.com/okfriansyah-moh/the-foundry/pull/2)
+(merged 2026-07-27) completes **Tasks 23–40** and exits **M1 — Production Foundation**:
 
 - **Agent harness (Task 2)** — ARES-canonical [`.ai/`](https://github.com/okfriansyah-moh/the-foundry/tree/main/.ai) with six role agents, eleven skills, and multi-provider composition into `AGENTS.md` / `CLAUDE.md` / `.codex/` (Claude + Codex providers in `.ai/manifest.yaml`)
 - **Autonomous plan runner (Task 3)** — `tools/planrunner` with risk-tiered AUTO vs GATED paths and Telegram approval gates
 - **Runtime stack (Tasks 4–5)** — `postgres` + `temporal` in compose; canonical six-status state package (`internal/state`)
-- **Admission and provenance (Tasks 6–8)** — PLAN schema/parser, deterministic `AdmissionClassifier` v0, signed `ApprovedPlan` chain
-- **Execution substrate (Tasks 9–11)** — worktree manager, executor contract + fake executor, evidence bundle store
-- **Kernel workflow (Tasks 12–16)** — `foundryd` Temporal worker hosting `DeliverPlan`; checkpoint + forced-restart resume proof
-- **Operator surface (Tasks 13–15, 18–19)** — validation runner, PostgreSQL status projection, `foundry` CLI (`status`, `plan submit|approve|verify`, `projection rebuild`, `doctor`, `policy`, `evidence`, `principal`), and `fitlint` constitution checks
-- **Foundation layer (Tasks 20–22)** — migrations framework, profiles/principals/organizations, policy compiler v1
+- **Admission and provenance (Tasks 6–8, 24)** — PLAN schema/parser, deterministic `AdmissionClassifier` v0, signed `ApprovedPlan` chain with hash-linked audit log
+- **Execution substrate (Tasks 9–11, 34)** — worktree manager, executor contract, evidence bundle store, and **rootless OCI executor sandbox** (filesystem jail, default-deny network with egress gate, cgroup caps)
+- **Kernel workflow (Tasks 12–16, 32)** — `foundryd` Temporal worker hosting `DeliverPlan`; checkpoint + forced-restart resume proof; liveness supervisor and honest `PROVEN_BLOCKED` terminal semantics
+- **Operator surface (Tasks 13–15, 18–19, 36)** — validation runner, PostgreSQL status projection, `foundry` CLI, **`/v1` HTTP API** mirroring CLI parity, and `fitlint` constitution checks
+- **Foundation layer (Tasks 20–22, 23–29, 35–39)** — migrations, profiles/principals/organizations, **OPA-backed PDP**, external-operation ledger, SCM GitHub write, cost accounting/budgets, secrets file backend, **backup/restore drills**, projector v2 with lag alerts
+- **Production integrations (Tasks 30–33, 38)** — Telegram notification engine with flood control, Prometheus/Grafana observability baseline, control-plane backpressure/brownout, documentation lint (`make doclint`) in CI
+- **Venture entry (Task 40)** — `MissionContract` engine and mission schema for Track A autonomous missions
 
 Normative contracts remain in `docs/foundry/delivery_foundry.md` and the modular
 `docs/foundry/docs/` tree; the live implementation roadmap is `docs/PLAN.md`
-(Tasks 23–83 still open).
+(Tasks 41–93 still open — venture MLS, 10x track, and M2 hardening).
 
 ## The Problem
 
@@ -173,23 +176,30 @@ flowchart TB
 | **Kernel** | Authoritative workflow state, sequencing, leases, checkpoints, policy, budgets, all side effects |
 | **Plan Execution Coordinator (PEC)** | Interprets admitted plans; proposes waves, dispatch, remediation, progress |
 | **Admission classifier** | Deterministic tier assignment; prevents self-authorizing plans |
-| **State projection (PostgreSQL)** | Rebuildable read model — not execution authority |
-| **Temporal backend (`foundryd`)** | Durable execution history, timers, sequencing — Task 12 worker on queue `foundry-core` |
-| **`foundry` CLI** | Operator commands: status (consistency levels), plan submit/approve/verify, projection rebuild, doctor, policy, evidence |
+| **State projection (PostgreSQL)** | Rebuildable read model with v2 rebuild/lag alerts — not execution authority |
+| **Temporal backend (`foundryd`)** | Durable execution history, timers, per-lane task-queue routing — worker on queue `foundry-core` |
+| **`foundry` CLI + `/v1` API** | Operator commands and HTTP parity: status, plan submit/approve/verify, projection rebuild, doctor, policy, evidence, missions, budgets, audit verify |
+| **OPA PDP (`internal/policy/pdp`)** | Rego-backed authorization decisions; API routes require session JWT + PDP Allow before handlers run |
+| **Strong auth (`internal/authn`)** | OIDC sessions, WebAuthn step-up for H-tier approvals, Telegram identity binding |
+| **Executor sandbox (`internal/executor/sandbox`)** | Rootless OCI containers with egress gate topology; CI verifies Docker and rootless Podman lanes |
 | **`fitlint` + `make fitness`** | Constitution enforcement: enum lint (C1), superseded-term lint, import boundaries, doc-link resolver |
 | **`.ai/` agent harness** | Six executor roles, eleven skills, authority-boundary instructions; composed to provider-specific agent files |
 | **Plan runner (`tools/planrunner`)** | Bootstrap orchestrator for Tasks 4–22; retires once kernel admits its own backlog (Task 3 exit condition) |
 | **Evidence pipeline** | Typed verification bundles required for phase advancement |
-| **Operation ledger** | Idempotency keys and reconciliation for external side effects |
-| **Recovery Manager** | Bounded self-healing ladder with explicit prohibitions |
-| **Branch Integrator** | Kernel-owned SCM writes to isolated worktrees and 10x branches |
+| **Operation ledger (`internal/ledger/extops`)** | Idempotency keys and reconciliation for external side effects including SCM pushes |
+| **Cost ledger (`internal/ledger/cost`)** | Reserve → incur → reconcile accounting with budget enforcement |
+| **Recovery Manager** | Bounded self-healing ladder with explicit prohibitions and liveness supervision |
+| **Branch Integrator / SCM write** | Kernel-owned GitHub pushes with CAS verification and secrets-backed token source |
+| **Telegram engine (`internal/notify`)** | Priority-tiered notifications, batching, flood control, dead-letter queue |
+| **Mission engine (`internal/mission`)** | MissionContract schema and store for Track A venture entry |
 
-Go packages now carry real implementations through Task 22 — each with a `doc.go`
-stating authority limits: `internal/kernel` (Temporal workflow), `internal/state`
-(six-status model), `internal/admission`, `internal/provenance`, `internal/evidence`,
-`internal/worktree`, `internal/executor/*`, `internal/projection`, `internal/policy`,
-`internal/profile`, and others. PEC packages remain proposal-only per C5; side-effect
-authority stays in kernel code paths exercised by `foundryd`.
+Go packages now carry real implementations through Task 40 — each with a `doc.go`
+stating authority limits: `internal/kernel`, `internal/state`, `internal/admission`,
+`internal/provenance`, `internal/evidence`, `internal/worktree`, `internal/executor/*`
+(including `sandbox/`), `internal/projection`, `internal/policy/pdp`, `internal/api`,
+`internal/authn`, `internal/ledger/*`, `internal/scm/write`, `internal/notify`,
+`internal/mission`, `internal/profile`, and others. PEC packages remain proposal-only
+per C5; side-effect authority stays in kernel code paths exercised by `foundryd`.
 
 ## Simplified Implementation Examples
 
@@ -262,34 +272,46 @@ L7 — pause and escalate to human
 
 ## Testing
 
-Current validation (Tasks 1–22, implemented):
+Current validation (Tasks 1–40, M1 exit, implemented):
 
-- `make bootstrap test lint fitness` inside the `dev` Docker image
+- `make bootstrap test lint fitness doclint` inside the `dev` Docker image
 - `make up` + `make doctor` — verifies Docker/Compose, PostgreSQL `SELECT 1`, Temporal `GetSystemInfo`
 - `scripts/fitness.sh` (Task 18): `go vet`, `doc.go` presence, plus `cmd/fitlint` checks for
   enum lint (C1), superseded-term lint, SCM import boundaries, and doc-link resolution
 - `make skp-e2e` (Task 19) — Shared Kernel Proof end-to-end: admit plan → worktree → verify →
   evidence bundle → **forced restart → resume from checkpoint**
-- `cmd/foundry/status_test.go` — CLI status output with consistency levels
-- GitHub Actions CI on push (`.github/workflows/ci.yaml`)
+- `make m1-exit` (Task 39) — M1 acceptance suite: GitHub SCM e2e, WebAuthn step-up approval,
+  Telegram notify soak, projection rebuild, audit hash-chain verify, brownout drill, backup/restore
+- `make drill-backup-restore` — mid-flight backup while workflow runs, destroy database, restore, continue
+- CI sandbox lanes — Docker executor isolation tests and rootless Podman verification (Tasks 34, 97)
+- `internal/api/*_test.go`, `internal/authn/*_test.go`, `internal/executor/sandbox/*_test.go` — API, auth, sandbox coverage
+- GitHub Actions CI on push (`.github/workflows/ci.yaml`) including `doclint`, `sandbox-tests`, `sandbox-tests-rootless`
+
+Known limitation (documented in M1 exit report): projection upsert guard compares sequence
+numbers only; stale content at a higher sequence can regress projected phase — flagged for
+follow-up, not hidden.
 
 Planned validation (remaining milestones):
 
 - PEC prohibition conformance tests (Task 56)
-- Fault-injection and security evaluations per V12 specification
-- Full OPA PDP integration and external-operation ledger (Tasks 23–26)
+- Fault-injection and security evaluations per V12 specification (Tasks 64, 70)
 
 ## Operations and Observability
 
-- **CLI entry** — `foundry` subcommands: `doctor`, `status`, `plan submit|approve|verify`,
-  `projection rebuild`, `principal create`, `keygen`, `policy`, `evidence`, `migrate`
-- **Daemon** — `foundryd` polls Temporal queue `foundry-core`; only process performing kernel side effects (C4)
-- **Make targets** — `bootstrap`, `up`, `down`, `doctor`, `test`, `lint`, `fitness`, `skp-e2e`,
-  `plan-run`, `evidence-verify`, `projection-rebuild` (all Docker-wrapped)
-- **Bootstrap notifications** — Plan runner (Task 3) uses a disposable Telegram bot for AUTO-path
-  digests and GATED-path `/approve` / `/reject` gates; production Telegram engine is Task 30
-- **Cost accounting** — Reserve → incur → reconcile pattern documented; enforcement lands in Tasks 29/69
-- **Observability** — SLOs, alerts, and payload limits defined in `docs/foundry/docs/operations/observability-and-alerts.md`
+- **CLI entry** — `foundry` subcommands: `doctor`, `status`, `plan submit|approve|verify|revoke`,
+  `projection rebuild`, `principal create`, `keygen`, `policy`, `evidence`, `migrate`, `login`,
+  `mission`, `budget`, `cost`, `audit verify`, plus HTTP `/v1` API parity via `foundryd`
+- **Daemon** — `foundryd` hosts Temporal worker and HTTP API; only process performing kernel side effects (C4)
+- **Make targets** — `bootstrap`, `up`, `down`, `doctor`, `test`, `lint`, `fitness`, `doclint`,
+  `skp-e2e`, `m1-exit`, `plan-run`, `evidence-verify`, `projection-rebuild`, `backup`, `restore`,
+  `drill-backup-restore`, `drill-brownout` (all Docker-wrapped; `up obs` profile adds Prometheus/Grafana)
+- **Telegram engine** — Priority-tiered notifications (P0–P3), batching, flood control, dead-letter
+  store; H-tier approvals require WebAuthn step-up, never Telegram-only (C11/C12)
+- **Cost accounting** — Reserve → incur → reconcile with budget tables (`00009_budgets.sql`) and CLI `budget`/`cost`
+- **Observability** — Prometheus metrics, Grafana dashboard (`deploy/dashboards/foundry-overview.json`),
+  projection-lag runbook; full SLO catalog remains in `docs/foundry/docs/operations/observability-and-alerts.md`
+- **Backup/restore** — `scripts/backup.sh` / `scripts/restore.sh` with sha256 manifest verification and
+  audit-chain re-verify after restore; mid-flight drill proves workflow continuity after destroy/recover
 
 ## Lessons Learned
 
@@ -317,8 +339,10 @@ Planned validation (remaining milestones):
 ## Sources
 
 - Repository: [okfriansyah-moh/the-foundry](https://github.com/okfriansyah-moh/the-foundry)
+- Pull request: [#2 — Tasks 22–40 (M1 exit)](https://github.com/okfriansyah-moh/the-foundry/pull/2) (merge commit [`4b5f3c7`](https://github.com/okfriansyah-moh/the-foundry/commit/4b5f3c70a3b3befaf7942c80eb0c83a619b464ca))
 - Pull request: [#1 — Tasks 3–22](https://github.com/okfriansyah-moh/the-foundry/pull/1) (merge commit [`6efd492`](https://github.com/okfriansyah-moh/the-foundry/commit/6efd492d48d99672afea27da565699e8e8a3983d))
 - Earlier commits: [`58632a0`](https://github.com/okfriansyah-moh/the-foundry/commit/58632a0) (first commit), [`9409080`](https://github.com/okfriansyah-moh/the-foundry/commit/9409080) (Task 1 scaffold)
+- M1 exit report: `docs/notes/m1-exit-report.md` in source repo
 - Architecture: `docs/foundry/delivery_foundry.md`, `docs/architecture.md`, `docs/foundry/docs/architecture/state-model.md`
 - Agent harness: `.ai/manifest.yaml`, `.ai/instructions/authority-boundaries.md`
-- Implementation plan: `docs/PLAN.md` (Tasks 1–22 ✅, Tasks 23–83 pending)
+- Implementation plan: `docs/PLAN.md` (Tasks 1–40 ✅, M1 exit; Tasks 41–93 pending)

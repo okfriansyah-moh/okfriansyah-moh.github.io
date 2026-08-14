@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "last_successful_scan_at": "2026-07-26T02:01:16+00:00",
+  "last_successful_scan_at": "2026-07-28T02:02:42+00:00",
   "processed_pull_requests": [
     "okfriansyah-moh/shorts-generator#8@bootstrap",
     "okfriansyah-moh/shorts-generator#10@bootstrap",
@@ -9,12 +9,18 @@
     "okfriansyah-moh/a2a-brainstormer#12@bootstrap",
     "okfriansyah-moh/skeleton-parallel#1@bootstrap",
     "okfriansyah-moh/skeleton-parallel#2@bootstrap",
-    "okfriansyah-moh/the-foundry#1@6efd492d48d99672afea27da565699e8e8a3983d"
+    "okfriansyah-moh/the-foundry#1@6efd492d48d99672afea27da565699e8e8a3983d",
+    "okfriansyah-moh/the-foundry#2@4b5f3c70a3b3befaf7942c80eb0c83a619b464ca"
   ],
   "processed_commits": [
     "okfriansyah-moh/the-foundry@58632a0",
     "okfriansyah-moh/the-foundry@9409080"
   ],
-  "ignored_activity": [],
+  "ignored_activity": [
+    {
+      "id": "okfriansyah-moh/the-foundry#3@f367e6c29ff9fbc8a9282fdfd6452528838c6040",
+      "reason": "Lint fixes and CI remediation docs only; no new engineering capability beyond PR #2 scope"
+    }
+  ],
   "pending_pull_requests": []
 }

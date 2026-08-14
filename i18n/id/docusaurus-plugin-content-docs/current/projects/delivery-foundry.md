@@ -30,10 +30,14 @@ Repositori publik (dibuat 2026-07-20) berisi:
 - **Task 1–22 selesai (2026-07-25)** — via [PR #1](https://github.com/okfriansyah-moh/the-foundry/pull/1):
   agent harness, plan runner otonom, workflow kernel Temporal, CLI/daemon, fitness suite,
   migrasi, profiles, dan policy compiler v1
+- **Task 23–40 selesai (2026-07-27)** — via [PR #2](https://github.com/okfriansyah-moh/the-foundry/pull/2):
+  OPA PDP, rantai provenance, auth OIDC/WebAuthn, ledger extops, SCM GitHub write, cost
+  accounting, engine Telegram, stack observabilitas, sandbox OCI rootless, HTTP API, drill
+  backup/restore, dan engine MissionContract — **exit M1 Production Foundation**
 - **Shared Kernel Proof (exit M0)** — demo end-to-end membuktikan admit → worktree → verify →
   bukti → restart checkpoint
 
-Task 23–83 (integrasi OPA, rantai provenance penuh, track venture dan 10x) masih terbuka;
+Task 41–93 (venture MLS, track 10x, hardening M2, routing provider) masih terbuka;
 halaman ini melacak evolusi proyek sebagaimana didokumentasikan di sumber.
 
 ## Masalah
@@ -86,7 +90,9 @@ di branch 10x bersama tanpa PR, merge, atau deployment dalam workflow itu.
 | Task 1 (✅ 2026-07-20) | Toolchain dev Docker, CI, scaffold paket Go, fitness v0 |
 | Task 2–22 (✅ 2026-07-25, PR #1) | Agent harness (`.ai/`), plan runner, kernel Temporal, CLI/daemon, SKP e2e, migrasi + policy compiler |
 | M0 — Shared Kernel Proof (✅) | Admit satu rencana → worktree → verify → bukti → **lanjut setelah restart** |
-| M1 — Foundation (parsial) | Task 20–22 selesai; OPA PDP, rantai provenance penuh, ledger (Task 23–26) pending |
+| Task 23–40 (✅ 2026-07-27, PR #2) | OPA PDP, rantai provenance/audit, strong auth, ledger extops, SCM write, cost/anggaran, Telegram, observabilitas, sandbox OCI, API server, backup/restore, mission |
+| M1 — Production Foundation (✅) | Acceptance `make m1-exit`: GitHub e2e, gate WebAuthn, soak notify, audit verify, drill brownout, backup/restore |
+| M1 — Foundation (parsial → **selesai**) | Task 20–40 selesai; venture MLS (Task 41–53) dan track 10x (Task 54–63) pending |
 | Venture MLS (Track A) | Misi → produk deployable → observasi billing → satu siklus perbaikan terbatas |
 | 10x MLS (Track B) | Rencana disetujui → provenance → grup atomik → push branch 10x langsung |
 | Venture mission-capable | Perbaikan otonom dalam envelope drift governance |
@@ -127,18 +133,20 @@ Semantik recovery, retry, dan penyelesaian jujur ada di `docs/workflows/recovery
 
 ```text
 docs/foundry/delivery_foundry.md   indeks arsitektur master
-docs/PLAN.md                       rencana 83 task (Task 1–22 ✅)
+docs/PLAN.md                       rencana 93 task (Task 1–40 ✅, exit M1)
 docs/architecture.md               konstitusi satu halaman + peta link
+docs/notes/m1-exit-report.md       bukti acceptance M1 dan keterbatasan diketahui
 .ai/                               agent harness canonical (format ARES)
 AGENTS.md / CLAUDE.md              tampilan provider terkomposisi (jangan edit manual)
+api/openapi.yaml                   kontrak HTTP API /v1 (paritas CLI)
 cmd/foundry/                       CLI operator
-cmd/foundryd/                      worker kernel Temporal
+cmd/foundryd/                      worker kernel Temporal + HTTP API
 cmd/fitlint/                       linter konstitusi
 tools/planrunner/                  orkestrator task otonom bootstrap
-deploy/                            toolchain dev Docker + compose postgres/temporal
-internal/                          paket Go (kernel, state, admission, evidence, …)
-scripts/fitness.sh                 suite pemeriksaan konstitusi
-Makefile                           target dibungkus docker
+deploy/                            toolchain dev Docker, postgres/temporal, prometheus/grafana
+internal/                          paket Go (kernel, api, authn, sandbox, ledger, mission, …)
+scripts/backup.sh, restore.sh      backup/restore dengan verifikasi manifest
+Makefile                           target dibungkus docker termasuk m1-exit, doclint
 ```
 
 ## Pelajaran
@@ -163,8 +171,10 @@ Makefile                           target dibungkus docker
 ## Sumber
 
 - Repository: [okfriansyah-moh/the-foundry](https://github.com/okfriansyah-moh/the-foundry)
+- Pull request: [#2 — Task 22–40 (exit M1)](https://github.com/okfriansyah-moh/the-foundry/pull/2) (merge [`4b5f3c7`](https://github.com/okfriansyah-moh/the-foundry/commit/4b5f3c70a3b3befaf7942c80eb0c83a619b464ca))
 - Pull request: [#1 — Task 3–22](https://github.com/okfriansyah-moh/the-foundry/pull/1) (merge [`6efd492`](https://github.com/okfriansyah-moh/the-foundry/commit/6efd492d48d99672afea27da565699e8e8a3983d))
 - Commit sebelumnya: [`58632a0`](https://github.com/okfriansyah-moh/the-foundry/commit/58632a0), [`9409080`](https://github.com/okfriansyah-moh/the-foundry/commit/9409080)
+- Laporan exit M1: `docs/notes/m1-exit-report.md` di repo sumber
 - Review: `docs/foundry/V12_REVIEW_REPORT.md` di repo sumber
 - Changelog: `docs/foundry/CHANGELOG.md` di repo sumber
 - Indeks rencana: `docs/PLAN.md` §D Master Task Index
