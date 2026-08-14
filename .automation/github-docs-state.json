@@ -10,12 +10,33 @@
     "okfriansyah-moh/skeleton-parallel#1@bootstrap",
     "okfriansyah-moh/skeleton-parallel#2@bootstrap",
     "okfriansyah-moh/the-foundry#1@6efd492d48d99672afea27da565699e8e8a3983d",
+    "okfriansyah-moh/the-foundry#2@4b5f3c70a3b3befaf7942c80eb0c83a619b464ca",
+    "okfriansyah-moh/the-foundry#4@a57783a98f6fe26257fd9ecb00047581e1204586",
+    "okfriansyah-moh/the-foundry#5@e84fb3165c913acc6eecce06793883903bfbed9f",
+    "okfriansyah-moh/the-foundry#6@c31ceb2f81fd5de216852ef18abf686af49bf8c9",
+    "okfriansyah-moh/the-foundry#7@c288184a63aba2f0c04cafa2e9896cdddb9cdf5a",
+    "okfriansyah-moh/the-foundry#8@b87d39f23042154da378dc86c1916fe3b9dbd071",
+    "okfriansyah-moh/the-foundry#9@bf6548de8396b943208fcbd63261b84232e89a1a",
+    "okfriansyah-moh/the-foundry#10@beb7cddea9ce02ea7d2739280a2208a579a419ce",
+    "okfriansyah-moh/the-foundry#11@ced825ef3a01b5e94f87a8b0b013af10d3bc138c",
+    "okfriansyah-moh/the-foundry#12@1d34a33061ed50a4802a7230d279a44b7384693f",
+    "okfriansyah-moh/the-foundry#13@97a0dc09ac8c00683dbd83132e1f112a87812892",
+    "okfriansyah-moh/shorts-generator#12@7477e448626ff3d4fd9b4451eb36ed4f43a4ea7f",
     "okfriansyah-moh/the-foundry#14@5b015620a5a676c47dfe806486e82137b7801834"
   ],
   "processed_commits": [
     "okfriansyah-moh/the-foundry@58632a0",
     "okfriansyah-moh/the-foundry@9409080"
   ],
-  "ignored_activity": [],
+  "ignored_activity": [
+    {
+      "id": "okfriansyah-moh/the-foundry#3@f367e6c29ff9fbc8a9282fdfd6452528838c6040",
+      "reason": "Lint fixes and CI remediation docs only; no new engineering capability beyond PR #2 scope"
+    },
+    {
+      "id": "okfriansyah-moh/the-foundry@cd3027d",
+      "reason": "PLAN/mockup documentation only \u2014 no implementation change to document"
+    }
+  ],
   "pending_pull_requests": []
 }

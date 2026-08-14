@@ -7,17 +7,21 @@ This backlog ranks article opportunities discovered from public repositories own
 `okfriansyah-moh`. The daily automation should consult this file when deciding whether
 to update an existing page or create a new one.
 
-## Status Summary (2026-07-26)
+## Status Summary (2026-08-06)
 
 | Status | Count | Notes |
 |--------|------:|-------|
 | Complete (full template) | 14 | All EN + ID mirrors |
 | Stubs remaining | 0 | — |
-| Missing pages | 0 | Delivery Foundry system + project pages added |
+| Missing pages | 0 | Delivery Foundry system + project pages current through M7 |
 
-**Completed in 2026-07-21 automation run:** Delivery Foundry control plane system article, Delivery Foundry project overview (new public repo `the-foundry`).
+**Updated in 2026-08-05 automation run:** Delivery Foundry system + project articles refreshed for merged PRs #12–#13 (Tasks 141–155: M6 runtime closure, Final V1 gate, M7 capability packaging).
 
-**Updated in 2026-07-26 automation run:** Delivery Foundry system + project articles refreshed for merged PR #1 (Tasks 3–22: agent harness, kernel workflow, CLI/daemon, SKP e2e).
+**Updated in 2026-08-02 automation run:** Delivery Foundry articles refreshed for merged PRs #10–#11 (Tasks 121–140, V1 Evidence Gate).
+
+**Updated in 2026-08-01 automation run:** Delivery Foundry system + project articles refreshed for merged PRs #4–#9 (Tasks 41–120: venture/10x MLS exits, M2 hardening, executor routing, intake pipeline, M5 gap-closure).
+
+**Updated in 2026-08-06 automation run:** Shorts Generator pipeline article refreshed for merged PR #12 (large video support, DB stage cache, chunked transcription, scheduler locks, dynamic generation loop).
 
 **Updated in 2026-08-09 automation run:** Delivery Foundry system + project articles refreshed for merged PR #14 (Tasks 156–161: Postgres operator config SoT).
 
@@ -171,7 +175,7 @@ to update an existing page or create a new one.
 ### 16. Delivery Foundry: Governed Control Plane (added 2026-07-21)
 
 | Type: System + Project | Repo: `the-foundry` | Path: `docs/systems/delivery-foundry-control-plane.md`, `docs/projects/delivery-foundry.md` |
-| Learning: kernel vs PEC authority split, six-status state model, dual-track roadmap | Status: **Complete** (updated 2026-07-26 for PR #1 Tasks 3–22) |
+| Learning: kernel vs PEC authority split, six-status state model, dual-track roadmap | Status: **Complete** (updated 2026-08-01 for PRs #4–#9, Tasks 41–120 through M5 gap-closure) |
 
 ### 12. Sports Video Compositor Strategies
 
