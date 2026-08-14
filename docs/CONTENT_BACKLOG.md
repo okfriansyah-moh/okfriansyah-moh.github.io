@@ -23,6 +23,8 @@ to update an existing page or create a new one.
 
 **Updated in 2026-08-06 automation run:** Shorts Generator pipeline article refreshed for merged PR #12 (large video support, DB stage cache, chunked transcription, scheduler locks, dynamic generation loop).
 
+**Updated in 2026-08-09 automation run:** Delivery Foundry system + project articles refreshed for merged PR #14 (Tasks 156–161: Postgres operator config SoT).
+
 ## Priority Legend
 
 | Priority | Meaning |

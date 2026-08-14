@@ -183,6 +183,11 @@ Normative contracts remain in `docs/foundry/delivery_foundry.md` and the modular
 `docs/foundry/docs/` tree; the live implementation roadmap is `docs/PLAN.md`
 (Tasks 1–155 ✅ through M7 capability packaging).
 
+[Pull request #14](https://github.com/okfriansyah-moh/the-foundry/pull/14) (merged 2026-08-08)
+delivers **Tasks 156–161 (operator config Postgres SoT)**:
+
+- **Operator config SoT (Tasks 156–161)** — `internal/operatorcfg.Store` reads policy layers, quotas, model rates, opportunity thresholds, mission-decide policies, tunable values, and packaging catalogs from **PostgreSQL** as the source of truth; daemon startup seeds from disk when keys are empty; CLI catalog commands accept `-pg-dsn` for DB-backed catalogs and rollback
+
 ## The Problem
 
 Most AI coding workflows treat agents as trusted executors: they read a plan, mutate
@@ -362,13 +367,16 @@ flowchart TB
 | **Telegram draft store (`internal/notify/draft_store.go`)** | Production inbound command and attachment persistence (Task 145) |
 | **Agent runtime materializer (`adapters/agent-runtime/*`)** | Provider-neutral package projection; Claude Code adapter with manifest integrity (Tasks 154–155) |
 | **Capability packaging (`internal/packaging/*`, `internal/evolve/skill_packages.go`)** | Validate, install, and evolve canonical skill packages with rollback (Tasks 153–155) |
+| **`operatorcfg.Store` (Tasks 156–161)** | Postgres-backed operator-hot config SoT: versioned policy layers, quotas, model policy/rates, opportunity thresholds, mission-decide policy, tunable values, packaging catalogs/enablement; seeds from disk on first run |
+| **Packaging catalog loader** | File-backed fallback for local dev; `-pg-dsn` on `foundry catalog` subcommands loads catalogs and enablement from the config store |
 
-Go packages now carry real implementations through Task 155 — each with a `doc.go`
+Go packages now carry real implementations through Task 155 and the CFG/CAP milestone
+(Tasks 156–161) — each with a `doc.go`
 stating authority limits: `internal/kernel`, `internal/state`, `internal/admission`,
 `internal/provenance`, `internal/evidence`, `internal/worktree`, `internal/executor/*`
 (including `sandbox/`), `internal/projection`, `internal/policy/pdp`, `internal/api`,
 `internal/authn`, `internal/ledger/*`, `internal/scm/write`, `internal/notify`,
-`internal/mission`, `internal/profile`, and others. PEC packages remain proposal-only
+`internal/mission`, `internal/profile`, `internal/operatorcfg`, and others. PEC packages remain proposal-only
 per C5; side-effect authority stays in kernel code paths exercised by `foundryd`.
 
 ## Simplified Implementation Examples
@@ -403,6 +411,28 @@ L2 — focused debugging agent
 L7 — pause and escalate to human
 ```
 
+Operator config versioning (simplified from `internal/operatorcfg/store.go` and migration `00044_operator_config_sot.sql`):
+
+```sql
+-- Each config_key tracks an active_version pointer
+-- operator_config_versions stores immutable payload + SHA256 + apply metadata
+-- operator_config_apply_audit records who approved each promotion
+SELECT config_key, active_version FROM operator_config_entries;
+-- Keys include policy.layer.*, quotas, executor.models, packaging.catalog.*
+```
+
+Startup seed path (simplified from `cmd/foundryd/main.go`):
+
+```go
+cfgStore := operatorcfg.NewStore(db)
+cfgStore.EnsureSeeded(ctx, operatorcfg.SeedPaths{
+    PolicyOrganizationPath: "config/profiles/organization-10x.yaml",
+    PolicyPersonalPath:     "config/profiles/personal-autonomous-venture.yaml",
+    // ... quotas, model rates, catalogs, enablement ...
+})
+modelPolicy, err := cfgStore.LoadModelPolicy(ctx) // all runtime reads are DB-backed
+```
+
 ## Reliability and Idempotency
 
 - **Checkpoints** — Kernel records `checkpoint_id` on every meaningful transition;
@@ -427,6 +457,11 @@ L7 — pause and escalate to human
   widen authority beyond the stored envelope (Task 141).
 - **Materialization integrity** — Runtime install accepts only absent files or byte-identical
   projections; catalog drift fails closed rather than overwriting workspace-controlled files (Task 154).
+- **Versioned operator config** — Policy overlays, quotas, and packaging catalogs promote
+  through immutable version rows; `active_version` on `operator_config_entries` is the only
+  mutable pointer; apply audit enforces reviewer ≠ implementer on promotions.
+- **Seed-then-serve** — First `foundryd` boot copies disk YAML into Postgres when a key has
+  no versions; later changes must go through the config store apply path, not silent file edits.
 
 ## Failure Modes
 
@@ -437,6 +472,7 @@ L7 — pause and escalate to human
 | Policy violation | `FAILED`, result `ADMISSION_REJECTED` | No auto-retry; human review |
 | Budget exhaustion | `WAITING`, reason `budget` | Pause until budget reset or human override |
 | PEC overreach | CI prohibition tests | Build fails before merge |
+| Stale file-based config | Daemon reads DB; missing key fails startup with named error | Re-seed or apply new version via operatorcfg |
 | Process crash mid-phase | Liveness supervisor | Replay from checkpoint; resume at last committed phase |
 | Security hold | `WAITING`, reason `security-hold` | Recovery Manager cannot suppress alerts |
 | Poisoned / identical-repeat failure | Failure signature count threshold | Escalate to supervisor; no infinite retry (Task 123) |
@@ -463,12 +499,14 @@ L7 — pause and escalate to human
 | Measured acceleration (C25) | V1 exit requires benchmark evidence against recorded baseline, not self-reported speed claims |
 | Claude Code as sole M7 materializer | OpenHands and 9Router remain deferred; packaging validated without external adapter dependency |
 | Skill install ≠ execution authority | Materialization writes provider files only; kernel and policy retain side-effect decisions |
+| Postgres SoT for operator-hot config (Tasks 156–161) | Centralizes policy/quotas/catalogs with version history and audit; file paths become seed inputs only, reducing drift between CLI, daemon, and API |
 
 ## Testing
 
-Current validation (Tasks 1–155, Final V1 Evidence Gate, live proofs, capability packaging):
+Current validation (Tasks 1–155, Final V1 Evidence Gate, live proofs, capability packaging, and CFG/CAP Tasks 156–161):
 
 - `make bootstrap test lint fitness doclint` inside the `dev` Docker image
+- `internal/operatorcfg/store_pg_test.go` — Postgres store seed, load, and version apply paths
 - `make up` + `make doctor` — verifies Docker/Compose, PostgreSQL `SELECT 1`, Temporal `GetSystemInfo`
 - `scripts/fitness.sh` — constitution checks including C15 TenX prohibition (step i), PEC boundary (step h), executor capability staleness, PLAN topology/validation/research-boundary, subprocess sandbox rule, and env isolation rule
 - `make skp-e2e` — Shared Kernel Proof: admit plan → worktree → verify → evidence → **forced restart → resume**
@@ -548,6 +586,9 @@ follow-up, not hidden.
     starts so CLI convergence exercises the same kernel path production uses.
 13. **Packaging authority stays separate from execution** — Tasks 153–155 materialize agent/skill files
     into executor workspaces without widening SCM, deploy, or executor allowlists.
+14. **Operator-hot config belongs in the database** — Tasks 156–161 move policy layers, quotas,
+    model rates, and packaging catalogs into a versioned Postgres store; disk YAML becomes a seed
+    input, eliminating silent config drift between daemon, CLI, and API restarts.
 
 ## Related
 
@@ -558,8 +599,8 @@ follow-up, not hidden.
 ## Sources
 
 - Repository: [okfriansyah-moh/the-foundry](https://github.com/okfriansyah-moh/the-foundry)
-- Pull requests: [#13 — Tasks 153–155 (capability packaging)](https://github.com/okfriansyah-moh/the-foundry/pull/13), [#12 — Tasks 141–152 (M6 runtime closure, Final V1 gate)](https://github.com/okfriansyah-moh/the-foundry/pull/12), [#11 — Tasks 131–140 (V1 Evidence Gate)](https://github.com/okfriansyah-moh/the-foundry/pull/11), [#10 — Tasks 121–130 (portfolio, concurrent waves, production integrations)](https://github.com/okfriansyah-moh/the-foundry/pull/10), [#9 — Tasks 111–120 (M5 gap-closure)](https://github.com/okfriansyah-moh/the-foundry/pull/9), [#8 — Tasks 100–110](https://github.com/okfriansyah-moh/the-foundry/pull/8), [#7 — Tasks 76–93](https://github.com/okfriansyah-moh/the-foundry/pull/7), [#6 — Tasks 61–75 (M2 exit, Track B MLS)](https://github.com/okfriansyah-moh/the-foundry/pull/6), [#5 — Tasks 51–60 (Track A MLS, PEC, integrator)](https://github.com/okfriansyah-moh/the-foundry/pull/5), [#4 — Tasks 41–50](https://github.com/okfriansyah-moh/the-foundry/pull/4), [#2 — Tasks 22–40 (M1 exit)](https://github.com/okfriansyah-moh/the-foundry/pull/2), [#1 — Tasks 3–22](https://github.com/okfriansyah-moh/the-foundry/pull/1)
+- Pull requests: [#14 — Tasks 156–161 (operator config Postgres SoT)](https://github.com/okfriansyah-moh/the-foundry/pull/14), [#13 — Tasks 153–155 (capability packaging)](https://github.com/okfriansyah-moh/the-foundry/pull/13), [#12 — Tasks 141–152 (M6 runtime closure, Final V1 gate)](https://github.com/okfriansyah-moh/the-foundry/pull/12), [#11 — Tasks 131–140 (V1 Evidence Gate)](https://github.com/okfriansyah-moh/the-foundry/pull/11), [#10 — Tasks 121–130 (portfolio, concurrent waves, production integrations)](https://github.com/okfriansyah-moh/the-foundry/pull/10), [#9 — Tasks 111–120 (M5 gap-closure)](https://github.com/okfriansyah-moh/the-foundry/pull/9), [#8 — Tasks 100–110](https://github.com/okfriansyah-moh/the-foundry/pull/8), [#7 — Tasks 76–93](https://github.com/okfriansyah-moh/the-foundry/pull/7), [#6 — Tasks 61–75 (M2 exit, Track B MLS)](https://github.com/okfriansyah-moh/the-foundry/pull/6), [#5 — Tasks 51–60 (Track A MLS, PEC, integrator)](https://github.com/okfriansyah-moh/the-foundry/pull/5), [#4 — Tasks 41–50](https://github.com/okfriansyah-moh/the-foundry/pull/4), [#2 — Tasks 22–40 (M1 exit)](https://github.com/okfriansyah-moh/the-foundry/pull/2), [#1 — Tasks 3–22](https://github.com/okfriansyah-moh/the-foundry/pull/1)
 - Exit reports: `docs/notes/m1-exit-report.md`, `docs/notes/m2-exit-report.md`, `docs/notes/track-a-exit-report.md`, `docs/notes/track-b-exit-report.md`, `docs/notes/v1-evidence-gate.md`, `docs/notes/v1-final-evidence-gate.md`, `docs/notes/v1-release-proof.md`, `docs/notes/capability-packaging.md`, `benchmarks/report-v1-final.md` in source repo
 - Architecture: `docs/foundry/delivery_foundry.md`, `docs/architecture.md`, `docs/foundry/docs/architecture/state-model.md`, `docs/foundry/docs/architecture/authority-model.md`
 - Agent harness: `.ai/manifest.yaml`, `.ai/instructions/authority-boundaries.md`
-- Implementation plan: `docs/PLAN.md` (Tasks 1–155 ✅ through M7 capability packaging)
+- Implementation plan: `docs/PLAN.md` (Tasks 1–155 ✅ through M7 capability packaging; Tasks 156–161 ✅ operator config Postgres SoT)

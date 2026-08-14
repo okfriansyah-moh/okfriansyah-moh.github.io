@@ -60,6 +60,9 @@ The public repository (created 2026-07-20) contains:
   Evidence Gate (Task 152) exit**
 - **Tasks 153–155 complete (2026-08-04)** — via [PR #13](https://github.com/okfriansyah-moh/the-foundry/pull/13):
   agent/skill catalogs, Claude Code runtime materialization, L1 skill evolution bridge with rollback e2e
+- **Tasks 156–161 complete (2026-08-08)** — via [PR #14](https://github.com/okfriansyah-moh/the-foundry/pull/14):
+  Postgres-backed operator config store (`operatorcfg.Store`), versioned policy/quotas/model
+  rates/catalogs, DB-backed `foundry catalog` commands, daemon seed-on-empty-keys startup
 - **Shared Kernel Proof (M0 exit)** — end-to-end demo proving admit → worktree → verify →
   evidence → checkpoint restart
 
@@ -129,6 +132,7 @@ shared 10x branch with no PR, merge, or deployment in that workflow.
 | V1 Evidence Gate (✅ 2026-08-01, PR #11) | Tasks 131–140: live venture + Bitbucket proofs, benchmark baseline, mockup intake, validation signals, fail-closed SCM — `docs/notes/v1-evidence-gate.md` |
 | M6 runtime closure (✅ 2026-08-02, PR #12) | Tasks 141–152: execution envelopes, live intake, input router, closed venture/10x loops, `make v1-proof` — `docs/notes/v1-final-evidence-gate.md` |
 | M7 capability packaging (✅ 2026-08-04, PR #13) | Tasks 153–155: agent/skill catalogs, Claude Code materialization, L1 skill evolution with rollback e2e |
+| Tasks 156–161 (✅ 2026-08-08, PR #14) | Operator-hot config Postgres SoT: `operatorcfg.Store`, versioned policy/quotas/catalogs, DB-backed `foundry catalog` |
 
 Roadmap estimates and builder assumptions are documented honestly in
 `docs/architecture/overview.md` — ranges with confidence levels, not false precision.
@@ -149,6 +153,7 @@ Roadmap estimates and builder assumptions are documented honestly in
 | V1 measured acceleration (C25) | Benchmark baseline mined from control-arm git deliveries; exit requires evidence comparison, not claims |
 | Mandatory V1 release proofs (C9/C10) | `make v1-proof` fails closed without live infra; skip exit code 2 never archived as PASS |
 | Packaging ≠ execution authority | Agent/skill install materializes provider files only; kernel retains SCM/deploy decisions |
+| Postgres operator config SoT (Tasks 156–161) | Policy, quotas, model rates, and packaging catalogs share one versioned store; disk YAML seeds once at daemon boot |
 | 9Router rejected / OpenHands deferred | ADR-001 records disposition explicitly — provider fallback (Task 129) satisfies routing intent |
 
 ## Entry Types and Workflows
@@ -192,7 +197,7 @@ cmd/foundryd/                      Temporal kernel worker + HTTP API + sandbox r
 cmd/fitlint/                       constitution linter (capability, topology, env, subprocess)
 tools/planrunner/                  bootstrap autonomous task orchestrator
 deploy/                            Docker dev toolchain, postgres/temporal, prometheus/grafana
-internal/                          Go packages (kernel, pec, intake, integrator, retention, …)
+internal/                          Go packages (kernel, pec, intake, integrator, retention, operatorcfg, …)
 scripts/backup.sh, restore.sh      backup/restore with manifest verification
 Makefile                           docker-wrapped targets including m1-exit, m2-exit, e2e-venture, e2e-tenx, bench-baseline, bench-foundry, e2e-bitbucket, v1-proof
 .github/workflows/e2e-*.yml        scheduled/manual live proofs (venture, tenx, bitbucket)
@@ -215,6 +220,9 @@ Makefile                           docker-wrapped targets including m1-exit, m2-
    constitution fitness together; Task 152 adds mandatory release proofs — completing code tasks alone does not declare V1.
 7. **Catalogs are source of truth, projections are derived** — M7 keeps Foundry catalogs canonical;
    provider workspace files are install artifacts with manifest-pinned digests, not alternate authority.
+8. **Config drift is a silent failure mode** — Tasks 156–161 prove that policy layers, quotas, and
+   catalogs need a single versioned store; file-based config reads become a one-time seed path to
+   eliminate daemon/CLI/API divergence.
 
 ## Related
 
@@ -225,8 +233,8 @@ Makefile                           docker-wrapped targets including m1-exit, m2-
 ## Sources
 
 - Repository: [okfriansyah-moh/the-foundry](https://github.com/okfriansyah-moh/the-foundry)
-- Pull requests: [#13](https://github.com/okfriansyah-moh/the-foundry/pull/13), [#12](https://github.com/okfriansyah-moh/the-foundry/pull/12), [#11](https://github.com/okfriansyah-moh/the-foundry/pull/11), [#10](https://github.com/okfriansyah-moh/the-foundry/pull/10), [#9](https://github.com/okfriansyah-moh/the-foundry/pull/9), [#8](https://github.com/okfriansyah-moh/the-foundry/pull/8), [#7](https://github.com/okfriansyah-moh/the-foundry/pull/7), [#6](https://github.com/okfriansyah-moh/the-foundry/pull/6), [#5](https://github.com/okfriansyah-moh/the-foundry/pull/5), [#4](https://github.com/okfriansyah-moh/the-foundry/pull/4), [#2](https://github.com/okfriansyah-moh/the-foundry/pull/2), [#1](https://github.com/okfriansyah-moh/the-foundry/pull/1)
+- Pull requests: [#14](https://github.com/okfriansyah-moh/the-foundry/pull/14), [#13](https://github.com/okfriansyah-moh/the-foundry/pull/13), [#12](https://github.com/okfriansyah-moh/the-foundry/pull/12), [#11](https://github.com/okfriansyah-moh/the-foundry/pull/11), [#10](https://github.com/okfriansyah-moh/the-foundry/pull/10), [#9](https://github.com/okfriansyah-moh/the-foundry/pull/9), [#8](https://github.com/okfriansyah-moh/the-foundry/pull/8), [#7](https://github.com/okfriansyah-moh/the-foundry/pull/7), [#6](https://github.com/okfriansyah-moh/the-foundry/pull/6), [#5](https://github.com/okfriansyah-moh/the-foundry/pull/5), [#4](https://github.com/okfriansyah-moh/the-foundry/pull/4), [#2](https://github.com/okfriansyah-moh/the-foundry/pull/2), [#1](https://github.com/okfriansyah-moh/the-foundry/pull/1)
 - Exit reports: `docs/notes/m1-exit-report.md`, `docs/notes/m2-exit-report.md`, `docs/notes/track-a-exit-report.md`, `docs/notes/track-b-exit-report.md`, `docs/notes/v1-evidence-gate.md`, `docs/notes/v1-final-evidence-gate.md`, `docs/notes/capability-packaging.md`, `benchmarks/report-v1-final.md`
 - Review: `docs/foundry/V12_REVIEW_REPORT.md` in source repo
 - Changelog: `docs/foundry/CHANGELOG.md` in source repo
-- Plan index: `docs/PLAN.md` §D Master Task Index (Tasks 1–155 ✅)
+- Plan index: `docs/PLAN.md` §D Master Task Index (Tasks 1–155 ✅; Tasks 156–161 ✅ operator config Postgres SoT)

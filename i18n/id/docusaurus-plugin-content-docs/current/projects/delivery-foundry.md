@@ -59,6 +59,9 @@ Repositori publik (dibuat 2026-07-20) berisi:
   penutupan isolasi profil, bukti release wajib `make v1-proof` — **exit Final V1 Evidence Gate (Task 152)**
 - **Task 153–155 selesai (2026-08-04)** — via [PR #13](https://github.com/okfriansyah-moh/the-foundry/pull/13):
   katalog agen/skill, materialisasi runtime Claude Code, jembatan evolusi skill L1 dengan rollback e2e
+- **Task 156–161 selesai (2026-08-08)** — via [PR #14](https://github.com/okfriansyah-moh/the-foundry/pull/14):
+  store config operator berbasis Postgres (`operatorcfg.Store`), policy/kuota/tarif model versi,
+  perintah `foundry catalog` berbasis DB, startup daemon seed-on-empty-keys
 - **Shared Kernel Proof (exit M0)** — demo end-to-end membuktikan admit → worktree → verify →
   bukti → restart checkpoint
 
@@ -130,6 +133,7 @@ di branch 10x bersama tanpa PR, merge, atau deployment dalam workflow itu.
 | V1 Evidence Gate (✅ 2026-08-01, PR #11) | Task 131–140: bukti venture + Bitbucket live, baseline benchmark, intake mockup, sinyal validasi, SCM fail-closed — `docs/notes/v1-evidence-gate.md` |
 | Penutupan runtime M6 (✅ 2026-08-02, PR #12) | Task 141–152: execution envelope, intake live, input router, loop venture/10x tertutup, `make v1-proof` — `docs/notes/v1-final-evidence-gate.md` |
 | Kemasan kapabilitas M7 (✅ 2026-08-04, PR #13) | Task 153–155: katalog agen/skill, materialisasi Claude Code, evolusi skill L1 dengan rollback e2e |
+| Task 156–161 (✅ 2026-08-08, PR #14) | SoT config operator-hot Postgres: `operatorcfg.Store`, policy/kuota/katalog versi, `foundry catalog` berbasis DB |
 
 Estimasi roadmap dan asumsi builder didokumentasikan secara jujur di
 `docs/architecture/overview.md` — rentang dengan tingkat keyakinan, bukan presisi palsu.
@@ -150,6 +154,7 @@ Estimasi roadmap dan asumsi builder didokumentasikan secara jujur di
 | Akselerasi V1 terukur (C25) | Baseline benchmark ditambang dari delivery git control-arm; exit memerlukan perbandingan bukti, bukan klaim |
 | Bukti release V1 wajib (C9/C10) | `make v1-proof` fail closed tanpa infra live; exit skip kode 2 tidak pernah diarsipkan sebagai PASS |
 | Kemasan ≠ otoritas eksekusi | Instal agen/skill hanya mematerialisasi file provider; kernel mempertahankan keputusan SCM/deploy |
+| Postgres operator config SoT (Task 156–161) | Policy, kuota, tarif model, dan katalog packaging berbagi satu store versi; YAML disk seed sekali saat boot daemon |
 | 9Router ditolak / OpenHands ditunda | ADR-001 mencatat disposisi eksplisit — fallback provider (Task 129) memenuhi intent routing |
 
 ## Tipe Entry dan Workflow
@@ -193,7 +198,7 @@ cmd/foundryd/                      worker kernel Temporal + HTTP API + sandbox r
 cmd/fitlint/                       linter konstitusi (capability, topology, env, subprocess)
 tools/planrunner/                  orkestrator task otonom bootstrap
 deploy/                            toolchain dev Docker, postgres/temporal, prometheus/grafana
-internal/                          paket Go (kernel, pec, intake, integrator, retention, …)
+internal/                          paket Go (kernel, pec, intake, integrator, retention, operatorcfg, …)
 scripts/backup.sh, restore.sh      backup/restore dengan verifikasi manifest
 Makefile                           target dibungkus docker termasuk m1-exit, m2-exit, e2e-venture, e2e-tenx, bench-baseline, bench-foundry, e2e-bitbucket, v1-proof
 .github/workflows/e2e-*.yml        bukti live terjadwal/manual (venture, tenx, bitbucket)
@@ -216,6 +221,9 @@ Makefile                           target dibungkus docker termasuk m1-exit, m2-
    fitness konstitusi bersama; Task 152 menambahkan bukti release wajib — menyelesaikan task kode saja tidak mendeklarasikan V1.
 7. **Katalog adalah sumber kebenaran, proyeksi adalah turunan** — M7 menjaga katalog Foundry sebagai canonical;
    file workspace provider adalah artefak instalasi dengan digest manifest, bukan otoritas alternatif.
+8. **Drift config adalah mode kegagalan diam-diam** — Task 156–161 membuktikan policy layer, kuota, dan
+   katalog memerlukan satu store berversi; pembacaan config berbasis file menjadi jalur seed satu kali untuk
+   menghilangkan divergensi daemon/CLI/API.
 
 ## Terkait
 
@@ -226,8 +234,8 @@ Makefile                           target dibungkus docker termasuk m1-exit, m2-
 ## Sumber
 
 - Repository: [okfriansyah-moh/the-foundry](https://github.com/okfriansyah-moh/the-foundry)
-- Pull request: [#13](https://github.com/okfriansyah-moh/the-foundry/pull/13), [#12](https://github.com/okfriansyah-moh/the-foundry/pull/12), [#11](https://github.com/okfriansyah-moh/the-foundry/pull/11), [#10](https://github.com/okfriansyah-moh/the-foundry/pull/10), [#9](https://github.com/okfriansyah-moh/the-foundry/pull/9), [#8](https://github.com/okfriansyah-moh/the-foundry/pull/8), [#7](https://github.com/okfriansyah-moh/the-foundry/pull/7), [#6](https://github.com/okfriansyah-moh/the-foundry/pull/6), [#5](https://github.com/okfriansyah-moh/the-foundry/pull/5), [#4](https://github.com/okfriansyah-moh/the-foundry/pull/4), [#2](https://github.com/okfriansyah-moh/the-foundry/pull/2), [#1](https://github.com/okfriansyah-moh/the-foundry/pull/1)
+- Pull request: [#14](https://github.com/okfriansyah-moh/the-foundry/pull/14), [#13](https://github.com/okfriansyah-moh/the-foundry/pull/13), [#12](https://github.com/okfriansyah-moh/the-foundry/pull/12), [#11](https://github.com/okfriansyah-moh/the-foundry/pull/11), [#10](https://github.com/okfriansyah-moh/the-foundry/pull/10), [#9](https://github.com/okfriansyah-moh/the-foundry/pull/9), [#8](https://github.com/okfriansyah-moh/the-foundry/pull/8), [#7](https://github.com/okfriansyah-moh/the-foundry/pull/7), [#6](https://github.com/okfriansyah-moh/the-foundry/pull/6), [#5](https://github.com/okfriansyah-moh/the-foundry/pull/5), [#4](https://github.com/okfriansyah-moh/the-foundry/pull/4), [#2](https://github.com/okfriansyah-moh/the-foundry/pull/2), [#1](https://github.com/okfriansyah-moh/the-foundry/pull/1)
 - Laporan exit: `docs/notes/m1-exit-report.md`, `docs/notes/m2-exit-report.md`, `docs/notes/track-a-exit-report.md`, `docs/notes/track-b-exit-report.md`, `docs/notes/v1-evidence-gate.md`, `docs/notes/v1-final-evidence-gate.md`, `docs/notes/capability-packaging.md`, `benchmarks/report-v1-final.md`
 - Review: `docs/foundry/V12_REVIEW_REPORT.md` di repo sumber
 - Changelog: `docs/foundry/CHANGELOG.md` di repo sumber
-- Indeks rencana: `docs/PLAN.md` §D Master Task Index (Task 1–155 ✅)
+- Indeks rencana: `docs/PLAN.md` §D Master Task Index (Task 1–155 ✅; Task 156–161 ✅ SoT config operator Postgres)

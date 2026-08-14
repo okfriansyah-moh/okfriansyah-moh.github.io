@@ -266,7 +266,8 @@
         "okfriansyah-moh/the-foundry#10",
         "okfriansyah-moh/the-foundry#11",
         "okfriansyah-moh/the-foundry#12",
-        "okfriansyah-moh/the-foundry#13"
+        "okfriansyah-moh/the-foundry#13",
+        "okfriansyah-moh/the-foundry#14"
       ],
       "repos": [
         "okfriansyah-moh/the-foundry"
@@ -337,7 +338,12 @@
         "v1-final-evidence-gate",
         "agent-skill-catalog-enablement",
         "runtime-materialization-claudecode",
-        "l1-skill-evolution-bridge"
+        "l1-skill-evolution-bridge",
+        "postgres-operator-config-sot",
+        "operatorcfg-versioned-store",
+        "config-seed-from-disk",
+        "packaging-catalog-db-load",
+        "operator-config-apply-audit"
       ]
     },
     "delivery-foundry:project-overview": {
@@ -358,7 +364,8 @@
         "okfriansyah-moh/the-foundry#10",
         "okfriansyah-moh/the-foundry#11",
         "okfriansyah-moh/the-foundry#12",
-        "okfriansyah-moh/the-foundry#13"
+        "okfriansyah-moh/the-foundry#13",
+        "okfriansyah-moh/the-foundry#14"
       ],
       "repos": [
         "okfriansyah-moh/the-foundry"
@@ -379,7 +386,8 @@
         "live-bitbucket-10x-proof",
         "m6-runtime-closure-exit",
         "v1-final-evidence-gate-exit",
-        "m7-capability-packaging-exit"
+        "m7-capability-packaging-exit",
+        "postgres-operator-config-sot"
       ]
     }
   }

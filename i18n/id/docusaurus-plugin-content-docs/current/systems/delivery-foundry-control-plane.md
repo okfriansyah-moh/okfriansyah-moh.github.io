@@ -183,6 +183,11 @@ Kontrak normatif tetap di `docs/foundry/delivery_foundry.md` dan pohon modular
 `docs/foundry/docs/`; roadmap implementasi aktif ada di `docs/PLAN.md`
 (Task 1–155 ✅ melalui kemasan kapabilitas M7).
 
+[Pull request #14](https://github.com/okfriansyah-moh/the-foundry/pull/14) (digabung 2026-08-08)
+mengirim **Task 156–161 (SoT config operator Postgres)**:
+
+- **SoT config operator (Task 156–161)** — `internal/operatorcfg.Store` membaca policy layer, kuota, tarif model, threshold opportunity, kebijakan mission-decide, nilai tunable, dan katalog packaging dari **PostgreSQL** sebagai source of truth; startup daemon men-seed dari disk saat key kosong; perintah catalog CLI menerima `-pg-dsn` untuk katalog dan rollback berbasis DB
+
 ## Masalah
 
 Kebanyakan workflow AI coding memperlakukan agen sebagai executor tepercaya: membaca
@@ -363,13 +368,16 @@ flowchart TB
 | **Draft store Telegram (`internal/notify/draft_store.go`)** | Persistensi perintah inbound produksi dan attachment (Task 145) |
 | **Materializer runtime agen (`adapters/agent-runtime/*`)** | Proyeksi paket provider-neutral; adapter Claude Code dengan integritas manifest (Task 154–155) |
 | **Kemasan kapabilitas (`internal/packaging/*`, `internal/evolve/skill_packages.go`)** | Validasi, instalasi, dan evolusi paket skill canonical dengan rollback (Task 153–155) |
+| **`operatorcfg.Store` (Task 156–161)** | SoT config operator-hot berbasis Postgres: policy layer versi, kuota, policy/tarif model, threshold opportunity, kebijakan mission-decide, nilai tunable, katalog/enablement packaging; seed dari disk pada run pertama |
+| **Pemuat katalog packaging** | Fallback berbasis file untuk dev lokal; `-pg-dsn` pada subperintah `foundry catalog` memuat katalog dan enablement dari config store |
 
-Paket Go kini membawa implementasi nyata hingga Task 155 — masing-masing dengan `doc.go`
+Paket Go kini membawa implementasi nyata hingga Task 155 dan milestone CFG/CAP
+(Task 156–161) — masing-masing dengan `doc.go`
 batas otoritas: `internal/kernel`, `internal/state`, `internal/admission`,
 `internal/provenance`, `internal/evidence`, `internal/worktree`, `internal/executor/*`
 (termasuk `sandbox/`), `internal/projection`, `internal/policy/pdp`, `internal/api`,
 `internal/authn`, `internal/ledger/*`, `internal/scm/write`, `internal/notify`,
-`internal/mission`, `internal/profile`, dan lainnya. Paket PEC tetap proposal-only
+`internal/mission`, `internal/profile`, `internal/operatorcfg`, dan lainnya. Paket PEC tetap proposal-only
 per C5; otoritas side effect ada di jalur kode kernel yang dijalankan `foundryd`.
 
 ## Contoh Implementasi Disederhanakan
@@ -404,6 +412,28 @@ L2 — agen debugging fokus
 L7 — pause dan eskalasi ke manusia
 ```
 
+Versi config operator (disederhanakan dari `internal/operatorcfg/store.go` dan migrasi `00044_operator_config_sot.sql`):
+
+```sql
+-- Setiap config_key melacak pointer active_version
+-- operator_config_versions menyimpan payload immutable + SHA256 + metadata apply
+-- operator_config_apply_audit mencatat siapa yang menyetujui setiap promosi
+SELECT config_key, active_version FROM operator_config_entries;
+-- Key termasuk policy.layer.*, quotas, executor.models, packaging.catalog.*
+```
+
+Jalur seed startup (disederhanakan dari `cmd/foundryd/main.go`):
+
+```go
+cfgStore := operatorcfg.NewStore(db)
+cfgStore.EnsureSeeded(ctx, operatorcfg.SeedPaths{
+    PolicyOrganizationPath: "config/profiles/organization-10x.yaml",
+    PolicyPersonalPath:     "config/profiles/personal-autonomous-venture.yaml",
+    // ... quotas, model rates, catalogs, enablement ...
+})
+modelPolicy, err := cfgStore.LoadModelPolicy(ctx) // semua pembacaan runtime berbasis DB
+```
+
 ## Reliabilitas dan Idempotency
 
 - **Checkpoint** — Kernel mencatat `checkpoint_id` pada setiap transisi bermakna;
@@ -428,6 +458,11 @@ L7 — pause dan eskalasi ke manusia
   memperluas otoritas di luar envelope tersimpan (Task 141).
 - **Integritas materialisasi** — Instalasi runtime hanya menerima file absent atau proyeksi byte-identik;
   drift katalog fail closed alih-alih menimpa file yang dikontrol workspace (Task 154).
+- **Config operator versi** — Policy overlay, kuota, dan katalog packaging dipromosikan melalui
+  baris versi immutable; `active_version` pada `operator_config_entries` adalah satu-satunya
+  pointer mutable; apply audit menegakkan reviewer ≠ implementer pada promosi.
+- **Seed-then-serve** — Boot `foundryd` pertama menyalin YAML disk ke Postgres saat key tidak memiliki
+  versi; perubahan berikutnya harus melalui jalur apply config store, bukan pengeditan file diam-diam.
 
 ## Mode Kegagalan
 
@@ -438,6 +473,7 @@ L7 — pause dan eskalasi ke manusia
 | Pelanggaran kebijakan | `FAILED`, result `ADMISSION_REJECTED` | Tidak auto-retry; review manusia |
 | Anggaran habis | `WAITING`, reason `budget` | Pause sampai reset anggaran atau override manusia |
 | PEC overreach | Tes larangan CI | Build gagal sebelum merge |
+| Config berbasis file usang | Daemon membaca DB; key hilang gagal startup dengan error bernama | Re-seed atau apply versi baru via operatorcfg |
 | Crash proses mid-phase | Supervisor liveness | Replay dari checkpoint; lanjut di phase ter-commit terakhir |
 | Security hold | `WAITING`, reason `security-hold` | Recovery Manager tidak boleh menekan alert |
 | Task teracun / kegagalan identik berulang | Ambang hitung failure signature | Eskalasi ke supervisor; tanpa retry tak terbatas (Task 123) |
@@ -464,12 +500,14 @@ L7 — pause dan eskalasi ke manusia
 | Akselerasi terukur (C25) | Exit V1 memerlukan bukti benchmark terhadap baseline tercatat, bukan klaim kecepatan laporan mandiri |
 | Claude Code sebagai materializer M7 tunggal | OpenHands dan 9Router tetap ditunda; kemasan tervalidasi tanpa dependensi adapter eksternal |
 | Instal skill ≠ otoritas eksekusi | Materialisasi hanya menulis file provider; kernel dan kebijakan mempertahankan keputusan side effect |
+| Postgres SoT untuk config operator-hot (Task 156–161) | Memusatkan policy/kuota/katalog dengan riwayat versi dan audit; path file menjadi input seed saja, mengurangi drift antara CLI, daemon, dan API |
 
 ## Pengujian
 
-Validasi saat ini (Task 1–155, Final V1 Evidence Gate, bukti live, kemasan kapabilitas):
+Validasi saat ini (Task 1–155, Final V1 Evidence Gate, bukti live, kemasan kapabilitas, dan CFG/CAP Task 156–161):
 
 - `make bootstrap test lint fitness doclint` di dalam image Docker `dev`
+- `internal/operatorcfg/store_pg_test.go` — jalur seed, load, dan apply versi store Postgres
 - `make up` + `make doctor` — verifikasi Docker/Compose, PostgreSQL `SELECT 1`, Temporal `GetSystemInfo`
 - `scripts/fitness.sh` — pemeriksaan konstitusi termasuk larangan TenX C15 (langkah i), batas PEC (langkah h), staleness kapabilitas executor, topologi/validasi/research-boundary PLAN, aturan sandbox subprocess, dan aturan isolasi env
 - `make skp-e2e` — Shared Kernel Proof: admit plan → worktree → verify → bukti → **forced restart → resume**
@@ -549,6 +587,9 @@ terproyeksi — ditandai untuk follow-up, tidak disembunyikan.
     sehingga konvergensi CLI mengeksersis jalur kernel yang sama dengan produksi.
 13. **Otoritas kemasan terpisah dari eksekusi** — Task 153–155 mematerialisasi file agen/skill
     ke workspace executor tanpa memperluas allowlist SCM, deploy, atau executor.
+14. **Config operator-hot milik database** — Task 156–161 memindahkan policy layer, kuota,
+    tarif model, dan katalog packaging ke store Postgres berversi; YAML disk menjadi
+    input seed, menghilangkan drift config diam-diam antara daemon, CLI, dan API.
 
 ## Terkait
 
@@ -559,8 +600,8 @@ terproyeksi — ditandai untuk follow-up, tidak disembunyikan.
 ## Sumber
 
 - Repository: [okfriansyah-moh/the-foundry](https://github.com/okfriansyah-moh/the-foundry)
-- Pull request: [#13 — Task 153–155 (kemasan kapabilitas)](https://github.com/okfriansyah-moh/the-foundry/pull/13), [#12 — Task 141–152 (penutupan runtime M6, Final V1 gate)](https://github.com/okfriansyah-moh/the-foundry/pull/12), [#11 — Task 131–140 (V1 Evidence Gate)](https://github.com/okfriansyah-moh/the-foundry/pull/11), [#10 — Task 121–130 (portfolio, gelombang konkuren, integrasi produksi)](https://github.com/okfriansyah-moh/the-foundry/pull/10), [#9 — Task 111–120 (M5 gap-closure)](https://github.com/okfriansyah-moh/the-foundry/pull/9), [#8 — Task 100–110](https://github.com/okfriansyah-moh/the-foundry/pull/8), [#7 — Task 76–93](https://github.com/okfriansyah-moh/the-foundry/pull/7), [#6 — Task 61–75 (exit M2, MLS Track B)](https://github.com/okfriansyah-moh/the-foundry/pull/6), [#5 — Task 51–60 (MLS Track A, PEC, integrator)](https://github.com/okfriansyah-moh/the-foundry/pull/5), [#4 — Task 41–50](https://github.com/okfriansyah-moh/the-foundry/pull/4), [#2 — Task 22–40 (exit M1)](https://github.com/okfriansyah-moh/the-foundry/pull/2), [#1 — Task 3–22](https://github.com/okfriansyah-moh/the-foundry/pull/1)
+- Pull request: [#14 — Task 156–161 (operator config Postgres SoT)](https://github.com/okfriansyah-moh/the-foundry/pull/14), [#13 — Task 153–155 (kemasan kapabilitas)](https://github.com/okfriansyah-moh/the-foundry/pull/13), [#12 — Task 141–152 (penutupan runtime M6, Final V1 gate)](https://github.com/okfriansyah-moh/the-foundry/pull/12), [#11 — Task 131–140 (V1 Evidence Gate)](https://github.com/okfriansyah-moh/the-foundry/pull/11), [#10 — Task 121–130 (portfolio, gelombang konkuren, integrasi produksi)](https://github.com/okfriansyah-moh/the-foundry/pull/10), [#9 — Task 111–120 (M5 gap-closure)](https://github.com/okfriansyah-moh/the-foundry/pull/9), [#8 — Task 100–110](https://github.com/okfriansyah-moh/the-foundry/pull/8), [#7 — Task 76–93](https://github.com/okfriansyah-moh/the-foundry/pull/7), [#6 — Task 61–75 (exit M2, MLS Track B)](https://github.com/okfriansyah-moh/the-foundry/pull/6), [#5 — Task 51–60 (MLS Track A, PEC, integrator)](https://github.com/okfriansyah-moh/the-foundry/pull/5), [#4 — Task 41–50](https://github.com/okfriansyah-moh/the-foundry/pull/4), [#2 — Task 22–40 (exit M1)](https://github.com/okfriansyah-moh/the-foundry/pull/2), [#1 — Task 3–22](https://github.com/okfriansyah-moh/the-foundry/pull/1)
 - Laporan exit: `docs/notes/m1-exit-report.md`, `docs/notes/m2-exit-report.md`, `docs/notes/track-a-exit-report.md`, `docs/notes/track-b-exit-report.md`, `docs/notes/v1-evidence-gate.md`, `docs/notes/v1-final-evidence-gate.md`, `docs/notes/v1-release-proof.md`, `docs/notes/capability-packaging.md`, `benchmarks/report-v1-final.md` di repo sumber
 - Arsitektur: `docs/foundry/delivery_foundry.md`, `docs/architecture.md`, `docs/foundry/docs/architecture/state-model.md`, `docs/foundry/docs/architecture/authority-model.md`
 - Agent harness: `.ai/manifest.yaml`, `.ai/instructions/authority-boundaries.md`
-- Rencana implementasi: `docs/PLAN.md` (Task 1–155 ✅ melalui kemasan kapabilitas M7)
+- Rencana implementasi: `docs/PLAN.md` (Task 1–155 ✅ melalui kemasan kapabilitas M7; Task 156–161 ✅ SoT config operator Postgres)
