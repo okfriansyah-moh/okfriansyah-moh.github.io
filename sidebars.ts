@@ -32,6 +32,8 @@ const sidebars: SidebarsConfig = {
         'projects/md-ame',
         'projects/polymarket-agent',
         'projects/ares',
+        'projects/go-remembers',
+        'projects/data-structure-and-algorithm',
       ],
     },
   ],

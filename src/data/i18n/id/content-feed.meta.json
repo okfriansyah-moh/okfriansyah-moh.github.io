@@ -1,6 +1,22 @@
 {
   "items": [
     {
+      "title": "Go Remembers: Fundamental Go yang Bisa Dijalankan",
+      "description": "Repositori pembelajaran Go dengan registrasi otomatis — setiap file konsep terhubung ke runner contoh terurut via hook init().",
+      "link": "/docs/projects/go-remembers",
+      "type": "project",
+      "date": "2026-08-14",
+      "readingTime": 4
+    },
+    {
+      "title": "Katalog Pembelajaran Struktur Data & Algoritma",
+      "description": "Repositori Java berbasis Maven dengan 70+ implementasi DSA yang bisa dijalankan, diindeks per kategori untuk studi progresif.",
+      "link": "/docs/projects/data-structure-and-algorithm",
+      "type": "project",
+      "date": "2026-08-14",
+      "readingTime": 5
+    },
+    {
       "title": "Delivery Foundry: Control Plane Terkelola untuk Pengiriman Perangkat Lunak AI",
       "description": "Arsitektur control plane yang tahan lama, dapat dilanjutkan, dan terverifikasi bukti — kernel memiliki state dan side effect sementara Plan Execution Coordinator mengusulkan pekerjaan di bawah envelope kebijakan eksplisit.",
       "link": "/docs/systems/delivery-foundry-control-plane",

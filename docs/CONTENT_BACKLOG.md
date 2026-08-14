@@ -7,13 +7,13 @@ This backlog ranks article opportunities discovered from public repositories own
 `okfriansyah-moh`. The daily automation should consult this file when deciding whether
 to update an existing page or create a new one.
 
-## Status Summary (2026-07-26)
+## Status Summary (2026-08-14)
 
 | Status | Count | Notes |
 |--------|------:|-------|
-| Complete (full template) | 14 | All EN + ID mirrors |
+| Complete (full template) | 16 | All EN + ID mirrors |
 | Stubs remaining | 0 | — |
-| Missing pages | 0 | Delivery Foundry system + project pages added |
+| Missing pages | 0 | — |
 
 **Completed in 2026-07-21 automation run:** Delivery Foundry control plane system article, Delivery Foundry project overview (new public repo `the-foundry`).
 
@@ -22,6 +22,8 @@ to update an existing page or create a new one.
 **Updated in 2026-08-11 automation run:** Delivery Foundry system + project articles refreshed for merged PR #15 (Tasks 162–164: unattended input loop, AutonomyPolicy, InputRouteWorkflow, loop-proof CI). Also carries PR #14 operator-config updates from prior unmerged automation branch.
 
 **Updated in 2026-07-26 automation run:** Delivery Foundry system + project articles refreshed for merged PR #1 (Tasks 3–22: agent harness, kernel workflow, CLI/daemon, SKP e2e).
+
+**Completed in 2026-08-14 automation run:** Go Remembers project overview (`go-remembers`), Data Structures & Algorithms learning catalog (`data-structure-and-algorithm`).
 
 ## Priority Legend
 
