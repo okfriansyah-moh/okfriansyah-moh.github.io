@@ -7,7 +7,7 @@ This backlog ranks article opportunities discovered from public repositories own
 `okfriansyah-moh`. The daily automation should consult this file when deciding whether
 to update an existing page or create a new one.
 
-## Status Summary (2026-08-05)
+## Status Summary (2026-08-06)
 
 | Status | Count | Notes |
 |--------|------:|-------|
@@ -20,6 +20,8 @@ to update an existing page or create a new one.
 **Updated in 2026-08-02 automation run:** Delivery Foundry articles refreshed for merged PRs #10–#11 (Tasks 121–140, V1 Evidence Gate).
 
 **Updated in 2026-08-01 automation run:** Delivery Foundry system + project articles refreshed for merged PRs #4–#9 (Tasks 41–120: venture/10x MLS exits, M2 hardening, executor routing, intake pipeline, M5 gap-closure).
+
+**Updated in 2026-08-06 automation run:** Shorts Generator pipeline article refreshed for merged PR #12 (large video support, DB stage cache, chunked transcription, scheduler locks, dynamic generation loop).
 
 ## Priority Legend
 

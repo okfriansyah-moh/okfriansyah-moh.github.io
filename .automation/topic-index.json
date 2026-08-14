@@ -9,7 +9,8 @@
       "sources": [
         "okfriansyah-moh/shorts-generator#8",
         "okfriansyah-moh/shorts-generator#10",
-        "okfriansyah-moh/shorts-generator#11"
+        "okfriansyah-moh/shorts-generator#11",
+        "okfriansyah-moh/shorts-generator#12"
       ],
       "repos": [
         "okfriansyah-moh/shorts-generator"
@@ -21,7 +22,12 @@
         "idempotent-stage-caching",
         "distributed-upload-scheduling",
         "multi-platform-publish",
-        "sports-video-type"
+        "sports-video-type",
+        "db-backed-stage-cache",
+        "chunked-transcription-resume",
+        "scheduler-distributed-lock",
+        "large-video-dynamic-generation",
+        "signal-metadata-cache-tables"
       ]
     },
     "a2a-brainstormer:document-coherence": {
