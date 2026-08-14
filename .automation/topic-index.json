@@ -256,12 +256,14 @@
         "okfriansyah-moh/the-foundry#6",
         "okfriansyah-moh/the-foundry#7",
         "okfriansyah-moh/the-foundry#8",
-        "okfriansyah-moh/the-foundry#9"
+        "okfriansyah-moh/the-foundry#9",
+        "okfriansyah-moh/the-foundry#10",
+        "okfriansyah-moh/the-foundry#11"
       ],
       "repos": [
         "okfriansyah-moh/the-foundry"
       ],
-      "learning_objective": "Understand Delivery Foundry's control-plane architecture: kernel vs PEC authority, six-status model, evidence-verified delivery loop",
+      "learning_objective": "Understand Delivery Foundry's control-plane architecture: kernel vs PEC authority, six-status model, evidence-verified delivery loop, multi-mission runtime, and V1 evidence gate",
       "covered_capabilities": [
         "kernel-vs-pec-authority",
         "six-status-state-model",
@@ -304,7 +306,20 @@
         "mandatory-sandbox-execution",
         "fail-closed-policy-enforcement",
         "profile-isolation",
-        "actual-cost-reconciliation"
+        "actual-cost-reconciliation",
+        "portfolio-scheduler-restart-proof",
+        "mission-activity-idempotency",
+        "poisoned-task-recovery",
+        "concurrent-pec-wave-execution",
+        "flyio-deploy-adapter",
+        "stripe-billing-webhook",
+        "s3-minio-artifact-store",
+        "provider-fallback-circuit-breaker",
+        "openhands-9router-adr",
+        "v1-acceleration-benchmark",
+        "validation-signal-allowlist",
+        "fail-closed-scm-provider-selection",
+        "unified-mockup-intake"
       ]
     },
     "delivery-foundry:project-overview": {
@@ -321,12 +336,14 @@
         "okfriansyah-moh/the-foundry#6",
         "okfriansyah-moh/the-foundry#7",
         "okfriansyah-moh/the-foundry#8",
-        "okfriansyah-moh/the-foundry#9"
+        "okfriansyah-moh/the-foundry#9",
+        "okfriansyah-moh/the-foundry#10",
+        "okfriansyah-moh/the-foundry#11"
       ],
       "repos": [
         "okfriansyah-moh/the-foundry"
       ],
-      "learning_objective": "Follow Delivery Foundry's dual-track venture/10x roadmap and implementation status",
+      "learning_objective": "Follow Delivery Foundry's dual-track venture/10x roadmap through V1 Evidence Gate completion",
       "covered_capabilities": [
         "project-roadmap-status",
         "dual-track-venture-10x",
@@ -336,7 +353,10 @@
         "venture-mls-track-a-exit",
         "ten-x-mls-track-b-exit",
         "m2-operational-hardening-exit",
-        "m5-gap-closure"
+        "m5-gap-closure",
+        "v1-evidence-gate-exit",
+        "live-venture-proof",
+        "live-bitbucket-10x-proof"
       ]
     }
   }

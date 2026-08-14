@@ -47,11 +47,18 @@ Repositori publik (dibuat 2026-07-20) berisi:
 - **Task 111–120 selesai (2026-07-31)** — via [PR #9](https://github.com/okfriansyah-moh/the-foundry/pull/9):
   intake bertahap dapat dilanjutkan (`mission start --idea`), transport inbound Telegram, sandbox wajib,
   jalur kebijakan fail-closed, isolasi profil, dan rekonsiliasi actual-cost — **M5 gap-closure**
+- **Task 121–130 selesai (2026-08-01)** — via [PR #10](https://github.com/okfriansyah-moh/the-foundry/pull/10):
+  scheduler portfolio dengan bukti restart, idempotensi aktivitas mission, recovery task teracun,
+  gelombang PEC konkuren, deploy Fly.io, webhook billing Stripe, store bukti S3/MinIO, dan circuit breaker
+  fallback provider
+- **Task 131–140 selesai (2026-08-01)** — via [PR #11](https://github.com/okfriansyah-moh/the-foundry/pull/11):
+  bukti venture + Bitbucket 10x live, baseline benchmark akselerasi V1, intake mockup terpadu,
+  allowlist sinyal validasi, seleksi provider SCM fail-closed — **exit V1 Evidence Gate (Task 136)**
 - **Shared Kernel Proof (exit M0)** — demo end-to-end membuktikan admit → worktree → verify →
   bukti → restart checkpoint
 
-Milestone PLAN setelah Task 120 tetap di indeks sumber; kedua track produk kini
-memiliki bukti exit MLS terdokumentasi.
+Semua 140 task PLAN bernomor berurutan ditandai selesai di `docs/PLAN.md` sumber.
+Kedua track produk kini memiliki bukti exit MLS plus workflow CI bukti live.
 
 ## Masalah
 
@@ -114,7 +121,8 @@ di branch 10x bersama tanpa PR, merge, atau deployment dalam workflow itu.
 | Task 76–93 (✅ 2026-07-28, PR #7) | Registry kapabilitas executor, routing berbasis kebijakan, adapter multi-provider |
 | Task 100–110 (✅ 2026-07-30, PR #8) | UX CLI+API mission/plan, gate CI topologi/validasi/research-boundary PLAN |
 | M5 gap-closure (✅ 2026-07-31, PR #9) | Task 111–120: intake dapat dilanjutkan, inbound Telegram, sandbox wajib, kebijakan fail-closed, isolasi profil, rekonsiliasi cost |
-| Evolusi pasca-120 | Item indeks PLAN tersisa — dilacak di `docs/PLAN.md` sumber |
+| Konvergensi runtime M5 (✅ 2026-08-01, PR #10) | Task 121–130: scheduler portfolio, idempotensi mission, recovery task teracun, gelombang konkuren, integrasi produksi Fly.io/Stripe/S3 |
+| V1 Evidence Gate (✅ 2026-08-01, PR #11) | Task 131–140: bukti venture + Bitbucket live, baseline benchmark, intake mockup, sinyal validasi, SCM fail-closed — `docs/notes/v1-evidence-gate.md` |
 
 Estimasi roadmap dan asumsi builder didokumentasikan secara jujur di
 `docs/architecture/overview.md` — rentang dengan tingkat keyakinan, bukan presisi palsu.
@@ -132,6 +140,8 @@ Estimasi roadmap dan asumsi builder didokumentasikan secara jujur di
 | Agent harness multi-provider (Task 2) | Sumber canonical ARES `.ai/` dikomposisi ke Claude/Codex; sebelas skill untuk enam peran |
 | Constitution fitness (Task 18) | `fitlint` menegakkan aturan enum C1, batas import, dan doc link di CI |
 | Empat lineage image container | Aturan anti-sprawl: dev, postgres/temporal, executor sandbox, release binary |
+| Akselerasi V1 terukur (C25) | Baseline benchmark ditambang dari delivery git control-arm; exit memerlukan perbandingan bukti, bukan klaim |
+| 9Router ditolak / OpenHands ditunda | ADR-001 mencatat disposisi eksplisit — fallback provider (Task 129) memenuhi intent routing |
 
 ## Tipe Entry dan Workflow
 
@@ -151,8 +161,10 @@ Semantik recovery, retry, dan penyelesaian jujur ada di `docs/workflows/recovery
 
 ```text
 docs/foundry/delivery_foundry.md   indeks arsitektur master
-docs/PLAN.md                       rencana 120+ task (Task 1–120 ✅ melalui M5)
+docs/PLAN.md                       rencana 140 task (Task 1–140 ✅, V1 Evidence Gate)
 docs/architecture.md               konstitusi satu halaman + peta link
+docs/notes/v1-evidence-gate.md     verdict V1 Evidence Gate (Task 136)
+benchmarks/baseline/               delivery baseline control-arm + manifest untuk perbandingan akselerasi
 docs/notes/m1-exit-report.md       bukti acceptance M1
 docs/notes/m2-exit-report.md       bukti exit hardening operasional M2
 docs/notes/track-a-exit-report.md  bukti exit venture MLS Track A
@@ -169,7 +181,8 @@ tools/planrunner/                  orkestrator task otonom bootstrap
 deploy/                            toolchain dev Docker, postgres/temporal, prometheus/grafana
 internal/                          paket Go (kernel, pec, intake, integrator, retention, …)
 scripts/backup.sh, restore.sh      backup/restore dengan verifikasi manifest
-Makefile                           target dibungkus docker termasuk m1-exit, m2-exit, e2e-venture, e2e-tenx
+Makefile                           target dibungkus docker termasuk m1-exit, m2-exit, e2e-venture, e2e-tenx, bench-baseline, bench-foundry, e2e-bitbucket
+.github/workflows/e2e-*.yml        bukti live terjadwal/manual (venture, tenx, bitbucket)
 ```
 
 ## Pelajaran
@@ -184,6 +197,8 @@ Makefile                           target dibungkus docker termasuk m1-exit, m2-
    tetapi menyatakan skor diperoleh hanya saat fault-injection, keamanan, dan tes SLO lulus.
 5. **Karantina legacy** — `docs/legacy/` ditandai sebagai riwayat superseded dan tidak
    boleh diberikan ke agen implementasi.
+6. **Exit V1 adalah verdict bukti** — Task 136 memeriksa bukti live, perbandingan benchmark, dan
+   fitness konstitusi bersama; menyelesaikan task kode saja tidak mendeklarasikan V1.
 
 ## Terkait
 
@@ -194,8 +209,8 @@ Makefile                           target dibungkus docker termasuk m1-exit, m2-
 ## Sumber
 
 - Repository: [okfriansyah-moh/the-foundry](https://github.com/okfriansyah-moh/the-foundry)
-- Pull request: [#9](https://github.com/okfriansyah-moh/the-foundry/pull/9), [#8](https://github.com/okfriansyah-moh/the-foundry/pull/8), [#7](https://github.com/okfriansyah-moh/the-foundry/pull/7), [#6](https://github.com/okfriansyah-moh/the-foundry/pull/6), [#5](https://github.com/okfriansyah-moh/the-foundry/pull/5), [#4](https://github.com/okfriansyah-moh/the-foundry/pull/4), [#2](https://github.com/okfriansyah-moh/the-foundry/pull/2), [#1](https://github.com/okfriansyah-moh/the-foundry/pull/1)
-- Laporan exit: `docs/notes/m1-exit-report.md`, `docs/notes/m2-exit-report.md`, `docs/notes/track-a-exit-report.md`, `docs/notes/track-b-exit-report.md`
+- Pull request: [#11](https://github.com/okfriansyah-moh/the-foundry/pull/11), [#10](https://github.com/okfriansyah-moh/the-foundry/pull/10), [#9](https://github.com/okfriansyah-moh/the-foundry/pull/9), [#8](https://github.com/okfriansyah-moh/the-foundry/pull/8), [#7](https://github.com/okfriansyah-moh/the-foundry/pull/7), [#6](https://github.com/okfriansyah-moh/the-foundry/pull/6), [#5](https://github.com/okfriansyah-moh/the-foundry/pull/5), [#4](https://github.com/okfriansyah-moh/the-foundry/pull/4), [#2](https://github.com/okfriansyah-moh/the-foundry/pull/2), [#1](https://github.com/okfriansyah-moh/the-foundry/pull/1)
+- Laporan exit: `docs/notes/m1-exit-report.md`, `docs/notes/m2-exit-report.md`, `docs/notes/track-a-exit-report.md`, `docs/notes/track-b-exit-report.md`, `docs/notes/v1-evidence-gate.md`, `benchmarks/baseline/report.md`
 - Review: `docs/foundry/V12_REVIEW_REPORT.md` di repo sumber
 - Changelog: `docs/foundry/CHANGELOG.md` di repo sumber
-- Indeks rencana: `docs/PLAN.md` §D Master Task Index (Task 1–120 ✅)
+- Indeks rencana: `docs/PLAN.md` §D Master Task Index (Task 1–140 ✅)

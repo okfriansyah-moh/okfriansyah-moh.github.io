@@ -47,11 +47,18 @@ The public repository (created 2026-07-20) contains:
 - **Tasks 111–120 complete (2026-07-31)** — via [PR #9](https://github.com/okfriansyah-moh/the-foundry/pull/9):
   staged resumable intake (`mission start --idea`), Telegram inbound transport, mandatory sandbox,
   fail-closed policy paths, profile isolation, and actual-cost reconciliation — **M5 gap-closure**
+- **Tasks 121–130 complete (2026-08-01)** — via [PR #10](https://github.com/okfriansyah-moh/the-foundry/pull/10):
+  portfolio scheduler with restart proof, mission-activity idempotency, poisoned-task recovery,
+  concurrent PEC waves, Fly.io deploy, Stripe billing webhook, S3/MinIO evidence store, and provider
+  fallback circuit breaker
+- **Tasks 131–140 complete (2026-08-01)** — via [PR #11](https://github.com/okfriansyah-moh/the-foundry/pull/11):
+  live venture + Bitbucket 10x proofs, V1 acceleration benchmark baseline, unified mockup intake,
+  validation-signal allowlist, fail-closed SCM provider selection — **V1 Evidence Gate (Task 136) exit**
 - **Shared Kernel Proof (M0 exit)** — end-to-end demo proving admit → worktree → verify →
   evidence → checkpoint restart
 
-Later PLAN milestones beyond Task 120 remain in the source index; both product tracks now
-have documented MLS exit evidence.
+All 140 sequentially numbered PLAN tasks are marked complete in source `docs/PLAN.md`.
+Both product tracks now have documented MLS exit evidence plus live-proof CI workflows.
 
 ## The Problem
 
@@ -112,7 +119,8 @@ shared 10x branch with no PR, merge, or deployment in that workflow.
 | Tasks 76–93 (✅ 2026-07-28, PR #7) | Executor capability registry, policy-driven routing, multi-provider adapters |
 | Tasks 100–110 (✅ 2026-07-30, PR #8) | Mission/plan CLI+API UX, PLAN topology/validation/research-boundary CI gates |
 | M5 gap-closure (✅ 2026-07-31, PR #9) | Tasks 111–120: resumable intake, Telegram inbound, mandatory sandbox, fail-closed policy, profile isolation, cost reconciliation |
-| Post-120 evolution | Remaining PLAN index items — tracked in source `docs/PLAN.md` |
+| M5 runtime convergence (✅ 2026-08-01, PR #10) | Tasks 121–130: portfolio scheduler, mission idempotency, poisoned-task recovery, concurrent waves, Fly.io/Stripe/S3 production integrations |
+| V1 Evidence Gate (✅ 2026-08-01, PR #11) | Tasks 131–140: live venture + Bitbucket proofs, benchmark baseline, mockup intake, validation signals, fail-closed SCM — `docs/notes/v1-evidence-gate.md` |
 
 Roadmap estimates and builder assumptions are documented honestly in
 `docs/architecture/overview.md` — ranges with confidence levels, not false precision.
@@ -130,6 +138,8 @@ Roadmap estimates and builder assumptions are documented honestly in
 | Multi-provider agent harness (Task 2) | ARES `.ai/` canonical source composed to Claude/Codex; eleven skills mapped to six roles |
 | Constitution fitness (Task 18) | `fitlint` enforces C1 enum rules, import boundaries, and doc links in CI |
 | Four container image lineages | Anti-sprawl rule: dev, postgres/temporal, executor sandbox, release binary |
+| V1 measured acceleration (C25) | Benchmark baseline mined from control-arm git deliveries; exit requires evidence comparison, not claims |
+| 9Router rejected / OpenHands deferred | ADR-001 records disposition explicitly — provider fallback (Task 129) satisfies routing intent |
 
 ## Entry Types and Workflows
 
@@ -149,8 +159,10 @@ Recovery, retry, and honest completion semantics live in `docs/workflows/recover
 
 ```text
 docs/foundry/delivery_foundry.md   master architecture index
-docs/PLAN.md                       120+ task implementation plan (Tasks 1–120 ✅ through M5)
+docs/PLAN.md                       140-task implementation plan (Tasks 1–140 ✅, V1 Evidence Gate)
 docs/architecture.md               one-page constitution + link map
+docs/notes/v1-evidence-gate.md     V1 Evidence Gate verdict (Task 136)
+benchmarks/baseline/               control-arm baseline deliveries + manifest for acceleration comparison
 docs/notes/m1-exit-report.md       M1 acceptance evidence
 docs/notes/m2-exit-report.md       M2 operational hardening exit evidence
 docs/notes/track-a-exit-report.md  Track A venture MLS exit evidence
@@ -167,7 +179,8 @@ tools/planrunner/                  bootstrap autonomous task orchestrator
 deploy/                            Docker dev toolchain, postgres/temporal, prometheus/grafana
 internal/                          Go packages (kernel, pec, intake, integrator, retention, …)
 scripts/backup.sh, restore.sh      backup/restore with manifest verification
-Makefile                           docker-wrapped targets including m1-exit, m2-exit, e2e-venture, e2e-tenx
+Makefile                           docker-wrapped targets including m1-exit, m2-exit, e2e-venture, e2e-tenx, bench-baseline, bench-foundry, e2e-bitbucket
+.github/workflows/e2e-*.yml        scheduled/manual live proofs (venture, tenx, bitbucket)
 ```
 
 ## Lessons Learned
@@ -182,6 +195,8 @@ Makefile                           docker-wrapped targets including m1-exit, m2-
    but declares the score is earned only when fault-injection, security, and SLO tests pass.
 5. **Legacy quarantine** — `docs/legacy/` is banner-marked superseded history and must
    never be fed to implementation agents.
+6. **V1 exit is an evidence verdict** — Task 136 checks live proofs, benchmark comparison, and
+   constitution fitness together; completing code tasks alone does not declare V1.
 
 ## Related
 
@@ -192,8 +207,8 @@ Makefile                           docker-wrapped targets including m1-exit, m2-
 ## Sources
 
 - Repository: [okfriansyah-moh/the-foundry](https://github.com/okfriansyah-moh/the-foundry)
-- Pull requests: [#9](https://github.com/okfriansyah-moh/the-foundry/pull/9), [#8](https://github.com/okfriansyah-moh/the-foundry/pull/8), [#7](https://github.com/okfriansyah-moh/the-foundry/pull/7), [#6](https://github.com/okfriansyah-moh/the-foundry/pull/6), [#5](https://github.com/okfriansyah-moh/the-foundry/pull/5), [#4](https://github.com/okfriansyah-moh/the-foundry/pull/4), [#2](https://github.com/okfriansyah-moh/the-foundry/pull/2), [#1](https://github.com/okfriansyah-moh/the-foundry/pull/1)
-- Exit reports: `docs/notes/m1-exit-report.md`, `docs/notes/m2-exit-report.md`, `docs/notes/track-a-exit-report.md`, `docs/notes/track-b-exit-report.md`
+- Pull requests: [#11](https://github.com/okfriansyah-moh/the-foundry/pull/11), [#10](https://github.com/okfriansyah-moh/the-foundry/pull/10), [#9](https://github.com/okfriansyah-moh/the-foundry/pull/9), [#8](https://github.com/okfriansyah-moh/the-foundry/pull/8), [#7](https://github.com/okfriansyah-moh/the-foundry/pull/7), [#6](https://github.com/okfriansyah-moh/the-foundry/pull/6), [#5](https://github.com/okfriansyah-moh/the-foundry/pull/5), [#4](https://github.com/okfriansyah-moh/the-foundry/pull/4), [#2](https://github.com/okfriansyah-moh/the-foundry/pull/2), [#1](https://github.com/okfriansyah-moh/the-foundry/pull/1)
+- Exit reports: `docs/notes/m1-exit-report.md`, `docs/notes/m2-exit-report.md`, `docs/notes/track-a-exit-report.md`, `docs/notes/track-b-exit-report.md`, `docs/notes/v1-evidence-gate.md`, `benchmarks/baseline/report.md`
 - Review: `docs/foundry/V12_REVIEW_REPORT.md` in source repo
 - Changelog: `docs/foundry/CHANGELOG.md` in source repo
-- Plan index: `docs/PLAN.md` §D Master Task Index (Tasks 1–120 ✅)
+- Plan index: `docs/PLAN.md` §D Master Task Index (Tasks 1–140 ✅)

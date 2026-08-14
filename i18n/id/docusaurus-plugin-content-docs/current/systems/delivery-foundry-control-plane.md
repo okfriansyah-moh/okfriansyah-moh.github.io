@@ -94,9 +94,53 @@ menutup **Task 111–120 (M5 gap-closure)** — intake, keamanan, dan hardening 
 - **Isolasi kredensial + tenancy profil (SEC-03–04)** — env per-child untuk subprocess; profile-kind `ApprovedPlan` menegakkan step-up org dan root worktree scoped
 - **Anggaran fail-closed + rekonsiliasi cost (COST-01–02)** — misi tanpa pengawasan tanpa envelope menolak; `RecordCost` terhubung ke `DeliverPlan` dengan tabel rate per-model dan `foundry cost reconcile`
 
+[Pull request #10](https://github.com/okfriansyah-moh/the-foundry/pull/10) (digabung 2026-08-01)
+mengirim **Task 121–130** — runtime multi-mission, gelombang konkuren, dan integrasi produksi:
+
+- **Scheduler portfolio (MMR-01)** — workflow `PortfolioLoop` berbasis Postgres dengan isolasi anggaran per-mission,
+  batas fairness, dan bukti restart kill −9 (`test/portfolio_restart_live_test.go`)
+- **Idempotensi aktivitas mission (MMR-02)** — aktivitas Temporal dibungkus receipt dengan gate ID deterministik
+  dan timestamp stabil saat replay (C9)
+- **Recovery task teracun (MMR-03)** — pelacakan failure signature di PostgreSQL; kegagalan identik berulang
+  dieskalasi ke supervisor alih-alih retry tak terbatas (C22)
+- **Gelombang PEC konkuren (PAR-01)** — task independen dalam satu gelombang berjalan paralel di worktree terisolasi
+  dengan urutan topologi Kahn, konkurensi terbatas, dan barrier per-gelombang (`wave_concurrency_test.go`)
+- **Adapter deploy Fly.io (VEN-15)** — jalur deploy nyata dengan health check, rollback, enforcement gate,
+  dan pembungkus extops-receipt
+- **Billing Stripe (VEN-16)** — klien test-mode, endpoint webhook terverifikasi signature, persistensi event tahan lama,
+  dan loop reconciler revenue di `foundryd`
+- **Siklus improvement produksi (VEN-17)** — improvement otonom terbatas terhubung melalui state freeze tahan lama
+  dan enforcement change-budget
+- **Penyimpanan bukti S3/MinIO (INF-01)** — selector backend berbasis profil dengan suite conformance membuktikan
+  interoperabilitas dengan filesystem store
+- **Fallback provider (INF-02)** — circuit breaker `HealthTracker` dengan loop reselection terbatas;
+  diskriminasi fault provider bertipe dan semantik fail-closed saat tidak ada executor yang diizinkan
+- **ADR OpenHands / 9Router (ADR-01)** — [ADR-001](https://github.com/okfriansyah-moh/the-foundry/blob/main/docs/foundry/docs/architecture/adr/ADR-001-openhands-9router.md)
+  mencatat 9Router ditolak (Task 129 memenuhi intent) dan OpenHands ditunda sebagai adapter eksternal opsional
+
+[Pull request #11](https://github.com/okfriansyah-moh/the-foundry/pull/11) (digabung 2026-08-01)
+menutup **Task 131–140** dan **V1 Evidence Gate (Task 136)**:
+
+- **Kebersihan dokumentasi (DOC-01)** — lint stale-task dan test-source-write `fitlint` gagal CI pada
+  komentar self-disclosed-gap yang sudah usang
+- **Bukti venture live (PRF-01, Task 132)** — misi personal terbukti end-to-end pada control plane nyata
+- **Bukti 10x Bitbucket live (PRF-02, Task 133)** — remote disposable menerima push nyata yang SHA-nya
+  dibaca ulang secara independen; bukti prohibisi C15 (tanpa PR, merge, atau deploy) di workflow CI terjadwal
+- **Benchmark akselerasi V1 (ACC-01/02, Task 134–135)** — baseline JSON control-arm ditambang dari
+  delivery git historis; `foundry bench` dan `make bench-baseline` / `make bench-foundry` membandingkan
+  target penerimaan di `config/benchmark-targets.yaml`
+- **Intake mockup terpadu (VEN-18, Task 138)** — router mengingest mockup Figma, HTML, PDF, dan gambar
+  ke tahap spec/plan dengan tes ekstraksi golden-file
+- **Allowlist sinyal validasi (OPP-05, Task 139)** — ingestion sinyal validasi pasar nyata terbatas dengan
+  record berprovenance; `must_have_real_validation_signal` digate pada sumber allowlisted
+- **Seleksi provider SCM fail-closed (TX-12, Task 140)** — kernel menolak saat tidak ada provider SCM
+  yang diizinkan kebijakan; paritas write Bitbucket diperkuat (Task 137)
+- **Observabilitas human-touch** — `internal/observe/humantouch.go` mencatat intervensi operator
+  untuk pelaporan benchmark dan evidence gate
+
 Kontrak normatif tetap di `docs/foundry/delivery_foundry.md` dan pohon modular
 `docs/foundry/docs/`; roadmap implementasi aktif ada di `docs/PLAN.md`
-(Task 1–120 ✅ melalui M5 gap-closure; milestone berikutnya tetap di indeks PLAN).
+(Task 1–140 ✅ melalui V1 Evidence Gate).
 
 ## Masalah
 
@@ -257,8 +301,20 @@ flowchart TB
 | **Executor selector (`foundryd`)** | Memuat registry kapabilitas + kebijakan routing; memilih executor tersandbox per kelas task |
 | **Retention sweeper (`internal/retention`)** | Kelas TTL, legal hold, endpoint DSR — enforcement PII M2 |
 | **Audit verifier (`internal/audit`)** | Walker hash-chain dengan anchor inkremental; drill tamper `foundry audit verify` |
+| **Scheduler portfolio (`internal/mission/portfolio_*`)** | Workflow Temporal `PortfolioLoop`; store portfolio Postgres dengan isolasi anggaran dan bukti restart |
+| **Idempotensi mission (`internal/kernel/idempotency.go`)** | Aktivitas dibungkus receipt; gate ID deterministik bertahan crash/replay |
+| **Failure signatures (`internal/kernel/failure_signature.go`)** | Melacak kegagalan identik berulang; eskalasi task teracun ke supervisor |
+| **Barrier gelombang konkuren (`internal/kernel/workflow.go`)** | Dispatch task paralel dalam gelombang; urutan Kahn + konkurensi terbatas + barrier |
+| **Adapter deploy (`internal/deploy/flyio.go`)** | Deploy Fly.io dengan health check, rollback, dan receipt extops |
+| **Billing Stripe (`internal/billing/*`)** | Klien test-mode, verifikasi webhook, event tahan lama, reconciler revenue |
+| **Backend bukti (`internal/evidence/store_s3.go`)** | Store S3/MinIO dengan selector profil; conformance-tested terhadap store FS |
+| **Kesehatan provider (`internal/executor/capability/health.go`)** | Circuit breaker + reselection fallback terbatas di `ExecuteTask` |
+| **Store benchmark (`internal/bench/*`)** | Capture baseline, perbandingan metrik, dan laporan bukti akselerasi V1 |
+| **Sinyal validasi (`internal/opportunity/signals/*`)** | Ingestion sinyal validasi pasar nyata allowlisted dengan provenance |
+| **Router mockup (`internal/spec/mockup/*`)** | Ingestion mockup multi-format (Figma/HTML/PDF/gambar) ke tahap spec |
+| **Selector provider SCM (`internal/kernel/scm_provider.go`)** | Seleksi fail-closed kernel adapter write GitHub/Bitbucket |
 
-Paket Go kini membawa implementasi nyata hingga Task 120 — masing-masing dengan `doc.go`
+Paket Go kini membawa implementasi nyata hingga Task 140 — masing-masing dengan `doc.go`
 batas otoritas: `internal/kernel`, `internal/state`, `internal/admission`,
 `internal/provenance`, `internal/evidence`, `internal/worktree`, `internal/executor/*`
 (termasuk `sandbox/`), `internal/projection`, `internal/policy/pdp`, `internal/api`,
@@ -310,6 +366,14 @@ L7 — pause dan eskalasi ke manusia
   dokumen disaster-recovery mendefinisikan semantik checkpoint/restart.
 - **Blocking jujur** — `PROVEN_BLOCKED` pada `FAILED` berarti bukti terverifikasi bahwa
   pekerjaan tidak dapat dipenuhi sesuai scope — bukan kode error generik.
+- **Restart portfolio** — State aktivasi, spend, dan jadwal portfolio bertahan `kill -9`;
+  `PortfolioLoop` melanjutkan tanpa side effect duplikat (Task 121).
+- **Receipt aktivitas mission** — Aktivitas Temporal membawa kunci idempotency dan timestamp
+  stabil replay sehingga crash mid-mission tidak menerapkan side effect ganda (Task 122).
+- **Eskalasi task teracun** — Failure signature di PostgreSQL mendeteksi kegagalan identik
+  berulang dan merutekan ke supervisor alih-alih retry tak terbatas (Task 123).
+- **Failover provider** — Executor tidak tersedia memicu circuit breaker kesehatan; kernel
+  memilih ulang provider berikutnya yang diizinkan kebijakan atau fail closed dengan klasifikasi bertipe (Task 129).
 
 ## Mode Kegagalan
 
@@ -322,6 +386,10 @@ L7 — pause dan eskalasi ke manusia
 | PEC overreach | Tes larangan CI | Build gagal sebelum merge |
 | Crash proses mid-phase | Supervisor liveness | Replay dari checkpoint; lanjut di phase ter-commit terakhir |
 | Security hold | `WAITING`, reason `security-hold` | Recovery Manager tidak boleh menekan alert |
+| Task teracun / kegagalan identik berulang | Ambang hitung failure signature | Eskalasi ke supervisor; tanpa retry tak terbatas (Task 123) |
+| Outage kapasitas provider | Circuit HealthTracker terbuka | Pilih ulang executor yang diizinkan atau fail closed (Task 129) |
+| Config provider SCM hilang | Penolakan kernel saat dispatch | Fail closed — tanpa downgrade diam-diam (Task 140) |
+| Replay webhook Stripe | Store event tahan lama + verifikasi signature | Persistensi event idempoten (Task 126) |
 
 ## Trade-off dan Alternatif yang Ditolak
 
@@ -334,10 +402,13 @@ L7 — pause dan eskalasi ke manusia
 | Modularisasi dok V12 | Mempertahankan konten V11 sambil menambah kontrak normatif |
 | Toolchain dev hanya Docker | Host hanya butuh Docker + make; paritas dev/CI dari Task 1 |
 | Handoff 10x tanpa PR | `TEN_X_BRANCH_HANDOFF_READY` adalah sukses — batas stop workflow org |
+| 9Router ditolak (ADR-001) | Fallback provider Task 129 memenuhi intent routing tanpa dependensi proxy |
+| OpenHands ditunda | Adapter eksternal opsional — tidak wajib untuk V1 evidence gate |
+| Akselerasi terukur (C25) | Exit V1 memerlukan bukti benchmark terhadap baseline tercatat, bukan klaim kecepatan laporan mandiri |
 
 ## Pengujian
 
-Validasi saat ini (Task 1–120, exit M1–M2, MLS Track A/B, M5 gap-closure):
+Validasi saat ini (Task 1–140, V1 Evidence Gate, bukti live, dan baseline benchmark):
 
 - `make bootstrap test lint fitness doclint` di dalam image Docker `dev`
 - `make up` + `make doctor` — verifikasi Docker/Compose, PostgreSQL `SELECT 1`, Temporal `GetSystemInfo`
@@ -349,6 +420,14 @@ Validasi saat ini (Task 1–120, exit M1–M2, MLS Track A/B, M5 gap-closure):
 - `test/improvement_cycle_e2e.sh`, skrip e2e intake/telegram — bukti perbaikan venture dan transport inbound
 - Workflow CI: `ci.yaml` (suite validasi PLAN wajib), `chaos.yml` (nightly), `dr-drill.yml` (bulanan)
 - Tes red-team isolasi profil, bukti anggaran fail-closed, dan tes isolasi kredensial `-race` N-way (Task 117–119)
+- `test/portfolio_restart_live_test.go`, `test/recovery_poisoned_live_test.go` — bukti restart portfolio kill −9 dan eskalasi task teracun (Task 121, 123)
+- `internal/kernel/wave_concurrency_test.go` — dispatch gelombang konkuren dengan determinisme replay (Task 124)
+- `internal/evidence/store_conformance_test.go` — interoperabilitas store S3/MinIO vs FS (Task 128)
+- `internal/billing/stripe_live_test.go`, `internal/deploy/flyio_live_test.go` — tes kontrak adapter Stripe dan Fly.io (Task 125–126)
+- `make bench-baseline`, `make bench-foundry` — capture dan perbandingan benchmark akselerasi V1 (Task 134–135)
+- Workflow CI terjadwal: `e2e-venture.yml`, `e2e-tenx.yml`, `e2e-bitbucket.yml` — bukti live manual/terjadwal untuk Track A, Track B, dan remote Bitbucket (Task 132–133)
+- `test/e2e/venture/live_test.go`, `test/e2e/tenx/live_test.go` — bukti end-to-end live terhubung ke CI (Task 132–133)
+- Verdict V1 Evidence Gate terdokumentasi di `docs/notes/v1-evidence-gate.md` (Task 136)
 
 Keterbatasan diketahui (terdokumentasi di laporan exit M1): guard upsert proyeksi hanya
 membandingkan nomor sequence; konten stale pada sequence lebih tinggi dapat regresi phase
@@ -364,7 +443,8 @@ terproyeksi — ditandai untuk follow-up, tidak disembunyikan.
 - **Target Make** — `bootstrap`, `up`, `down`, `doctor`, `test`, `lint`, `fitness`, `doclint`,
   `skp-e2e`, `m1-exit`, `m2-exit`, `e2e-venture`, `e2e-tenx`, `chaos`, `redteam`, `dr-drill`,
   `soak-telegram`, `soak-fairness`, `plan-run`, `evidence-verify`, `projection-rebuild`, `backup`,
-  `restore`, `drill-backup-restore`, `drill-brownout`, `release-dryrun`, `upgrade-drill`
+  `restore`, `drill-backup-restore`, `drill-brownout`, `release-dryrun`, `upgrade-drill`,
+  `bench-baseline`, `bench-foundry`, `e2e-bitbucket`
   (semua dibungkus Docker; profil `up obs` menambah Prometheus/Grafana)
 - **Engine Telegram** — Notifikasi ber-tier prioritas (P0–P3), batching, flood control, dead-letter
   store; approval tier H memerlukan step-up WebAuthn, bukan Telegram saja (C11/C12)
@@ -394,6 +474,10 @@ terproyeksi — ditandai untuk follow-up, tidak disembunyikan.
    ke YAML versioned sehingga freshness kapabilitas dan kebijakan kelas task dapat diaudit tanpa redeploy logika kernel.
 9. **Default fail-closed bertahan pada config parsial** — M5 gap-closure menutup jalur allowlist kosong dan classifier nil;
    misi tanpa pengawasan tanpa envelope anggaran berhenti alih-alih menghabiskan secara diam-diam.
+10. **Fairness multi-mission butuh state portfolio tahan lama** — Task 121 membuktikan isolasi anggaran dan
+    fairness jadwal hanya saat tabel portfolio bertahan kematian proses, bukan scheduling in-memory saja.
+11. **Klaim akselerasi memerlukan baseline** — V1 Evidence Gate Task 136 mengikat exit ke delivery control-arm
+    yang ditambang dan perbandingan benchmark (C25), menolak laporan "kami lebih cepat" naratif saja.
 
 ## Terkait
 
@@ -404,8 +488,8 @@ terproyeksi — ditandai untuk follow-up, tidak disembunyikan.
 ## Sumber
 
 - Repository: [okfriansyah-moh/the-foundry](https://github.com/okfriansyah-moh/the-foundry)
-- Pull request: [#9 — Task 111–120 (M5 gap-closure)](https://github.com/okfriansyah-moh/the-foundry/pull/9), [#8 — Task 100–110](https://github.com/okfriansyah-moh/the-foundry/pull/8), [#7 — Task 76–93](https://github.com/okfriansyah-moh/the-foundry/pull/7), [#6 — Task 61–75 (exit M2, MLS Track B)](https://github.com/okfriansyah-moh/the-foundry/pull/6), [#5 — Task 51–60 (MLS Track A, PEC, integrator)](https://github.com/okfriansyah-moh/the-foundry/pull/5), [#4 — Task 41–50](https://github.com/okfriansyah-moh/the-foundry/pull/4), [#2 — Task 22–40 (exit M1)](https://github.com/okfriansyah-moh/the-foundry/pull/2), [#1 — Task 3–22](https://github.com/okfriansyah-moh/the-foundry/pull/1)
-- Laporan exit: `docs/notes/m1-exit-report.md`, `docs/notes/m2-exit-report.md`, `docs/notes/track-a-exit-report.md`, `docs/notes/track-b-exit-report.md` di repo sumber
+- Pull request: [#11 — Task 131–140 (V1 Evidence Gate)](https://github.com/okfriansyah-moh/the-foundry/pull/11), [#10 — Task 121–130 (portfolio, gelombang konkuren, integrasi produksi)](https://github.com/okfriansyah-moh/the-foundry/pull/10), [#9 — Task 111–120 (M5 gap-closure)](https://github.com/okfriansyah-moh/the-foundry/pull/9), [#8 — Task 100–110](https://github.com/okfriansyah-moh/the-foundry/pull/8), [#7 — Task 76–93](https://github.com/okfriansyah-moh/the-foundry/pull/7), [#6 — Task 61–75 (exit M2, MLS Track B)](https://github.com/okfriansyah-moh/the-foundry/pull/6), [#5 — Task 51–60 (MLS Track A, PEC, integrator)](https://github.com/okfriansyah-moh/the-foundry/pull/5), [#4 — Task 41–50](https://github.com/okfriansyah-moh/the-foundry/pull/4), [#2 — Task 22–40 (exit M1)](https://github.com/okfriansyah-moh/the-foundry/pull/2), [#1 — Task 3–22](https://github.com/okfriansyah-moh/the-foundry/pull/1)
+- Laporan exit: `docs/notes/m1-exit-report.md`, `docs/notes/m2-exit-report.md`, `docs/notes/track-a-exit-report.md`, `docs/notes/track-b-exit-report.md`, `docs/notes/v1-evidence-gate.md`, `benchmarks/baseline/report.md` di repo sumber
 - Arsitektur: `docs/foundry/delivery_foundry.md`, `docs/architecture.md`, `docs/foundry/docs/architecture/state-model.md`, `docs/foundry/docs/architecture/authority-model.md`
 - Agent harness: `.ai/manifest.yaml`, `.ai/instructions/authority-boundaries.md`
-- Rencana implementasi: `docs/PLAN.md` (Task 1–120 ✅ melalui M5 gap-closure)
+- Rencana implementasi: `docs/PLAN.md` (Task 1–140 ✅ melalui V1 Evidence Gate)
