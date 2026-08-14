@@ -1,6 +1,38 @@
 {
   "items": [
     {
+      "title": "Go Remembers: Runnable Go Fundamentals",
+      "description": "A self-registering Go learning repository where each concept file plugs into a sorted example runner via init() hooks.",
+      "link": "/docs/projects/go-remembers",
+      "type": "project",
+      "date": "2026-08-14",
+      "readingTime": 4
+    },
+    {
+      "title": "Data Structures & Algorithms Learning Catalog",
+      "description": "A Maven-organized Java repository of 70+ runnable DSA implementations indexed by category for progressive study.",
+      "link": "/docs/projects/data-structure-and-algorithm",
+      "type": "project",
+      "date": "2026-08-14",
+      "readingTime": 5
+    },
+    {
+      "title": "Delivery Foundry: Governed Control Plane for AI Software Delivery",
+      "description": "Architecture of a durable, resumable, evidence-verified control plane where a kernel owns state and side effects while a Plan Execution Coordinator proposes work under explicit policy envelopes.",
+      "link": "/docs/systems/delivery-foundry-control-plane",
+      "type": "system",
+      "date": "2026-07-21",
+      "readingTime": 10
+    },
+    {
+      "title": "Delivery Foundry: Autonomous Software Delivery Loop",
+      "description": "Project overview of Delivery Foundry — a dual-track foundry for personal venture autonomy and organization 10x engineering, built on a shared governed kernel.",
+      "link": "/docs/projects/delivery-foundry",
+      "type": "project",
+      "date": "2026-07-21",
+      "readingTime": 5
+    },
+    {
       "title": "Portable AI Coding Knowledge with ARES",
       "description": "Project overview of ARES — the reference CLI for the AI Repository Standard that composes provider-specific artifacts from a canonical .ai/ source.",
       "link": "/docs/projects/ares",
