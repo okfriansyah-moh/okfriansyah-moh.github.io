@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "last_successful_scan_at": "2026-08-11T02:01:38+00:00",
+  "last_successful_scan_at": "2026-08-12T02:02:56+00:00",
   "processed_pull_requests": [
     "okfriansyah-moh/shorts-generator#8@bootstrap",
     "okfriansyah-moh/shorts-generator#10@bootstrap",
@@ -27,17 +27,14 @@
   ],
   "processed_commits": [
     "okfriansyah-moh/the-foundry@58632a0",
-    "okfriansyah-moh/the-foundry@9409080"
+    "okfriansyah-moh/the-foundry@9409080",
+    "okfriansyah-moh/the-foundry@cdc80eb"
   ],
   "ignored_activity": [
-    {
-      "id": "okfriansyah-moh/the-foundry#3@f367e6c29ff9fbc8a9282fdfd6452528838c6040",
-      "reason": "Lint fixes and CI remediation docs only; no new engineering capability beyond PR #2 scope"
-    },
-    {
-      "id": "okfriansyah-moh/the-foundry@cd3027d",
-      "reason": "PLAN/mockup documentation only \u2014 no implementation change to document"
-    }
+    "okfriansyah-moh/the-foundry#3@f367e6c29ff9fbc8a9282fdfd6452528838c6040 — Lint fixes and CI remediation docs only; no new engineering capability beyond PR #2 scope",
+    "okfriansyah-moh/the-foundry@cd3027d — PLAN/mockup documentation only — no implementation change to document",
+    "okfriansyah-moh/the-foundry@a563fec — docs-only beginner guide update mirroring cdc80eb evidence gate; score ≤1",
+    "okfriansyah-moh/the-foundry@4786865 — operator-console mockup HTML/JS refresh; no architectural change; score ≤1"
   ],
   "pending_pull_requests": []
 }

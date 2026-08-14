@@ -36,10 +36,11 @@ awal M1 (Foundation):
 - **Lapisan foundation (Task 20–22)** — framework migrasi, profiles/principals/organizations, policy compiler v1
 - **Operator config SoT (Task 156–161, [PR #14](https://github.com/okfriansyah-moh/the-foundry/pull/14))** — `internal/operatorcfg.Store` membaca policy layer, kuota, tarif model, threshold opportunity, kebijakan mission-decide, nilai tunable, dan katalog packaging dari **PostgreSQL** sebagai source of truth; startup daemon men-seed dari disk saat key kosong; perintah catalog CLI menerima `-pg-dsn` untuk katalog dan rollback berbasis DB
 - **Loop input unattended (Task 162–164, [PR #15](https://github.com/okfriansyah-moh/the-foundry/pull/15))** — store `AutonomyPolicy` versi dengan show/set/freeze/unfreeze terautentikasi owner; transport `inputrouter` yang menyimpan keputusan rute sebelum memulai kernel `InputRouteWorkflow`; API mission brief (`POST /v1/briefs`); kunci intake idempoten; suite CI `loop-proof` terlindungi dengan LOCAL_MOCK dan stub live jujur yang menolak PASS tanpa receipt
+- **Bukti receipt executor CLI ([`cdc80eb`](https://github.com/okfriansyah-moh/the-foundry/commit/cdc80eb))** — receipt live Path A/B berbasis langganan Claude CLI tercapture di `evidence/task-164/raw/`; entry point `make loop-proof-cli` / `scripts/loop_proof_cli.sh`; perbaikan auth langganan macOS (`USER`/`LOGNAME` di allowed env executor)
 
 Kontrak normatif tetap di `docs/foundry/delivery_foundry.md` dan pohon modular
 `docs/foundry/docs/`; roadmap implementasi aktif ada di `docs/PLAN.md`
-(Task 23–155 dan 165–83 masih terbuka; loop input M9 **parsial** — receipt live Path A/B masih BLOCKED per `docs/notes/unattended-loop-evidence-gate.md`).
+(Task 23–155 dan 165–83 masih terbuka; loop input M9 **parsial** — lapisan executor CLI **PARTIAL PASS** per 2026-08-11; loop Temporal+PostgreSQL penuh dengan receipt SCM/billing/deploy masih pending per `docs/notes/unattended-loop-evidence-gate.md`).
 
 ## Masalah
 
@@ -213,7 +214,8 @@ flowchart TB
 | **`InputRouteWorkflow` (Task 163)** | Entry tahan lama milik kernel untuk setiap submission IDEA/PLAN/MOCKUP setelah routing transport; memuat AutonomyPolicy, dispatch Path A atau B, mencatat ID workflow downstream |
 | **`internal/inputrouter`** | Router transport: menyimpan keputusan rute, menegakkan kunci idempotency, menghubungkan CLI/API/Telegram sebelum handoff Temporal |
 | **`internal/autonomypolicy`** | Store Postgres versi untuk `ModeUnattended` vs `ModeApproval`, otorisasi efek, freeze/unfreeze, dan pinning digest policy pada envelope aktif |
-| **Suite loop-proof (Task 164)** | Tes e2e terlindungi (`test/e2e/loop_proof/`) plus `scripts/loop_proof.sh` dan `.github/workflows/loop-proof.yml`; LOCAL_MOCK lulus; harness live fail-closed tanpa receipt provider/deploy |
+| **Suite loop-proof (Task 164)** | Tes e2e terlindungi (`test/e2e/loop_proof/`) plus `scripts/loop_proof.sh`, `scripts/loop_proof_cli.sh`, dan `.github/workflows/loop-proof.yml`; LOCAL_MOCK lulus; receipt live executor CLI tercapture (2026-08-11); harness live Temporal+deploy masih fail-closed tanpa receipt tersisa |
+| **`cli_receipt_test.go`** | Tes live Path A/B gated oleh `LOOP_PROOF_LIVE=1` + `FOUNDRY_LLM_PROVIDER`; membuktikan adapter executor memakai Claude CLI berbasis langganan (tanpa `ANTHROPIC_API_KEY`) |
 
 Paket Go kini membawa implementasi nyata hingga Task 22, milestone CFG/CAP
 (Task 156–161), dan milestone loop input M9 (Task 162–164) — masing-masing dengan `doc.go`
@@ -325,8 +327,9 @@ type InputRouteInput struct {
   `idempotency_key`; submission duplikat mengembalikan 409 alih-alih memulai workflow kedua.
 - **Pinning digest policy** — Envelope eksekusi aktif mencatat digest kebijakan otonomi saat
   dispatch; pembaruan policy tidak memperlebar izin pekerjaan in-flight secara retroaktif.
-- **Loop proof jujur** — Tes terlindungi Task 164 melabeli LOCAL_MOCK vs live; CI menolak
-  PASS live tanpa receipt provider/deploy Path A/B (lihat catatan evidence gate di repo sumber).
+- **Loop proof jujur** — Tes terlindungi Task 164 melabeli LOCAL_MOCK vs live; CI menolak PASS
+  Temporal+deploy penuh tanpa receipt tersisa, tetapi receipt executor CLI Path A/B
+  tercapture jujur (2026-08-11) via `make loop-proof-cli` (lihat catatan evidence gate di repo sumber).
 
 ## Mode Kegagalan
 
@@ -340,7 +343,8 @@ type InputRouteInput struct {
 | Config berbasis file usang | Daemon membaca DB; key hilang gagal startup dengan error bernama | Re-seed atau apply versi baru via operatorcfg |
 | Kebijakan otonomi hilang | InputRouteWorkflow menolak dispatch | Operator harus seed atau set policy via `foundry autonomy set` |
 | Policy dibekukan | Gate anggaran/deploy memblokir side effect | Owner `foundry autonomy unfreeze` setelah review |
-| Loop proof live tanpa receipt | Harness terlindungi `t.Fatal` | Diharapkan sampai secret live dan body Path A/B diimplementasi |
+| Loop Temporal penuh tanpa receipt | Harness terlindungi `t.Fatal` untuk bar SCM/deploy/billing | Receipt executor CLI tercapture; riwayat workflow Temporal dan receipt deploy masih pending |
+| Claude CLI macOS "Not logged in" | Adapter executor tanpa `USER`/`LOGNAME` di allowed env | Diperbaiki di adapter claudecode/copilot; auth langganan lewat mekanisme macOS |
 | Crash proses mid-phase | Supervisor liveness | Replay dari checkpoint; lanjut di phase ter-commit terakhir |
 | Security hold | `WAITING`, reason `security-hold` | Recovery Manager tidak boleh menekan alert |
 
@@ -357,7 +361,7 @@ type InputRouteInput struct {
 | Handoff 10x tanpa PR | `TEN_X_BRANCH_HANDOFF_READY` adalah sukses — batas stop workflow org |
 | Postgres SoT untuk config operator-hot (Task 156–161) | Memusatkan policy/kuota/katalog dengan riwayat versi dan audit; path file menjadi input seed saja, mengurangi drift antara CLI, daemon, dan API |
 | InputRouteWorkflow kernel vs router transport | Transport boleh parse input, tapi hanya workflow kernel yang dispatch Path A/B setelah gate policy tahan lama — ditegakkan tes bypass statis |
-| Loop proof LOCAL_MOCK sebelum PASS live | Task 164 mengirim proteksi CI segera sementara receipt provider/deploy live tetap bar BLOCKED terdokumentasi |
+| Loop proof LOCAL_MOCK sebelum PASS live | Task 164 mengirim proteksi CI segera; receipt executor CLI kini PARTIAL PASS sementara bar Temporal+SCM/deploy masih pending |
 
 ## Pengujian
 
@@ -369,7 +373,9 @@ Validasi saat ini (Task 1–22, CFG/CAP Task 156–161, dan M9 Task 162–164, d
 - `internal/kernel/inputroute_workflow_test.go` — determinisme workflow dan dispatch jalur
 - `internal/inputrouter/submission_test.go` — persistensi rute idempoten
 - `test/e2e/loop_proof/*` — Path A/B LOCAL_MOCK, no-bypass statis, fault replay; tes live fail-closed tanpa env
+- `test/e2e/loop_proof/cli_receipt_test.go` — receipt live CLI Path A/B (Claude CLI berbasis langganan; gated oleh `LOOP_PROOF_LIVE=1`)
 - `make loop-proof` / `make loop-proof-local` — gate terlindungi via `scripts/loop_proof.sh`
+- `make loop-proof-cli` — bukti CLI host-only via `scripts/loop_proof_cli.sh` (tanpa API key jika langganan Claude terpasang)
 - `make up` + `make doctor` — verifikasi Docker/Compose, PostgreSQL `SELECT 1`, Temporal `GetSystemInfo`
 - `scripts/fitness.sh` (Task 18): `go vet`, kehadiran `doc.go`, plus pemeriksaan `cmd/fitlint` untuk
   enum lint (C1), superseded-term lint, batas import SCM, dan resolusi doc-link
@@ -395,7 +401,8 @@ Validasi direncanakan (milestone tersisa):
   melayani API/worker; polling queue Temporal `foundry-core` sebagai satu-satunya proses side effect kernel (C4)
 - **Target Make** — `bootstrap`, `up`, `down`, `doctor`, `test`, `lint`, `fitness`, `skp-e2e`,
   `plan-run`, `evidence-verify`, `projection-rebuild`, `loop-proof`, `loop-proof-local`
-  (dibungkus Docker jika berlaku)
+  (dibungkus Docker); `loop-proof-cli` berjalan di host via `scripts/loop_proof_cli.sh` saat
+  langganan Claude CLI tersedia (di luar dev container)
 - **Notifikasi bootstrap** — Plan runner (Task 3) memakai bot Telegram disposable untuk digest jalur AUTO
   dan gate `/approve` / `/reject` jalur GATED; engine Telegram produksi adalah Task 30
 - **Cost accounting** — Pola reserve → incur → reconcile terdokumentasi; enforcement ada di Task 29/69
@@ -423,8 +430,9 @@ Validasi direncanakan (milestone tersisa):
 9. **Otonomi unattended adalah objek kebijakan, bukan hint transport** — PR #15 membuat
    `AutonomyPolicy` otoritatif atas hint "unattended" CLI/Telegram; jalur freeze dan policy
    hilang menolak dispatch alih-alih fallback diam-diam ke eksekusi inline.
-10. **Kirim bukti parsial jujur** — Evidence gate Task 164 mendokumentasikan status BLOCKED live
-    sementara LOCAL_MOCK dan tes bypass statis tetap melindungi konstitusi di CI.
+10. **Kirim bukti parsial jujur** — Evidence gate Task 164 mengangkat BLOCKED pada lapisan
+    executor CLI (receipt 2026-08-11) sementara bar Temporal+SCM/deploy tetap pending;
+    LOCAL_MOCK dan tes bypass statis tetap melindungi konstitusi di CI.
 
 ## Terkait
 
@@ -438,7 +446,8 @@ Validasi direncanakan (milestone tersisa):
 - Pull request: [#1 — Task 3–22](https://github.com/okfriansyah-moh/the-foundry/pull/1) (merge commit [`6efd492`](https://github.com/okfriansyah-moh/the-foundry/commit/6efd492d48d99672afea27da565699e8e8a3983d))
 - Pull request: [#14 — Task 156–161 operator config Postgres SoT](https://github.com/okfriansyah-moh/the-foundry/pull/14) (merge commit [`5b01562`](https://github.com/okfriansyah-moh/the-foundry/commit/5b015620a5a676c47dfe806486e82137b7801834))
 - Pull request: [#15 — Task 162–164 loop input unattended](https://github.com/okfriansyah-moh/the-foundry/pull/15) (merge commit [`58053fe`](https://github.com/okfriansyah-moh/the-foundry/commit/58053fe379007e4eef1a2b4a784792d1776355ce))
-- Evidence gate: `docs/notes/unattended-loop-evidence-gate.md` di repo sumber (M9 parsial / live BLOCKED)
+- Commit: [`cdc80eb`](https://github.com/okfriansyah-moh/the-foundry/commit/cdc80eb) — bukti receipt executor CLI, perbaikan env auth langganan, `loop-proof-cli`
+- Evidence gate: `docs/notes/unattended-loop-evidence-gate.md` di repo sumber (M9 parsial — executor CLI PARTIAL PASS 2026-08-11; loop penuh pending)
 - Commit sebelumnya: [`58632a0`](https://github.com/okfriansyah-moh/the-foundry/commit/58632a0), [`9409080`](https://github.com/okfriansyah-moh/the-foundry/commit/9409080)
 - Arsitektur: `docs/foundry/delivery_foundry.md`, `docs/architecture.md`, `docs/foundry/docs/architecture/state-model.md`
 - Agent harness: `.ai/manifest.yaml`, `.ai/instructions/authority-boundaries.md`
