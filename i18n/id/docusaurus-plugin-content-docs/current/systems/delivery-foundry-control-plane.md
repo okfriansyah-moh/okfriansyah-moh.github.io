@@ -24,169 +24,22 @@ yang beroperasi di bawah envelope kebijakan eksplisit, bukan kepercayaan implisi
 Repositori mengirim **Task 1** pada 2026-07-20 (Makefile berbasis Docker, CI, scaffold Go).
 [Pull request #1](https://github.com/okfriansyah-moh/the-foundry/pull/1) (digabung
 2026-07-25) menyelesaikan **Task 2–22** hingga milestone M0 (Shared Kernel Proof) dan
-awal M1 (Foundation). [Pull request #2](https://github.com/okfriansyah-moh/the-foundry/pull/2)
-(digabung 2026-07-27) menyelesaikan **Task 23–40** dan keluar dari **M1 — Production Foundation**:
+awal M1 (Foundation):
 
 - **Agent harness (Task 2)** — [`.ai/`](https://github.com/okfriansyah-moh/the-foundry/tree/main/.ai) canonical ARES dengan enam agen peran, sebelas skill, dan komposisi multi-provider ke `AGENTS.md` / `CLAUDE.md` / `.codex/` (provider Claude + Codex di `.ai/manifest.yaml`)
 - **Plan runner otonom (Task 3)** — `tools/planrunner` dengan jalur AUTO vs GATED berbasis risiko dan gate persetujuan Telegram
 - **Stack runtime (Task 4–5)** — `postgres` + `temporal` di compose; paket state enam-status canonical (`internal/state`)
-- **Admission dan provenance (Task 6–8, 24)** — schema/parser PLAN, `AdmissionClassifier` deterministik v0, rantai `ApprovedPlan` bertanda tangan dengan audit log berantai hash
-- **Substrat eksekusi (Task 9–11, 34)** — worktree manager, kontrak executor, penyimpanan evidence bundle, dan **sandbox executor OCI rootless** (jail filesystem, jaringan default-deny dengan egress gate, cap cgroup)
-- **Workflow kernel (Task 12–16, 32)** — worker Temporal `foundryd` menghosting `DeliverPlan`; bukti resume checkpoint + forced-restart; supervisor liveness dan semantik terminal `PROVEN_BLOCKED` yang jujur
-- **Permukaan operator (Task 13–15, 18–19, 36)** — validation runner, proyeksi status PostgreSQL, CLI `foundry`, **HTTP API `/v1`** dengan paritas CLI, dan pemeriksaan konstitusi `fitlint`
-- **Lapisan foundation (Task 20–22, 23–29, 35–39)** — migrasi, profiles/principals/organizations, **PDP berbasis OPA**, ledger operasi eksternal, SCM GitHub write, cost accounting/anggaran, backend secrets file, **drill backup/restore**, projector v2 dengan alert lag
-- **Integrasi produksi (Task 30–33, 38)** — engine notifikasi Telegram dengan flood control, baseline observabilitas Prometheus/Grafana, backpressure/brownout control-plane, lint dokumentasi (`make doclint`) di CI
-- **Entry venture (Task 40)** — engine `MissionContract` dan schema misi untuk misi otonom Track A
-
-[Pull request #4](https://github.com/okfriansyah-moh/the-foundry/pull/4) (digabung 2026-07-28)
-mengirim **Task 41–50** — kesiapan venture dan scaffolding kebijakan:
-
-- **Mission Setup Ceremony (VEN-02)** — `foundry mission ceremony` menjalani checklist deterministik,
-  mengumpulkan bukti atau deferral, dan menyimpan `MissionReadinessArtifact` sebelum operasi tanpa pengawasan
-- **Engine template produk** — `foundry product new --from-template` menginstansiasi scaffold venture
-  dari `templates/product`
-- **Config pemetaan kebijakan/efek** — `effect-mapping.yaml`, `mission-decide-policy.yaml`, dan
-  `synthetic-canary-policy.yaml` menghubungkan tier admission ke side effect bertipe
-
-[Pull request #5](https://github.com/okfriansyah-moh/the-foundry/pull/5) (digabung 2026-07-28)
-menyelesaikan **Task 51–60** — **exit venture MLS Track A** dan **fondasi integrator Track B**:
-
-- **Siklus perbaikan terbatas (VEN-12)** — `RunImproveCycle` berbasis cassette dengan lease promosi
-  dan pemeriksaan envelope; digest veto mingguan dengan guard freeze-on-rollback-depth
-- **Track A MLS e2e** — harness venture 12 langkah dengan assertion `HUMAN_TOUCHES=0` melalui deploy → observe → improve
-- **Paket tata kelola organisasi (TX-01)** — profil `organization-10x.yaml` dengan bukti policy compiler tighten-only
-- **PEC v1 (TX-03)** — proposal gelombang via sort topologi Kahn, proposal remediasi, dan tes larangan CI (`check_pec_boundary.sh`)
-- **Grup atomik + Branch Integrator (TX-04–06)** — digest change-set deterministik, antrian integrasi, drift guard dengan semantik requeue `PROVEN_BLOCKED`
-- **Terminal handoff 10x (TX-07)** — `TEN_X_BRANCH_HANDOFF_READY` dengan pernyataan larangan C15 wajib di notifikasi
-
-[Pull request #6](https://github.com/okfriansyah-moh/the-foundry/pull/6) (digabung 2026-07-28)
-mengirim **Task 61–75** — **exit 10x MLS Track B**, **M2 Operational Hardening**, dan bootstrap M3:
-
-- **Bukti larangan 10x (TX-08)** — langkah fitness CI menolak simbol PR/merge/deploy di jalur panggilan TenX
-- **Adapter SCM Bitbucket (TX-09)** — adapter CAS-push/read opsional berbagi tes kontrak dengan GitHub
-- **Track B MLS e2e (TX-10)** — harness berbasis fixture melalui provenance org → grup atomik → integrator → push → terminal
-- **Hardening M2 (HRD-01–10)** — suite chaos, fairness quota/backpressure, sweeper retention/PII, verifikasi hash-chain audit + drill tamper,
-  alert SLO Prometheus, job rekonsiliasi cost, korpus red-team prompt-injection, drill DR otomatis, fuzz/soak Telegram,
-  goreleaser + upgrade drill — **exit M2** via `docs/notes/m2-exit-report.md`
-- **Pipeline auto-promosi L0 (EVO-01)** — registry tunable dan bootstrap pipeline promosi untuk M3
-
-[Pull request #7](https://github.com/okfriansyah-moh/the-foundry/pull/7) (digabung 2026-07-28)
-mengimplementasikan **Task 76–93** — **seleksi executor berbasis config**:
-
-- **Registry kapabilitas executor** — `config/executor-capabilities.yaml` mencatat fitur adapter, ketersediaan, dan timestamp verifikasi
-- **Routing berbasis kebijakan** — `executor-routing.yaml` dan `executor-models.yaml` memetakan kelas task ke executor/model preferen; `ExecutorSelector` kernel menggantikan nama hardcoded
-- **Adapter multi-provider** — OpenCode, Gemini CLI, Cursor, Copilot, Windsurf, OpenAI, dan Local executor terdaftar di `foundryd`
-- **Lint staleness kapabilitas** — `fitlint capability` gagal CI saat verifikasi provider melebihi 180 hari
-
-[Pull request #8](https://github.com/okfriansyah-moh/the-foundry/pull/8) (digabung 2026-07-30)
-menambahkan **Task 100–110** — UX operasional PLAN/mission dan gate CI:
-
-- **CLI/API Mission** — `foundry mission start|resume|list|status`, perintah opportunity, dan endpoint OpenAPI `/missions`
-- **Pengiriman PLAN** — `foundry plan run` dan API `/plans/{id}/deliver` terhubung ke workflow kernel
-- **Gate fitness PLAN** — pemeriksaan research-boundary, validasi, dan topologi (DAG) `fitlint` ditegakkan sebagai job CI wajib
-
-[Pull request #9](https://github.com/okfriansyah-moh/the-foundry/pull/9) (digabung 2026-07-31)
-menutup **Task 111–120 (M5 gap-closure)** — intake, keamanan, dan hardening cost:
-
-- **Intake bertahap dapat dilanjutkan (INT-03)** — `foundry mission start --idea` menjalankan opportunity → verdict → spec → PLAN → admission → approval → mission-start; REJECT/VALIDATE-MORE tidak membangun apa pun; tier H tidak pernah self-approve
-- **Transport inbound Telegram (INT-04–05)** — pacing offset tahan lama, `/idea`→`/confirm` dengan proteksi nonce/replay; teks pesan diperlakukan sebagai data tidak tepercaya
-- **Sandbox wajib + kebijakan fail-closed (SEC-01–02)** — kernel menolak eksekusi host saat sandbox tidak tersedia; loader kebijakan empat lapisan; allowlist URL kosong menolak
-- **Isolasi kredensial + tenancy profil (SEC-03–04)** — env per-child untuk subprocess; profile-kind `ApprovedPlan` menegakkan step-up org dan root worktree scoped
-- **Anggaran fail-closed + rekonsiliasi cost (COST-01–02)** — misi tanpa pengawasan tanpa envelope menolak; `RecordCost` terhubung ke `DeliverPlan` dengan tabel rate per-model dan `foundry cost reconcile`
-
-[Pull request #10](https://github.com/okfriansyah-moh/the-foundry/pull/10) (digabung 2026-08-01)
-mengirim **Task 121–130** — runtime multi-mission, gelombang konkuren, dan integrasi produksi:
-
-- **Scheduler portfolio (MMR-01)** — workflow `PortfolioLoop` berbasis Postgres dengan isolasi anggaran per-mission,
-  batas fairness, dan bukti restart kill −9 (`test/portfolio_restart_live_test.go`)
-- **Idempotensi aktivitas mission (MMR-02)** — aktivitas Temporal dibungkus receipt dengan gate ID deterministik
-  dan timestamp stabil saat replay (C9)
-- **Recovery task teracun (MMR-03)** — pelacakan failure signature di PostgreSQL; kegagalan identik berulang
-  dieskalasi ke supervisor alih-alih retry tak terbatas (C22)
-- **Gelombang PEC konkuren (PAR-01)** — task independen dalam satu gelombang berjalan paralel di worktree terisolasi
-  dengan urutan topologi Kahn, konkurensi terbatas, dan barrier per-gelombang (`wave_concurrency_test.go`)
-- **Adapter deploy Fly.io (VEN-15)** — jalur deploy nyata dengan health check, rollback, enforcement gate,
-  dan pembungkus extops-receipt
-- **Billing Stripe (VEN-16)** — klien test-mode, endpoint webhook terverifikasi signature, persistensi event tahan lama,
-  dan loop reconciler revenue di `foundryd`
-- **Siklus improvement produksi (VEN-17)** — improvement otonom terbatas terhubung melalui state freeze tahan lama
-  dan enforcement change-budget
-- **Penyimpanan bukti S3/MinIO (INF-01)** — selector backend berbasis profil dengan suite conformance membuktikan
-  interoperabilitas dengan filesystem store
-- **Fallback provider (INF-02)** — circuit breaker `HealthTracker` dengan loop reselection terbatas;
-  diskriminasi fault provider bertipe dan semantik fail-closed saat tidak ada executor yang diizinkan
-- **ADR OpenHands / 9Router (ADR-01)** — [ADR-001](https://github.com/okfriansyah-moh/the-foundry/blob/main/docs/foundry/docs/architecture/adr/ADR-001-openhands-9router.md)
-  mencatat 9Router ditolak (Task 129 memenuhi intent) dan OpenHands ditunda sebagai adapter eksternal opsional
-
-[Pull request #11](https://github.com/okfriansyah-moh/the-foundry/pull/11) (digabung 2026-08-01)
-menutup **Task 131–140** dan **V1 Evidence Gate (Task 136)**:
-
-- **Kebersihan dokumentasi (DOC-01)** — lint stale-task dan test-source-write `fitlint` gagal CI pada
-  komentar self-disclosed-gap yang sudah usang
-- **Bukti venture live (PRF-01, Task 132)** — misi personal terbukti end-to-end pada control plane nyata
-- **Bukti 10x Bitbucket live (PRF-02, Task 133)** — remote disposable menerima push nyata yang SHA-nya
-  dibaca ulang secara independen; bukti prohibisi C15 (tanpa PR, merge, atau deploy) di workflow CI terjadwal
-- **Benchmark akselerasi V1 (ACC-01/02, Task 134–135)** — baseline JSON control-arm ditambang dari
-  delivery git historis; `foundry bench` dan `make bench-baseline` / `make bench-foundry` membandingkan
-  target penerimaan di `config/benchmark-targets.yaml`
-- **Intake mockup terpadu (VEN-18, Task 138)** — router mengingest mockup Figma, HTML, PDF, dan gambar
-  ke tahap spec/plan dengan tes ekstraksi golden-file
-- **Allowlist sinyal validasi (OPP-05, Task 139)** — ingestion sinyal validasi pasar nyata terbatas dengan
-  record berprovenance; `must_have_real_validation_signal` digate pada sumber allowlisted
-- **Seleksi provider SCM fail-closed (TX-12, Task 140)** — kernel menolak saat tidak ada provider SCM
-  yang diizinkan kebijakan; paritas write Bitbucket diperkuat (Task 137)
-- **Observabilitas human-touch** — `internal/observe/humantouch.go` mencatat intervensi operator
-  untuk pelaporan benchmark dan evidence gate
-
-[Pull request #12](https://github.com/okfriansyah-moh/the-foundry/pull/12) (digabung 2026-08-02)
-menutup **Task 141–152 (M6)** — penutupan runtime otoritatif dan **Final V1 Evidence Gate (Task 152)**:
-
-- **Execution envelope (RTC-05, Task 141)** — envelope immutable yang diselesaikan kernel disimpan di
-  PostgreSQL; tes replay membuktikan resume deterministik tanpa mendefinisikan ulang otoritas side effect
-- **Adapter executor kompatibel sandbox (SEC-05, Task 142)** — jalur executor produksi memerlukan
-  sandbox tersedia; adapter menghormati schema kapabilitas di `config/schemas/executor-capability.schema.json`
-- **Resolusi plan/repositori produksi (RTC-06, Task 143)** — kernel menyelesaikan sumber PLAN disetujui
-  dan entri registry repositori sebelum dispatch; tanpa jalur stub di rute intake live
-- **CLI idea-to-mission live (INT-07, Task 144)** — `foundry mission start --idea` konvergen melalui
-  tahap intake dan memulai `MissionLoop` via Temporal di `cmd/foundry/intake_live.go`
-- **Intake produksi Telegram (INT-08, Task 145)** — dispatch perintah tahan lama, draft store, dan
-  penanganan attachment terhubung ke transport inbound produksi `foundryd`
-- **Sinyal validasi produksi (OPP-06, Task 146)** — sinyal pasar nyata allowlisted menggate verdict BUILD
-  venture di jalur live, bukan shortcut sintetis saja
-- **Loop venture tertutup (VEN-19, Task 147)** — `ImprovementWorkflow` menghubungkan deploy → observe → improve
-  dengan state freeze, anggaran perubahan, dan bundel bukti di stack produksi
-- **Orkestrasi 10x penuh (TX-13, Task 148)** — PLAN disetujui melalui grup atomik, antrian integrator,
-  dan terminal `TEN_X_BRANCH_HANDOFF_READY` pada workflow TenX tahan lama
-- **Isolasi profil + penutupan cost (SEC-06, Task 149)** — enforcement runtime profil dan sweeper
-  cost belum direkonsiliasi menutup celah akuntansi M5
-- **Input router terpadu (INT-09, Task 150)** — `internal/inputrouter` merutekan entry IDEA, PLAN, dan MOCKUP
-  melalui satu pipeline admission-aware dengan tes golden
-- **Bukti release V1 wajib (PRF-03, Task 151)** — `make v1-proof` dan `.github/workflows/v1-proof.yml`
-  fail closed saat infrastruktur atau kredensial live tidak ada; `V1_PROOF_ALLOW_SKIP=1` menghasilkan exit 2
-  dan tidak boleh diarsipkan sebagai bukti PASS
-- **Final V1 Evidence Gate (V1-02, Task 152)** — mengintegrasikan Task 141–151 plus baseline benchmark;
-  verdict terdokumentasi di `docs/notes/v1-final-evidence-gate.md` dan `benchmarks/report-v1-final.md`
-
-[Pull request #13](https://github.com/okfriansyah-moh/the-foundry/pull/13) (digabung 2026-08-04)
-mengirim **Task 153–155 (M7)** — kemasan kapabilitas produk:
-
-- **Katalog agen/skill (CAP-01, Task 153)** — `agents/catalog.yaml` dan `skills/catalog.yaml` mendefinisikan
-  agen, skill, input, output, dan binding canonical; `foundry catalog` menampilkan dan memvalidasi entri
-- **Materialisasi runtime (CAP-02, Task 154)** — antarmuka `Materializer` provider-neutral di
-  `adapters/agent-runtime/`; adapter Claude Code memproyeksikan paket enabled ke `.claude/agents/` dan
-  `.claude/skills/` dengan digest manifest; instalasi idempoten dan fail-closed pada drift
-- **Jembatan evolusi skill L1 (CAP-03, Task 155)** — promosi terbatas dari `SkillRegistry` ke versi paket
-  on-disk dengan rollback append-only; kandidat profil organisasi tetap proposal-only;
-  bukti e2e di `test/e2e/skill_evolution/`
+- **Admission dan provenance (Task 6–8)** — schema/parser PLAN, `AdmissionClassifier` deterministik v0, rantai `ApprovedPlan` bertanda tangan
+- **Substrat eksekusi (Task 9–11)** — worktree manager, kontrak executor + fake executor, penyimpanan evidence bundle
+- **Workflow kernel (Task 12–16)** — worker Temporal `foundryd` menghosting `DeliverPlan`; bukti resume checkpoint + forced-restart
+- **Permukaan operator (Task 13–15, 18–19)** — validation runner, proyeksi status PostgreSQL, CLI `foundry` (`status`, `plan submit|approve|verify`, `projection rebuild`, `doctor`, `policy`, `evidence`, `principal`), dan pemeriksaan konstitusi `fitlint`
+- **Lapisan foundation (Task 20–22)** — framework migrasi, profiles/principals/organizations, policy compiler v1
+- **Operator config SoT (Task 156–161, [PR #14](https://github.com/okfriansyah-moh/the-foundry/pull/14))** — `internal/operatorcfg.Store` membaca policy layer, kuota, tarif model, threshold opportunity, kebijakan mission-decide, nilai tunable, dan katalog packaging dari **PostgreSQL** sebagai source of truth; startup daemon men-seed dari disk saat key kosong; perintah catalog CLI menerima `-pg-dsn` untuk katalog dan rollback berbasis DB
+- **Loop input unattended (Task 162–164, [PR #15](https://github.com/okfriansyah-moh/the-foundry/pull/15))** — store `AutonomyPolicy` versi dengan show/set/freeze/unfreeze terautentikasi owner; transport `inputrouter` yang menyimpan keputusan rute sebelum memulai kernel `InputRouteWorkflow`; API mission brief (`POST /v1/briefs`); kunci intake idempoten; suite CI `loop-proof` terlindungi dengan LOCAL_MOCK dan stub live jujur yang menolak PASS tanpa receipt
 
 Kontrak normatif tetap di `docs/foundry/delivery_foundry.md` dan pohon modular
 `docs/foundry/docs/`; roadmap implementasi aktif ada di `docs/PLAN.md`
-(Task 1–155 ✅ melalui kemasan kapabilitas M7).
-
-[Pull request #14](https://github.com/okfriansyah-moh/the-foundry/pull/14) (digabung 2026-08-08)
-mengirim **Task 156–161 (SoT config operator Postgres)**:
-
-- **SoT config operator (Task 156–161)** — `internal/operatorcfg.Store` membaca policy layer, kuota, tarif model, threshold opportunity, kebijakan mission-decide, nilai tunable, dan katalog packaging dari **PostgreSQL** sebagai source of truth; startup daemon men-seed dari disk saat key kosong; perintah catalog CLI menerima `-pg-dsn` untuk katalog dan rollback berbasis DB
+(Task 23–155 dan 165–83 masih terbuka; loop input M9 **parsial** — receipt live Path A/B masih BLOCKED per `docs/notes/unattended-loop-evidence-gate.md`).
 
 ## Masalah
 
@@ -257,8 +110,12 @@ flowchart TB
 
   subgraph ControlPlane["Foundry Control Plane (otoritas kernel)"]
     API[API dan identitas]
+    ROUTER[Input router<br/>keputusan rute persisten]
+    AUTOPOL[(AutonomyPolicy store)]
+    CFG[(Operator config store<br/>Postgres SoT)]
     POLICY[Policy decision point]
     WF[Durable workflow backend]
+    INROUTE[InputRouteWorkflow]
     LEDGER[Audit dan event ledger]
     RECON[Operation reconciler]
   end
@@ -281,8 +138,14 @@ flowchart TB
   CHAT --> API
   CI --> API
 
-  API --> POLICY
+  API --> ROUTER
+  ROUTER --> AUTOPOL
+  ROUTER --> INROUTE
+  API --> CFG
+  CFG --> POLICY
+  AUTOPOL --> INROUTE
   POLICY --> WF
+  INROUTE --> WF
   WF --> PEC
   PEC -->|mengusulkan gelombang| WF
   WF --> RUNNER
@@ -296,27 +159,37 @@ flowchart TB
 
 ## Alur Eksekusi
 
-1. **Entry** — Misi, mockup, requirement, spesifikasi, `PLAN.md` yang disetujui, atau
-   teks `--idea` tiba di API control plane atau transport inbound Telegram.
-2. **Intake dan admission** — Untuk ide, pipeline intake bertahap menghasilkan opportunity →
-   spec → PLAN sebelum admission; classifier deterministik menetapkan tier (A0/A1/A2/H),
-   memverifikasi provenance untuk rencana org, dan menolak start tanpa pengawasan tanpa envelope anggaran.
-3. **Pembuatan workflow** — Kernel membuat workflow di `PENDING`, transisi ke
+1. **Entry** — Mission brief, IDEA, mockup, atau `PLAN.md` yang disetujui tiba via CLI,
+   API, atau Telegram. Transport memanggil `internal/inputrouter` dulu untuk menyimpan
+   keputusan rute (`input_router_requests`) dengan `request_id` dan `idempotency_key`.
+2. **Gate kebijakan otonomi** — `InputRouteWorkflow` memuat `AutonomyPolicy` ter-scope
+   (profile atau organisasi). Policy hilang atau **freeze** aktif menolak dispatch
+   fail-closed; `ModeUnattended` mengizinkan efek tier-H tanpa state WAITING persetujuan
+   manusia saat kontrol teknis lulus.
+3. **Dispatch jalur** — Workflow kernel menyerahkan ke Path A (pengiriman misi/intake) atau
+   Path B (mockup extract → spec → tenx) via aktivitas seam; ID workflow downstream
+   dicatat secara tahan lama di `input_router_requests.downstream_ref`.
+4. **Kesiapan operator config** — Saat startup `foundryd`, `operatorcfg.Store.EnsureSeeded`
+   memuat YAML disk ke Postgres saat key config belum punya versi aktif; semua pembacaan
+   policy compilation, quota enforcement, tarif model, gate opportunity, dan katalog
+   packaging berikutnya dari database (payload versi + audit apply).
+5. **Intake dan admission** — Classifier admission deterministik menetapkan tier
+   (A0/A1/A2/H) dan memverifikasi provenance untuk rencana disetujui.
+6. **Pembuatan workflow** — Kernel membuat workflow di `PENDING`, transisi ke
    `RUNNING` dengan phase `intake`, dan menetapkan checkpoint.
-4. **Interpretasi PEC** — PEC membaca rencana yang diadmit, mengusulkan gelombang
+7. **Interpretasi PEC** — PEC membaca rencana yang diadmit, mengusulkan gelombang
    aware dependensi dan dispatch task terbatas dalam envelope yang diberikan kernel.
-5. **Eksekusi terisolasi** — Runner **wajib** memakai sandbox OCI wajib (`requires_sandbox`);
-   eksekusi host ditolak saat sandbox tidak tersedia. Agen mengeksekusi di worktree
-   ephemeral scoped ke tenancy profil dan mengembalikan ringkasan ke PEC (bukan state kernel).
-6. **Verifikasi** — Pemeriksaan deterministik menghasilkan bundel bukti; kernel
+8. **Eksekusi terisolasi** — Runner membuat sandbox worktree ephemeral; agen
+   mengeksekusi task dan mengembalikan ringkasan ke PEC (bukan langsung ke state kernel).
+9. **Verifikasi** — Pemeriksaan deterministik menghasilkan bundel bukti; kernel
    maju phase (mis. `implementation` → `verifying` → `integrating`).
-7. **Side effect** — Branch Integrator milik kernel melakukan SCM writes; operasi
-   eksternal mencatat kunci idempotency di ledger.
-8. **Keputusan terminal** — Kernel menetapkan `SUCCEEDED` atau `FAILED` dengan
-   `result_code` terkontrol registry (mis. `MISSION_TARGET_REACHED`,
-   `TEN_X_BRANCH_HANDOFF_READY`, `PROVEN_BLOCKED`).
-9. **Recovery saat gagal** — Recovery Manager membaca klasifikasi kegagalan dan
-   menaiki tangga L0–L7; gate manusia pause di batas yang dikonfigurasi.
+10. **Side effect** — Branch Integrator milik kernel melakukan SCM writes; operasi
+    eksternal mencatat kunci idempotency di ledger.
+11. **Keputusan terminal** — Kernel menetapkan `SUCCEEDED` atau `FAILED` dengan
+    `result_code` terkontrol registry (mis. `MISSION_TARGET_REACHED`,
+    `TEN_X_BRANCH_HANDOFF_READY`, `PROVEN_BLOCKED`).
+12. **Recovery saat gagal** — Recovery Manager membaca klasifikasi kegagalan dan
+    menaiki tangga L0–L7; gate manusia pause di batas yang dikonfigurasi.
 
 ## Komponen Penting
 
@@ -325,60 +198,31 @@ flowchart TB
 | **Kernel** | State workflow otoritatif, sequencing, lease, checkpoint, kebijakan, anggaran, semua side effect |
 | **Plan Execution Coordinator (PEC)** | Menginterpretasi rencana diadmit; mengusulkan gelombang, dispatch, remediasi, progress |
 | **Admission classifier** | Penetapan tier deterministik; mencegah rencana mengotorisasi diri sendiri |
-| **State projection (PostgreSQL)** | Model baca dapat dibangun ulang dengan rebuild/lag alert v2 — bukan otoritas eksekusi |
-| **Backend Temporal (`foundryd`)** | Riwayat eksekusi tahan lama, timer, routing task-queue per-lane — worker pada queue `foundry-core` |
-| **CLI `foundry` + API `/v1`** | Perintah operator dan paritas HTTP: status, plan submit/approve/verify, projection rebuild, doctor, policy, evidence, mission, budget, audit verify |
-| **OPA PDP (`internal/policy/pdp`)** | Keputusan otorisasi berbasis Rego; route API memerlukan session JWT + PDP Allow sebelum handler berjalan |
-| **Strong auth (`internal/authn`)** | Session OIDC, WebAuthn step-up untuk approval tier H, binding identitas Telegram |
-| **Executor sandbox (`internal/executor/sandbox`)** | Container OCI rootless dengan topologi egress gate; CI memverifikasi lane Docker dan rootless Podman |
+| **State projection (PostgreSQL)** | Model baca dapat dibangun ulang — bukan otoritas eksekusi |
+| **Backend Temporal (`foundryd`)** | Riwayat eksekusi tahan lama, timer, sequencing — worker Task 12 pada queue `foundry-core` |
+| **CLI `foundry`** | Perintah operator: status (tingkat konsistensi), plan submit/approve/verify, projection rebuild, doctor, policy, evidence |
 | **`fitlint` + `make fitness`** | Penegakan konstitusi: enum lint (C1), superseded-term lint, batas import, resolver doc-link |
 | **Agent harness `.ai/`** | Enam peran executor, sebelas skill, instruksi batas otoritas; dikomposisi ke file agen per provider |
 | **Plan runner (`tools/planrunner`)** | Orkestrator bootstrap untuk Task 4–22; pensiun setelah kernel mengadmit backlog sendiri (exit condition Task 3) |
 | **Pipeline bukti** | Bundel verifikasi bertipe wajib untuk kemajuan phase |
-| **Operation ledger (`internal/ledger/extops`)** | Kunci idempotency dan rekonsiliasi untuk side effect eksternal termasuk push SCM |
-| **Cost ledger (`internal/ledger/cost`)** | Akuntansi reserve → incur → reconcile dengan enforcement anggaran |
-| **Recovery Manager** | Tangga self-healing terbatas dengan larangan eksplisit dan supervisi liveness |
-| **Branch Integrator / SCM write** | Push GitHub milik kernel dengan verifikasi CAS dan token source berbasis secrets |
-| **Engine Telegram (`internal/notify`)** | Notifikasi ber-tier prioritas, batching, flood control, dead-letter queue |
-| **Engine mission (`internal/mission`)** | Schema MissionContract, ceremony readiness, siklus perbaikan terbatas, dan pipeline intake |
-| **Pipeline intake (`internal/intake`)** | Alur idea→mission bertahap dapat dilanjutkan dengan resume idempoten dan gate anggaran fail-closed |
-| **PEC (`internal/pec`)** | Proposal gelombang/remediasi saja; sort topologi + deteksi siklus; tes larangan batas CI |
-| **Branch Integrator (`internal/kernel/integrator`)** | Antrian push milik kernel, drift guard, validasi scope, `PROVEN_BLOCKED` pada drift tidak recoverable |
-| **Executor selector (`foundryd`)** | Memuat registry kapabilitas + kebijakan routing; memilih executor tersandbox per kelas task |
-| **Retention sweeper (`internal/retention`)** | Kelas TTL, legal hold, endpoint DSR — enforcement PII M2 |
-| **Audit verifier (`internal/audit`)** | Walker hash-chain dengan anchor inkremental; drill tamper `foundry audit verify` |
-| **Scheduler portfolio (`internal/mission/portfolio_*`)** | Workflow Temporal `PortfolioLoop`; store portfolio Postgres dengan isolasi anggaran dan bukti restart |
-| **Idempotensi mission (`internal/kernel/idempotency.go`)** | Aktivitas dibungkus receipt; gate ID deterministik bertahan crash/replay |
-| **Failure signatures (`internal/kernel/failure_signature.go`)** | Melacak kegagalan identik berulang; eskalasi task teracun ke supervisor |
-| **Barrier gelombang konkuren (`internal/kernel/workflow.go`)** | Dispatch task paralel dalam gelombang; urutan Kahn + konkurensi terbatas + barrier |
-| **Adapter deploy (`internal/deploy/flyio.go`)** | Deploy Fly.io dengan health check, rollback, dan receipt extops |
-| **Billing Stripe (`internal/billing/*`)** | Klien test-mode, verifikasi webhook, event tahan lama, reconciler revenue |
-| **Backend bukti (`internal/evidence/store_s3.go`)** | Store S3/MinIO dengan selector profil; conformance-tested terhadap store FS |
-| **Kesehatan provider (`internal/executor/capability/health.go`)** | Circuit breaker + reselection fallback terbatas di `ExecuteTask` |
-| **Store benchmark (`internal/bench/*`)** | Capture baseline, perbandingan metrik, dan laporan bukti akselerasi V1 |
-| **Sinyal validasi (`internal/opportunity/signals/*`)** | Ingestion sinyal validasi pasar nyata allowlisted dengan provenance |
-| **Router mockup (`internal/spec/mockup/*`)** | Ingestion mockup multi-format (Figma/HTML/PDF/gambar) ke tahap spec |
-| **Selector provider SCM (`internal/kernel/scm_provider.go`)** | Seleksi fail-closed kernel adapter write GitHub/Bitbucket |
-| **Store execution envelope (`internal/kernel/execution_envelope*.go`)** | Envelope immutable diselesaikan kernel dengan persistensi stabil replay (Task 141) |
-| **Input router (`internal/inputrouter/*`)** | Routing IDEA / PLAN / MOCKUP terpadu dengan store admission-aware (Task 150) |
-| **Runtime profil (`internal/profile/runtime.go`)** | Enforcement isolasi profil produksi di batas dispatch (Task 149) |
-| **Orkestrasi TenX (`internal/kernel/tenx_orchestration.go`)** | Workflow handoff 10x PLAN disetujui → tahan lama (Task 148) |
-| **Workflow improvement (`internal/mission/improvement_workflow.go`)** | Loop venture deploy → observe → improve tertutup dengan gate freeze (Task 147) |
-| **Sweeper cost belum direkonsiliasi (`internal/ledger/cost/unreconciled.go`)** | Menutup celah akuntansi; berpasangan dengan jalur anggaran fail-closed (Task 149) |
-| **Draft store Telegram (`internal/notify/draft_store.go`)** | Persistensi perintah inbound produksi dan attachment (Task 145) |
-| **Materializer runtime agen (`adapters/agent-runtime/*`)** | Proyeksi paket provider-neutral; adapter Claude Code dengan integritas manifest (Task 154–155) |
-| **Kemasan kapabilitas (`internal/packaging/*`, `internal/evolve/skill_packages.go`)** | Validasi, instalasi, dan evolusi paket skill canonical dengan rollback (Task 153–155) |
+| **Operation ledger** | Kunci idempotency dan rekonsiliasi untuk side effect eksternal |
+| **Recovery Manager** | Tangga self-healing terbatas dengan larangan eksplisit |
+| **Branch Integrator** | SCM writes milik kernel ke worktree terisolasi dan branch 10x |
 | **`operatorcfg.Store` (Task 156–161)** | SoT config operator-hot berbasis Postgres: policy layer versi, kuota, policy/tarif model, threshold opportunity, kebijakan mission-decide, nilai tunable, katalog/enablement packaging; seed dari disk pada run pertama |
-| **Pemuat katalog packaging** | Fallback berbasis file untuk dev lokal; `-pg-dsn` pada subperintah `foundry catalog` memuat katalog dan enablement dari config store |
+| **Loader katalog packaging** | Fallback berbasis file untuk dev lokal; `-pg-dsn` pada subcommand `foundry catalog` memuat katalog dan enablement dari config store |
+| **`InputRouteWorkflow` (Task 163)** | Entry tahan lama milik kernel untuk setiap submission IDEA/PLAN/MOCKUP setelah routing transport; memuat AutonomyPolicy, dispatch Path A atau B, mencatat ID workflow downstream |
+| **`internal/inputrouter`** | Router transport: menyimpan keputusan rute, menegakkan kunci idempotency, menghubungkan CLI/API/Telegram sebelum handoff Temporal |
+| **`internal/autonomypolicy`** | Store Postgres versi untuk `ModeUnattended` vs `ModeApproval`, otorisasi efek, freeze/unfreeze, dan pinning digest policy pada envelope aktif |
+| **Suite loop-proof (Task 164)** | Tes e2e terlindungi (`test/e2e/loop_proof/`) plus `scripts/loop_proof.sh` dan `.github/workflows/loop-proof.yml`; LOCAL_MOCK lulus; harness live fail-closed tanpa receipt provider/deploy |
 
-Paket Go kini membawa implementasi nyata hingga Task 155 dan milestone CFG/CAP
-(Task 156–161) — masing-masing dengan `doc.go`
-batas otoritas: `internal/kernel`, `internal/state`, `internal/admission`,
-`internal/provenance`, `internal/evidence`, `internal/worktree`, `internal/executor/*`
-(termasuk `sandbox/`), `internal/projection`, `internal/policy/pdp`, `internal/api`,
-`internal/authn`, `internal/ledger/*`, `internal/scm/write`, `internal/notify`,
-`internal/mission`, `internal/profile`, `internal/operatorcfg`, dan lainnya. Paket PEC tetap proposal-only
-per C5; otoritas side effect ada di jalur kode kernel yang dijalankan `foundryd`.
+Paket Go kini membawa implementasi nyata hingga Task 22, milestone CFG/CAP
+(Task 156–161), dan milestone loop input M9 (Task 162–164) — masing-masing dengan `doc.go`
+batas otoritas: `internal/kernel` (workflow Temporal termasuk `InputRouteWorkflow`),
+`internal/state` (model enam status),
+`internal/admission`, `internal/provenance`, `internal/evidence`, `internal/worktree`,
+`internal/executor/*`, `internal/projection`, `internal/policy`, `internal/profile`,
+`internal/operatorcfg`, `internal/inputrouter`, `internal/autonomypolicy`, dan lainnya. Paket PEC tetap proposal-only per C5; otoritas side effect ada di jalur kode
+kernel yang dijalankan `foundryd`.
 
 ## Contoh Implementasi Disederhanakan
 
@@ -412,14 +256,14 @@ L2 — agen debugging fokus
 L7 — pause dan eskalasi ke manusia
 ```
 
-Versi config operator (disederhanakan dari `internal/operatorcfg/store.go` dan migrasi `00044_operator_config_sot.sql`):
+Versi operator config (disederhanakan dari `internal/operatorcfg/store.go` dan migrasi `00044_operator_config_sot.sql`):
 
 ```sql
 -- Setiap config_key melacak pointer active_version
 -- operator_config_versions menyimpan payload immutable + SHA256 + metadata apply
 -- operator_config_apply_audit mencatat siapa yang menyetujui setiap promosi
 SELECT config_key, active_version FROM operator_config_entries;
--- Key termasuk policy.layer.*, quotas, executor.models, packaging.catalog.*
+-- Key mencakup policy.layer.*, quotas, executor.models, packaging.catalog.*
 ```
 
 Jalur seed startup (disederhanakan dari `cmd/foundryd/main.go`):
@@ -429,9 +273,35 @@ cfgStore := operatorcfg.NewStore(db)
 cfgStore.EnsureSeeded(ctx, operatorcfg.SeedPaths{
     PolicyOrganizationPath: "config/profiles/organization-10x.yaml",
     PolicyPersonalPath:     "config/profiles/personal-autonomous-venture.yaml",
-    // ... quotas, model rates, catalogs, enablement ...
+    // ... kuota, tarif model, katalog, enablement ...
 })
 modelPolicy, err := cfgStore.LoadModelPolicy(ctx) // semua pembacaan runtime berbasis DB
+```
+
+Mode kebijakan otonomi (disederhanakan dari `internal/autonomypolicy/model.go`):
+
+```go
+const (
+    ModeUnattended Mode = "unattended" // tier-H boleh lanjut tanpa WAITING saat kontrol lulus
+    ModeApproval   Mode = "approval"   // pause strong-auth C12 untuk rencana tier-H
+)
+// Record policy immutable versi; Freeze memblokir side effect sampai Unfreeze
+```
+
+Handoff input route (disederhanakan dari `internal/kernel/inputroute_workflow.go`):
+
+```go
+type InputRouteInput struct {
+    RequestID  string
+    Route      string  // mis. "personal.intake", "organization.mockup_to_tenx"
+    ProfileID  string
+    OrgID      string
+    BriefID    string  // referensi mission brief Path A
+    MockupRef  string  // referensi artefak Path B
+    BudgetUSD  float64
+    Unattended bool    // nilai efektif dari AutonomyPolicy yang dimuat
+}
+// Workflow: LoadRoutePolicy → StartPathA|StartPathB → UpdateDownstreamRef
 ```
 
 ## Reliabilitas dan Idempotency
@@ -446,23 +316,17 @@ modelPolicy, err := cfgStore.LoadModelPolicy(ctx) // semua pembacaan runtime ber
   dokumen disaster-recovery mendefinisikan semantik checkpoint/restart.
 - **Blocking jujur** — `PROVEN_BLOCKED` pada `FAILED` berarti bukti terverifikasi bahwa
   pekerjaan tidak dapat dipenuhi sesuai scope — bukan kode error generik.
-- **Restart portfolio** — State aktivasi, spend, dan jadwal portfolio bertahan `kill -9`;
-  `PortfolioLoop` melanjutkan tanpa side effect duplikat (Task 121).
-- **Receipt aktivitas mission** — Aktivitas Temporal membawa kunci idempotency dan timestamp
-  stabil replay sehingga crash mid-mission tidak menerapkan side effect ganda (Task 122).
-- **Eskalasi task teracun** — Failure signature di PostgreSQL mendeteksi kegagalan identik
-  berulang dan merutekan ke supervisor alih-alih retry tak terbatas (Task 123).
-- **Failover provider** — Executor tidak tersedia memicu circuit breaker kesehatan; kernel
-  memilih ulang provider berikutnya yang diizinkan kebijakan atau fail closed dengan klasifikasi bertipe (Task 129).
-- **Execution envelope** — Envelope diselesaikan kernel disimpan sebelum side effect; replay tidak dapat
-  memperluas otoritas di luar envelope tersimpan (Task 141).
-- **Integritas materialisasi** — Instalasi runtime hanya menerima file absent atau proyeksi byte-identik;
-  drift katalog fail closed alih-alih menimpa file yang dikontrol workspace (Task 154).
-- **Config operator versi** — Policy overlay, kuota, dan katalog packaging dipromosikan melalui
-  baris versi immutable; `active_version` pada `operator_config_entries` adalah satu-satunya
-  pointer mutable; apply audit menegakkan reviewer ≠ implementer pada promosi.
-- **Seed-then-serve** — Boot `foundryd` pertama menyalin YAML disk ke Postgres saat key tidak memiliki
-  versi; perubahan berikutnya harus melalui jalur apply config store, bukan pengeditan file diam-diam.
+- **Operator config versi** — Policy overlay, kuota, dan katalog packaging dipromosikan
+  melalui baris versi immutable; `active_version` pada `operator_config_entries` adalah
+  satu-satunya pointer mutable; audit apply menegakkan reviewer ≠ implementer pada promosi.
+- **Seed-then-serve** — Boot `foundryd` pertama menyalin YAML disk ke Postgres saat key belum
+  punya versi; perubahan berikutnya harus melalui jalur apply config store, bukan edit file diam-diam.
+- **Idempotency transport** — Endpoint intake dan brief API mewajibkan `request_id` dan
+  `idempotency_key`; submission duplikat mengembalikan 409 alih-alih memulai workflow kedua.
+- **Pinning digest policy** — Envelope eksekusi aktif mencatat digest kebijakan otonomi saat
+  dispatch; pembaruan policy tidak memperlebar izin pekerjaan in-flight secara retroaktif.
+- **Loop proof jujur** — Tes terlindungi Task 164 melabeli LOCAL_MOCK vs live; CI menolak
+  PASS live tanpa receipt provider/deploy Path A/B (lihat catatan evidence gate di repo sumber).
 
 ## Mode Kegagalan
 
@@ -474,15 +338,11 @@ modelPolicy, err := cfgStore.LoadModelPolicy(ctx) // semua pembacaan runtime ber
 | Anggaran habis | `WAITING`, reason `budget` | Pause sampai reset anggaran atau override manusia |
 | PEC overreach | Tes larangan CI | Build gagal sebelum merge |
 | Config berbasis file usang | Daemon membaca DB; key hilang gagal startup dengan error bernama | Re-seed atau apply versi baru via operatorcfg |
+| Kebijakan otonomi hilang | InputRouteWorkflow menolak dispatch | Operator harus seed atau set policy via `foundry autonomy set` |
+| Policy dibekukan | Gate anggaran/deploy memblokir side effect | Owner `foundry autonomy unfreeze` setelah review |
+| Loop proof live tanpa receipt | Harness terlindungi `t.Fatal` | Diharapkan sampai secret live dan body Path A/B diimplementasi |
 | Crash proses mid-phase | Supervisor liveness | Replay dari checkpoint; lanjut di phase ter-commit terakhir |
 | Security hold | `WAITING`, reason `security-hold` | Recovery Manager tidak boleh menekan alert |
-| Task teracun / kegagalan identik berulang | Ambang hitung failure signature | Eskalasi ke supervisor; tanpa retry tak terbatas (Task 123) |
-| Outage kapasitas provider | Circuit HealthTracker terbuka | Pilih ulang executor yang diizinkan atau fail closed (Task 129) |
-| Config provider SCM hilang | Penolakan kernel saat dispatch | Fail closed — tanpa downgrade diam-diam (Task 140) |
-| Replay webhook Stripe | Store event tahan lama + verifikasi signature | Persistensi event idempoten (Task 126) |
-| Kredensial bukti V1 hilang | Preflight `make v1-proof` | Fail closed — exit non-zero; skip exit 2, bukan PASS (Task 151) |
-| Drift katalog / enablement | Mismatch digest manifest saat reinstall | Fail closed; materialize ke workspace baru (Task 154) |
-| Anggaran promosi skill terlampaui | Store freeze PostgreSQL | Rollback dan promosi berhenti sebelum aktivasi paket (Task 155) |
 
 ## Trade-off dan Alternatif yang Ditolak
 
@@ -495,69 +355,51 @@ modelPolicy, err := cfgStore.LoadModelPolicy(ctx) // semua pembacaan runtime ber
 | Modularisasi dok V12 | Mempertahankan konten V11 sambil menambah kontrak normatif |
 | Toolchain dev hanya Docker | Host hanya butuh Docker + make; paritas dev/CI dari Task 1 |
 | Handoff 10x tanpa PR | `TEN_X_BRANCH_HANDOFF_READY` adalah sukses — batas stop workflow org |
-| 9Router ditolak (ADR-001) | Fallback provider Task 129 memenuhi intent routing tanpa dependensi proxy |
-| OpenHands ditunda | Adapter eksternal opsional — tidak wajib untuk V1 evidence gate |
-| Akselerasi terukur (C25) | Exit V1 memerlukan bukti benchmark terhadap baseline tercatat, bukan klaim kecepatan laporan mandiri |
-| Claude Code sebagai materializer M7 tunggal | OpenHands dan 9Router tetap ditunda; kemasan tervalidasi tanpa dependensi adapter eksternal |
-| Instal skill ≠ otoritas eksekusi | Materialisasi hanya menulis file provider; kernel dan kebijakan mempertahankan keputusan side effect |
 | Postgres SoT untuk config operator-hot (Task 156–161) | Memusatkan policy/kuota/katalog dengan riwayat versi dan audit; path file menjadi input seed saja, mengurangi drift antara CLI, daemon, dan API |
+| InputRouteWorkflow kernel vs router transport | Transport boleh parse input, tapi hanya workflow kernel yang dispatch Path A/B setelah gate policy tahan lama — ditegakkan tes bypass statis |
+| Loop proof LOCAL_MOCK sebelum PASS live | Task 164 mengirim proteksi CI segera sementara receipt provider/deploy live tetap bar BLOCKED terdokumentasi |
 
 ## Pengujian
 
-Validasi saat ini (Task 1–155, Final V1 Evidence Gate, bukti live, kemasan kapabilitas, dan CFG/CAP Task 156–161):
+Validasi saat ini (Task 1–22, CFG/CAP Task 156–161, dan M9 Task 162–164, diimplementasi):
 
-- `make bootstrap test lint fitness doclint` di dalam image Docker `dev`
+- `make bootstrap test lint fitness` di dalam image Docker `dev`
 - `internal/operatorcfg/store_pg_test.go` — jalur seed, load, dan apply versi store Postgres
+- `internal/autonomypolicy/store_test.go` — versi policy, freeze, jalur refuse policy hilang
+- `internal/kernel/inputroute_workflow_test.go` — determinisme workflow dan dispatch jalur
+- `internal/inputrouter/submission_test.go` — persistensi rute idempoten
+- `test/e2e/loop_proof/*` — Path A/B LOCAL_MOCK, no-bypass statis, fault replay; tes live fail-closed tanpa env
+- `make loop-proof` / `make loop-proof-local` — gate terlindungi via `scripts/loop_proof.sh`
 - `make up` + `make doctor` — verifikasi Docker/Compose, PostgreSQL `SELECT 1`, Temporal `GetSystemInfo`
-- `scripts/fitness.sh` — pemeriksaan konstitusi termasuk larangan TenX C15 (langkah i), batas PEC (langkah h), staleness kapabilitas executor, topologi/validasi/research-boundary PLAN, aturan sandbox subprocess, dan aturan isolasi env
-- `make skp-e2e` — Shared Kernel Proof: admit plan → worktree → verify → bukti → **forced restart → resume**
-- `make m1-exit`, `make m2-exit` — suite acceptance milestone dengan laporan exit di `docs/notes/`
-- `make e2e-venture`, `make e2e-tenx` — harness MLS Track A dan Track B (assertion zero human touches / larangan C15)
-- `make chaos`, `make redteam`, `make dr-drill`, `make soak-telegram`, `make soak-fairness` — drill hardening operasional M2
-- `test/improvement_cycle_e2e.sh`, skrip e2e intake/telegram — bukti perbaikan venture dan transport inbound
-- Workflow CI: `ci.yaml` (suite validasi PLAN wajib), `chaos.yml` (nightly), `dr-drill.yml` (bulanan)
-- Tes red-team isolasi profil, bukti anggaran fail-closed, dan tes isolasi kredensial `-race` N-way (Task 117–119)
-- `test/portfolio_restart_live_test.go`, `test/recovery_poisoned_live_test.go` — bukti restart portfolio kill −9 dan eskalasi task teracun (Task 121, 123)
-- `internal/kernel/wave_concurrency_test.go` — dispatch gelombang konkuren dengan determinisme replay (Task 124)
-- `internal/evidence/store_conformance_test.go` — interoperabilitas store S3/MinIO vs FS (Task 128)
-- `internal/billing/stripe_live_test.go`, `internal/deploy/flyio_live_test.go` — tes kontrak adapter Stripe dan Fly.io (Task 125–126)
-- `make bench-baseline`, `make bench-foundry` — capture dan perbandingan benchmark akselerasi V1 (Task 134–135)
-- Workflow CI terjadwal: `e2e-venture.yml`, `e2e-tenx.yml`, `e2e-bitbucket.yml` — bukti live manual/terjadwal untuk Track A, Track B, dan remote Bitbucket (Task 132–133)
-- `test/e2e/venture/live_test.go`, `test/e2e/tenx/live_test.go` — bukti end-to-end live terhubung ke CI (Task 132–133)
-- Verdict V1 Evidence Gate terdokumentasi di `docs/notes/v1-evidence-gate.md` (Task 136)
-- `make v1-proof` dan `.github/workflows/v1-proof.yml` — bukti release nyata wajib; kredensial
-  absent fail closed (Task 151); verdict gate final di `docs/notes/v1-final-evidence-gate.md` (Task 152)
-- `internal/kernel/execution_envelope_replay_test.go`, `internal/inputrouter/router_test.go` —
-  determinisme replay envelope dan routing router terpadu (Task 141, 150)
-- `test/e2e/product_packaging/` — e2e instalasi kemasan produk (Task 154)
-- `test/e2e/skill_evolution/` — bukti promosi L1, rollback, isolasi profil, dan batas otoritas (Task 155)
-- `adapters/agent-runtime/claudecode/materializer_test.go` — instalasi idempoten, integritas manifest, perlindungan symlink/collision
+- `scripts/fitness.sh` (Task 18): `go vet`, kehadiran `doc.go`, plus pemeriksaan `cmd/fitlint` untuk
+  enum lint (C1), superseded-term lint, batas import SCM, dan resolusi doc-link
+- `make skp-e2e` (Task 19) — Shared Kernel Proof end-to-end: admit plan → worktree → verify →
+  evidence bundle → **forced restart → resume dari checkpoint**
+- `cmd/foundry/status_test.go` — output CLI status dengan tingkat konsistensi
+- GitHub Actions CI saat push (`.github/workflows/ci.yaml`)
 
-Keterbatasan diketahui (terdokumentasi di laporan exit M1): guard upsert proyeksi hanya
-membandingkan nomor sequence; konten stale pada sequence lebih tinggi dapat regresi phase
-terproyeksi — ditandai untuk follow-up, tidak disembunyikan.
+Validasi direncanakan (milestone tersisa):
+
+- Tes conformance larangan PEC (Task 56)
+- Evaluasi fault-injection dan keamanan per spesifikasi V12
+- Integrasi OPA PDP penuh dan external-operation ledger (Task 23–26)
 
 ## Operasi dan Observabilitas
 
-- **Entry CLI** — subperintah `foundry`: `doctor`, `status`, `plan submit|approve|verify|revoke|run`,
-  `projection rebuild`, `principal create`, `keygen`, `policy`, `evidence`, `migrate`, `login`,
-  `mission start|resume|list|status|ceremony`, `intake show|resume|list`, `product new`,
-  `opportunity list|show|report`, `budget`, `cost reconcile|show`, `audit verify`,
-  `catalog`, `agents install`, `skills install|rollback`, `promotions unfreeze`, plus paritas HTTP `/v1` via `foundryd`
-- **Daemon** — `foundryd` menghosting worker Temporal dan HTTP API; satu-satunya proses yang melakukan side effect kernel (C4)
-- **Target Make** — `bootstrap`, `up`, `down`, `doctor`, `test`, `lint`, `fitness`, `doclint`,
-  `skp-e2e`, `m1-exit`, `m2-exit`, `e2e-venture`, `e2e-tenx`, `chaos`, `redteam`, `dr-drill`,
-  `soak-telegram`, `soak-fairness`, `plan-run`, `evidence-verify`, `projection-rebuild`, `backup`,
-  `restore`, `drill-backup-restore`, `drill-brownout`, `release-dryrun`, `upgrade-drill`,
-  `bench-baseline`, `bench-foundry`, `e2e-bitbucket`, `v1-proof`
-  (semua dibungkus Docker; profil `up obs` menambah Prometheus/Grafana)
-- **Engine Telegram** — Notifikasi ber-tier prioritas (P0–P3), batching, flood control, dead-letter
-  store; approval tier H memerlukan step-up WebAuthn, bukan Telegram saja (C11/C12)
-- **Cost accounting** — Reserve → incur → reconcile dengan tabel anggaran (`00009_budgets.sql`) dan CLI `budget`/`cost`
-- **Observabilitas** — Metrik Prometheus, dashboard Grafana (`deploy/dashboards/foundry-overview.json`),
-  runbook projection-lag; katalog SLO penuh tetap di `docs/foundry/docs/operations/observability-and-alerts.md`
-- **Backup/restore** — `scripts/backup.sh` / `scripts/restore.sh` dengan verifikasi manifest sha256 dan
-  re-verify audit-chain setelah restore; drill mid-flight membuktikan kontinuitas workflow setelah destroy/recover
+- **Entry CLI** — subperintah `foundry`: `doctor`, `status`, `plan submit|approve|verify`,
+  `projection rebuild`, `principal create`, `keygen`, `policy`, `evidence`, `migrate`,
+  `catalog list|validate|install|doctor` (opsional `-pg-dsn` untuk config packaging berbasis DB),
+  `autonomy show|set|freeze|unfreeze`, `intake` / helper mission brief, `mockup route`
+- **Daemon** — `foundryd` men-seed `operatorcfg.Store` saat startup, menghubungkan `inputrouter` +
+  aktivitas `InputRouteWorkflow`, memuat semua config policy/kuota/model dari Postgres sebelum
+  melayani API/worker; polling queue Temporal `foundry-core` sebagai satu-satunya proses side effect kernel (C4)
+- **Target Make** — `bootstrap`, `up`, `down`, `doctor`, `test`, `lint`, `fitness`, `skp-e2e`,
+  `plan-run`, `evidence-verify`, `projection-rebuild`, `loop-proof`, `loop-proof-local`
+  (dibungkus Docker jika berlaku)
+- **Notifikasi bootstrap** — Plan runner (Task 3) memakai bot Telegram disposable untuk digest jalur AUTO
+  dan gate `/approve` / `/reject` jalur GATED; engine Telegram produksi adalah Task 30
+- **Cost accounting** — Pola reserve → incur → reconcile terdokumentasi; enforcement ada di Task 29/69
+- **Observabilitas** — SLO, alert, dan batas payload didefinisikan di `docs/foundry/docs/operations/observability-and-alerts.md`
 
 ## Pelajaran
 
@@ -575,21 +417,14 @@ terproyeksi — ditandai untuk follow-up, tidak disembunyikan.
    `ars compose` memproyeksikan skill dan batas ke format Claude/Codex tanpa menduplikasi kebijakan.
 7. **Fitness mewujudkan konstitusi** — `fitlint` Task 18 mengubah artikel C1 menjadi kegagalan CI,
    bukan panduan dokumentasi saja.
-8. **Routing berbasis config mengalahkan executor hardcoded** — Task 76–93 memindahkan seleksi provider
-   ke YAML versioned sehingga freshness kapabilitas dan kebijakan kelas task dapat diaudit tanpa redeploy logika kernel.
-9. **Default fail-closed bertahan pada config parsial** — M5 gap-closure menutup jalur allowlist kosong dan classifier nil;
-   misi tanpa pengawasan tanpa envelope anggaran berhenti alih-alih menghabiskan secara diam-diam.
-10. **Fairness multi-mission butuh state portfolio tahan lama** — Task 121 membuktikan isolasi anggaran dan
-    fairness jadwal hanya saat tabel portfolio bertahan kematian proses, bukan scheduling in-memory saja.
-11. **Klaim akselerasi memerlukan baseline** — V1 Evidence Gate Task 136 mengikat exit ke delivery control-arm
-    yang ditambang dan perbandingan benchmark (C25), menolak laporan "kami lebih cepat" naratif saja.
-12. **Intake live harus memulai workflow nyata** — Task 144 mengganti stub intake dengan start Temporal `MissionLoop`
-    sehingga konvergensi CLI mengeksersis jalur kernel yang sama dengan produksi.
-13. **Otoritas kemasan terpisah dari eksekusi** — Task 153–155 mematerialisasi file agen/skill
-    ke workspace executor tanpa memperluas allowlist SCM, deploy, atau executor.
-14. **Config operator-hot milik database** — Task 156–161 memindahkan policy layer, kuota,
-    tarif model, dan katalog packaging ke store Postgres berversi; YAML disk menjadi
-    input seed, menghilangkan drift config diam-diam antara daemon, CLI, dan API.
+8. **Config operator-hot milik database** — Task 156–161 memindahkan policy layer, kuota,
+   tabel model, dan katalog packaging ke Postgres dengan metadata apply versi sehingga CLI,
+   daemon, dan API berbagi satu sumber auditable — file disk seed sekali, lalu promosi eksplisit.
+9. **Otonomi unattended adalah objek kebijakan, bukan hint transport** — PR #15 membuat
+   `AutonomyPolicy` otoritatif atas hint "unattended" CLI/Telegram; jalur freeze dan policy
+   hilang menolak dispatch alih-alih fallback diam-diam ke eksekusi inline.
+10. **Kirim bukti parsial jujur** — Evidence gate Task 164 mendokumentasikan status BLOCKED live
+    sementara LOCAL_MOCK dan tes bypass statis tetap melindungi konstitusi di CI.
 
 ## Terkait
 
@@ -600,8 +435,11 @@ terproyeksi — ditandai untuk follow-up, tidak disembunyikan.
 ## Sumber
 
 - Repository: [okfriansyah-moh/the-foundry](https://github.com/okfriansyah-moh/the-foundry)
-- Pull request: [#14 — Task 156–161 (operator config Postgres SoT)](https://github.com/okfriansyah-moh/the-foundry/pull/14), [#13 — Task 153–155 (kemasan kapabilitas)](https://github.com/okfriansyah-moh/the-foundry/pull/13), [#12 — Task 141–152 (penutupan runtime M6, Final V1 gate)](https://github.com/okfriansyah-moh/the-foundry/pull/12), [#11 — Task 131–140 (V1 Evidence Gate)](https://github.com/okfriansyah-moh/the-foundry/pull/11), [#10 — Task 121–130 (portfolio, gelombang konkuren, integrasi produksi)](https://github.com/okfriansyah-moh/the-foundry/pull/10), [#9 — Task 111–120 (M5 gap-closure)](https://github.com/okfriansyah-moh/the-foundry/pull/9), [#8 — Task 100–110](https://github.com/okfriansyah-moh/the-foundry/pull/8), [#7 — Task 76–93](https://github.com/okfriansyah-moh/the-foundry/pull/7), [#6 — Task 61–75 (exit M2, MLS Track B)](https://github.com/okfriansyah-moh/the-foundry/pull/6), [#5 — Task 51–60 (MLS Track A, PEC, integrator)](https://github.com/okfriansyah-moh/the-foundry/pull/5), [#4 — Task 41–50](https://github.com/okfriansyah-moh/the-foundry/pull/4), [#2 — Task 22–40 (exit M1)](https://github.com/okfriansyah-moh/the-foundry/pull/2), [#1 — Task 3–22](https://github.com/okfriansyah-moh/the-foundry/pull/1)
-- Laporan exit: `docs/notes/m1-exit-report.md`, `docs/notes/m2-exit-report.md`, `docs/notes/track-a-exit-report.md`, `docs/notes/track-b-exit-report.md`, `docs/notes/v1-evidence-gate.md`, `docs/notes/v1-final-evidence-gate.md`, `docs/notes/v1-release-proof.md`, `docs/notes/capability-packaging.md`, `benchmarks/report-v1-final.md` di repo sumber
-- Arsitektur: `docs/foundry/delivery_foundry.md`, `docs/architecture.md`, `docs/foundry/docs/architecture/state-model.md`, `docs/foundry/docs/architecture/authority-model.md`
+- Pull request: [#1 — Task 3–22](https://github.com/okfriansyah-moh/the-foundry/pull/1) (merge commit [`6efd492`](https://github.com/okfriansyah-moh/the-foundry/commit/6efd492d48d99672afea27da565699e8e8a3983d))
+- Pull request: [#14 — Task 156–161 operator config Postgres SoT](https://github.com/okfriansyah-moh/the-foundry/pull/14) (merge commit [`5b01562`](https://github.com/okfriansyah-moh/the-foundry/commit/5b015620a5a676c47dfe806486e82137b7801834))
+- Pull request: [#15 — Task 162–164 loop input unattended](https://github.com/okfriansyah-moh/the-foundry/pull/15) (merge commit [`58053fe`](https://github.com/okfriansyah-moh/the-foundry/commit/58053fe379007e4eef1a2b4a784792d1776355ce))
+- Evidence gate: `docs/notes/unattended-loop-evidence-gate.md` di repo sumber (M9 parsial / live BLOCKED)
+- Commit sebelumnya: [`58632a0`](https://github.com/okfriansyah-moh/the-foundry/commit/58632a0), [`9409080`](https://github.com/okfriansyah-moh/the-foundry/commit/9409080)
+- Arsitektur: `docs/foundry/delivery_foundry.md`, `docs/architecture.md`, `docs/foundry/docs/architecture/state-model.md`
 - Agent harness: `.ai/manifest.yaml`, `.ai/instructions/authority-boundaries.md`
-- Rencana implementasi: `docs/PLAN.md` (Task 1–155 ✅ melalui kemasan kapabilitas M7; Task 156–161 ✅ SoT config operator Postgres)
+- Rencana implementasi: `docs/PLAN.md` (Task 1–22 ✅, Task 156–164 ✅ bukti live parsial, task tersisa pending)

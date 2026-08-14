@@ -30,44 +30,18 @@ The public repository (created 2026-07-20) contains:
 - **Tasks 1–22 complete (2026-07-25)** — via [PR #1](https://github.com/okfriansyah-moh/the-foundry/pull/1):
   agent harness, autonomous plan runner, Temporal kernel workflow, CLI/daemon, fitness suite,
   migrations, profiles, and policy compiler v1
-- **Tasks 23–40 complete (2026-07-27)** — via [PR #2](https://github.com/okfriansyah-moh/the-foundry/pull/2):
-  OPA PDP, provenance chain, OIDC/WebAuthn auth, external-op ledger, SCM GitHub write, cost
-  accounting, Telegram engine, observability stack, rootless OCI sandbox, HTTP API, backup/restore
-  drills, and MissionContract engine — **M1 Production Foundation exit**
-- **Tasks 41–60 complete (2026-07-28)** — via [PR #4](https://github.com/okfriansyah-moh/the-foundry/pull/4) and
-  [PR #5](https://github.com/okfriansyah-moh/the-foundry/pull/5): Mission Setup Ceremony, product templates,
-  bounded improvement cycle, **Track A venture MLS exit**, org governance pack, PEC v1, atomic groups,
-  Branch Integrator, and 10x handoff terminal semantics
-- **Tasks 61–75 complete (2026-07-28)** — via [PR #6](https://github.com/okfriansyah-moh/the-foundry/pull/6):
-  TenX prohibition proof, Bitbucket SCM adapter, **Track B 10x MLS exit**, and **M2 Operational Hardening exit**
-  (chaos, retention, audit tamper drill, SLO alerts, DR drill, Telegram hardening, versioned release)
-- **Tasks 76–110 complete (2026-07-28 – 2026-07-30)** — via [PR #7](https://github.com/okfriansyah-moh/the-foundry/pull/7) and
-  [PR #8](https://github.com/okfriansyah-moh/the-foundry/pull/8): executor capability registry, policy-driven
-  routing, multi-provider adapters, mission/plan CLI+API UX, and PLAN topology CI gates
-- **Tasks 111–120 complete (2026-07-31)** — via [PR #9](https://github.com/okfriansyah-moh/the-foundry/pull/9):
-  staged resumable intake (`mission start --idea`), Telegram inbound transport, mandatory sandbox,
-  fail-closed policy paths, profile isolation, and actual-cost reconciliation — **M5 gap-closure**
-- **Tasks 121–130 complete (2026-08-01)** — via [PR #10](https://github.com/okfriansyah-moh/the-foundry/pull/10):
-  portfolio scheduler with restart proof, mission-activity idempotency, poisoned-task recovery,
-  concurrent PEC waves, Fly.io deploy, Stripe billing webhook, S3/MinIO evidence store, and provider
-  fallback circuit breaker
-- **Tasks 131–140 complete (2026-08-01)** — via [PR #11](https://github.com/okfriansyah-moh/the-foundry/pull/11):
-  live venture + Bitbucket 10x proofs, V1 acceleration benchmark baseline, unified mockup intake,
-  validation-signal allowlist, fail-closed SCM provider selection — **V1 Evidence Gate (Task 136) exit**
-- **Tasks 141–152 complete (2026-08-02)** — via [PR #12](https://github.com/okfriansyah-moh/the-foundry/pull/12):
-  execution envelopes, live CLI/Telegram intake, unified input router, closed venture loop, full 10x
-  orchestration, profile isolation closure, mandatory `make v1-proof` release proofs — **Final V1
-  Evidence Gate (Task 152) exit**
-- **Tasks 153–155 complete (2026-08-04)** — via [PR #13](https://github.com/okfriansyah-moh/the-foundry/pull/13):
-  agent/skill catalogs, Claude Code runtime materialization, L1 skill evolution bridge with rollback e2e
 - **Tasks 156–161 complete (2026-08-08)** — via [PR #14](https://github.com/okfriansyah-moh/the-foundry/pull/14):
   Postgres-backed operator config store (`operatorcfg.Store`), versioned policy/quotas/model
-  rates/catalogs, DB-backed `foundry catalog` commands, daemon seed-on-empty-keys startup
+  tables, packaging catalog DB load path, and `-pg-dsn` on `foundry catalog` commands
+- **Tasks 162–164 partial (2026-08-10)** — via [PR #15](https://github.com/okfriansyah-moh/the-foundry/pull/15):
+  unattended input loop with `AutonomyPolicy`, transport `inputrouter`, kernel
+  `InputRouteWorkflow`, mission brief API, and protected `loop-proof` CI; **live Path A/B
+  receipts remain BLOCKED** per source evidence gate (LOCAL_MOCK and unit tests pass)
 - **Shared Kernel Proof (M0 exit)** — end-to-end demo proving admit → worktree → verify →
   evidence → checkpoint restart
 
-All 155 sequentially numbered PLAN tasks are marked complete in source `docs/PLAN.md`.
-Both product tracks have documented MLS exit evidence, live-proof CI workflows, and M7 capability packaging.
+Tasks 23–155 and 165–83 (OPA integration, full provenance chain, venture and 10x tracks) remain open;
+this page tracks project evolution as documented in source.
 
 ## The Problem
 
@@ -116,23 +90,14 @@ shared 10x branch with no PR, merge, or deployment in that workflow.
 | V12 documentation set | Modular normative contracts; V11 content preserved via migration map |
 | Task 1 (✅ 2026-07-20) | Docker dev toolchain, CI, Go package scaffolds, fitness v0 |
 | Tasks 2–22 (✅ 2026-07-25, PR #1) | Agent harness (`.ai/`), plan runner, Temporal kernel, CLI/daemon, SKP e2e, migrations + policy compiler |
-| M0 — Shared Kernel Proof (✅) | Admit one plan → worktree → verify → evidence → **resume after restart** |
-| Tasks 23–40 (✅ 2026-07-27, PR #2) | OPA PDP, provenance/audit chain, strong auth, extops ledger, SCM write, cost/budgets, Telegram, observability, OCI sandbox, API server, backup/restore, missions |
-| M1 — Production Foundation (✅) | `make m1-exit` acceptance: GitHub e2e, WebAuthn gate, notify soak, audit verify, brownout drill, backup/restore |
-| Tasks 41–50 (✅ 2026-07-28, PR #4) | Mission Setup Ceremony, product templates, policy/effect mapping configs |
-| Tasks 51–53 (✅ 2026-07-28, PR #5) | Bounded improvement cycle, veto digest, **Track A venture MLS exit** (`make e2e-venture`) |
-| Tasks 54–60 (✅ 2026-07-28, PR #5) | Org governance pack, org provenance validation, PEC v1, atomic groups, Branch Integrator, drift guard, 10x handoff terminal |
-| Tasks 61–63 (✅ 2026-07-28, PR #6) | TenX prohibition proof (C15), Bitbucket SCM adapter, **Track B 10x MLS exit** (`make e2e-tenx`) |
-| M2 — Operational Hardening (✅) | Tasks 64–73: chaos suite, backpressure fairness, retention/PII, audit tamper drill, SLO alerts, cost reconciliation, red-team, DR drill, Telegram soak, goreleaser — `make m2-exit` |
-| M3 bootstrap (✅ partial) | Task 74–75: L0 auto-promotion pipeline and tunable registry (PR #6) |
-| Tasks 76–93 (✅ 2026-07-28, PR #7) | Executor capability registry, policy-driven routing, multi-provider adapters |
-| Tasks 100–110 (✅ 2026-07-30, PR #8) | Mission/plan CLI+API UX, PLAN topology/validation/research-boundary CI gates |
-| M5 gap-closure (✅ 2026-07-31, PR #9) | Tasks 111–120: resumable intake, Telegram inbound, mandatory sandbox, fail-closed policy, profile isolation, cost reconciliation |
-| M5 runtime convergence (✅ 2026-08-01, PR #10) | Tasks 121–130: portfolio scheduler, mission idempotency, poisoned-task recovery, concurrent waves, Fly.io/Stripe/S3 production integrations |
-| V1 Evidence Gate (✅ 2026-08-01, PR #11) | Tasks 131–140: live venture + Bitbucket proofs, benchmark baseline, mockup intake, validation signals, fail-closed SCM — `docs/notes/v1-evidence-gate.md` |
-| M6 runtime closure (✅ 2026-08-02, PR #12) | Tasks 141–152: execution envelopes, live intake, input router, closed venture/10x loops, `make v1-proof` — `docs/notes/v1-final-evidence-gate.md` |
-| M7 capability packaging (✅ 2026-08-04, PR #13) | Tasks 153–155: agent/skill catalogs, Claude Code materialization, L1 skill evolution with rollback e2e |
 | Tasks 156–161 (✅ 2026-08-08, PR #14) | Operator-hot config Postgres SoT: `operatorcfg.Store`, versioned policy/quotas/catalogs, DB-backed `foundry catalog` |
+| Tasks 162–164 (⚠️ partial 2026-08-10, PR #15) | M9 unattended input loop: AutonomyPolicy, InputRouteWorkflow, loop-proof CI; live e2e receipts not yet captured |
+| M0 — Shared Kernel Proof (✅) | Admit one plan → worktree → verify → evidence → **resume after restart** |
+| M1 — Foundation (partial) | Tasks 20–22 done; OPA PDP, full provenance chain, ledger (Tasks 23–26) pending |
+| Venture MLS (Track A) | Mission → deployable product → billing observation → one bounded improvement cycle |
+| 10x MLS (Track B) | Approved plan → provenance → atomic group → direct 10x branch push |
+| Mission-capable venture | Autonomous improvement within drift governance envelope |
+| Org-production 10x | Multi-repo orchestration with organization integrations |
 
 Roadmap estimates and builder assumptions are documented honestly in
 `docs/architecture/overview.md` — ranges with confidence levels, not false precision.
@@ -150,11 +115,8 @@ Roadmap estimates and builder assumptions are documented honestly in
 | Multi-provider agent harness (Task 2) | ARES `.ai/` canonical source composed to Claude/Codex; eleven skills mapped to six roles |
 | Constitution fitness (Task 18) | `fitlint` enforces C1 enum rules, import boundaries, and doc links in CI |
 | Four container image lineages | Anti-sprawl rule: dev, postgres/temporal, executor sandbox, release binary |
-| V1 measured acceleration (C25) | Benchmark baseline mined from control-arm git deliveries; exit requires evidence comparison, not claims |
-| Mandatory V1 release proofs (C9/C10) | `make v1-proof` fails closed without live infra; skip exit code 2 never archived as PASS |
-| Packaging ≠ execution authority | Agent/skill install materializes provider files only; kernel retains SCM/deploy decisions |
 | Postgres operator config SoT (Tasks 156–161) | Policy, quotas, model rates, and packaging catalogs share one versioned store; disk YAML seeds once at daemon boot |
-| 9Router rejected / OpenHands deferred | ADR-001 records disposition explicitly — provider fallback (Task 129) satisfies routing intent |
+| Unattended input loop (Tasks 162–164) | All IDEA/MOCKUP/brief transports route through persistent input router + kernel workflow under explicit AutonomyPolicy; honest partial proof until live receipts exist |
 
 ## Entry Types and Workflows
 
@@ -174,34 +136,19 @@ Recovery, retry, and honest completion semantics live in `docs/workflows/recover
 
 ```text
 docs/foundry/delivery_foundry.md   master architecture index
-docs/PLAN.md                       155-task implementation plan (Tasks 1–155 ✅, M7 complete)
+docs/PLAN.md                       83-task implementation plan (Tasks 1–22 ✅)
 docs/architecture.md               one-page constitution + link map
-docs/notes/v1-evidence-gate.md     V1 Evidence Gate verdict (Task 136)
-docs/notes/v1-final-evidence-gate.md  Final V1 Evidence Gate verdict (Task 152)
-docs/notes/capability-packaging.md runtime materialization authority boundaries
-agents/catalog.yaml                canonical agent catalog (Task 153)
-skills/catalog.yaml                canonical skill catalog (Task 153)
-adapters/agent-runtime/            provider-neutral materializer + Claude Code adapter
-benchmarks/baseline/               control-arm baseline deliveries + manifest for acceleration comparison
-docs/notes/m1-exit-report.md       M1 acceptance evidence
-docs/notes/m2-exit-report.md       M2 operational hardening exit evidence
-docs/notes/track-a-exit-report.md  Track A venture MLS exit evidence
-docs/notes/track-b-exit-report.md  Track B 10x MLS exit evidence
-config/executor-*.yaml             capability registry, routing, and model tables
-config/profiles/                   personal vs organization-10x governance packs
 .ai/                               canonical agent harness (ARES format)
 AGENTS.md / CLAUDE.md              composed provider views (do not hand-edit)
-api/openapi.yaml                   /v1 HTTP API contract (CLI parity)
-cmd/foundry/                       operator CLI (mission, intake, plan, cost, audit)
-cmd/foundryd/                      Temporal kernel worker + HTTP API + sandbox runner
-cmd/fitlint/                       constitution linter (capability, topology, env, subprocess)
+cmd/foundry/                       operator CLI
+cmd/foundryd/                      Temporal kernel worker
+cmd/fitlint/                       constitution linter
 tools/planrunner/                  bootstrap autonomous task orchestrator
-deploy/                            Docker dev toolchain, postgres/temporal, prometheus/grafana
-internal/                          Go packages (kernel, pec, intake, integrator, retention, operatorcfg, …)
-scripts/backup.sh, restore.sh      backup/restore with manifest verification
-Makefile                           docker-wrapped targets including m1-exit, m2-exit, e2e-venture, e2e-tenx, bench-baseline, bench-foundry, e2e-bitbucket, v1-proof
-.github/workflows/e2e-*.yml        scheduled/manual live proofs (venture, tenx, bitbucket)
-.github/workflows/v1-proof.yml     protected real release proof workflow (Task 151)
+deploy/                            Docker dev toolchain + postgres/temporal compose
+internal/                          Go packages (kernel, state, admission, evidence, operatorcfg, inputrouter, autonomypolicy, …)
+scripts/fitness.sh                 constitution check suite
+scripts/loop_proof.sh              protected unattended-loop proof gate
+Makefile                           docker-wrapped targets
 ```
 
 ## Lessons Learned
@@ -216,13 +163,6 @@ Makefile                           docker-wrapped targets including m1-exit, m2-
    but declares the score is earned only when fault-injection, security, and SLO tests pass.
 5. **Legacy quarantine** — `docs/legacy/` is banner-marked superseded history and must
    never be fed to implementation agents.
-6. **V1 exit is an evidence verdict** — Task 136 checks live proofs, benchmark comparison, and
-   constitution fitness together; Task 152 adds mandatory release proofs — completing code tasks alone does not declare V1.
-7. **Catalogs are source of truth, projections are derived** — M7 keeps Foundry catalogs canonical;
-   provider workspace files are install artifacts with manifest-pinned digests, not alternate authority.
-8. **Config drift is a silent failure mode** — Tasks 156–161 prove that policy layers, quotas, and
-   catalogs need a single versioned store; file-based config reads become a one-time seed path to
-   eliminate daemon/CLI/API divergence.
 
 ## Related
 
@@ -233,8 +173,11 @@ Makefile                           docker-wrapped targets including m1-exit, m2-
 ## Sources
 
 - Repository: [okfriansyah-moh/the-foundry](https://github.com/okfriansyah-moh/the-foundry)
-- Pull requests: [#14](https://github.com/okfriansyah-moh/the-foundry/pull/14), [#13](https://github.com/okfriansyah-moh/the-foundry/pull/13), [#12](https://github.com/okfriansyah-moh/the-foundry/pull/12), [#11](https://github.com/okfriansyah-moh/the-foundry/pull/11), [#10](https://github.com/okfriansyah-moh/the-foundry/pull/10), [#9](https://github.com/okfriansyah-moh/the-foundry/pull/9), [#8](https://github.com/okfriansyah-moh/the-foundry/pull/8), [#7](https://github.com/okfriansyah-moh/the-foundry/pull/7), [#6](https://github.com/okfriansyah-moh/the-foundry/pull/6), [#5](https://github.com/okfriansyah-moh/the-foundry/pull/5), [#4](https://github.com/okfriansyah-moh/the-foundry/pull/4), [#2](https://github.com/okfriansyah-moh/the-foundry/pull/2), [#1](https://github.com/okfriansyah-moh/the-foundry/pull/1)
-- Exit reports: `docs/notes/m1-exit-report.md`, `docs/notes/m2-exit-report.md`, `docs/notes/track-a-exit-report.md`, `docs/notes/track-b-exit-report.md`, `docs/notes/v1-evidence-gate.md`, `docs/notes/v1-final-evidence-gate.md`, `docs/notes/capability-packaging.md`, `benchmarks/report-v1-final.md`
+- Pull request: [#1 — Tasks 3–22](https://github.com/okfriansyah-moh/the-foundry/pull/1) (merge [`6efd492`](https://github.com/okfriansyah-moh/the-foundry/commit/6efd492d48d99672afea27da565699e8e8a3983d))
+- Pull request: [#14 — Tasks 156–161 operator config Postgres SoT](https://github.com/okfriansyah-moh/the-foundry/pull/14) (merge [`5b01562`](https://github.com/okfriansyah-moh/the-foundry/commit/5b015620a5a676c47dfe806486e82137b7801834))
+- Pull request: [#15 — Tasks 162–164 unattended input loop](https://github.com/okfriansyah-moh/the-foundry/pull/15) (merge [`58053fe`](https://github.com/okfriansyah-moh/the-foundry/commit/58053fe379007e4eef1a2b4a784792d1776355ce))
+- Evidence gate: `docs/notes/unattended-loop-evidence-gate.md` in source repo
+- Earlier commits: [`58632a0`](https://github.com/okfriansyah-moh/the-foundry/commit/58632a0), [`9409080`](https://github.com/okfriansyah-moh/the-foundry/commit/9409080)
 - Review: `docs/foundry/V12_REVIEW_REPORT.md` in source repo
 - Changelog: `docs/foundry/CHANGELOG.md` in source repo
-- Plan index: `docs/PLAN.md` §D Master Task Index (Tasks 1–155 ✅; Tasks 156–161 ✅ operator config Postgres SoT)
+- Plan index: `docs/PLAN.md` §D Master Task Index

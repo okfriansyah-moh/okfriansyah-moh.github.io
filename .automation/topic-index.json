@@ -267,7 +267,8 @@
         "okfriansyah-moh/the-foundry#11",
         "okfriansyah-moh/the-foundry#12",
         "okfriansyah-moh/the-foundry#13",
-        "okfriansyah-moh/the-foundry#14"
+        "okfriansyah-moh/the-foundry#14",
+        "okfriansyah-moh/the-foundry#15"
       ],
       "repos": [
         "okfriansyah-moh/the-foundry"
@@ -343,7 +344,14 @@
         "operatorcfg-versioned-store",
         "config-seed-from-disk",
         "packaging-catalog-db-load",
-        "operator-config-apply-audit"
+        "operator-config-apply-audit",
+        "autonomy-policy-store",
+        "input-route-workflow",
+        "transport-input-router",
+        "unattended-input-loop",
+        "mission-brief-intake",
+        "loop-proof-evidence-gate",
+        "idempotent-intake-keys"
       ]
     },
     "delivery-foundry:project-overview": {
@@ -365,7 +373,8 @@
         "okfriansyah-moh/the-foundry#11",
         "okfriansyah-moh/the-foundry#12",
         "okfriansyah-moh/the-foundry#13",
-        "okfriansyah-moh/the-foundry#14"
+        "okfriansyah-moh/the-foundry#14",
+        "okfriansyah-moh/the-foundry#15"
       ],
       "repos": [
         "okfriansyah-moh/the-foundry"
@@ -387,7 +396,8 @@
         "m6-runtime-closure-exit",
         "v1-final-evidence-gate-exit",
         "m7-capability-packaging-exit",
-        "postgres-operator-config-sot"
+        "postgres-operator-config-sot",
+        "unattended-input-loop-partial"
       ]
     }
   }

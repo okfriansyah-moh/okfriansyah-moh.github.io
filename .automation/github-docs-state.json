@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "last_successful_scan_at": "2026-08-09T02:01:09+00:00",
+  "last_successful_scan_at": "2026-08-11T02:01:38+00:00",
   "processed_pull_requests": [
     "okfriansyah-moh/shorts-generator#8@bootstrap",
     "okfriansyah-moh/shorts-generator#10@bootstrap",
@@ -22,7 +22,8 @@
     "okfriansyah-moh/the-foundry#12@1d34a33061ed50a4802a7230d279a44b7384693f",
     "okfriansyah-moh/the-foundry#13@97a0dc09ac8c00683dbd83132e1f112a87812892",
     "okfriansyah-moh/shorts-generator#12@7477e448626ff3d4fd9b4451eb36ed4f43a4ea7f",
-    "okfriansyah-moh/the-foundry#14@5b015620a5a676c47dfe806486e82137b7801834"
+    "okfriansyah-moh/the-foundry#14@5b015620a5a676c47dfe806486e82137b7801834",
+    "okfriansyah-moh/the-foundry#15@58053fe379007e4eef1a2b4a784792d1776355ce"
   ],
   "processed_commits": [
     "okfriansyah-moh/the-foundry@58632a0",
