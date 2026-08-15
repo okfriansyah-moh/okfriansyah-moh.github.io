@@ -220,3 +220,8 @@ repair attempts. Do not open a pull request if validation still fails.
 | First-run history window            | 14 days           |
 | Repair attempts                     | 2                 |
 | Direct merge                        | Disabled          |
+| Extra parallel cloud agents         | Do not spawn      |
+
+A no-change scan (nothing scored ≥ 3) is a successful run. Do not treat it as a failure or retry it.
+
+This automation is rate-limited when too many cloud agents are already running for the account. Keep the daily slot to **one** agent. Do not launch extra cloud-agent workers for discovery.
