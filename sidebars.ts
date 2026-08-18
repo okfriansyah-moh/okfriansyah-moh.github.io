@@ -22,6 +22,7 @@ const sidebars: SidebarsConfig = {
         'concepts/llm-guardrails',
         'concepts/ai-document-coherence',
         'concepts/deterministic-agentic-orchestrator',
+        'concepts/leetcode-patterns',
       ],
     },
     {

@@ -1,6 +1,14 @@
 {
   "items": [
     {
+      "title": "8 LeetCode Patterns to Master",
+      "description": "A beginner-friendly map of eight reusable interview patterns — Two Pointer, BFS, Topological Sort, DFS, Top K, Modified Binary Search, Subset, and Sliding Window — with when-to-use rules, worked examples, and practice problems.",
+      "link": "/docs/concepts/leetcode-patterns",
+      "type": "concept",
+      "date": "2026-08-18",
+      "readingTime": 35
+    },
+    {
       "title": "Go Remembers: Runnable Go Fundamentals",
       "description": "A self-registering Go learning repository where each concept file plugs into a sorted example runner via init() hooks.",
       "link": "/docs/projects/go-remembers",

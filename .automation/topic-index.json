@@ -12,9 +12,7 @@
         "okfriansyah-moh/shorts-generator#11",
         "okfriansyah-moh/shorts-generator#12"
       ],
-      "repos": [
-        "okfriansyah-moh/shorts-generator"
-      ],
+      "repos": ["okfriansyah-moh/shorts-generator"],
       "learning_objective": "Design a restartable multi-stage video pipeline with checkpointing and idempotent stage caching",
       "covered_capabilities": [
         "multi-stage-deterministic-pipeline",
@@ -39,9 +37,7 @@
         "okfriansyah-moh/a2a-brainstormer#8",
         "okfriansyah-moh/a2a-brainstormer#12"
       ],
-      "repos": [
-        "okfriansyah-moh/a2a-brainstormer"
-      ],
+      "repos": ["okfriansyah-moh/a2a-brainstormer"],
       "learning_objective": "Prevent contradictions in long AI-generated documents via section-sequential generation and coherence audits",
       "covered_capabilities": [
         "section-sequential-generation",
@@ -59,9 +55,7 @@
         "okfriansyah-moh/skeleton-parallel#1",
         "okfriansyah-moh/skeleton-parallel#2"
       ],
-      "repos": [
-        "okfriansyah-moh/skeleton-parallel"
-      ],
+      "repos": ["okfriansyah-moh/skeleton-parallel"],
       "learning_objective": "Build a task-based agentic coding loop with bounded retries, checkpoints, and quality gates",
       "covered_capabilities": [
         "task-based-agent-loop",
@@ -76,13 +70,8 @@
         "en": "docs/projects/ares.md",
         "id": "i18n/id/docusaurus-plugin-content-docs/current/projects/ares.md"
       },
-      "sources": [
-        "okfriansyah-moh/ares#7",
-        "okfriansyah-moh/ares#8"
-      ],
-      "repos": [
-        "okfriansyah-moh/ares"
-      ],
+      "sources": ["okfriansyah-moh/ares#7", "okfriansyah-moh/ares#8"],
+      "repos": ["okfriansyah-moh/ares"],
       "learning_objective": "Apply provider-neutral AI repository standards and governance conventions",
       "covered_capabilities": [
         "provider-neutral-repo-standards",
@@ -94,12 +83,8 @@
         "en": "docs/systems/md-ame-autonomous-media-engine.md",
         "id": "i18n/id/docusaurus-plugin-content-docs/current/systems/md-ame-autonomous-media-engine.md"
       },
-      "sources": [
-        "okfriansyah-moh/md-ame"
-      ],
-      "repos": [
-        "okfriansyah-moh/md-ame"
-      ],
+      "sources": ["okfriansyah-moh/md-ame"],
+      "repos": ["okfriansyah-moh/md-ame"],
       "learning_objective": "Understand MD-AME's autonomous media generation architecture and safety layers",
       "covered_capabilities": [
         "autonomous-media-pipeline",
@@ -113,12 +98,8 @@
         "en": "docs/projects/md-ame.md",
         "id": "i18n/id/docusaurus-plugin-content-docs/current/projects/md-ame.md"
       },
-      "sources": [
-        "okfriansyah-moh/md-ame"
-      ],
-      "repos": [
-        "okfriansyah-moh/md-ame"
-      ],
+      "sources": ["okfriansyah-moh/md-ame"],
+      "repos": ["okfriansyah-moh/md-ame"],
       "learning_objective": "Follow MD-AME's project journey, scope, and implementation status",
       "covered_capabilities": [
         "project-roadmap-status",
@@ -130,12 +111,8 @@
         "en": "docs/systems/polymarket-trading-agent.md",
         "id": "i18n/id/docusaurus-plugin-content-docs/current/systems/polymarket-trading-agent.md"
       },
-      "sources": [
-        "okfriansyah-moh/edge-polymarket-agent"
-      ],
-      "repos": [
-        "okfriansyah-moh/edge-polymarket-agent"
-      ],
+      "sources": ["okfriansyah-moh/edge-polymarket-agent"],
+      "repos": ["okfriansyah-moh/edge-polymarket-agent"],
       "learning_objective": "Understand the Polymarket trading agent's execution path and AI advisor isolation",
       "covered_capabilities": [
         "trading-execution-loop",
@@ -148,12 +125,8 @@
         "en": "docs/projects/polymarket-agent.md",
         "id": "i18n/id/docusaurus-plugin-content-docs/current/projects/polymarket-agent.md"
       },
-      "sources": [
-        "okfriansyah-moh/edge-polymarket-agent"
-      ],
-      "repos": [
-        "okfriansyah-moh/edge-polymarket-agent"
-      ],
+      "sources": ["okfriansyah-moh/edge-polymarket-agent"],
+      "repos": ["okfriansyah-moh/edge-polymarket-agent"],
       "learning_objective": "Follow the Polymarket agent project journey and status",
       "covered_capabilities": [
         "project-roadmap-status",
@@ -212,9 +185,7 @@
         "okfriansyah-moh/a2a-brainstormer#7",
         "okfriansyah-moh/a2a-brainstormer#8"
       ],
-      "repos": [
-        "okfriansyah-moh/a2a-brainstormer"
-      ],
+      "repos": ["okfriansyah-moh/a2a-brainstormer"],
       "learning_objective": "Coordinate fixed-role AI workers through sequential pipelines with immutable canonical state",
       "covered_capabilities": [
         "fixed-role-sequential-pipeline",
@@ -271,9 +242,7 @@
         "okfriansyah-moh/the-foundry#15",
         "okfriansyah-moh/the-foundry@cdc80eb"
       ],
-      "repos": [
-        "okfriansyah-moh/the-foundry"
-      ],
+      "repos": ["okfriansyah-moh/the-foundry"],
       "learning_objective": "Understand Delivery Foundry's control-plane architecture: kernel vs PEC authority, six-status model, evidence-verified delivery loop, multi-mission runtime, V1 evidence gates, and product capability packaging",
       "covered_capabilities": [
         "kernel-vs-pec-authority",
@@ -381,9 +350,7 @@
         "okfriansyah-moh/the-foundry#15",
         "okfriansyah-moh/the-foundry@cdc80eb"
       ],
-      "repos": [
-        "okfriansyah-moh/the-foundry"
-      ],
+      "repos": ["okfriansyah-moh/the-foundry"],
       "learning_objective": "Follow Delivery Foundry's dual-track venture/10x roadmap through M7 capability packaging completion",
       "covered_capabilities": [
         "project-roadmap-status",
@@ -414,9 +381,7 @@
         "okfriansyah-moh/go-remembers@a99a204",
         "okfriansyah-moh/go-remembers@1bbb318"
       ],
-      "repos": [
-        "okfriansyah-moh/go-remembers"
-      ],
+      "repos": ["okfriansyah-moh/go-remembers"],
       "learning_objective": "Build a self-registering Go learning repo where init() hooks plug concept files into a sorted example runner",
       "covered_capabilities": [
         "init-based-example-registry",
@@ -435,9 +400,7 @@
         "okfriansyah-moh/data-structure-and-algorithm@d1b8540",
         "okfriansyah-moh/data-structure-and-algorithm@af6f156"
       ],
-      "repos": [
-        "okfriansyah-moh/data-structure-and-algorithm"
-      ],
+      "repos": ["okfriansyah-moh/data-structure-and-algorithm"],
       "learning_objective": "Organize 70+ runnable Java DSA implementations into a README-indexed catalog by algorithm and data-structure category",
       "covered_capabilities": [
         "readme-catalog-navigation",
@@ -446,6 +409,25 @@
         "linked-list-variants",
         "array-interview-problems",
         "graph-search-algorithms"
+      ]
+    },
+    "leetcode:eight-patterns": {
+      "document": {
+        "en": "docs/concepts/leetcode-patterns.md",
+        "id": "i18n/id/docusaurus-plugin-content-docs/current/concepts/leetcode-patterns.md"
+      },
+      "sources": ["okfriansyah-moh/data-structure-and-algorithm@d1b8540"],
+      "repos": ["okfriansyah-moh/data-structure-and-algorithm"],
+      "learning_objective": "Recognize eight reusable interview algorithm patterns and map a prompt to Two Pointer, BFS, Topological Sort, DFS, Top K, Modified Binary Search, Subset, or Sliding Window",
+      "covered_capabilities": [
+        "two-pointer-sorted-array",
+        "binary-tree-bfs-level-order",
+        "topological-sort-dag",
+        "binary-tree-dfs-recursion",
+        "top-k-heap",
+        "modified-binary-search",
+        "subset-backtracking",
+        "sliding-window-condition"
       ]
     }
   }
