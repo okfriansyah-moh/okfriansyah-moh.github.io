@@ -1,39 +1,40 @@
-import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
+import type { SidebarsConfig } from "@docusaurus/plugin-content-docs";
 
 const sidebars: SidebarsConfig = {
   docsSidebar: [
     {
-      type: 'category',
-      label: 'Systems',
+      type: "category",
+      label: "Systems",
       items: [
-        'systems/delivery-foundry-control-plane',
-        'systems/md-ame-autonomous-media-engine',
-        'systems/polymarket-trading-agent',
-        'systems/shorts-generator-pipeline',
+        "systems/delivery-foundry-control-plane",
+        "systems/md-ame-autonomous-media-engine",
+        "systems/polymarket-trading-agent",
+        "systems/shorts-generator-pipeline",
       ],
     },
     {
-      type: 'category',
-      label: 'Concepts',
+      type: "category",
+      label: "Concepts",
       items: [
-        'concepts/deterministic-ai-pipelines',
-        'concepts/database-state-machines',
-        'concepts/ai-orchestration-patterns',
-        'concepts/llm-guardrails',
-        'concepts/ai-document-coherence',
-        'concepts/deterministic-agentic-orchestrator',
+        "concepts/deterministic-ai-pipelines",
+        "concepts/database-state-machines",
+        "concepts/ai-orchestration-patterns",
+        "concepts/llm-guardrails",
+        "concepts/ai-document-coherence",
+        "concepts/deterministic-agentic-orchestrator",
+        "concepts/leetcode-patterns",
       ],
     },
     {
-      type: 'category',
-      label: 'Projects',
+      type: "category",
+      label: "Projects",
       items: [
-        'projects/delivery-foundry',
-        'projects/md-ame',
-        'projects/polymarket-agent',
-        'projects/ares',
-        'projects/go-remembers',
-        'projects/data-structure-and-algorithm',
+        "projects/delivery-foundry",
+        "projects/md-ame",
+        "projects/polymarket-agent",
+        "projects/ares",
+        "projects/go-remembers",
+        "projects/data-structure-and-algorithm",
       ],
     },
   ],
