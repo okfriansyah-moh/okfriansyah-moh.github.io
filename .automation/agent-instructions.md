@@ -59,7 +59,9 @@ If a new article needs homepage visibility, use **topic-index + feed sync** — 
 
 ## SOURCE SCOPE
 
-Use the GitHub MCP to inspect repositories owned by:
+Discover public GitHub activity with the authenticated **`gh` CLI**. Do not wait for a GitHub MCP server — it is not attached to this automation. `gh` is already authenticated as the Cursor GitHub App in cloud-agent runs.
+
+Inspect repositories owned by:
 
 - GitHub owner: okfriansyah-moh
 - Visibility: public
@@ -68,6 +70,10 @@ Use the GitHub MCP to inspect repositories owned by:
 - Exclude repositories not owned by okfriansyah-moh.
 - Exclude this documentation repository from activity discovery.
 - Never inspect, quote, summarize, or expose private or company repositories.
+
+If a repo returns HTTP 404, treat it as private/inaccessible and skip it. Do not retry those names.
+
+Do not spawn extra cloud-agent subagents for discovery. Extra parallel agents compete with this daily slot and can rate-limit the next 09:00 GMT+7 run.
 
 ## STATE AND IDEMPOTENCY
 
@@ -257,6 +263,8 @@ If no activity passes the significance threshold:
 - Record the successful scan timestamp in automation memory.
 - Return a concise summary explaining that no meaningful content update was required.
 
+A no-change scan is a **successful run**, not a failure. Do not retry, do not open an empty PR, and do not spawn follow-up agents.
+
 ## STATE COMMIT POLICY
 
 Update .automation/github-docs-state.json and .automation/topic-index.json only after content generation completes, validation succeeds, and the change is ready for pull-request creation.
@@ -269,3 +277,10 @@ Memory may track pending work, but the repository state files are the authoritat
 - Maximum new or updated articles: 2
 - Maximum pull requests: 1
 - Repair attempts: 2
+- Do not launch additional cloud agents or parallel Task workers that keep extra VMs alive after this run
+
+## CONCURRENT-RUN HYGIENE
+
+Cursor rate-limits this automation when too many cloud agents are already active for the same account. The daily 09:00 GMT+7 slot then fails **before an agent boots**, with no transcript and no PR.
+
+When you finish (content PR or no-change skip), stop. Do not leave background work running. Do not start extra agents to “retry” a no-change scan.

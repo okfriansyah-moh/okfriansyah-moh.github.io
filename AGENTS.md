@@ -34,7 +34,7 @@ Before activating the daily automation:
 
 See `.automation/content-policy.md` for the full policy. Summary:
 
-- Discover public GitHub activity for owner `okfriansyah-moh` via GitHub MCP
+- Discover public GitHub activity for owner `okfriansyah-moh` via the authenticated `gh` CLI (GitHub MCP is not attached to this automation)
 - Filter low-value and already-processed activity
 - Score candidates; document only those scoring ≥ 3
 - **Context-aware uniqueness:** match each candidate against `.automation/topic-index.json`
