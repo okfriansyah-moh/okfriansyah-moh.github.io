@@ -429,6 +429,20 @@
         "subset-backtracking",
         "sliding-window-condition"
       ]
+    },
+    "ai-job-search:project-overview": {
+      "document": {
+        "en": "docs/projects/ai-job-search.md",
+        "id": "i18n/id/docusaurus-plugin-content-docs/current/projects/ai-job-search.md"
+      },
+      "sources": ["okfriansyah-moh/ai-job-search"],
+      "repos": ["okfriansyah-moh/ai-job-search"],
+      "learning_objective": "Follow an AI job search fork that adds Telegram-first daily delivery on top of ranked job matching",
+      "covered_capabilities": [
+        "telegram-digest-delivery",
+        "notification-deduplication",
+        "retry-safe-outbox"
+      ]
     }
   }
 }

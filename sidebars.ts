@@ -35,6 +35,7 @@ const sidebars: SidebarsConfig = {
         'projects/ares',
         'projects/go-remembers',
         'projects/data-structure-and-algorithm',
+        'projects/ai-job-search',
       ],
     },
   ],
