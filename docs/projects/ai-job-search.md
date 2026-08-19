@@ -24,9 +24,13 @@ The fork at [okfriansyah-moh/ai-job-search](https://github.com/okfriansyah-moh/a
 
 ---
 
-## What the Fork Adds
+## Problem
 
-The upstream project already scrapes job portals and ranks results. The missing piece was *delivery* — you still had to check the output manually. This fork closes that loop by introducing:
+The upstream project already scrapes job portals and ranks results, but you still had to check the output manually.
+
+## System Requirements
+
+This fork closes that delivery gap by introducing:
 
 1. A Telegram bot client built on the standard library (no third-party SDK)
 2. A ranked job digest formatted as HTML cards
@@ -49,7 +53,9 @@ The pipeline runs as a single daily invocation of `automation/run_daily.py`. Eac
 
 ---
 
-## Telegram Delivery (`automation/telegram.py`)
+## Implementation
+
+### Telegram Delivery (`automation/telegram.py`)
 
 The Telegram module is self-contained with zero external dependencies beyond Python's standard library. It communicates with the [Telegram Bot API](https://core.telegram.org/bots/api) directly via `urllib.request`.
 
@@ -100,7 +106,7 @@ Failed batches are held in an outbox and retried on the next run, rather than si
 
 ---
 
-## Daily Runner (`automation/run_daily.py`)
+### Daily Runner (`automation/run_daily.py`)
 
 The `run_daily.py` script ties all stages together and is the single entrypoint for every scheduler:
 
@@ -132,7 +138,7 @@ The `--dry-run` flag previews the full pipeline without writing state or sending
 
 ---
 
-## Scheduler Support
+### Scheduler Support
 
 The `automation/schedulers/` directory includes ready-made scheduler configs:
 
@@ -146,7 +152,7 @@ The GitHub Actions scheduler is the most portable option — it requires no loca
 
 ---
 
-## Setup
+### Setup
 
 ```bash
 git clone https://github.com/okfriansyah-moh/ai-job-search
@@ -167,7 +173,7 @@ Create a Telegram bot via [@BotFather](https://t.me/BotFather), send `/start` to
 
 ---
 
-## What the Upstream Repo Provides
+### What the Upstream Repo Provides
 
 Everything not described above comes from the excellent upstream project by Mads Lorentzen:
 
@@ -179,6 +185,21 @@ Everything not described above comes from the excellent upstream project by Mads
 - **HTML report** — Local report rendering from tracker data
 
 If you're building a job search workflow from scratch, start with the [upstream repository](https://github.com/MadsLorentzen/ai-job-search). This fork is only interesting if you specifically want the Telegram push layer on top.
+
+---
+
+## Failure Modes
+
+- Telegram API delivery failures (retryable and non-retryable)
+- Oversized digest payloads if batching is not enforced
+- Duplicate notifications when deduplication state is missing or corrupted
+- Scheduler overlaps without a lock and idempotency gate
+
+## Lessons Learned
+
+- A deterministic daily runner needs delivery, not just ranking, to be useful in practice
+- Idempotency + deduplication is essential for notification-based automation
+- Explicit retry classification keeps failures visible without creating message spam
 
 ---
 
