@@ -104,7 +104,7 @@ Failed batches are held in an outbox and retried on the next run, rather than si
 
 The `run_daily.py` script ties all stages together and is the single entrypoint for every scheduler:
 
-```python
+```bash
 # Runs with any of these schedulers:
 --scheduler codex | cursor | claude | copilot | cron | launchd | manual
 ```
