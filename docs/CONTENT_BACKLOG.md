@@ -7,11 +7,11 @@ This backlog ranks article opportunities discovered from public repositories own
 `okfriansyah-moh`. The daily automation should consult this file when deciding whether
 to update an existing page or create a new one.
 
-## Status Summary (2026-08-14)
+## Status Summary (2026-08-20)
 
 | Status | Count | Notes |
 |--------|------:|-------|
-| Complete (full template) | 16 | All EN + ID mirrors |
+| Complete (full template) | 18 | All EN + ID mirrors |
 | Stubs remaining | 0 | — |
 | Missing pages | 0 | — |
 
@@ -24,6 +24,8 @@ to update an existing page or create a new one.
 **Updated in 2026-07-26 automation run:** Delivery Foundry system + project articles refreshed for merged PR #1 (Tasks 3–22: agent harness, kernel workflow, CLI/daemon, SKP e2e).
 
 **Completed in 2026-08-14 automation run:** Go Remembers project overview (`go-remembers`), Data Structures & Algorithms learning catalog (`data-structure-and-algorithm`).
+
+**Completed in 2026-08-20 automation run:** Human Atlas system architecture + project overview (new public repo `human-atlas`, initial snapshot 2026-08-17).
 
 ## Priority Legend
 
