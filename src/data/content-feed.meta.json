@@ -1,6 +1,30 @@
 {
   "items": [
     {
+      "title": "AI Job Search — Telegram Notification Fork",
+      "description": "A fork of MadsLorentzen/ai-job-search that adds an automated Telegram digest bot — scraping job portals daily, ranking matches, and pushing rich job cards directly to your phone.",
+      "link": "/docs/projects/ai-job-search",
+      "type": "project",
+      "date": "2026-08-20",
+      "readingTime": 4
+    },
+    {
+      "title": "Human Atlas: Offline Research Workspace Architecture",
+      "description": "How Human Atlas ships a 12 MB standalone HTML atlas with embedded occupation packs, lazy-loaded society data, SHA-256 validation, and field-level evidence guardrails.",
+      "link": "/docs/systems/human-atlas-research-workspace",
+      "type": "system",
+      "date": "2026-08-20",
+      "readingTime": 7
+    },
+    {
+      "title": "Human Atlas",
+      "description": "Standalone research workspace for exploring life, work, and society contexts with visible evidence boundaries — built for product brainstorming and solo-founder research.",
+      "link": "/docs/projects/human-atlas",
+      "type": "project",
+      "date": "2026-08-20",
+      "readingTime": 4
+    },
+    {
       "title": "8 LeetCode Patterns to Master",
       "description": "A beginner-friendly map of eight reusable interview patterns — Two Pointer, BFS, Topological Sort, DFS, Top K, Modified Binary Search, Subset, and Sliding Window — with when-to-use rules, worked examples, and practice problems.",
       "link": "/docs/concepts/leetcode-patterns",

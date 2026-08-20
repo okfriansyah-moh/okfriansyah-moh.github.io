@@ -1,6 +1,30 @@
 {
   "items": [
     {
+      "title": "AI Job Search — Fork Notifikasi Telegram",
+      "description": "Fork dari MadsLorentzen/ai-job-search yang menambahkan bot digest Telegram otomatis — scraping portal kerja harian, memberi ranking kecocokan, lalu mengirim kartu lowongan langsung ke ponsel.",
+      "link": "/docs/projects/ai-job-search",
+      "type": "project",
+      "date": "2026-08-20",
+      "readingTime": 3
+    },
+    {
+      "title": "Human Atlas: Arsitektur Workspace Riset Offline",
+      "description": "Bagaimana Human Atlas mengirim atlas HTML standalone ~12 MB dengan paket occupation tertanam, data society lazy-load, validasi SHA-256, dan guardrail evidence per field.",
+      "link": "/docs/systems/human-atlas-research-workspace",
+      "type": "system",
+      "date": "2026-08-20",
+      "readingTime": 7
+    },
+    {
+      "title": "Human Atlas",
+      "description": "Workspace riset standalone untuk mengeksplorasi konteks kehidupan, pekerjaan, dan masyarakat dengan batas evidence yang terlihat — dibangun untuk brainstorming produk dan riset solo founder.",
+      "link": "/docs/projects/human-atlas",
+      "type": "project",
+      "date": "2026-08-20",
+      "readingTime": 4
+    },
+    {
       "title": "8 Pola LeetCode yang Wajib Dikuasai",
       "description": "Peta pemula untuk delapan pola interview yang dipakai ulang — Two Pointer, BFS, Topological Sort, DFS, Top K, Modified Binary Search, Subset, dan Sliding Window — lengkap dengan aturan kapan dipakai, contoh kerja, dan soal latihan.",
       "link": "/docs/concepts/leetcode-patterns",
