@@ -118,7 +118,7 @@ Future work implied by the repository (not yet evidenced as shipped):
 | Static snapshot over live API | Reproducible research baseline for brainstorming sessions |
 | ISCO-08 as Work backbone | Global occupation interoperability |
 | Society hypotheses separated from facts | Prevents over-confident product recommendations |
-| Offline `file://` support | Founders can archive and share a exact dated bundle |
+| Offline `file://` support | Founders can archive and share an exact dated bundle |
 | Domain-level opportunity hooks | Links research nodes to validation experiments |
 
 ## Relationship to Other Projects
