@@ -443,6 +443,48 @@
         "notification-deduplication",
         "retry-safe-outbox"
       ]
+    },
+    "human-atlas:research-workspace": {
+      "document": {
+        "en": "docs/systems/human-atlas-research-workspace.md",
+        "id": "i18n/id/docusaurus-plugin-content-docs/current/systems/human-atlas-research-workspace.md"
+      },
+      "sources": [
+        "okfriansyah-moh/human-atlas@97f78f5",
+        "okfriansyah-moh/human-atlas@7d61cc0"
+      ],
+      "repos": ["okfriansyah-moh/human-atlas"],
+      "learning_objective": "Design an offline-first research atlas with embedded occupation packs, lazy society data, field-level evidence states, and SHA-256 validated snapshots",
+      "covered_capabilities": [
+        "standalone-html-atlas",
+        "embedded-occupation-packs",
+        "lazy-society-domain-packs",
+        "field-level-evidence-model",
+        "sha256-pack-manifests",
+        "privacy-recommendation-guardrails",
+        "isco08-occupation-hierarchy",
+        "offline-file-smoke-test",
+        "progressive-society-loading",
+        "python-pack-builders"
+      ]
+    },
+    "human-atlas:project-overview": {
+      "document": {
+        "en": "docs/projects/human-atlas.md",
+        "id": "i18n/id/docusaurus-plugin-content-docs/current/projects/human-atlas.md"
+      },
+      "sources": [
+        "okfriansyah-moh/human-atlas",
+        "okfriansyah-moh/human-atlas@97f78f5",
+        "okfriansyah-moh/human-atlas@7d61cc0"
+      ],
+      "repos": ["okfriansyah-moh/human-atlas"],
+      "learning_objective": "Follow Human Atlas as a dated research snapshot for product brainstorming across life, work, and society contexts",
+      "covered_capabilities": [
+        "project-roadmap-status",
+        "research-snapshot-scope",
+        "solo-founder-brainstorming"
+      ]
     }
   }
 }

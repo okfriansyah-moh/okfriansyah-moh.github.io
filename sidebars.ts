@@ -10,6 +10,7 @@ const sidebars: SidebarsConfig = {
         'systems/md-ame-autonomous-media-engine',
         'systems/polymarket-trading-agent',
         'systems/shorts-generator-pipeline',
+        'systems/human-atlas-research-workspace',
       ],
     },
     {
@@ -36,6 +37,7 @@ const sidebars: SidebarsConfig = {
         'projects/go-remembers',
         'projects/data-structure-and-algorithm',
         'projects/ai-job-search',
+        'projects/human-atlas',
       ],
     },
   ],

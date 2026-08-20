@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "last_successful_scan_at": "2026-08-14T13:37:00+00:00",
+  "last_successful_scan_at": "2026-08-20T02:02:33+00:00",
   "processed_pull_requests": [
     "okfriansyah-moh/shorts-generator#8@bootstrap",
     "okfriansyah-moh/shorts-generator#10@bootstrap",
@@ -31,7 +31,16 @@
     "okfriansyah-moh/go-remembers@a99a204",
     "okfriansyah-moh/go-remembers@1bbb318",
     "okfriansyah-moh/data-structure-and-algorithm@d1b8540",
-    "okfriansyah-moh/data-structure-and-algorithm@af6f156"
+    "okfriansyah-moh/data-structure-and-algorithm@af6f156",
+    "okfriansyah-moh/human-atlas@97f78f5",
+    "okfriansyah-moh/human-atlas@7d61cc0",
+    "okfriansyah-moh/go-remembers@452e334",
+    "okfriansyah-moh/go-remembers@c1568f3",
+    "okfriansyah-moh/data-structure-and-algorithm@ba4f191",
+    "okfriansyah-moh/data-structure-and-algorithm@1f7902c",
+    "okfriansyah-moh/mastering-faang@34f4177",
+    "okfriansyah-moh/mastering-faang@05e4a14",
+    "okfriansyah-moh/mastering-faang@5b34c86"
   ],
   "pending_pull_requests": []
 }
