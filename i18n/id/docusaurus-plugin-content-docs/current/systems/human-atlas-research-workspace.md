@@ -239,6 +239,11 @@ menimpa index, manifest, pack, companion JS, dan laporan validasi.
 4. **Domain sensitif butuh aturan privasi machine-readable** — `privacy_rules` dan
    `recommendation_rules` di level manifest skala lebih baik daripada peringatan prosa.
 
+## Terkait
+
+- [Human Atlas](/id/docs/projects/human-atlas)
+- [LLM Guardrails](/id/docs/concepts/llm-guardrails)
+
 ## Sumber
 
 - Repositori: [okfriansyah-moh/human-atlas](https://github.com/okfriansyah-moh/human-atlas)
