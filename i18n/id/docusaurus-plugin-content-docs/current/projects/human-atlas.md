@@ -40,8 +40,8 @@ cakupan lengkap.
 
 ## Mengapa Masalah Ini Sulit
 
-Riset spanning agama, etnis, migrasi, dan aktor publik membawa risiko etis jika disajikan
-sebagai kebenaran exhaustive. Human Atlas secara eksplisit mendokumentasikan:
+Riset yang mencakup agama, etnis, migrasi, dan aktor publik membawa risiko etis jika disajikan
+sebagai kebenaran yang menyeluruh. Human Atlas secara eksplisit mendokumentasikan:
 
 - Orang bernama dibatasi pada entri public-record bertanggal.
 - Inferensi agama atau politik untuk individu pribadi dilarang.
