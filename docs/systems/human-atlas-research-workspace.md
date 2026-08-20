@@ -240,6 +240,11 @@ overwrites indexes, manifests, packs, JS companions, and validation reports.
 4. **Sensitive domains need machine-readable privacy rules** — manifest-level
    `privacy_rules` and `recommendation_rules` scale better than prose warnings.
 
+## Related
+
+- [Human Atlas (project)](/docs/projects/human-atlas)
+- [LLM Guardrails](/docs/concepts/llm-guardrails)
+
 ## Sources
 
 - Repository: [okfriansyah-moh/human-atlas](https://github.com/okfriansyah-moh/human-atlas)
