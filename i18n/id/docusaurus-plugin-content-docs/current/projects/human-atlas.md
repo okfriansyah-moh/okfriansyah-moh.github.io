@@ -45,7 +45,7 @@ sebagai kebenaran yang menyeluruh. Human Atlas secara eksplisit mendokumentasika
 
 - Orang bernama dibatasi pada entri public-record bertanggal.
 - Inferensi agama atau politik untuk individu pribadi dilarang.
-- Klaim cakupan direktori **dated open registry, not exhaustive**.
+- Klaim cakupan direktori **registri terbuka bertanggal, tidak menyeluruh**.
 - Batas rekomendasi yang menjaga field `ai_hypothesis` dan `evidence_gap` terlihat di
   riset tetapi dikecualikan dari rekomendasi produk.
 
