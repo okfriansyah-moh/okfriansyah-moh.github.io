@@ -1,6 +1,14 @@
 {
   "items": [
     {
+      "title": "Empat Sifat AI Generatif: Kerangka Praktis untuk Kepercayaan yang Terkalibrasi",
+      "description": "Model praktis untuk memahami next-token prediction, knowledge, working memory, dan steerability—lalu memilih kontrol yang tepat agar kerja berbantuan AI lebih andal.",
+      "link": "/docs/concepts/ai-capabilities-and-limitations",
+      "type": "concept",
+      "date": "2026-08-25",
+      "readingTime": 17
+    },
+    {
       "title": "AI Job Search — Fork Notifikasi Telegram",
       "description": "Fork dari MadsLorentzen/ai-job-search yang menambahkan bot digest Telegram otomatis — scraping portal kerja harian, memberi ranking kecocokan, lalu mengirim kartu lowongan langsung ke ponsel.",
       "link": "/docs/projects/ai-job-search",

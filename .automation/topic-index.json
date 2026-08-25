@@ -218,6 +218,26 @@
         "prompt-firewall"
       ]
     },
+    "ai-fluency:capabilities-and-limitations": {
+      "document": {
+        "en": "docs/concepts/ai-capabilities-and-limitations.md",
+        "id": "i18n/id/docusaurus-plugin-content-docs/current/concepts/ai-capabilities-and-limitations.md"
+      },
+      "sources": [
+        "https://academy.claude.com/courses/ai-capabilities-and-limitations",
+        "https://arxiv.org/abs/2307.03172"
+      ],
+      "repos": [],
+      "learning_objective": "Evaluate an AI-assisted task across next-token prediction, knowledge, working memory, and steerability, then select proportionate grounding and verification controls",
+      "covered_capabilities": [
+        "next-token-prediction-mental-model",
+        "knowledge-boundary-diagnosis",
+        "working-memory-context-management",
+        "steerability-failure-diagnosis",
+        "property-collision-analysis",
+        "calibrated-trust-delegation"
+      ]
+    },
     "delivery-foundry:control-plane": {
       "document": {
         "en": "docs/systems/delivery-foundry-control-plane.md",
