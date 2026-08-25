@@ -1,6 +1,14 @@
 {
   "items": [
     {
+      "title": "Four Properties of Generative AI: A Practical Framework for Calibrated Trust",
+      "description": "A practical model for understanding next-token prediction, knowledge, working memory, and steerability—and choosing the right controls for reliable AI-assisted work.",
+      "link": "/docs/concepts/ai-capabilities-and-limitations",
+      "type": "concept",
+      "date": "2026-08-25",
+      "readingTime": 19
+    },
+    {
       "title": "AI Job Search — Telegram Notification Fork",
       "description": "A fork of MadsLorentzen/ai-job-search that adds an automated Telegram digest bot — scraping job portals daily, ranking matches, and pushing rich job cards directly to your phone.",
       "link": "/docs/projects/ai-job-search",

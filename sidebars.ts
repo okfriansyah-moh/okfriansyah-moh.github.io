@@ -21,6 +21,7 @@ const sidebars: SidebarsConfig = {
         'concepts/database-state-machines',
         'concepts/ai-orchestration-patterns',
         'concepts/llm-guardrails',
+        'concepts/ai-capabilities-and-limitations',
         'concepts/ai-document-coherence',
         'concepts/deterministic-agentic-orchestrator',
         'concepts/leetcode-patterns',
