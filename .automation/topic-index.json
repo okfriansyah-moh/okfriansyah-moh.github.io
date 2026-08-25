@@ -224,7 +224,6 @@
         "id": "i18n/id/docusaurus-plugin-content-docs/current/concepts/ai-capabilities-and-limitations.md"
       },
       "sources": [
-        "AI Capabilities and Limitation.md",
         "https://academy.claude.com/courses/ai-capabilities-and-limitations",
         "https://arxiv.org/abs/2307.03172"
       ],
