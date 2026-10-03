@@ -17,7 +17,6 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: 'Concepts',
       items: [
-        'concepts/codex-game-audio-synthesis',
         'concepts/deterministic-ai-pipelines',
         'concepts/database-state-machines',
         'concepts/ai-orchestration-patterns',
@@ -26,6 +25,7 @@ const sidebars: SidebarsConfig = {
         'concepts/ai-document-coherence',
         'concepts/deterministic-agentic-orchestrator',
         'concepts/leetcode-patterns',
+        'concepts/codex-game-audio-synthesis',
       ],
     },
     {
