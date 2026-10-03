@@ -1,0 +1,470 @@
+{
+  "outcome": "PASS",
+  "checks": [
+    {
+      "locale": "en",
+      "check": "loaded article and lazy accessible audio",
+      "outcome": "PASS",
+      "initialMediaRequests": 0,
+      "controls": [
+        {
+          "label": "Tile placement A: ceramic / marimba",
+          "preload": "none",
+          "autoplay": false,
+          "controls": true,
+          "paused": true,
+          "src": "http://127.0.0.1:8791/assets/medias/tile_place_A-5f30294fc883c3ef61cf618ab736e61a.wav"
+        },
+        {
+          "label": "Tile placement B: wood / copper — saved selection",
+          "preload": "none",
+          "autoplay": false,
+          "controls": true,
+          "paused": true,
+          "src": "http://127.0.0.1:8791/assets/medias/tile_place_B-ddf4e255fced257ba534429804f9e327.wav"
+        },
+        {
+          "label": "Tile placement C: electronic / ceramic",
+          "preload": "none",
+          "autoplay": false,
+          "controls": true,
+          "paused": true,
+          "src": "http://127.0.0.1:8791/assets/medias/tile_place_C-0e61fdb0e36aaef5ddc9ebfcfd19627a.wav"
+        },
+        {
+          "label": "Puzzle victory C — saved selection",
+          "preload": "none",
+          "autoplay": false,
+          "controls": true,
+          "paused": true,
+          "src": "http://127.0.0.1:8791/assets/medias/puzzle_victory_C-2e035b1e3d013b9dc1b48a6941051641.wav"
+        },
+        {
+          "label": "Gameplay music A — saved selection",
+          "preload": "none",
+          "autoplay": false,
+          "controls": true,
+          "paused": true,
+          "src": "http://127.0.0.1:8791/assets/medias/bg_gameplay_A-6d4a14a44ea3293eaadc4a76c9d45053.wav"
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "check": "keyboard playback and delivered hash: 0",
+      "outcome": "PASS",
+      "sha256": "b6422c1c5ea0adfb970b24d93f9ea4e572b046b5de328a184263c8a626fa654a",
+      "duration": 0.24,
+      "currentTime": 0.24,
+      "paused": true,
+      "error": null,
+      "plays": 1,
+      "ends": 1
+    },
+    {
+      "locale": "en",
+      "check": "keyboard playback and delivered hash: 1",
+      "outcome": "PASS",
+      "sha256": "84a3f86c0c8b6dc755d220b1fa9f27a524eb1f5e35a8fa585f2b576345ee85ab",
+      "duration": 0.24,
+      "currentTime": 0.24,
+      "paused": true,
+      "error": null,
+      "plays": 1,
+      "ends": 1
+    },
+    {
+      "locale": "en",
+      "check": "keyboard playback and delivered hash: 2",
+      "outcome": "PASS",
+      "sha256": "2a4ba930e6d5a6ea8165479489af3ef8cdb1e78c13e405f5247febb7a5336e5e",
+      "duration": 0.24,
+      "currentTime": 0.24,
+      "paused": true,
+      "error": null,
+      "plays": 1,
+      "ends": 1
+    },
+    {
+      "locale": "en",
+      "check": "keyboard playback and delivered hash: 3",
+      "outcome": "PASS",
+      "sha256": "d92d987739922a2339abb81cc7971fd2bd0f4e78ca514a40a8d7d81b75144f2c",
+      "duration": 1.25,
+      "currentTime": 1.25,
+      "paused": true,
+      "error": null,
+      "plays": 1,
+      "ends": 1
+    },
+    {
+      "locale": "en",
+      "check": "keyboard playback and delivered hash: 4",
+      "outcome": "PASS",
+      "sha256": "0b1436a49095a519837e972863c52f695cb1939dcc5f4dd09ba2031719a359fc",
+      "duration": 102.4,
+      "currentTime": 0.22023,
+      "paused": true,
+      "error": null,
+      "plays": 1,
+      "ends": 0
+    },
+    {
+      "locale": "en",
+      "check": "layout at 320px with enlarged text",
+      "outcome": "PASS",
+      "viewport": 320,
+      "documentWidth": 320,
+      "controls": [
+        {
+          "width": 260.796875,
+          "left": 29.609375,
+          "right": 290.40625
+        },
+        {
+          "width": 260.796875,
+          "left": 29.609375,
+          "right": 290.40625
+        },
+        {
+          "width": 260.796875,
+          "left": 29.609375,
+          "right": 290.40625
+        },
+        {
+          "width": 260.796875,
+          "left": 29.609375,
+          "right": 290.40625
+        },
+        {
+          "width": 260.796875,
+          "left": 29.609375,
+          "right": 290.40625
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "check": "layout at 390px with enlarged text",
+      "outcome": "PASS",
+      "viewport": 390,
+      "documentWidth": 390,
+      "controls": [
+        {
+          "width": 326.59375,
+          "left": 31.703125,
+          "right": 358.296875
+        },
+        {
+          "width": 326.59375,
+          "left": 31.703125,
+          "right": 358.296875
+        },
+        {
+          "width": 326.59375,
+          "left": 31.703125,
+          "right": 358.296875
+        },
+        {
+          "width": 326.59375,
+          "left": 31.703125,
+          "right": 358.296875
+        },
+        {
+          "width": 326.59375,
+          "left": 31.703125,
+          "right": 358.296875
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "check": "layout at 900px with enlarged text",
+      "outcome": "PASS",
+      "viewport": 900,
+      "documentWidth": 900,
+      "controls": [
+        {
+          "width": 720,
+          "left": 49.5,
+          "right": 769.5
+        },
+        {
+          "width": 720,
+          "left": 49.5,
+          "right": 769.5
+        },
+        {
+          "width": 720,
+          "left": 49.5,
+          "right": 769.5
+        },
+        {
+          "width": 720,
+          "left": 49.5,
+          "right": 769.5
+        },
+        {
+          "width": 720,
+          "left": 49.5,
+          "right": 769.5
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "check": "article contacts, official citation, and rendered diagram",
+      "outcome": "PASS",
+      "svgCount": 9
+    },
+    {
+      "locale": "en",
+      "check": "feed entry /articles",
+      "outcome": "PASS"
+    },
+    {
+      "locale": "en",
+      "check": "feed entry /",
+      "outcome": "PASS"
+    },
+    {
+      "locale": "en",
+      "check": "browser JavaScript errors",
+      "outcome": "PASS",
+      "errors": []
+    },
+    {
+      "locale": "id",
+      "check": "loaded article and lazy accessible audio",
+      "outcome": "PASS",
+      "initialMediaRequests": 0,
+      "controls": [
+        {
+          "label": "Penempatan tile A: keramik / marimba",
+          "preload": "none",
+          "autoplay": false,
+          "controls": true,
+          "paused": true,
+          "src": "http://127.0.0.1:8791/id/assets/medias/tile_place_A-5f30294fc883c3ef61cf618ab736e61a.wav"
+        },
+        {
+          "label": "Penempatan tile B: kayu / tembaga — pilihan tersimpan",
+          "preload": "none",
+          "autoplay": false,
+          "controls": true,
+          "paused": true,
+          "src": "http://127.0.0.1:8791/id/assets/medias/tile_place_B-ddf4e255fced257ba534429804f9e327.wav"
+        },
+        {
+          "label": "Penempatan tile C: elektronik / keramik",
+          "preload": "none",
+          "autoplay": false,
+          "controls": true,
+          "paused": true,
+          "src": "http://127.0.0.1:8791/id/assets/medias/tile_place_C-0e61fdb0e36aaef5ddc9ebfcfd19627a.wav"
+        },
+        {
+          "label": "Kemenangan puzzle C — pilihan tersimpan",
+          "preload": "none",
+          "autoplay": false,
+          "controls": true,
+          "paused": true,
+          "src": "http://127.0.0.1:8791/id/assets/medias/puzzle_victory_C-2e035b1e3d013b9dc1b48a6941051641.wav"
+        },
+        {
+          "label": "Musik permainan A — pilihan tersimpan",
+          "preload": "none",
+          "autoplay": false,
+          "controls": true,
+          "paused": true,
+          "src": "http://127.0.0.1:8791/id/assets/medias/bg_gameplay_A-6d4a14a44ea3293eaadc4a76c9d45053.wav"
+        }
+      ]
+    },
+    {
+      "locale": "id",
+      "check": "keyboard playback and delivered hash: 0",
+      "outcome": "PASS",
+      "sha256": "b6422c1c5ea0adfb970b24d93f9ea4e572b046b5de328a184263c8a626fa654a",
+      "duration": 0.24,
+      "currentTime": 0.24,
+      "paused": true,
+      "error": null,
+      "plays": 1,
+      "ends": 1
+    },
+    {
+      "locale": "id",
+      "check": "keyboard playback and delivered hash: 1",
+      "outcome": "PASS",
+      "sha256": "84a3f86c0c8b6dc755d220b1fa9f27a524eb1f5e35a8fa585f2b576345ee85ab",
+      "duration": 0.24,
+      "currentTime": 0.24,
+      "paused": true,
+      "error": null,
+      "plays": 1,
+      "ends": 1
+    },
+    {
+      "locale": "id",
+      "check": "keyboard playback and delivered hash: 2",
+      "outcome": "PASS",
+      "sha256": "2a4ba930e6d5a6ea8165479489af3ef8cdb1e78c13e405f5247febb7a5336e5e",
+      "duration": 0.24,
+      "currentTime": 0.24,
+      "paused": true,
+      "error": null,
+      "plays": 1,
+      "ends": 1
+    },
+    {
+      "locale": "id",
+      "check": "keyboard playback and delivered hash: 3",
+      "outcome": "PASS",
+      "sha256": "d92d987739922a2339abb81cc7971fd2bd0f4e78ca514a40a8d7d81b75144f2c",
+      "duration": 1.25,
+      "currentTime": 1.25,
+      "paused": true,
+      "error": null,
+      "plays": 1,
+      "ends": 1
+    },
+    {
+      "locale": "id",
+      "check": "keyboard playback and delivered hash: 4",
+      "outcome": "PASS",
+      "sha256": "0b1436a49095a519837e972863c52f695cb1939dcc5f4dd09ba2031719a359fc",
+      "duration": 102.4,
+      "currentTime": 0.224464,
+      "paused": true,
+      "error": null,
+      "plays": 1,
+      "ends": 0
+    },
+    {
+      "locale": "id",
+      "check": "layout at 320px with enlarged text",
+      "outcome": "PASS",
+      "viewport": 320,
+      "documentWidth": 320,
+      "controls": [
+        {
+          "width": 260.796875,
+          "left": 29.609375,
+          "right": 290.40625
+        },
+        {
+          "width": 260.796875,
+          "left": 29.609375,
+          "right": 290.40625
+        },
+        {
+          "width": 260.796875,
+          "left": 29.609375,
+          "right": 290.40625
+        },
+        {
+          "width": 260.796875,
+          "left": 29.609375,
+          "right": 290.40625
+        },
+        {
+          "width": 260.796875,
+          "left": 29.609375,
+          "right": 290.40625
+        }
+      ]
+    },
+    {
+      "locale": "id",
+      "check": "layout at 390px with enlarged text",
+      "outcome": "PASS",
+      "viewport": 390,
+      "documentWidth": 390,
+      "controls": [
+        {
+          "width": 326.59375,
+          "left": 31.703125,
+          "right": 358.296875
+        },
+        {
+          "width": 326.59375,
+          "left": 31.703125,
+          "right": 358.296875
+        },
+        {
+          "width": 326.59375,
+          "left": 31.703125,
+          "right": 358.296875
+        },
+        {
+          "width": 326.59375,
+          "left": 31.703125,
+          "right": 358.296875
+        },
+        {
+          "width": 326.59375,
+          "left": 31.703125,
+          "right": 358.296875
+        }
+      ]
+    },
+    {
+      "locale": "id",
+      "check": "layout at 900px with enlarged text",
+      "outcome": "PASS",
+      "viewport": 900,
+      "documentWidth": 900,
+      "controls": [
+        {
+          "width": 720,
+          "left": 49.5,
+          "right": 769.5
+        },
+        {
+          "width": 720,
+          "left": 49.5,
+          "right": 769.5
+        },
+        {
+          "width": 720,
+          "left": 49.5,
+          "right": 769.5
+        },
+        {
+          "width": 720,
+          "left": 49.5,
+          "right": 769.5
+        },
+        {
+          "width": 720,
+          "left": 49.5,
+          "right": 769.5
+        }
+      ]
+    },
+    {
+      "locale": "id",
+      "check": "article contacts, official citation, and rendered diagram",
+      "outcome": "PASS",
+      "svgCount": 9
+    },
+    {
+      "locale": "id",
+      "check": "feed entry /articles",
+      "outcome": "PASS"
+    },
+    {
+      "locale": "id",
+      "check": "feed entry /",
+      "outcome": "PASS"
+    },
+    {
+      "locale": "id",
+      "check": "browser JavaScript errors",
+      "outcome": "PASS",
+      "errors": []
+    }
+  ],
+  "limitation": "Headless Chromium playback state and decoding checks; no physical listening or gameplay claim."
+}

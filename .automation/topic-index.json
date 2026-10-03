@@ -505,6 +505,26 @@
         "research-snapshot-scope",
         "solo-founder-brainstorming"
       ]
+    },
+    "padu:codex-game-audio-synthesis": {
+      "document": {
+        "en": "docs/concepts/codex-game-audio-synthesis.mdx",
+        "id": "i18n/id/docusaurus-plugin-content-docs/current/concepts/codex-game-audio-synthesis.mdx"
+      },
+      "sources": [
+        "okfriansyah-moh/padu@5746ab7c04828d6b382de8a132a2332a18480ee9:artifacts/audio/padu-candidates",
+        "https://learn.chatgpt.com/docs/codex/cli"
+      ],
+      "repos": [
+        "okfriansyah-moh/padu"
+      ],
+      "learning_objective": "Use Codex and local procedural synthesis to build, compare, verify, and preserve editable game-audio candidates.",
+      "covered_capabilities": [
+        "codex-procedural-game-audio",
+        "audio-production-brief-to-score",
+        "audio-candidate-audition-selection",
+        "audio-master-provenance-verification"
+      ]
     }
   }
 }

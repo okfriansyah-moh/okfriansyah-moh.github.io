@@ -1,6 +1,14 @@
 {
   "items": [
     {
+      "title": "How I Used Codex to Synthesize Game Audio: Lessons from Padu",
+      "description": "A practical Padu case study: procedural sound synthesis with Codex, five playable examples, real production briefs, and a reusable asset workflow.",
+      "link": "/docs/concepts/codex-game-audio-synthesis",
+      "type": "concept",
+      "date": "2026-10-03",
+      "readingTime": 13
+    },
+    {
       "title": "Four Properties of Generative AI: A Practical Framework for Calibrated Trust",
       "description": "A practical model for understanding next-token prediction, knowledge, working memory, and steerability—and choosing the right controls for reliable AI-assisted work.",
       "link": "/docs/concepts/ai-capabilities-and-limitations",

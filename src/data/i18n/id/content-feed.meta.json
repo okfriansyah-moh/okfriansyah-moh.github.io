@@ -1,6 +1,14 @@
 {
   "items": [
     {
+      "title": "Cara Saya Menggunakan Codex untuk Menyintesis Audio Game: Pelajaran dari Padu",
+      "description": "Studi kasus Padu: sintesis suara prosedural dengan Codex, lima contoh audio, brief produksi asli, dan alur pembuatan aset yang bisa digunakan kembali.",
+      "link": "/docs/concepts/codex-game-audio-synthesis",
+      "type": "concept",
+      "date": "2026-10-03",
+      "readingTime": 13
+    },
+    {
       "title": "Empat Sifat AI Generatif: Kerangka Praktis untuk Kepercayaan yang Terkalibrasi",
       "description": "Model praktis untuk memahami next-token prediction, knowledge, working memory, dan steerability—lalu memilih kontrol yang tepat agar kerja berbantuan AI lebih andal.",
       "link": "/docs/concepts/ai-capabilities-and-limitations",

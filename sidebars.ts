@@ -25,6 +25,7 @@ const sidebars: SidebarsConfig = {
         'concepts/ai-document-coherence',
         'concepts/deterministic-agentic-orchestrator',
         'concepts/leetcode-patterns',
+        'concepts/codex-game-audio-synthesis',
       ],
     },
     {
