@@ -1,0 +1,52 @@
+[
+  {
+    "name": "tile_place",
+    "variant": "A",
+    "source": "sfx/tile_place_A.wav",
+    "destination": "docs/concepts/audio/codex-game-audio-synthesis/tile_place_A.wav",
+    "sha256": "b6422c1c5ea0adfb970b24d93f9ea4e572b046b5de328a184263c8a626fa654a",
+    "duration_seconds": 0.24,
+    "selected": false,
+    "bytes": 34604
+  },
+  {
+    "name": "tile_place",
+    "variant": "B",
+    "source": "sfx/tile_place_B.wav",
+    "destination": "docs/concepts/audio/codex-game-audio-synthesis/tile_place_B.wav",
+    "sha256": "84a3f86c0c8b6dc755d220b1fa9f27a524eb1f5e35a8fa585f2b576345ee85ab",
+    "duration_seconds": 0.24,
+    "selected": true,
+    "bytes": 34604
+  },
+  {
+    "name": "tile_place",
+    "variant": "C",
+    "source": "sfx/tile_place_C.wav",
+    "destination": "docs/concepts/audio/codex-game-audio-synthesis/tile_place_C.wav",
+    "sha256": "2a4ba930e6d5a6ea8165479489af3ef8cdb1e78c13e405f5247febb7a5336e5e",
+    "duration_seconds": 0.24,
+    "selected": false,
+    "bytes": 34604
+  },
+  {
+    "name": "puzzle_victory",
+    "variant": "C",
+    "source": "sfx/puzzle_victory_C.wav",
+    "destination": "docs/concepts/audio/codex-game-audio-synthesis/puzzle_victory_C.wav",
+    "sha256": "d92d987739922a2339abb81cc7971fd2bd0f4e78ca514a40a8d7d81b75144f2c",
+    "duration_seconds": 1.25,
+    "selected": true,
+    "bytes": 180044
+  },
+  {
+    "name": "bg_gameplay",
+    "variant": "A",
+    "source": "music/bg_gameplay_A.wav",
+    "destination": "docs/concepts/audio/codex-game-audio-synthesis/bg_gameplay_A.wav",
+    "sha256": "0b1436a49095a519837e972863c52f695cb1939dcc5f4dd09ba2031719a359fc",
+    "duration_seconds": 102.4,
+    "selected": true,
+    "bytes": 29491244
+  }
+]

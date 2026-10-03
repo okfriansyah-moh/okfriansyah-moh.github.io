@@ -1,0 +1,14 @@
+{
+  "outcome": "PASS",
+  "preserved_source_files": 469,
+  "existing_feed_entries_unchanged": true,
+  "legacy_feed_matches_english": true,
+  "original_site_checkout_unchanged": true,
+  "changed_existing_paths": [
+    ".automation/topic-index.json",
+    "sidebars.ts",
+    "src/data/content-feed.meta.json",
+    "src/data/i18n/en/content-feed.meta.json",
+    "src/data/i18n/id/content-feed.meta.json"
+  ]
+}
