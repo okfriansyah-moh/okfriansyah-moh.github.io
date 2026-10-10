@@ -1,6 +1,14 @@
 {
   "items": [
     {
+      "title": "Identitas Visual Sebelum Pengembangan: Pelajaran dari Padu",
+      "description": "Tentukan tema, maskot, logo, warna, dan ikon game sejak awal, lalu terapkan identitasnya melalui aset dan komponen yang dapat digunakan kembali bersama Codex.",
+      "link": "/docs/concepts/visual-identity-before-development",
+      "type": "concept",
+      "date": "2026-10-10",
+      "readingTime": 10
+    },
+    {
       "title": "Cara Saya Menggunakan Codex untuk Menyintesis Audio Game: Pelajaran dari Padu",
       "description": "Studi kasus Padu: sintesis suara prosedural dengan Codex, lima contoh audio, brief produksi asli, dan alur pembuatan aset yang bisa digunakan kembali.",
       "link": "/docs/concepts/codex-game-audio-synthesis",
