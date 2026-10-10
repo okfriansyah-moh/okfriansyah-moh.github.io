@@ -1,0 +1,35 @@
+
+> ok-sites@0.0.0 build
+> npm run sync:feed && docusaurus build
+
+
+> ok-sites@0.0.0 sync:feed
+> node scripts/sync-content-feed.mjs
+
+[sync-content-feed:en] Feed is in sync with topic-index.
+[sync-content-feed:id] Feed is in sync with topic-index.
+[INFO] Website will be built for all these locales:
+- en
+- id
+[INFO] [en] Creating an optimized production build...
+Browserslist: browsers data (caniuse-lite) is 7 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+[webpackbar] ℹ Compiling Client
+[webpackbar] ℹ Compiling Server
+[webpackbar] ✔ Server: Compiled successfully in 2.44s
+[webpackbar] ✔ Client: Compiled successfully in 3.83s
+[SUCCESS] Generated static files in "build".
+[INFO] [id] Creating an optimized production build...
+[webpackbar] ℹ Compiling Client
+[webpackbar] ℹ Compiling Server
+[webpackbar] ✔ Server: Compiled successfully in 1.73s
+[webpackbar] ✔ Client: Compiled successfully in 3.08s
+[SUCCESS] Generated static files in "build/id".
+[INFO] Use `npm run serve` command to test your build locally.
+┌───────────────────────────────────────────────────────────┐
+│           @docusaurus/core update check failed            │
+│            Try running with sudo or get access            │
+│           to the local update config store via            │
+│ sudo chown -R $USER:$(id -gn $USER) [local update config store] │
+└───────────────────────────────────────────────────────────┘

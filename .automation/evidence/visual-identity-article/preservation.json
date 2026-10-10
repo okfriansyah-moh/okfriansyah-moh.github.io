@@ -1,0 +1,31 @@
+{
+  "targetBaseline": "24f757d503625b5abe11dbd442696f6220a17e6a",
+  "targetBaselineClean": true,
+  "sourceRevision": "6e1d0e836c2741f64bd47b35aef1d44d8919a1e0",
+  "sourceWorkingTreePreserved": true,
+  "sourceBaselineClean": true,
+  "sourceInventoryFileCount": 39,
+  "allInventoriedFilesUnchanged": true,
+  "brandInventoryNoAdditionsOrDeletions": true,
+  "originalSiteCheckoutPreserved": true,
+  "feeds": [
+    {
+      "path": "src/data/content-feed.meta.json",
+      "existingEntriesUnchanged": true,
+      "newEntries": 1
+    },
+    {
+      "path": "src/data/i18n/en/content-feed.meta.json",
+      "existingEntriesUnchanged": true,
+      "newEntries": 1
+    },
+    {
+      "path": "src/data/i18n/id/content-feed.meta.json",
+      "existingEntriesUnchanged": true,
+      "newEntries": 1
+    }
+  ],
+  "existingTopicEntriesUnchanged": true,
+  "legacyFeedEqualsEnglish": true,
+  "dartExcerptsMatchSource": true
+}

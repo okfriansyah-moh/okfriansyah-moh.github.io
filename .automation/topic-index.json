@@ -506,6 +506,28 @@
         "solo-founder-brainstorming"
       ]
     },
+    "padu:visual-identity-before-development": {
+      "document": {
+        "en": "docs/concepts/visual-identity-before-development.mdx",
+        "id": "i18n/id/docusaurus-plugin-content-docs/current/concepts/visual-identity-before-development.mdx"
+      },
+      "sources": [
+        "okfriansyah-moh/padu@6e1d0e836c2741f64bd47b35aef1d44d8919a1e0:docs/PADU_BRAND.md",
+        "okfriansyah-moh/padu@6e1d0e836c2741f64bd47b35aef1d44d8919a1e0:apps/mobile_flutter/lib/core/theme/app_theme.dart",
+        "okfriansyah-moh/padu@6e1d0e836c2741f64bd47b35aef1d44d8919a1e0:docs/brand/padu",
+        "https://learn.chatgpt.com/docs/codex/cli",
+        "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html",
+        "https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html"
+      ],
+      "repos": ["okfriansyah-moh/padu"],
+      "learning_objective": "Define a game’s visual identity before main development and carry approved artwork, semantic tokens, and asset roles into reusable components with Codex.",
+      "covered_capabilities": [
+        "game-visual-identity-before-development",
+        "mascot-wordmark-mark-icon-role-separation",
+        "semantic-brand-tokens-and-components",
+        "visual-identity-prompt-and-review-workflow"
+      ]
+    },
     "padu:codex-game-audio-synthesis": {
       "document": {
         "en": "docs/concepts/codex-game-audio-synthesis.mdx",

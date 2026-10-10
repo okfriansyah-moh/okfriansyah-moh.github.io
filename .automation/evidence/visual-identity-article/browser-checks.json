@@ -1,0 +1,716 @@
+{
+  "browser": "154.0.8037.98",
+  "articleHashes": {
+    "docs/concepts/visual-identity-before-development.mdx": "5374bab3d55beca682b01034369d606df451f87c4d7e31912eba902c8ac9fa3d",
+    "i18n/id/docusaurus-plugin-content-docs/current/concepts/visual-identity-before-development.mdx": "e5e555d55f09e8ceacb93a370c3d9005738571d0019df1a8a9d499248a6a652e"
+  },
+  "results": [
+    {
+      "check": "responsive",
+      "locale": "en",
+      "width": 320,
+      "overflow": {
+        "viewport": 320,
+        "scroll": 320
+      },
+      "imageCount": 11,
+      "figureCount": 5,
+      "mermaid": true,
+      "diagramAccessibleTitle": true,
+      "svgTextLabels": true,
+      "wrappedCodeBlocks": [
+        {
+          "client": 267,
+          "scroll": 267,
+          "wrap": "pre-wrap"
+        },
+        {
+          "client": 267,
+          "scroll": 267,
+          "wrap": "pre-wrap"
+        },
+        {
+          "client": 267,
+          "scroll": 267,
+          "wrap": "pre-wrap"
+        },
+        {
+          "client": 267,
+          "scroll": 267,
+          "wrap": "pre-wrap"
+        },
+        {
+          "client": 267,
+          "scroll": 267,
+          "wrap": "pre-wrap"
+        }
+      ],
+      "staticComparisons": true,
+      "fonts": {
+        "font": "Inter, system-ui, sans-serif",
+        "root": "16px"
+      }
+    },
+    {
+      "check": "enlarged-text",
+      "locale": "en",
+      "width": 320,
+      "fontSize": "20px",
+      "overflow": {
+        "viewport": 320,
+        "scroll": 320
+      },
+      "imagesInBounds": true,
+      "documentFits": true
+    },
+    {
+      "check": "enlarged-text",
+      "locale": "en",
+      "width": 320,
+      "fontSize": "32px",
+      "overflow": {
+        "viewport": 320,
+        "scroll": 443
+      },
+      "imagesInBounds": true,
+      "documentFits": false
+    },
+    {
+      "check": "responsive",
+      "locale": "en",
+      "width": 390,
+      "overflow": {
+        "viewport": 390,
+        "scroll": 390
+      },
+      "imageCount": 11,
+      "figureCount": 5,
+      "mermaid": true,
+      "diagramAccessibleTitle": true,
+      "svgTextLabels": true,
+      "wrappedCodeBlocks": [
+        {
+          "client": 333,
+          "scroll": 333,
+          "wrap": "pre-wrap"
+        },
+        {
+          "client": 333,
+          "scroll": 333,
+          "wrap": "pre-wrap"
+        },
+        {
+          "client": 333,
+          "scroll": 333,
+          "wrap": "pre-wrap"
+        },
+        {
+          "client": 333,
+          "scroll": 333,
+          "wrap": "pre-wrap"
+        },
+        {
+          "client": 333,
+          "scroll": 333,
+          "wrap": "pre-wrap"
+        }
+      ],
+      "staticComparisons": true,
+      "fonts": {
+        "font": "Inter, system-ui, sans-serif",
+        "root": "16px"
+      }
+    },
+    {
+      "check": "enlarged-text",
+      "locale": "en",
+      "width": 390,
+      "fontSize": "20px",
+      "overflow": {
+        "viewport": 390,
+        "scroll": 390
+      },
+      "imagesInBounds": true,
+      "documentFits": true
+    },
+    {
+      "check": "enlarged-text",
+      "locale": "en",
+      "width": 390,
+      "fontSize": "32px",
+      "overflow": {
+        "viewport": 390,
+        "scroll": 445
+      },
+      "imagesInBounds": true,
+      "documentFits": false
+    },
+    {
+      "check": "responsive",
+      "locale": "en",
+      "width": 900,
+      "overflow": {
+        "viewport": 900,
+        "scroll": 900
+      },
+      "imageCount": 11,
+      "figureCount": 5,
+      "mermaid": true,
+      "diagramAccessibleTitle": true,
+      "svgTextLabels": true,
+      "wrappedCodeBlocks": [
+        {
+          "client": 799,
+          "scroll": 799,
+          "wrap": "pre-wrap"
+        },
+        {
+          "client": 799,
+          "scroll": 799,
+          "wrap": "pre-wrap"
+        },
+        {
+          "client": 799,
+          "scroll": 799,
+          "wrap": "pre-wrap"
+        },
+        {
+          "client": 799,
+          "scroll": 799,
+          "wrap": "pre-wrap"
+        },
+        {
+          "client": 799,
+          "scroll": 799,
+          "wrap": "pre-wrap"
+        }
+      ],
+      "staticComparisons": true,
+      "fonts": {
+        "font": "Inter, system-ui, sans-serif",
+        "root": "16px"
+      }
+    },
+    {
+      "check": "enlarged-text",
+      "locale": "en",
+      "width": 900,
+      "fontSize": "20px",
+      "overflow": {
+        "viewport": 900,
+        "scroll": 900
+      },
+      "imagesInBounds": true,
+      "documentFits": true
+    },
+    {
+      "check": "enlarged-text",
+      "locale": "en",
+      "width": 900,
+      "fontSize": "32px",
+      "overflow": {
+        "viewport": 900,
+        "scroll": 900
+      },
+      "imagesInBounds": true,
+      "documentFits": true
+    },
+    {
+      "check": "responsive",
+      "locale": "en",
+      "width": 1440,
+      "overflow": {
+        "viewport": 1440,
+        "scroll": 1440
+      },
+      "imageCount": 11,
+      "figureCount": 5,
+      "mermaid": true,
+      "diagramAccessibleTitle": true,
+      "svgTextLabels": true,
+      "wrappedCodeBlocks": [
+        {
+          "client": 650,
+          "scroll": 650,
+          "wrap": "pre-wrap"
+        },
+        {
+          "client": 650,
+          "scroll": 650,
+          "wrap": "pre-wrap"
+        },
+        {
+          "client": 650,
+          "scroll": 650,
+          "wrap": "pre-wrap"
+        },
+        {
+          "client": 650,
+          "scroll": 650,
+          "wrap": "pre-wrap"
+        },
+        {
+          "client": 650,
+          "scroll": 650,
+          "wrap": "pre-wrap"
+        }
+      ],
+      "staticComparisons": true,
+      "fonts": {
+        "font": "Inter, system-ui, sans-serif",
+        "root": "16px"
+      }
+    },
+    {
+      "check": "enlarged-text",
+      "locale": "en",
+      "width": 1440,
+      "fontSize": "20px",
+      "overflow": {
+        "viewport": 1440,
+        "scroll": 1440
+      },
+      "imagesInBounds": true,
+      "documentFits": true
+    },
+    {
+      "check": "enlarged-text",
+      "locale": "en",
+      "width": 1440,
+      "fontSize": "32px",
+      "overflow": {
+        "viewport": 1440,
+        "scroll": 1440
+      },
+      "imagesInBounds": true,
+      "documentFits": true
+    },
+    {
+      "check": "links-and-keyboard-copy",
+      "locale": "en",
+      "internalLinks": [
+        "/docs/concepts/codex-game-audio-synthesis",
+        "/docs/tags/codex",
+        "/docs/tags/game-development",
+        "/docs/tags/visual-identity",
+        "/docs/tags/design",
+        "/docs/concepts/codex-game-audio-synthesis",
+        "/docs/projects/delivery-foundry"
+      ],
+      "audioLocalized": true,
+      "contactLinks": true,
+      "masterPromptCopied": true
+    },
+    {
+      "check": "served-original-image",
+      "locale": "en",
+      "asset": "wordmark.png",
+      "sha256": "7226f6f3c67a1208c081f5abfcf30a4de327f7976ed5a26ad1e943f0abe6a941"
+    },
+    {
+      "check": "served-original-image",
+      "locale": "en",
+      "asset": "mascot-full-6-7.png",
+      "sha256": "7f8c0522dd3b92a25cb52ba72159dfad7150dddaab4c5754956972613a5f9323"
+    },
+    {
+      "check": "served-original-image",
+      "locale": "en",
+      "asset": "mark-6-7-master.png",
+      "sha256": "350b7b7a01de7a955ed4a72385a5029efc804584e9ff0431b5694da9545ee96b"
+    },
+    {
+      "check": "served-original-image",
+      "locale": "en",
+      "asset": "icon-1024.png",
+      "sha256": "e78e14cf80c07bc749481c8cfe329d680fb7695b3b3cee7352fd6b0e002b57cb"
+    },
+    {
+      "check": "served-original-image",
+      "locale": "en",
+      "asset": "home.png",
+      "sha256": "5f7ddaad420ff0c2a3fcc016539671410b5d7d096413e865a7ac9b84927ddd19"
+    },
+    {
+      "check": "feed-link",
+      "locale": "en",
+      "route": "/",
+      "articleVisible": true
+    },
+    {
+      "check": "feed-link",
+      "locale": "en",
+      "route": "/articles",
+      "articleVisible": true
+    },
+    {
+      "check": "responsive",
+      "locale": "id",
+      "width": 320,
+      "overflow": {
+        "viewport": 320,
+        "scroll": 320
+      },
+      "imageCount": 11,
+      "figureCount": 5,
+      "mermaid": true,
+      "diagramAccessibleTitle": true,
+      "svgTextLabels": true,
+      "wrappedCodeBlocks": [
+        {
+          "client": 267,
+          "scroll": 267,
+          "wrap": "pre-wrap"
+        },
+        {
+          "client": 267,
+          "scroll": 267,
+          "wrap": "pre-wrap"
+        },
+        {
+          "client": 267,
+          "scroll": 267,
+          "wrap": "pre-wrap"
+        },
+        {
+          "client": 267,
+          "scroll": 267,
+          "wrap": "pre-wrap"
+        },
+        {
+          "client": 267,
+          "scroll": 267,
+          "wrap": "pre-wrap"
+        }
+      ],
+      "staticComparisons": true,
+      "fonts": {
+        "font": "Inter, system-ui, sans-serif",
+        "root": "16px"
+      }
+    },
+    {
+      "check": "enlarged-text",
+      "locale": "id",
+      "width": 320,
+      "fontSize": "20px",
+      "overflow": {
+        "viewport": 320,
+        "scroll": 320
+      },
+      "imagesInBounds": true,
+      "documentFits": true
+    },
+    {
+      "check": "enlarged-text",
+      "locale": "id",
+      "width": 320,
+      "fontSize": "32px",
+      "overflow": {
+        "viewport": 320,
+        "scroll": 506
+      },
+      "imagesInBounds": true,
+      "documentFits": false
+    },
+    {
+      "check": "responsive",
+      "locale": "id",
+      "width": 390,
+      "overflow": {
+        "viewport": 390,
+        "scroll": 390
+      },
+      "imageCount": 11,
+      "figureCount": 5,
+      "mermaid": true,
+      "diagramAccessibleTitle": true,
+      "svgTextLabels": true,
+      "wrappedCodeBlocks": [
+        {
+          "client": 333,
+          "scroll": 333,
+          "wrap": "pre-wrap"
+        },
+        {
+          "client": 333,
+          "scroll": 333,
+          "wrap": "pre-wrap"
+        },
+        {
+          "client": 333,
+          "scroll": 333,
+          "wrap": "pre-wrap"
+        },
+        {
+          "client": 333,
+          "scroll": 333,
+          "wrap": "pre-wrap"
+        },
+        {
+          "client": 333,
+          "scroll": 333,
+          "wrap": "pre-wrap"
+        }
+      ],
+      "staticComparisons": true,
+      "fonts": {
+        "font": "Inter, system-ui, sans-serif",
+        "root": "16px"
+      }
+    },
+    {
+      "check": "enlarged-text",
+      "locale": "id",
+      "width": 390,
+      "fontSize": "20px",
+      "overflow": {
+        "viewport": 390,
+        "scroll": 390
+      },
+      "imagesInBounds": true,
+      "documentFits": true
+    },
+    {
+      "check": "enlarged-text",
+      "locale": "id",
+      "width": 390,
+      "fontSize": "32px",
+      "overflow": {
+        "viewport": 390,
+        "scroll": 508
+      },
+      "imagesInBounds": true,
+      "documentFits": false
+    },
+    {
+      "check": "responsive",
+      "locale": "id",
+      "width": 900,
+      "overflow": {
+        "viewport": 900,
+        "scroll": 900
+      },
+      "imageCount": 11,
+      "figureCount": 5,
+      "mermaid": true,
+      "diagramAccessibleTitle": true,
+      "svgTextLabels": true,
+      "wrappedCodeBlocks": [
+        {
+          "client": 799,
+          "scroll": 799,
+          "wrap": "pre-wrap"
+        },
+        {
+          "client": 799,
+          "scroll": 799,
+          "wrap": "pre-wrap"
+        },
+        {
+          "client": 799,
+          "scroll": 799,
+          "wrap": "pre-wrap"
+        },
+        {
+          "client": 799,
+          "scroll": 799,
+          "wrap": "pre-wrap"
+        },
+        {
+          "client": 799,
+          "scroll": 799,
+          "wrap": "pre-wrap"
+        }
+      ],
+      "staticComparisons": true,
+      "fonts": {
+        "font": "Inter, system-ui, sans-serif",
+        "root": "16px"
+      }
+    },
+    {
+      "check": "enlarged-text",
+      "locale": "id",
+      "width": 900,
+      "fontSize": "20px",
+      "overflow": {
+        "viewport": 900,
+        "scroll": 900
+      },
+      "imagesInBounds": true,
+      "documentFits": true
+    },
+    {
+      "check": "enlarged-text",
+      "locale": "id",
+      "width": 900,
+      "fontSize": "32px",
+      "overflow": {
+        "viewport": 900,
+        "scroll": 900
+      },
+      "imagesInBounds": true,
+      "documentFits": true
+    },
+    {
+      "check": "responsive",
+      "locale": "id",
+      "width": 1440,
+      "overflow": {
+        "viewport": 1440,
+        "scroll": 1440
+      },
+      "imageCount": 11,
+      "figureCount": 5,
+      "mermaid": true,
+      "diagramAccessibleTitle": true,
+      "svgTextLabels": true,
+      "wrappedCodeBlocks": [
+        {
+          "client": 650,
+          "scroll": 650,
+          "wrap": "pre-wrap"
+        },
+        {
+          "client": 650,
+          "scroll": 650,
+          "wrap": "pre-wrap"
+        },
+        {
+          "client": 650,
+          "scroll": 650,
+          "wrap": "pre-wrap"
+        },
+        {
+          "client": 650,
+          "scroll": 650,
+          "wrap": "pre-wrap"
+        },
+        {
+          "client": 650,
+          "scroll": 650,
+          "wrap": "pre-wrap"
+        }
+      ],
+      "staticComparisons": true,
+      "fonts": {
+        "font": "Inter, system-ui, sans-serif",
+        "root": "16px"
+      }
+    },
+    {
+      "check": "enlarged-text",
+      "locale": "id",
+      "width": 1440,
+      "fontSize": "20px",
+      "overflow": {
+        "viewport": 1440,
+        "scroll": 1440
+      },
+      "imagesInBounds": true,
+      "documentFits": true
+    },
+    {
+      "check": "enlarged-text",
+      "locale": "id",
+      "width": 1440,
+      "fontSize": "32px",
+      "overflow": {
+        "viewport": 1440,
+        "scroll": 1440
+      },
+      "imagesInBounds": true,
+      "documentFits": true
+    },
+    {
+      "check": "links-and-keyboard-copy",
+      "locale": "id",
+      "internalLinks": [
+        "/id/docs/concepts/codex-game-audio-synthesis",
+        "/id/docs/tags/codex",
+        "/id/docs/tags/game-development",
+        "/id/docs/tags/visual-identity",
+        "/id/docs/tags/design",
+        "/id/docs/concepts/codex-game-audio-synthesis",
+        "/id/docs/projects/delivery-foundry"
+      ],
+      "audioLocalized": true,
+      "contactLinks": true,
+      "masterPromptCopied": true
+    },
+    {
+      "check": "served-original-image",
+      "locale": "id",
+      "asset": "wordmark.png",
+      "sha256": "7226f6f3c67a1208c081f5abfcf30a4de327f7976ed5a26ad1e943f0abe6a941"
+    },
+    {
+      "check": "served-original-image",
+      "locale": "id",
+      "asset": "mascot-full-6-7.png",
+      "sha256": "7f8c0522dd3b92a25cb52ba72159dfad7150dddaab4c5754956972613a5f9323"
+    },
+    {
+      "check": "served-original-image",
+      "locale": "id",
+      "asset": "mark-6-7-master.png",
+      "sha256": "350b7b7a01de7a955ed4a72385a5029efc804584e9ff0431b5694da9545ee96b"
+    },
+    {
+      "check": "served-original-image",
+      "locale": "id",
+      "asset": "icon-1024.png",
+      "sha256": "e78e14cf80c07bc749481c8cfe329d680fb7695b3b3cee7352fd6b0e002b57cb"
+    },
+    {
+      "check": "served-original-image",
+      "locale": "id",
+      "asset": "home.png",
+      "sha256": "5f7ddaad420ff0c2a3fcc016539671410b5d7d096413e865a7ac9b84927ddd19"
+    },
+    {
+      "check": "feed-link",
+      "locale": "id",
+      "route": "/id/",
+      "articleVisible": true
+    },
+    {
+      "check": "feed-link",
+      "locale": "id",
+      "route": "/id/articles",
+      "articleVisible": true
+    }
+  ],
+  "sharedHeaderBaseline": [
+    {
+      "locale": "en",
+      "width": 320,
+      "fontSize": "32px",
+      "scroll": 370,
+      "headerRight": 370.15625
+    },
+    {
+      "locale": "en",
+      "width": 390,
+      "fontSize": "32px",
+      "scroll": 390,
+      "headerRight": 372.25
+    },
+    {
+      "locale": "id",
+      "width": 320,
+      "fontSize": "32px",
+      "scroll": 453,
+      "headerRight": 453.359375
+    },
+    {
+      "locale": "id",
+      "width": 390,
+      "fontSize": "32px",
+      "scroll": 455,
+      "headerRight": 455.453125
+    }
+  ],
+  "pageErrors": []
+}

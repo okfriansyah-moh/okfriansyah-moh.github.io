@@ -1,6 +1,14 @@
 {
   "items": [
     {
+      "title": "Visual Identity Before Development: Lessons from Padu",
+      "description": "Define a game’s theme, mascot, logo, colors, and icons early, then carry that identity into reusable assets and components with Codex.",
+      "link": "/docs/concepts/visual-identity-before-development",
+      "type": "concept",
+      "date": "2026-10-10",
+      "readingTime": 10
+    },
+    {
       "title": "How I Used Codex to Synthesize Game Audio: Lessons from Padu",
       "description": "A practical Padu case study: procedural sound synthesis with Codex, five playable examples, real production briefs, and a reusable asset workflow.",
       "link": "/docs/concepts/codex-game-audio-synthesis",

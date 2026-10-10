@@ -26,6 +26,7 @@ const sidebars: SidebarsConfig = {
         'concepts/deterministic-agentic-orchestrator',
         'concepts/leetcode-patterns',
         'concepts/codex-game-audio-synthesis',
+        'concepts/visual-identity-before-development',
       ],
     },
     {

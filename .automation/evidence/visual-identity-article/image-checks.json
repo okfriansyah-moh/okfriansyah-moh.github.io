@@ -1,0 +1,47 @@
+[
+  {
+    "source": "docs/brand/padu/wordmark.png",
+    "published": "docs/concepts/images/visual-identity-before-development/wordmark.png",
+    "sha256": "7226f6f3c67a1208c081f5abfcf30a4de327f7976ed5a26ad1e943f0abe6a941",
+    "width": 2172,
+    "height": 724,
+    "bytes": 908244,
+    "unchanged": true
+  },
+  {
+    "source": "docs/brand/padu/mascot-full-6-7.png",
+    "published": "docs/concepts/images/visual-identity-before-development/mascot-full-6-7.png",
+    "sha256": "7f8c0522dd3b92a25cb52ba72159dfad7150dddaab4c5754956972613a5f9323",
+    "width": 1254,
+    "height": 1254,
+    "bytes": 765029,
+    "unchanged": true
+  },
+  {
+    "source": "docs/brand/padu/mark-6-7-master.png",
+    "published": "docs/concepts/images/visual-identity-before-development/mark-6-7-master.png",
+    "sha256": "350b7b7a01de7a955ed4a72385a5029efc804584e9ff0431b5694da9545ee96b",
+    "width": 1254,
+    "height": 1254,
+    "bytes": 761672,
+    "unchanged": true
+  },
+  {
+    "source": "docs/brand/padu/icon-1024.png",
+    "published": "docs/concepts/images/visual-identity-before-development/icon-1024.png",
+    "sha256": "e78e14cf80c07bc749481c8cfe329d680fb7695b3b3cee7352fd6b0e002b57cb",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 493905,
+    "unchanged": true
+  },
+  {
+    "source": "docs/brand/padu/visual-evidence/home.png",
+    "published": "docs/concepts/images/visual-identity-before-development/home.png",
+    "sha256": "5f7ddaad420ff0c2a3fcc016539671410b5d7d096413e865a7ac9b84927ddd19",
+    "width": 780,
+    "height": 1688,
+    "bytes": 243190,
+    "unchanged": true
+  }
+]
