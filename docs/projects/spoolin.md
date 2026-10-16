@@ -1,0 +1,143 @@
+---
+title: "SpoolIn"
+description: "Local movie and TV catalog with maintainer tooling, audit history, and MCP-assisted exact-content movie creation — bootstrapped with reproducible multi-service foundations."
+sidebar_position: 9
+tags:
+  - project
+  - catalog
+  - mcp
+keywords:
+  - spoolin project
+  - movie catalog
+  - local deployment
+difficulty: Intermediate
+---
+
+# SpoolIn
+
+## What Was Built
+
+[SpoolIn](https://github.com/okfriansyah-moh/spoolIn) is a public engineering project for a
+**local movie and television catalog**. Visitors browse active titles; registered viewers manage
+their own sessions; maintainers curate movies, people, credits, artwork, and audit history. The
+product direction adds **exact-content MCP movie creation** — AI chat clients propose structured
+movie records, but maintainers approve before anything publishes.
+
+The repository opened on **2026-10-15** with product requirements (`docs/02-PRD.md`), a detailed
+technical design (`docs/04-spoolin-techdoc.md`), acceptance-driven plans (`docs/05-atdd.md`,
+`docs/06-PLAN.md`), and agent workflow bundles under `.ai/`. The first implementation slice —
+reproducible builds, generated contracts, and private Core/Catalog/Media foundations — merged in
+[PR #1](https://github.com/okfriansyah-moh/spoolIn/pull/1).
+
+## The Problem
+
+Personal media libraries scattered across spreadsheets, notes, and streaming bookmarks do not give
+maintainers:
+
+- A single **archive-first lifecycle** (archive, restore, delete with consequence review).
+- **Role-separated access** (visitor vs viewer vs maintainer vs local operator).
+- **Traceable catalog audits** when metadata or artwork changes.
+- A safe path to **AI-assisted catalog expansion** without letting a model silently publish titles.
+
+SpoolIn targets a self-hosted installation a solo operator can run on loopback with containers,
+not a multi-tenant SaaS.
+
+## Why This Problem Is Difficult
+
+1. **Rich domain** — movies, television (read-only seed), people, credits, genres, roles, and
+   artwork each carry different visibility rules.
+2. **Cross-surface clients** — browser UI, MCP via Claude Desktop stdio bridge, and ChatGPT tunnel
+   each need distinct credentials yet share Core gateways.
+3. **Evidence-heavy delivery** — the plan tracks hundreds of acceptance cases; foundation tasks
+   require reproducible builds and boundary tests before feature waves.
+4. **Security posture** — mTLS between services, CSRF for GraphQL (planned), and scoped actor
+   assertions for protected catalog writes.
+
+## Beginner Mental Model
+
+SpoolIn is a **curated home theater ledger**:
+
+- The **ledger** (Catalog) records what exists and who acted in it.
+- The **foyer** (Core) checks IDs and routes guests to the right room.
+- The **poster wall** (Media) stores artwork and remembers which frame belongs to which title.
+- **MCP** is a mail slot for structured movie proposals — staff still signs before they go on the wall.
+
+## Requirements and Constraints
+
+| Requirement | Where it lives |
+| ----------- | -------------- |
+| 100-movie / 100-TV starter snapshot | Techdoc §1 — frozen seed data |
+| Television metadata read-only | Techdoc §1 |
+| Maintainer-only mutations | Actor table techdoc §1.1 |
+| Local operator responsibilities | Separate from Maintainer browser role |
+| Portable agent workflow | `.ai/bundles/` (updated to 1.1.1 in PR #2) |
+| Public standalone presentation | PR #3 documentation cleanup |
+| Application shell + accounts | Open [PR #4](https://github.com/okfriansyah-moh/spoolIn/pull/4) |
+
+## Architecture Summary
+
+```mermaid
+flowchart LR
+  PLAN[PRD + techdoc + ATDD plan] --> REPO[spoolIn repository]
+  REPO --> FOUND[PR #1 foundation]
+  FOUND --> CORE[Core]
+  FOUND --> CAT[Catalog]
+  FOUND --> MED[Media]
+  REPO --> NEXT[Feature tasks: UI shell MCP runtime]
+  CORE --> CAT
+  CORE --> MED
+```
+
+Deep dive: [SpoolIn system architecture](/docs/systems/spoolin-catalog-platform).
+
+## Evolution and Milestones
+
+| Date | Milestone |
+| ---- | --------- |
+| 2026-10-15 | Repository created; product and technical docs checked in |
+| 2026-10-15 | [PR #1](https://github.com/okfriansyah-moh/spoolIn/pull/1) merged — T001–T003 foundation (contracts, services, databases, Compose) |
+| 2026-10-15 | [PR #2](https://github.com/okfriansyah-moh/spoolIn/pull/2) merged — portable agent workflow 1.1.1 for unattended verification |
+| 2026-10-15 | [PR #3](https://github.com/okfriansyah-moh/spoolIn/pull/3) merged — public standalone project presentation (docs) |
+| In progress | [PR #4](https://github.com/okfriansyah-moh/spoolIn/pull/4) open — application shell and account access |
+
+## Key Decisions
+
+| Decision | Rationale |
+| -------- | --------- |
+| Kotlin/Spring Boot services | Typed enterprise stack with Flyway, gRPC, and future GraphQL |
+| SvelteKit frontend (planned) | Techdoc §3 — static build served by Core |
+| MCP gateway on Core | Central approval and policy enforcement for chat clients |
+| Evidence-first task plan | ATDD + harness gates before claiming feature completeness |
+| Local Compose deployment | Personal installation scope; no managed cloud requirement in v1 design |
+
+## Relationship to Other Projects
+
+SpoolIn shares **delivery discipline** with
+[Delivery Foundry](/docs/projects/delivery-foundry) — Foundry governs venture-scale evidence
+loops, while SpoolIn applies similar gate thinking to a focused catalog product. Contract
+generation and reproducible builds echo patterns documented for
+[deterministic AI pipelines](/docs/concepts/deterministic-ai-pipelines), but SpoolIn is an
+independent codebase.
+
+## Lessons Learned
+
+1. **Ship foundation before UI polish** — contracts and database ownership de-risk later catalog
+   and MCP tasks.
+2. **Document actor types early** — separating Maintainer from local operator prevents permission
+   shortcuts in implementation plans.
+3. **Keep public narrative aligned with evidence** — PR #3 reframed docs without changing runtime
+   behavior, preserving traceability for reviewers.
+4. **Watch open coherence PRs elsewhere** — when [a2a-brainstormer#12](https://github.com/okfriansyah-moh/a2a-brainstormer/pull/12)
+   merges, cross-link MCP approval patterns to [AI document coherence](/docs/concepts/ai-document-coherence).
+
+## Related
+
+- [SpoolIn system architecture](/docs/systems/spoolin-catalog-platform)
+- [LLM guardrails](/docs/concepts/llm-guardrails)
+
+## Sources
+
+- Repository: [okfriansyah-moh/spoolIn](https://github.com/okfriansyah-moh/spoolIn)
+- Pull requests: [#1](https://github.com/okfriansyah-moh/spoolIn/pull/1), [#2](https://github.com/okfriansyah-moh/spoolIn/pull/2), [#3](https://github.com/okfriansyah-moh/spoolIn/pull/3)
+- Open work: [#4 Application shell and account access](https://github.com/okfriansyah-moh/spoolIn/pull/4)
+- Technical design: `docs/04-spoolin-techdoc.md`
