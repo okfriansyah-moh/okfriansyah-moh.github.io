@@ -528,6 +528,54 @@
         "visual-identity-prompt-and-review-workflow"
       ]
     },
+    "spoolin:catalog-platform": {
+      "document": {
+        "en": "docs/systems/spoolin-catalog-platform.md",
+        "id": "i18n/id/docusaurus-plugin-content-docs/current/systems/spoolin-catalog-platform.md"
+      },
+      "sources": [
+        "okfriansyah-moh/spoolIn#1",
+        "okfriansyah-moh/spoolIn@83c40e9dc01b30970b94db66e1150934c52b344c"
+      ],
+      "repos": ["okfriansyah-moh/spoolIn"],
+      "learning_objective": "Design a local three-service catalog platform with generated wire contracts, per-service PostgreSQL ownership, mTLS identities, and migration readiness gates",
+      "covered_capabilities": [
+        "reproducible-build-foundation",
+        "shared-wire-contract-generation",
+        "three-service-database-ownership",
+        "mtls-service-identity",
+        "serialized-migration-advisory-lock",
+        "schema-readiness-serving-gate",
+        "graphql-grpc-json-contracts",
+        "compose-local-deployment",
+        "service-identity-interceptor",
+        "mcp-gateway-stub-wiring",
+        "archive-first-catalog-lifecycle-design",
+        "durable-work-reconciliation-design",
+        "exact-content-mcp-approval-design"
+      ]
+    },
+    "spoolin:project-overview": {
+      "document": {
+        "en": "docs/projects/spoolin.md",
+        "id": "i18n/id/docusaurus-plugin-content-docs/current/projects/spoolin.md"
+      },
+      "sources": [
+        "okfriansyah-moh/spoolIn#1",
+        "okfriansyah-moh/spoolIn#2",
+        "okfriansyah-moh/spoolIn#3"
+      ],
+      "repos": ["okfriansyah-moh/spoolIn"],
+      "learning_objective": "Follow SpoolIn's product scope, evidence-driven plan, and foundation milestone through the first public repository week",
+      "covered_capabilities": [
+        "project-roadmap-status",
+        "product-scope-overview",
+        "foundation-milestone-t001-t003",
+        "portable-agent-workflow-1-1-1",
+        "public-standalone-docs-refresh",
+        "open-application-shell-pr"
+      ]
+    },
     "padu:codex-game-audio-synthesis": {
       "document": {
         "en": "docs/concepts/codex-game-audio-synthesis.mdx",
