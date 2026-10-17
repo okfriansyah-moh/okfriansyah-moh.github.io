@@ -15,6 +15,12 @@ to update an existing page or create a new one.
 
 **Completed in 2026-10-16 automation run:** SpoolIn catalog platform system article and SpoolIn project overview (new public repo `spoolIn`, foundation PR #1).
 
+## Status Summary (2026-10-17)
+
+**Updated in 2026-10-17 automation run:** SpoolIn system + project articles refreshed for merged
+`spoolIn` PRs #4–#7 (application shell, protected accounts, account-access wave, workflow/plan
+renumbering).
+
 ## Status Summary (2026-08-20)
 
 | Status | Count | Notes |

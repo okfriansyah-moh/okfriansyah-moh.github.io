@@ -535,10 +535,14 @@
       },
       "sources": [
         "okfriansyah-moh/spoolIn#1",
-        "okfriansyah-moh/spoolIn@83c40e9dc01b30970b94db66e1150934c52b344c"
+        "okfriansyah-moh/spoolIn@83c40e9dc01b30970b94db66e1150934c52b344c",
+        "okfriansyah-moh/spoolIn#4",
+        "okfriansyah-moh/spoolIn#6",
+        "okfriansyah-moh/spoolIn@1d0f96b0a21f6042733037b702f22b6584b6595e",
+        "okfriansyah-moh/spoolIn@ffcaae535b55d75b94256946c4c340e30c509048"
       ],
       "repos": ["okfriansyah-moh/spoolIn"],
-      "learning_objective": "Design a local three-service catalog platform with generated wire contracts, per-service PostgreSQL ownership, mTLS identities, and migration readiness gates",
+      "learning_objective": "Design a local three-service catalog platform with generated wire contracts, per-service PostgreSQL ownership, mTLS identities, migration readiness gates, and an accessible browser shell with sessions, policy, and scoped service admission",
       "covered_capabilities": [
         "reproducible-build-foundation",
         "shared-wire-contract-generation",
@@ -552,7 +556,16 @@
         "mcp-gateway-stub-wiring",
         "archive-first-catalog-lifecycle-design",
         "durable-work-reconciliation-design",
-        "exact-content-mcp-approval-design"
+        "exact-content-mcp-approval-design",
+        "accessible-sveltekit-application-shell",
+        "encrypted-account-credential-storage",
+        "argon2-bounded-credential-hashing",
+        "authoritative-registration-sessions",
+        "effective-input-policy-semantics",
+        "owner-receipt-atomic-mutations",
+        "scoped-service-identity-admission",
+        "signed-actor-rpc-backend-support",
+        "graphql-session-browser-journeys"
       ]
     },
     "spoolin:project-overview": {
@@ -563,17 +576,24 @@
       "sources": [
         "okfriansyah-moh/spoolIn#1",
         "okfriansyah-moh/spoolIn#2",
-        "okfriansyah-moh/spoolIn#3"
+        "okfriansyah-moh/spoolIn#3",
+        "okfriansyah-moh/spoolIn#4",
+        "okfriansyah-moh/spoolIn#5",
+        "okfriansyah-moh/spoolIn#6",
+        "okfriansyah-moh/spoolIn#7"
       ],
       "repos": ["okfriansyah-moh/spoolIn"],
-      "learning_objective": "Follow SpoolIn's product scope, evidence-driven plan, and foundation milestone through the first public repository week",
+      "learning_objective": "Follow SpoolIn's product scope, evidence-driven plan, and milestones from foundation through the account-access implementation wave",
       "covered_capabilities": [
         "project-roadmap-status",
         "product-scope-overview",
         "foundation-milestone-t001-t003",
         "portable-agent-workflow-1-1-1",
         "public-standalone-docs-refresh",
-        "open-application-shell-pr"
+        "application-shell-t004-t005",
+        "account-access-wave-t006-t010",
+        "portable-agent-workflow-1-2-x",
+        "plan-stage-renumbering-26-stages"
       ]
     },
     "padu:codex-game-audio-synthesis": {

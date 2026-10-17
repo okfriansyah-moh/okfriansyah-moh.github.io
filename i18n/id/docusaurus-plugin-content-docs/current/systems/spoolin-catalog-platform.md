@@ -30,9 +30,14 @@ layanan Kotlin/Spring Boot — **Core**, **Catalog**, dan **Media** — masing-m
 data PostgreSQL sendiri, URL JDBC terverifikasi TLS, listener gRPC mTLS privat, migrasi Flyway
 terserialisasi, dan kesehatan gRPC yang tetap `NOT_SERVING` sampai validasi skema lulus.
 
-Fitur produk berikutnya (shell GraphQL browser, mutasi katalog, runtime adaptor MCP) tercantum
-di techdoc dan dilacak sebagai tugas implementasi; artikel ini membedakan **apa yang dibuktikan
-PR #1 di kode** dari **target desain dokumen**.
+Merge berikutnya memperluas stack di atas fondasi backend:
+
+- [PR #4](https://github.com/okfriansyah-moh/spoolIn/pull/4) (T004–T005) — **shell aplikasi SvelteKit** bersama dengan navigasi bertema dan aksesibel serta **penyimpanan akun terlindungi** di Core (identitas terenkripsi, hashing kredensial Argon2, tes integrasi PostgreSQL).
+- [PR #6](https://github.com/okfriansyah-moh/spoolIn/pull/6) (T006–T010, cakupan T007) — **registrasi dan sesi otoritatif**, semantik **kebijakan input efektif**, **tanda terima pemilik** dengan bukti mutasi atomik, **identitas layanan ber-scope dan admission bersama** di Core/Catalog/Media, plus perjalanan browser daftar/masuk/keluar.
+
+Mutasi katalog, runtime adaptor MCP, dan UI manajemen maintainer penuh masih di techdoc; artikel
+ini membedakan **bukti implementasi yang sudah digabung** dari **target desain yang masih terbuka
+di rencana**.
 
 ## Masalah
 
@@ -89,10 +94,10 @@ Runtime target (techdoc §2) dengan **layanan fondasi** yang diimplementasikan:
 
 ```mermaid
 flowchart TD
-  Browser[UI browser SvelteKit] -->|HTTPS GraphQL direncanakan| Core[Layanan Core]
+  Browser[Shell SvelteKit + UI sesi] -->|HTTPS GraphQL| Core[Layanan Core]
   MCP[Adaptor MCP TypeScript] -->|gRPC| Core
-  Core -->|gRPC mTLS| Catalog[Layanan Catalog]
-  Core -->|gRPC mTLS| Media[Layanan Media]
+  Core -->|RPC aktor bertanda mTLS| Catalog[Layanan Catalog]
+  Core -->|RPC aktor bertanda mTLS| Media[Layanan Media]
   Catalog -->|gRPC| Core
   Catalog -->|gRPC worker| Media
   Core --> DBc[(PostgreSQL spoolin_core)]
@@ -101,8 +106,9 @@ flowchart TD
 ```
 
 PR #1 menyampaikan tiga aplikasi backend, pipeline generasi kontrak, image Postgres, dan wiring
-Compose; auto-konfigurasi GraphQL secara eksplisit dikecualikan di `@SpringBootApplication` Core
-sampai tugas berikutnya mengaktifkan API browser.
+Compose. PR #4 menambahkan shell frontend statis yang disajikan Core; PR #6 menghubungkan operasi
+GraphQL sesi, komponen panduan kebijakan, dan admission lintas layanan lewat pustaka identitas
+`backend-support`.
 
 ## Alur Eksekusi
 
@@ -133,11 +139,31 @@ sampai tugas berikutnya mengaktifkan API browser.
 2. `ServiceIdentityInterceptor` hanya mengizinkan set pemanggil yang dikonfigurasi per metode.
 3. Pemeriksaan kesehatan menerima identitas `core`, `catalog`, `media`, `mcp`, atau `operator`.
 
-### 5. Urutan baca/mutasi katalog (desain — techdoc §2.3)
+### 5. Shell aksesibel dan tema (T004 — PR #4)
+
+1. Rute SvelteKit dipasang di `AppShell` dengan skip link, header merek, dan navigasi sadar kapabilitas.
+2. Preferensi tema disimpan di browser storage dengan fallback skema warna sistem.
+3. Komponen design-system bersama (`Field`, `ConfirmDialog`, `SessionBoundary`, dll.) menyiapkan fokus dan ringkasan error yang konsisten.
+
+### 6. Persistensi akun terlindungi (T005 — PR #4)
+
+1. Identitas maintainer/viewer disimpan di tabel milik Core dengan **payload terenkripsi** dan hashing Argon2 terbatas untuk rahasia.
+2. Uniqueness lookup email dan normalisasi IDNA2008 berjalan sebelum persistensi.
+3. Tes integrasi mencakup rotasi nonce, pemulihan setelah crash, dan batas kredensial berbasis PostgreSQL.
+
+### 7. Sesi, kebijakan, tanda terima, dan admission (T006–T010 — PR #6)
+
+1. Form browser mengirim operasi GraphQL (`register`, `sign-in`, `sign-out`, `bootstrap`) lewat lapisan transport bertipe dengan hasil dan validasi yang di-parse.
+2. **Kebijakan input efektif** mengembalikan panduan per field (`PolicyGuidance`) agar klien menampilkan semantik yang sama dengan penegakan server Core.
+3. **Tanda terima pemilik** mengikat mutasi katalog ke bukti durable dalam transaksi basis data yang sama dengan tulisan domain.
+4. `libraries/backend-support` menandatangani **assertion aktor**; Catalog dan Media memverifikasi izin ber-scope sebelum RPC terlindungi.
+5. Menu sesi dan rute manage menghubungkan shell ke state sesi Core (perjalanan registrasi/masuk digabung; pemulihan draft terinterupsi positif ditunda ke T015/T016 menurut catatan PR #6).
+
+### 8. Urutan baca/mutasi katalog (desain — techdoc §2.3)
 
 Dirinci untuk tugas fitur mendatang: mutasi browser → Core → Catalog `CheckActor` → transaksi lokal
-→ rekonsiliasi `GetOperation` jika respons hilang. Kode fondasi mendaftarkan layanan gRPC stub agar
-aturan identitas dapat diuji sebelum logika bisnis selesai.
+→ rekonsiliasi `GetOperation` jika respons hilang. Plumbing tanda terima dan admission dari PR #6
+menyiapkan jalur ini; mutasi katalog maintainer penuh ada di tahap rencana berikutnya.
 
 ## Komponen Penting
 
@@ -145,9 +171,14 @@ aturan identitas dapat diuji sebelum logika bisnis selesai.
 | -------- | --------------- |
 | `build-tools/generate-contracts.mjs` | Mengorkestrasi generasi GraphQL, protobuf, JSON, token |
 | `contracts/grpc/spoolin/v1/spoolin.proto` | Permukaan API gRPC |
-| `services/core` | Gateway akun, entrypoint MCP (stub), fixture navigasi HTTPS statis |
-| `services/catalog` | Layanan domain katalog (tes batas fondasi) |
-| `services/media` | Layanan artwork (tes batas fondasi) |
+| `frontend/src/lib/components/AppShell.svelte` | Shell aksesibel, tema, navigasi sadar kapabilitas (T004) |
+| `services/core/.../ProtectedAccounts.kt` | Identitas akun terenkripsi dan penyimpanan kredensial (T005) |
+| `services/core` | Gateway GraphQL sesi, entrypoint MCP, hosting frontend statis |
+| `frontend/src/lib/features/session/*` | Kontroler registrasi/masuk/keluar dan dokumen GraphQL (T006–T007) |
+| `frontend/src/lib/policy/*` | Parsing kebijakan efektif dan panduan UI (T009) |
+| `libraries/backend-support` | Penandatanganan aktor, file trust, izin ber-scope, admission (T008) |
+| `services/catalog` | Layanan domain katalog dengan penegakan admission bersama |
+| `services/media` | Layanan artwork dengan penegakan admission bersama |
 | `ops/compose.yaml` | Jaringan privat, rahasia, profil migrator, publish port loopback |
 | `MigrationRunner` / `SchemaReadiness` | Migrasi terserialisasi dan gerbang serving |
 | `ServiceIdentityInterceptor` | Identitas mTLS ke allowlist metode |
@@ -205,11 +236,15 @@ fun ready(): Boolean {
 
 ## Pengujian
 
-Bukti PR #1:
+Bukti repositori:
 
-- **T001** — 32/32 pemeriksaan; dua build bersih → 22 pasang artefak cocok.
-- **T002** — 22/22 tes kontrak termasuk konsumen Java dan TypeScript ketat.
-- **T003** — 15 kasus batas PostgreSQL/mTLS/HTTP + 15 kasus aturan arsitektur.
+- **T001 (PR #1)** — 32/32 pemeriksaan; dua build bersih → 22 pasang artefak cocok.
+- **T002 (PR #1)** — 22/22 tes kontrak termasuk konsumen Java dan TypeScript ketat.
+- **T003 (PR #1)** — 15 kasus batas PostgreSQL/mTLS/HTTP + 15 kasus aturan arsitektur.
+- **T004–T005 (PR #4)** — 93 tes unit/komponen frontend terpilih, 32 kasus browser shell,
+  17 unit + 25 tes perlindungan akun PostgreSQL (menurut tabel bukti PR).
+- **T006–T010 (PR #6)** — 32 shell, 40 kebijakan, dan 23 kasus browser akun dilaporkan lulus;
+  pemindaian Semgrep/Gitleaks/OSV dikonfigurasi di peta verifikasi.
 
 ## Operasi dan Observabilitas
 
@@ -233,6 +268,9 @@ Bukti PR #1:
 ## Sumber
 
 - Repositori: [okfriansyah-moh/spoolIn](https://github.com/okfriansyah-moh/spoolIn)
-- Pull request: [#1](https://github.com/okfriansyah-moh/spoolIn/pull/1) (merge `83c40e9`)
+- Pull request:
+  - [#1](https://github.com/okfriansyah-moh/spoolIn/pull/1) (merge `83c40e9`)
+  - [#4](https://github.com/okfriansyah-moh/spoolIn/pull/4) (merge `1d0f96b`)
+  - [#6](https://github.com/okfriansyah-moh/spoolIn/pull/6) (merge `ffcaae5`)
 - Spesifikasi desain: `docs/04-spoolin-techdoc.md` (v1.11, Oktober 2026)
 - Commit bukti PR #1: `12e487f001b66c2f3a5802654c6928849aa47c49`

@@ -67,7 +67,7 @@ SpoolIn adalah **buku besar home theater yang dikurasi**:
 | Tanggung jawab operator lokal | Terpisah dari peran browser Maintainer |
 | Alur agen portabel | `.ai/bundles/` (diperbarui ke 1.1.1 di PR #2) |
 | Presentasi publik mandiri | Pembersihan dokumentasi PR #3 |
-| Shell aplikasi + akun | [PR #4](https://github.com/okfriansyah-moh/spoolIn/pull/4) terbuka |
+| Shell aplikasi + akun | [PR #4](https://github.com/okfriansyah-moh/spoolIn/pull/4) (shell) dan [PR #6](https://github.com/okfriansyah-moh/spoolIn/pull/6) (sesi, kebijakan, tanda terima, admission) digabung |
 
 ## Ringkasan Arsitektur
 
@@ -93,7 +93,11 @@ Kedalaman teknis: [Arsitektur sistem SpoolIn](/id/docs/systems/spoolin-catalog-p
 | 2026-10-15 | [PR #1](https://github.com/okfriansyah-moh/spoolIn/pull/1) digabung — fondasi T001–T003 |
 | 2026-10-15 | [PR #2](https://github.com/okfriansyah-moh/spoolIn/pull/2) digabung — alur agen portabel 1.1.1 |
 | 2026-10-15 | [PR #3](https://github.com/okfriansyah-moh/spoolIn/pull/3) digabung — presentasi proyek publik mandiri (dokumen) |
-| Berjalan | [PR #4](https://github.com/okfriansyah-moh/spoolIn/pull/4) terbuka — shell aplikasi dan akses akun |
+| 2026-10-16 | [PR #4](https://github.com/okfriansyah-moh/spoolIn/pull/4) digabung — shell aksesibel T004 + penyimpanan akun T005 |
+| 2026-10-16 | [PR #5](https://github.com/okfriansyah-moh/spoolIn/pull/5) digabung — alur agen portabel **1.2.0** |
+| 2026-10-16 | [PR #6](https://github.com/okfriansyah-moh/spoolIn/pull/6) digabung — gelombang akses akun T006–T010 |
+| 2026-10-16 | [PR #7](https://github.com/okfriansyah-moh/spoolIn/pull/7) digabung — penomoran ulang 26 tahap rencana (workflow **1.2.1**) |
+| Berikutnya | Mutasi katalog, runtime MCP, UI manajemen maintainer (tahap rencana berikutnya) |
 
 ## Keputusan Kunci
 
@@ -128,6 +132,5 @@ basis kode independen.
 ## Sumber
 
 - Repositori: [okfriansyah-moh/spoolIn](https://github.com/okfriansyah-moh/spoolIn)
-- Pull request: [#1](https://github.com/okfriansyah-moh/spoolIn/pull/1), [#2](https://github.com/okfriansyah-moh/spoolIn/pull/2), [#3](https://github.com/okfriansyah-moh/spoolIn/pull/3)
-- Pekerjaan terbuka: [#4 Shell aplikasi dan akses akun](https://github.com/okfriansyah-moh/spoolIn/pull/4)
+- Pull request: [#1](https://github.com/okfriansyah-moh/spoolIn/pull/1)–[#7](https://github.com/okfriansyah-moh/spoolIn/pull/7)
 - Desain teknis: `docs/04-spoolin-techdoc.md`

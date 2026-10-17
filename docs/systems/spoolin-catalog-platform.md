@@ -30,9 +30,14 @@ Boot services — **Core**, **Catalog**, and **Media** — each with its own Pos
 TLS-verified JDBC URLs, private mTLS gRPC listeners, serialized Flyway migrations, and gRPC
 health that stays `NOT_SERVING` until schema validation passes.
 
-Later product features (browser GraphQL shell, catalog mutations, MCP adapter runtime) are
-specified in the techdoc and tracked as implementation tasks; this article separates **what
-merged PR #1 proves in code** from **what the design document targets next**.
+Follow-on merges extended the stack beyond the backend foundation:
+
+- [PR #4](https://github.com/okfriansyah-moh/spoolIn/pull/4) (T004–T005) — shared **SvelteKit application shell** with themed, accessible navigation and **protected account storage** in Core (encrypted identities, Argon2 credential hashing, PostgreSQL integration tests).
+- [PR #6](https://github.com/okfriansyah-moh/spoolIn/pull/6) (T006–T010, T007 scope) — **registration and authoritative sessions**, **effective input policy** semantics, **owner receipts** with atomic mutation evidence, **scoped service identity and shared admission** across Core/Catalog/Media, plus connected register/sign-in/sign-out browser journeys.
+
+Catalog mutations, MCP adapter runtime, and full maintainer catalog UI remain specified in the
+techdoc; this article separates **merged implementation evidence** from **design targets still
+open in the plan**.
 
 ## The Problem
 
@@ -92,10 +97,10 @@ Target runtime (from techdoc §2) with **foundation services** implemented:
 
 ```mermaid
 flowchart TD
-  Browser[SvelteKit browser UI] -->|HTTPS GraphQL planned| Core[Core service]
+  Browser[SvelteKit shell + session UI] -->|HTTPS GraphQL| Core[Core service]
   MCP[MCP adapter TypeScript] -->|gRPC| Core
-  Core -->|gRPC mTLS| Catalog[Catalog service]
-  Core -->|gRPC mTLS| Media[Media service]
+  Core -->|signed actor RPC mTLS| Catalog[Catalog service]
+  Core -->|signed actor RPC mTLS| Media[Media service]
   Catalog -->|gRPC| Core
   Catalog -->|gRPC worker| Media
   Core --> DBc[(PostgreSQL spoolin_core)]
@@ -104,8 +109,9 @@ flowchart TD
 ```
 
 PR #1 delivers the three backend applications, contract generation pipeline, Postgres image,
-and Compose wiring; GraphQL auto-configuration is explicitly excluded in Core’s
-`@SpringBootApplication` until later tasks enable the browser API.
+and Compose wiring. PR #4 adds the static frontend shell served through Core; PR #6 wires
+session GraphQL operations, policy guidance components, and cross-service admission using the
+shared `backend-support` identity library.
 
 ## Execution Flow
 
@@ -138,12 +144,32 @@ and Compose wiring; GraphQL auto-configuration is explicitly excluded in Core’
    Catalog may call `IdentityService/CheckActor`; MCP may call `McpGatewayService/*`).
 3. Health checks accept identities `core`, `catalog`, `media`, `mcp`, or `operator`.
 
-### 5. Catalog read/mutation sequence (design — techdoc §2.3)
+### 5. Accessible shell and theme (T004 — PR #4)
+
+1. SvelteKit routes mount inside `AppShell` with skip links, brand header, and capability-aware navigation.
+2. Theme preference persists in browser storage with system-color-scheme fallback.
+3. Shared design-system components (`Field`, `ConfirmDialog`, `SessionBoundary`, etc.) enforce consistent focus and error summaries for later catalog forms.
+
+### 6. Protected account persistence (T005 — PR #4)
+
+1. Maintainer/viewer identities are stored in Core-owned tables with **encrypted payloads** and bounded Argon2 hashing for secrets.
+2. Email lookup uniqueness and IDNA2008 normalization run before persistence.
+3. Integration tests cover nonce rotation, crash-after-reservation recovery, and PostgreSQL-backed credential boundaries.
+
+### 7. Sessions, policy, receipts, and admission (T006–T010 — PR #6)
+
+1. Browser forms post GraphQL operations (`register`, `sign-in`, `sign-out`, `bootstrap`) through a typed transport layer with parsed outcomes and validation rules.
+2. **Effective input policy** returns precise field-level guidance (`PolicyGuidance`) so clients show the same semantics Core enforces server-side.
+3. **Owner receipts** tie catalog mutations to durable evidence in the same database transaction as domain writes (atomic mutation + audit/work).
+4. `libraries/backend-support` signs **actor assertions**; Catalog and Media verify scoped permissions via shared admission rules before serving protected RPCs.
+5. Session menu and manage routes connect the shell to live Core session state (registration and sign-in journeys merged; positive interrupted-draft recovery remains deferred in plan tasks T015/T016 per PR #6 notes).
+
+### 8. Catalog read/mutation sequence (design — techdoc §2.3)
 
 Specified for upcoming feature tasks: browser mutation → Core → Catalog `CheckActor` → local
-transaction → optional `GetOperation` reconciliation if the response is lost. Foundation code
-registers stub gRPC services so wiring and identity rules can be tested before business logic
-lands.
+transaction → optional `GetOperation` reconciliation if the response is lost. Receipt and
+admission plumbing from PR #6 prepares this path; full maintainer catalog mutations remain
+on later plan stages.
 
 ## Important Components
 
@@ -151,9 +177,14 @@ lands.
 | --------- | -------------- |
 | `build-tools/generate-contracts.mjs` | Orchestrates GraphQL, protobuf, JSON, and token generation |
 | `contracts/grpc/spoolin/v1/spoolin.proto` | gRPC API surface (Identity, Catalog, Media, MCP gateway) |
-| `services/core` | Accounts gateway, MCP entrypoints (stubs), HTTPS static navigation fixture |
-| `services/catalog` | Catalog domain service (foundation boundary tests) |
-| `services/media` | Artwork service (foundation boundary tests) |
+| `frontend/src/lib/components/AppShell.svelte` | Accessible shell, theme, capability-aware nav (T004) |
+| `services/core/.../ProtectedAccounts.kt` | Encrypted account identities and credential storage (T005) |
+| `services/core` | GraphQL session gateway, MCP entrypoints, static frontend hosting |
+| `frontend/src/lib/features/session/*` | Registration, sign-in, sign-out controllers and GraphQL documents (T006–T007) |
+| `frontend/src/lib/policy/*` | Effective policy parsing and UI guidance (T009) |
+| `libraries/backend-support` | Actor signing, trust files, scoped permissions, admission helpers (T008) |
+| `services/catalog` | Catalog domain service with shared admission enforcement |
+| `services/media` | Artwork service with shared admission enforcement |
 | `ops/compose.yaml` | Private network, secrets, migrator profiles, loopback port publish |
 | `MigrationRunner` / `SchemaReadiness` | Serialized migrations and serving gate |
 | `ServiceIdentityInterceptor` | mTLS identity to method allowlists |
@@ -217,14 +248,18 @@ fun ready(): Boolean {
 
 ## Testing
 
-PR #1 evidence (independent of this docs site):
+Repository evidence (independent of this docs site):
 
-- **T001** — 32/32 checks; two clean builds → 22 matching artifact pairs.
-- **T002** — 22/22 contract tests including Java and strict TypeScript consumers.
-- **T003** — 15 PostgreSQL/mTLS/HTTP boundary cases + 15 architecture rule cases; high changed-line
-  coverage on Core/Catalog/Media modules.
-- Integration tests under `services/*/src/integrationTest/.../OwnerBoundaryTest.kt` enforce
-  foundation rules per service.
+- **T001 (PR #1)** — 32/32 checks; two clean builds → 22 matching artifact pairs.
+- **T002 (PR #1)** — 22/22 contract tests including Java and strict TypeScript consumers.
+- **T003 (PR #1)** — 15 PostgreSQL/mTLS/HTTP boundary cases + 15 architecture rule cases.
+- **T004–T005 (PR #4)** — 93 selected frontend unit/component tests, 32 browser shell cases,
+  17 unit + 25 PostgreSQL account protection tests (per PR evidence table).
+- **T006–T010 (PR #6)** — 32 shell, 40 policy, and 23 account browser cases reported passing;
+  Semgrep/Gitleaks/OSV scans configured in the verification map (see PR #6 body for gate
+  history during the long-running delivery run).
+- Integration tests under `services/*/src/integrationTest/...` enforce per-service foundation
+  and crypto/account boundaries.
 
 ## Operations and Observability
 
@@ -254,6 +289,9 @@ PR #1 evidence (independent of this docs site):
 ## Sources
 
 - Repository: [okfriansyah-moh/spoolIn](https://github.com/okfriansyah-moh/spoolIn)
-- Pull request: [#1 Implement reproducible build, contracts, and private service foundation](https://github.com/okfriansyah-moh/spoolIn/pull/1) (merge `83c40e9`)
+- Pull requests:
+  - [#1 Implement reproducible build, contracts, and private service foundation](https://github.com/okfriansyah-moh/spoolIn/pull/1) (merge `83c40e9`)
+  - [#4 Add accessible shell and protected account storage](https://github.com/okfriansyah-moh/spoolIn/pull/4) (merge `1d0f96b`)
+  - [#6 Implement account access, effective policy, receipts and scoped admission](https://github.com/okfriansyah-moh/spoolIn/pull/6) (merge `ffcaae5`)
 - Design specification: `docs/04-spoolin-techdoc.md` (v1.11, October 2026)
 - Evidence commit cited in PR #1: `12e487f001b66c2f3a5802654c6928849aa47c49`

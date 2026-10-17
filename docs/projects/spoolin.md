@@ -70,9 +70,9 @@ SpoolIn is a **curated home theater ledger**:
 | Television metadata read-only | Techdoc §1 |
 | Maintainer-only mutations | Actor table techdoc §1.1 |
 | Local operator responsibilities | Separate from Maintainer browser role |
-| Portable agent workflow | `.ai/bundles/` (updated to 1.1.1 in PR #2) |
+| Portable agent workflow | `.ai/bundles/` — 1.1.1 (PR #2), 1.2.0 (PR #5), 1.2.1 + staged plan layout (PR #7) |
 | Public standalone presentation | PR #3 documentation cleanup |
-| Application shell + accounts | Open [PR #4](https://github.com/okfriansyah-moh/spoolIn/pull/4) |
+| Application shell + accounts | Merged [PR #4](https://github.com/okfriansyah-moh/spoolIn/pull/4) (shell) and [PR #6](https://github.com/okfriansyah-moh/spoolIn/pull/6) (sessions, policy, receipts, admission) |
 
 ## Architecture Summary
 
@@ -98,7 +98,11 @@ Deep dive: [SpoolIn system architecture](/docs/systems/spoolin-catalog-platform)
 | 2026-10-15 | [PR #1](https://github.com/okfriansyah-moh/spoolIn/pull/1) merged — T001–T003 foundation (contracts, services, databases, Compose) |
 | 2026-10-15 | [PR #2](https://github.com/okfriansyah-moh/spoolIn/pull/2) merged — portable agent workflow 1.1.1 for unattended verification |
 | 2026-10-15 | [PR #3](https://github.com/okfriansyah-moh/spoolIn/pull/3) merged — public standalone project presentation (docs) |
-| In progress | [PR #4](https://github.com/okfriansyah-moh/spoolIn/pull/4) open — application shell and account access |
+| 2026-10-16 | [PR #4](https://github.com/okfriansyah-moh/spoolIn/pull/4) merged — T004 themed accessible shell + T005 protected account storage |
+| 2026-10-16 | [PR #5](https://github.com/okfriansyah-moh/spoolIn/pull/5) merged — portable agent workflow **1.2.0** (task delivery harness; 269 tests in PR evidence) |
+| 2026-10-16 | [PR #6](https://github.com/okfriansyah-moh/spoolIn/pull/6) merged — T006–T010 account access wave (sessions, effective policy, receipts, scoped admission, browser journeys) |
+| 2026-10-16 | [PR #7](https://github.com/okfriansyah-moh/spoolIn/pull/7) merged — plan folders renumbered into 26 dependency-ordered stages (workflow **1.2.1**); no API or ATDD ID changes |
+| Next | Catalog browsing mutations, MCP runtime, maintainer management UI (later plan stages) |
 
 ## Key Decisions
 
@@ -138,6 +142,5 @@ independent codebase.
 ## Sources
 
 - Repository: [okfriansyah-moh/spoolIn](https://github.com/okfriansyah-moh/spoolIn)
-- Pull requests: [#1](https://github.com/okfriansyah-moh/spoolIn/pull/1), [#2](https://github.com/okfriansyah-moh/spoolIn/pull/2), [#3](https://github.com/okfriansyah-moh/spoolIn/pull/3)
-- Open work: [#4 Application shell and account access](https://github.com/okfriansyah-moh/spoolIn/pull/4)
+- Pull requests: [#1](https://github.com/okfriansyah-moh/spoolIn/pull/1)–[#7](https://github.com/okfriansyah-moh/spoolIn/pull/7) (foundation through account-access wave and plan renumbering)
 - Technical design: `docs/04-spoolin-techdoc.md`
