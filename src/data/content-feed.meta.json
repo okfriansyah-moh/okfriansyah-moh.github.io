@@ -1,6 +1,22 @@
 {
   "items": [
     {
+      "title": "SpoolIn: Multi-Service Catalog Platform Architecture",
+      "description": "How SpoolIn splits Core, Catalog, and Media across generated wire contracts, per-service PostgreSQL databases, mTLS identities, and migration readiness gates.",
+      "link": "/docs/systems/spoolin-catalog-platform",
+      "type": "system",
+      "date": "2026-10-16",
+      "readingTime": 10
+    },
+    {
+      "title": "SpoolIn",
+      "description": "Local movie and TV catalog with maintainer tooling, audit history, and MCP-assisted exact-content movie creation — bootstrapped with reproducible multi-service foundations.",
+      "link": "/docs/projects/spoolin",
+      "type": "project",
+      "date": "2026-10-16",
+      "readingTime": 4
+    },
+    {
       "title": "Visual Identity Before Development: Lessons from Padu",
       "description": "Define a game’s theme, mascot, logo, colors, and icons early, then carry that identity into reusable assets and components with Codex.",
       "link": "/docs/concepts/visual-identity-before-development",
