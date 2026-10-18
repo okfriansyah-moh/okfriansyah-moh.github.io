@@ -1,0 +1,340 @@
+---
+title: "SpoolIn: Multi-Service Catalog Platform Architecture"
+description: "How SpoolIn splits Core, Catalog, and Media across generated wire contracts, per-service PostgreSQL databases, mTLS identities, and migration readiness gates."
+sidebar_position: 6
+tags:
+  - distributed systems
+  - kotlin
+  - catalog
+keywords:
+  - spoolin
+  - graphql contracts
+  - grpc mtls
+  - database ownership
+difficulty: Advanced
+---
+
+# SpoolIn: Multi-Service Catalog Platform Architecture
+
+## What Was Built
+
+[SpoolIn](https://github.com/okfriansyah-moh/spoolIn) is a local movie and television
+discovery catalog with search, filters, cast and crew details, artwork management, audit
+history, and **human-approved AI movie creation through MCP** (Model Context Protocol).
+The public repository landed on **2026-10-15** with a full technical design specification
+(`docs/04-spoolin-techdoc.md`) and an executable **reproducible foundation** delivered in
+[merged PR #1](https://github.com/okfriansyah-moh/spoolIn/pull/1) (Tasks T001–T003).
+
+That foundation pins toolchains, generates shared wire contracts, and boots three Kotlin/Spring
+Boot services — **Core**, **Catalog**, and **Media** — each with its own PostgreSQL database,
+TLS-verified JDBC URLs, private mTLS gRPC listeners, serialized Flyway migrations, and gRPC
+health that stays `NOT_SERVING` until schema validation passes.
+
+Follow-on merges extended the stack beyond the backend foundation:
+
+- [PR #4](https://github.com/okfriansyah-moh/spoolIn/pull/4) (T004–T005) — shared **SvelteKit application shell** with themed, accessible navigation and **protected account storage** in Core (encrypted identities, Argon2 credential hashing, PostgreSQL integration tests).
+- [PR #6](https://github.com/okfriansyah-moh/spoolIn/pull/6) (T006–T010, T007 scope) — **registration and authoritative sessions**, **effective input policy** semantics, **owner receipts** with atomic mutation evidence, **scoped service identity and shared admission** across Core/Catalog/Media, plus connected register/sign-in/sign-out browser journeys.
+- [PR #8](https://github.com/okfriansyah-moh/spoolIn/pull/8) (T006–T026, G04–G16) — **public catalog reads and discovery UI**, **encrypted drafts** with browser controllers, **authoritative movie/person/credit writes** and maintainer editors, **artwork upload streams** with holds and attachment, plus **archive/restore lifecycle** and artwork progress UI (plan tasks marked *implementation complete*; formal selection accept deferred to G26).
+- [PR #9](https://github.com/okfriansyah-moh/spoolIn/pull/9) (T027–T046, G17–G26) — **editor draft recovery** (`draft-sync`), **MCP streamable HTTP transport** and connector identity, **immutable movie proposals** with **exact-approval binding** (UI challenge only in MCP `_meta.ui`, not redeemable from model text), **trusted in-chat review resource**, read-only **audit UI**, **frozen 100+100 seed manifest** with replay CLI, **safe JSON diagnostics**, reproducible **lifecycle ops scripts**, and **release handoff** matrix (`docs/release/g01-g26-closure-matrix.md`). Independent review resolved required source findings; **runtime acceptance** (Playwright matrix, live MCP clients, Compose stacks) remains open per PR evidence.
+
+This article separates **merged source evidence** from **runtime proof still pending** in the
+G01–G26 closure matrix.
+
+## The Problem
+
+A personal media catalog that supports maintainers, viewers, and MCP-assisted creation cannot
+safely live in one monolithic database or one shared database role:
+
+1. **Catalog integrity** — public visibility rules must hold even when Core is misconfigured.
+2. **Artwork isolation** — binary media and reservations should not share SQL credentials with
+   title metadata.
+3. **Contract drift** — browser GraphQL, gRPC between services, JSON policy schemas, and MCP
+   payloads must stay compatible across Kotlin and TypeScript consumers.
+4. **Local operability** — a solo operator needs reproducible builds, one-command startup, and
+   truthful readiness probes before exposing HTTPS on loopback.
+
+## Why This Problem Is Difficult
+
+1. **Three databases, zero cross-service SQL** — each service owns migrations and runtime
+   pools; coordination happens only through typed RPCs.
+2. **Security defaults** — PostgreSQL uses `sslmode=verify-full`, secrets are file-backed with
+   mode `0600`, and gRPC methods map to explicit caller certificate identities.
+3. **Migration safety** — only one migrator may hold the advisory lock; runtime pods refuse to
+   serve if Flyway reports pending or out-of-range schema versions.
+4. **Generated contracts** — GraphQL SDL, protobuf services, and JSON schemas must regenerate
+   identically in CI and on developer machines (22 matching output pairs in PR evidence).
+5. **Future MCP approval path** — exact-content movie proposals must not bypass Maintainer
+   authorization; the design reserves `McpGatewayService` RPCs with MCP-only caller identities.
+
+## Beginner Mental Model
+
+Picture three specialized shops on one street:
+
+- **Core** is the front desk — sessions, gateways, and (eventually) GraphQL for the browser.
+- **Catalog** is the inventory ledger — titles, people, credits, audits; it never reaches into
+  Media’s storage room directly.
+- **Media** is the frame shop — artwork bytes and reservations; it confirms holds through RPCs,
+  not shared tables.
+
+A laminated **menu** (`contracts/graphql`, `contracts/grpc`, `contracts/json`) is photocopied
+for every shop so nobody improvises message shapes at the door.
+
+## Requirements and Constraints
+
+| Requirement | Evidence in repository |
+| ----------- | ------------------------ |
+| Reproducible JVM/Node builds | Locked Gradle verification metadata, pinned images, T001 harness |
+| Shared contracts | `contracts/graphql/schema.graphql`, `contracts/grpc/.../spoolin.proto`, JSON schemas |
+| Service-owned databases | `spoolin_core`, `spoolin_catalog`, `spoolin_media` JDBC URLs in `ops/compose.yaml` |
+| Least-privilege DB roles | Separate `runtime` vs `migrator` users per service (`DatabaseSettings` in Core) |
+| Private mTLS transport | Service certs, `ServiceIdentityInterceptor`, SAN identities `core/catalog/media/mcp` |
+| Truthful readiness | `SchemaReadiness` + gRPC `HealthStatusManager` until migrations validate |
+| Local Compose deployment | `ops/compose.yaml` with read-only containers, dropped capabilities, loopback HTTPS |
+| Operator-only metrics | Actuator routes require client cert identities (`ListenerBoundary`) |
+
+## Architecture Overview
+
+Target runtime (from techdoc §2) with **foundation services** implemented:
+
+```mermaid
+flowchart TD
+  Browser[SvelteKit shell + session UI] -->|HTTPS GraphQL| Core[Core service]
+  MCP[MCP adapter TypeScript] -->|gRPC| Core
+  Core -->|signed actor RPC mTLS| Catalog[Catalog service]
+  Core -->|signed actor RPC mTLS| Media[Media service]
+  Catalog -->|gRPC| Core
+  Catalog -->|gRPC worker| Media
+  Core --> DBc[(PostgreSQL spoolin_core)]
+  Catalog --> DBk[(PostgreSQL spoolin_catalog)]
+  Media --> DBm[(PostgreSQL spoolin_media)]
+```
+
+PR #1 delivers the three backend applications, contract generation pipeline, Postgres image,
+and Compose wiring. PR #4 adds the static frontend shell served through Core; PR #6 wires
+session GraphQL operations, policy guidance components, and cross-service admission using the
+shared `backend-support` identity library. PR #8 connects catalog browsing, maintainer write
+paths, drafts, and artwork journeys end-to-end in source. PR #9 closes the MCP proposal →
+review → gateway approve/reject path in code and adds operational seed/ops tooling — with
+explicit gaps for host-supplied connector tokens and full client acceptance (T038–T039).
+
+## Execution Flow
+
+### 1. Contract generation (T002)
+
+1. Engineers edit canonical sources under `contracts/`.
+2. `build-tools/generate-*.mjs` emits Java, TypeScript, and verification fixtures.
+3. Consumer tests prove strict typing boundaries (GraphQL probe, protobuf round-trips, JSON schema).
+
+### 2. Image build and dependency lock (T001)
+
+1. Gradle verification metadata pins dependency hashes.
+2. Container images (`spoolin-*-foundation`) build from `ops/containers/*.Dockerfile`.
+3. Harness tests assert two clean builds produce identical generated artifacts.
+
+### 3. Database preparation and migration (T003)
+
+1. Postgres container initializes per-service databases and roles from secret files.
+2. `core-migrator` (Compose profile `migration`) runs `Application --migrate`.
+3. `MigrationRunner` acquires `pg_advisory_lock(1936749166)`, runs Flyway on schema `appdata`,
+   validates, then releases the lock.
+4. Runtime `core` pod starts only when `SchemaReadiness` sees current version within
+   configured min/max and no pending migrations.
+
+### 4. Protected RPC dispatch (foundation)
+
+1. gRPC server presents service certificate; peer certificate SAN maps to identity
+   (`certificateIdentity`).
+2. `ServiceIdentityInterceptor` allows only configured caller sets per method (for example
+   Catalog may call `IdentityService/CheckActor`; MCP may call `McpGatewayService/*`).
+3. Health checks accept identities `core`, `catalog`, `media`, `mcp`, or `operator`.
+
+### 5. Accessible shell and theme (T004 — PR #4)
+
+1. SvelteKit routes mount inside `AppShell` with skip links, brand header, and capability-aware navigation.
+2. Theme preference persists in browser storage with system-color-scheme fallback.
+3. Shared design-system components (`Field`, `ConfirmDialog`, `SessionBoundary`, etc.) enforce consistent focus and error summaries for later catalog forms.
+
+### 6. Protected account persistence (T005 — PR #4)
+
+1. Maintainer/viewer identities are stored in Core-owned tables with **encrypted payloads** and bounded Argon2 hashing for secrets.
+2. Email lookup uniqueness and IDNA2008 normalization run before persistence.
+3. Integration tests cover nonce rotation, crash-after-reservation recovery, and PostgreSQL-backed credential boundaries.
+
+### 7. Sessions, policy, receipts, and admission (T006–T010 — PR #6)
+
+1. Browser forms post GraphQL operations (`register`, `sign-in`, `sign-out`, `bootstrap`) through a typed transport layer with parsed outcomes and validation rules.
+2. **Effective input policy** returns precise field-level guidance (`PolicyGuidance`) so clients show the same semantics Core enforces server-side.
+3. **Owner receipts** tie catalog mutations to durable evidence in the same database transaction as domain writes (atomic mutation + audit/work).
+4. `libraries/backend-support` signs **actor assertions**; Catalog and Media verify scoped permissions via shared admission rules before serving protected RPCs.
+5. Session menu and manage routes connect the shell to live Core session state.
+
+### 8. Catalog browse, drafts, and maintainer writes (T011–T026 — PR #8)
+
+1. Public GraphQL reads (`titles`, `title`, `people`) proxy through Core to Catalog gRPC with visibility rules intact.
+2. **Protected drafts** store encrypted maintainer work-in-progress; browser helpers isolate drafts per account.
+3. **Movie, person, and credit writes** execute in Catalog with owner receipts; SvelteKit manage routes wire editors to managed GraphQL.
+4. **Artwork** flows stream uploads to Media, coordinate holds/reservations, and surface progress in the shell.
+5. **Archive/restore/delete** lifecycle RPCs pair with confirmation UI on manage routes.
+
+### 9. Draft recovery in editors (T027 — PR #9)
+
+1. `draft-sync.ts` modules reconcile local editor state with server drafts after interruption (movie, person, credit panels).
+2. Unit tests (`draft-sync.test.ts`, editor controller tests) lock expected recovery shapes; full browser recovery proof is still listed *pending* in the closure matrix.
+
+### 10. MCP propose → exact approval → review UI (T028–T030 — PR #9)
+
+1. TypeScript MCP gateway exposes **streamable HTTP** transport stubs and connector bearer handling.
+2. Catalog **`ProposalWrites`** persists immutable proposal rows; **`ExactApprovalBinding`** ties approve actions to a bound UI challenge.
+3. `propose_movie` tool results **strip** `ui_binding_token` from structured model content; the challenge appears only under `_meta.ui` with `visibility: app` (re-review finding F-001).
+4. Review frame (`mcp/src/review/*`) fetches challenges via binding token; Core adds `/gateway/approve_movie` and `/gateway/reject_movie` with connector bearer verification.
+5. **Not yet proven in lane:** `MCP_UI_ASSERTION` signing, live gRPC forward from MCP to gateway, Claude Desktop / ChatGPT client harness runs.
+
+### 11. Seed, audit, diagnostics, and lifecycle ops (T031–T037 — PR #9)
+
+1. **Audit reads** expose read-only outcomes; `manage/audit` route consumes GraphQL `audit`.
+2. **`data/seed/manifest.json`** freezes 100 movies + 100 series; `validate_manifest.py` validates counts in CI/lane checks.
+3. **`CatalogSeedLoader`** and `ops/bin/seed.sh` support init/replay with receipt semantics (DB execution not run in authoring lane).
+4. **`SafeJsonDiagnostics`** and log converters redact binding tokens from JSON logs.
+5. **`ops/bin/`** scripts (`start`, `stop`, `backup`, `restore`, `rotate-keys`, `logs`, …) document reproducible lifecycle commands; `make start` fails closed without `SPOOLIN_LOCK_DIR`.
+
+## Important Components
+
+| Component | Responsibility |
+| --------- | -------------- |
+| `build-tools/generate-contracts.mjs` | Orchestrates GraphQL, protobuf, JSON, and token generation |
+| `contracts/grpc/spoolin/v1/spoolin.proto` | gRPC API surface (Identity, Catalog, Media, MCP gateway) |
+| `frontend/src/lib/components/AppShell.svelte` | Accessible shell, theme, capability-aware nav (T004) |
+| `services/core/.../ProtectedAccounts.kt` | Encrypted account identities and credential storage (T005) |
+| `services/core` | GraphQL session gateway, MCP entrypoints, static frontend hosting |
+| `frontend/src/lib/features/session/*` | Registration, sign-in, sign-out controllers and GraphQL documents (T006–T007) |
+| `frontend/src/lib/policy/*` | Effective policy parsing and UI guidance (T009) |
+| `libraries/backend-support` | Actor signing, trust files, scoped permissions, admission helpers (T008) |
+| `services/catalog` | Catalog domain service with shared admission enforcement |
+| `services/media` | Artwork service with shared admission enforcement |
+| `ops/compose.yaml` | Private network, secrets, migrator profiles, loopback port publish |
+| `MigrationRunner` / `SchemaReadiness` | Serialized migrations and serving gate |
+| `ServiceIdentityInterceptor` | mTLS identity to method allowlists |
+| `frontend/src/lib/features/catalog/*` | Discovery UI and public catalog reads (T012–T013) |
+| `frontend/src/lib/features/*/draft-sync.ts` | Editor draft recovery after interruption (T027) |
+| `services/catalog/.../ProposalWrites.kt` | Immutable MCP movie proposals and exact-approval binding (T029) |
+| `mcp/src/review/*` | Trusted in-chat review resource (T030) |
+| `build-tools/validate-seed/*` | Frozen seed manifest generation and validation (T032) |
+| `ops/bin/*.sh` | Lifecycle operator commands (T037) |
+| `docs/release/g01-g26-closure-matrix.md` | Per-task source vs runtime closure status (T046) |
+| `docs/04-spoolin-techdoc.md` | Authoritative design for lifecycle, MCP approval, durable work |
+
+## Simplified Implementation Examples
+
+Simplified from `DatabaseSettings.validateUrl` — JDBC must target the owned database with
+verified TLS:
+
+```kotlin
+require(url.startsWith("jdbc:postgresql://"))
+require(uri.path == "/spoolin_$owner" && uri.userInfo == null)
+require(parameters.any { it == listOf("sslmode", "verify-full") })
+```
+
+Simplified migration gate:
+
+```kotlin
+fun ready(): Boolean {
+  val flyway = ownerFlyway(dataSource)
+  val current = flyway.info().current() ?: return false
+  return current.version in minimumVersion..maximumVersion &&
+    flyway.info().pending().isEmpty() &&
+    flyway.validateWithResult().validationSuccessful
+}
+```
+
+## Reliability and Idempotency
+
+- **Migrations** — advisory lock prevents concurrent migrators; Flyway `cleanDisabled(true)`
+  blocks destructive resets in production paths.
+- **Readiness** — gRPC health flips to `SERVING` only when schema validation succeeds;
+  scheduled refresh re-checks every second.
+- **Durable work (design)** — techdoc §7 defines database-persisted jobs for cross-service
+  effects (for example artwork confirm) without distributed transactions; workers reconcile
+  with `GetOperation` style receipts after timeouts.
+- **Idempotent client ops (design)** — GraphQL mutations carry operation UUIDs so browsers can
+  resubmit safely after network loss.
+
+## Failure Modes
+
+| Failure | Detection | Recovery |
+| ------- | --------- | -------- |
+| Pending migrations | `SchemaReadiness` down | Run migrator profile; never force runtime serve |
+| Lock contention | Migration budget exceeded | Retry migrator; investigate stuck session |
+| Wrong DB role | Startup `require` on username pattern | Fix Compose secrets / env |
+| Unauthorized gRPC caller | `PERMISSION_DENIED` | Rotate certs; fix SAN mapping |
+| Secret file permissions | `requireProtectedFile` throws | chmod `600`, single-line secret |
+| Media unavailable during read (design) | Core degrades artwork URLs | Catalog metadata still returns |
+
+## Trade-offs and Rejected Alternatives
+
+| Decision | Rationale |
+| -------- | --------- |
+| Three databases vs one | Blast-radius isolation; aligns with per-service Flyway ownership |
+| Generated contracts vs hand-written DTOs | Prevents GraphQL/protobuf drift across Kotlin and TypeScript |
+| Excluding GraphQL auto-config initially | Lets foundation prove transport/security before exposing browser API |
+| Stub gRPC services in PR #1 | Enables identity and health testing without unfinished catalog logic |
+| Compose on loopback vs cloud K8s | Techdoc explicitly scopes personal local installation |
+
+## Testing
+
+Repository evidence (independent of this docs site):
+
+- **T001 (PR #1)** — 32/32 checks; two clean builds → 22 matching artifact pairs.
+- **T002 (PR #1)** — 22/22 contract tests including Java and strict TypeScript consumers.
+- **T003 (PR #1)** — 15 PostgreSQL/mTLS/HTTP boundary cases + 15 architecture rule cases.
+- **T004–T005 (PR #4)** — 93 selected frontend unit/component tests, 32 browser shell cases,
+  17 unit + 25 PostgreSQL account protection tests (per PR evidence table).
+- **T006–T010 (PR #6)** — 32 shell, 40 policy, and 23 account browser cases reported passing;
+  Semgrep/Gitleaks/OSV scans configured in the verification map (see PR #6 body for gate
+  history during the long-running delivery run).
+- **T006–T026 (PR #8)** — plan docs mark tasks *implementation complete*; PR author deferred full
+  Playwright/browser matrix locally (host resource limits) — re-run on CI or remote host per PR #8 body.
+- **T027–T046 (PR #9)** — unit tests for proposals, review state, draft-sync, audit API, seed
+  validator, and MCP UI meta; `mcp tsc --noEmit` and `validate_manifest.py` pass in lane; Gradle IT,
+  Compose, and client harness runs explicitly skipped until runtime acceptance.
+- Integration tests under `services/*/src/integrationTest/...` enforce per-service foundation
+  and crypto/account boundaries.
+
+## Operations and Observability
+
+- **Commands** — `Makefile` routes `start` to `ops/bin/start.sh`; lifecycle scripts under `ops/bin/`
+  cover backup, restore, seed, key rotation, logs, and connector helpers (PR #9).
+- **Compose** — set `SPOOLIN_INSTALLATION`; Core HTTPS defaults to `127.0.0.1:8443`.
+- **Metrics** — Prometheus scrapes private Actuator endpoints; `ListenerBoundary` requires
+  `prometheus` client cert on `/actuator/prometheus`.
+- **Logs** — techdoc §12 specifies JSON log contracts for later operational hardening.
+
+## Lessons Learned
+
+1. **Prove transport and schema gates before features** — health that lies is worse than health
+   that stays red until migrations finish.
+2. **Treat contracts as compilable artifacts** — generation + consumer tests catch drift earlier
+   than integration tests alone.
+3. **Encode security invariants in startup `require` blocks** — JDBC URL shape and secret file
+   modes fail fast instead of at 2 a.m.
+4. **Keep MCP approval on Core’s gateway** — centralizing `McpGatewayService` preserves
+   Maintainer authorization even when chat clients change.
+5. **Never put redeemable approval secrets in model-visible structured content** — PR #9 review
+   required stripping binding tokens from tool results and serving UI challenges only via MCP app metadata.
+
+## Related
+
+- [SpoolIn project overview](/docs/projects/spoolin)
+- [Database-backed state machines](/docs/concepts/database-state-machines)
+- [LLM guardrails](/docs/concepts/llm-guardrails) — analogous approval boundaries for AI inputs
+
+## Sources
+
+- Repository: [okfriansyah-moh/spoolIn](https://github.com/okfriansyah-moh/spoolIn)
+- Pull requests:
+  - [#1 Implement reproducible build, contracts, and private service foundation](https://github.com/okfriansyah-moh/spoolIn/pull/1) (merge `83c40e9`)
+  - [#4 Add accessible shell and protected account storage](https://github.com/okfriansyah-moh/spoolIn/pull/4) (merge `1d0f96b`)
+  - [#6 Implement account access, effective policy, receipts and scoped admission](https://github.com/okfriansyah-moh/spoolIn/pull/6) (merge `ffcaae5`)
+  - [#8 G04–G16: policy through artwork journeys](https://github.com/okfriansyah-moh/spoolIn/pull/8) (merge `053eb8a`)
+  - [#9 G17–G26: draft recovery through release handoff](https://github.com/okfriansyah-moh/spoolIn/pull/9) (merge `2764ca8`)
+- Design specification: `docs/04-spoolin-techdoc.md` (v1.11, October 2026)
+- Evidence commit cited in PR #1: `12e487f001b66c2f3a5802654c6928849aa47c49`

@@ -528,6 +528,95 @@
         "visual-identity-prompt-and-review-workflow"
       ]
     },
+    "spoolin:catalog-platform": {
+      "document": {
+        "en": "docs/systems/spoolin-catalog-platform.md",
+        "id": "i18n/id/docusaurus-plugin-content-docs/current/systems/spoolin-catalog-platform.md"
+      },
+      "sources": [
+        "okfriansyah-moh/spoolIn#1",
+        "okfriansyah-moh/spoolIn@83c40e9dc01b30970b94db66e1150934c52b344c",
+        "okfriansyah-moh/spoolIn#4",
+        "okfriansyah-moh/spoolIn#6",
+        "okfriansyah-moh/spoolIn@1d0f96b0a21f6042733037b702f22b6584b6595e",
+        "okfriansyah-moh/spoolIn@ffcaae535b55d75b94256946c4c340e30c509048",
+        "okfriansyah-moh/spoolIn#8",
+        "okfriansyah-moh/spoolIn@053eb8af7d0d1f5baaf049d254db0f7cf57f1535",
+        "okfriansyah-moh/spoolIn#9",
+        "okfriansyah-moh/spoolIn@2764ca8bcdb5ee182852e2bdb26c95247c81c5ed"
+      ],
+      "repos": ["okfriansyah-moh/spoolIn"],
+      "learning_objective": "Design a local three-service catalog platform with maintainer catalog UI, MCP exact-approval proposals, seed replay, and lifecycle ops — while separating merged source evidence from pending runtime acceptance",
+      "covered_capabilities": [
+        "reproducible-build-foundation",
+        "shared-wire-contract-generation",
+        "three-service-database-ownership",
+        "mtls-service-identity",
+        "serialized-migration-advisory-lock",
+        "schema-readiness-serving-gate",
+        "graphql-grpc-json-contracts",
+        "compose-local-deployment",
+        "service-identity-interceptor",
+        "mcp-gateway-stub-wiring",
+        "archive-first-catalog-lifecycle-design",
+        "durable-work-reconciliation-design",
+        "exact-content-mcp-approval-design",
+        "accessible-sveltekit-application-shell",
+        "encrypted-account-credential-storage",
+        "argon2-bounded-credential-hashing",
+        "authoritative-registration-sessions",
+        "effective-input-policy-semantics",
+        "owner-receipt-atomic-mutations",
+        "scoped-service-identity-admission",
+        "signed-actor-rpc-backend-support",
+        "graphql-session-browser-journeys",
+        "public-catalog-discovery-ui",
+        "encrypted-drafts-maintainer-writes",
+        "artwork-upload-archive-lifecycle-ui",
+        "editor-draft-recovery-sync",
+        "mcp-streamable-http-transport",
+        "immutable-movie-proposals-exact-approval",
+        "trusted-in-chat-review-resource",
+        "read-only-audit-ui",
+        "frozen-seed-manifest-replay",
+        "safe-json-diagnostics",
+        "reproducible-lifecycle-ops-scripts",
+        "g01-g26-release-closure-matrix"
+      ]
+    },
+    "spoolin:project-overview": {
+      "document": {
+        "en": "docs/projects/spoolin.md",
+        "id": "i18n/id/docusaurus-plugin-content-docs/current/projects/spoolin.md"
+      },
+      "sources": [
+        "okfriansyah-moh/spoolIn#1",
+        "okfriansyah-moh/spoolIn#2",
+        "okfriansyah-moh/spoolIn#3",
+        "okfriansyah-moh/spoolIn#4",
+        "okfriansyah-moh/spoolIn#5",
+        "okfriansyah-moh/spoolIn#6",
+        "okfriansyah-moh/spoolIn#7",
+        "okfriansyah-moh/spoolIn#8",
+        "okfriansyah-moh/spoolIn#9"
+      ],
+      "repos": ["okfriansyah-moh/spoolIn"],
+      "learning_objective": "Follow SpoolIn's product scope, evidence-driven plan, and milestones from foundation through G17–G26 source closure (runtime acceptance still open)",
+      "covered_capabilities": [
+        "project-roadmap-status",
+        "product-scope-overview",
+        "foundation-milestone-t001-t003",
+        "portable-agent-workflow-1-1-1",
+        "public-standalone-docs-refresh",
+        "application-shell-t004-t005",
+        "account-access-wave-t006-t010",
+        "portable-agent-workflow-1-2-x",
+        "plan-stage-renumbering-26-stages",
+        "g04-g16-catalog-artwork-wave",
+        "g17-g26-mcp-seed-ops-wave",
+        "g26-runtime-acceptance-pending"
+      ]
+    },
     "padu:codex-game-audio-synthesis": {
       "document": {
         "en": "docs/concepts/codex-game-audio-synthesis.mdx",
