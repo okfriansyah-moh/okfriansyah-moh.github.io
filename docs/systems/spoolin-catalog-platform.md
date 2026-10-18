@@ -34,10 +34,11 @@ Follow-on merges extended the stack beyond the backend foundation:
 
 - [PR #4](https://github.com/okfriansyah-moh/spoolIn/pull/4) (T004–T005) — shared **SvelteKit application shell** with themed, accessible navigation and **protected account storage** in Core (encrypted identities, Argon2 credential hashing, PostgreSQL integration tests).
 - [PR #6](https://github.com/okfriansyah-moh/spoolIn/pull/6) (T006–T010, T007 scope) — **registration and authoritative sessions**, **effective input policy** semantics, **owner receipts** with atomic mutation evidence, **scoped service identity and shared admission** across Core/Catalog/Media, plus connected register/sign-in/sign-out browser journeys.
+- [PR #8](https://github.com/okfriansyah-moh/spoolIn/pull/8) (T006–T026, G04–G16) — **public catalog reads and discovery UI**, **encrypted drafts** with browser controllers, **authoritative movie/person/credit writes** and maintainer editors, **artwork upload streams** with holds and attachment, plus **archive/restore lifecycle** and artwork progress UI (plan tasks marked *implementation complete*; formal selection accept deferred to G26).
+- [PR #9](https://github.com/okfriansyah-moh/spoolIn/pull/9) (T027–T046, G17–G26) — **editor draft recovery** (`draft-sync`), **MCP streamable HTTP transport** and connector identity, **immutable movie proposals** with **exact-approval binding** (UI challenge only in MCP `_meta.ui`, not redeemable from model text), **trusted in-chat review resource**, read-only **audit UI**, **frozen 100+100 seed manifest** with replay CLI, **safe JSON diagnostics**, reproducible **lifecycle ops scripts**, and **release handoff** matrix (`docs/release/g01-g26-closure-matrix.md`). Independent review resolved required source findings; **runtime acceptance** (Playwright matrix, live MCP clients, Compose stacks) remains open per PR evidence.
 
-Catalog mutations, MCP adapter runtime, and full maintainer catalog UI remain specified in the
-techdoc; this article separates **merged implementation evidence** from **design targets still
-open in the plan**.
+This article separates **merged source evidence** from **runtime proof still pending** in the
+G01–G26 closure matrix.
 
 ## The Problem
 
@@ -111,7 +112,10 @@ flowchart TD
 PR #1 delivers the three backend applications, contract generation pipeline, Postgres image,
 and Compose wiring. PR #4 adds the static frontend shell served through Core; PR #6 wires
 session GraphQL operations, policy guidance components, and cross-service admission using the
-shared `backend-support` identity library.
+shared `backend-support` identity library. PR #8 connects catalog browsing, maintainer write
+paths, drafts, and artwork journeys end-to-end in source. PR #9 closes the MCP proposal →
+review → gateway approve/reject path in code and adds operational seed/ops tooling — with
+explicit gaps for host-supplied connector tokens and full client acceptance (T038–T039).
 
 ## Execution Flow
 
@@ -162,14 +166,36 @@ shared `backend-support` identity library.
 2. **Effective input policy** returns precise field-level guidance (`PolicyGuidance`) so clients show the same semantics Core enforces server-side.
 3. **Owner receipts** tie catalog mutations to durable evidence in the same database transaction as domain writes (atomic mutation + audit/work).
 4. `libraries/backend-support` signs **actor assertions**; Catalog and Media verify scoped permissions via shared admission rules before serving protected RPCs.
-5. Session menu and manage routes connect the shell to live Core session state (registration and sign-in journeys merged; positive interrupted-draft recovery remains deferred in plan tasks T015/T016 per PR #6 notes).
+5. Session menu and manage routes connect the shell to live Core session state.
 
-### 8. Catalog read/mutation sequence (design — techdoc §2.3)
+### 8. Catalog browse, drafts, and maintainer writes (T011–T026 — PR #8)
 
-Specified for upcoming feature tasks: browser mutation → Core → Catalog `CheckActor` → local
-transaction → optional `GetOperation` reconciliation if the response is lost. Receipt and
-admission plumbing from PR #6 prepares this path; full maintainer catalog mutations remain
-on later plan stages.
+1. Public GraphQL reads (`titles`, `title`, `people`) proxy through Core to Catalog gRPC with visibility rules intact.
+2. **Protected drafts** store encrypted maintainer work-in-progress; browser helpers isolate drafts per account.
+3. **Movie, person, and credit writes** execute in Catalog with owner receipts; SvelteKit manage routes wire editors to managed GraphQL.
+4. **Artwork** flows stream uploads to Media, coordinate holds/reservations, and surface progress in the shell.
+5. **Archive/restore/delete** lifecycle RPCs pair with confirmation UI on manage routes.
+
+### 9. Draft recovery in editors (T027 — PR #9)
+
+1. `draft-sync.ts` modules reconcile local editor state with server drafts after interruption (movie, person, credit panels).
+2. Unit tests (`draft-sync.test.ts`, editor controller tests) lock expected recovery shapes; full browser recovery proof is still listed *pending* in the closure matrix.
+
+### 10. MCP propose → exact approval → review UI (T028–T030 — PR #9)
+
+1. TypeScript MCP gateway exposes **streamable HTTP** transport stubs and connector bearer handling.
+2. Catalog **`ProposalWrites`** persists immutable proposal rows; **`ExactApprovalBinding`** ties approve actions to a bound UI challenge.
+3. `propose_movie` tool results **strip** `ui_binding_token` from structured model content; the challenge appears only under `_meta.ui` with `visibility: app` (re-review finding F-001).
+4. Review frame (`mcp/src/review/*`) fetches challenges via binding token; Core adds `/gateway/approve_movie` and `/gateway/reject_movie` with connector bearer verification.
+5. **Not yet proven in lane:** `MCP_UI_ASSERTION` signing, live gRPC forward from MCP to gateway, Claude Desktop / ChatGPT client harness runs.
+
+### 11. Seed, audit, diagnostics, and lifecycle ops (T031–T037 — PR #9)
+
+1. **Audit reads** expose read-only outcomes; `manage/audit` route consumes GraphQL `audit`.
+2. **`data/seed/manifest.json`** freezes 100 movies + 100 series; `validate_manifest.py` validates counts in CI/lane checks.
+3. **`CatalogSeedLoader`** and `ops/bin/seed.sh` support init/replay with receipt semantics (DB execution not run in authoring lane).
+4. **`SafeJsonDiagnostics`** and log converters redact binding tokens from JSON logs.
+5. **`ops/bin/`** scripts (`start`, `stop`, `backup`, `restore`, `rotate-keys`, `logs`, …) document reproducible lifecycle commands; `make start` fails closed without `SPOOLIN_LOCK_DIR`.
 
 ## Important Components
 
@@ -188,6 +214,13 @@ on later plan stages.
 | `ops/compose.yaml` | Private network, secrets, migrator profiles, loopback port publish |
 | `MigrationRunner` / `SchemaReadiness` | Serialized migrations and serving gate |
 | `ServiceIdentityInterceptor` | mTLS identity to method allowlists |
+| `frontend/src/lib/features/catalog/*` | Discovery UI and public catalog reads (T012–T013) |
+| `frontend/src/lib/features/*/draft-sync.ts` | Editor draft recovery after interruption (T027) |
+| `services/catalog/.../ProposalWrites.kt` | Immutable MCP movie proposals and exact-approval binding (T029) |
+| `mcp/src/review/*` | Trusted in-chat review resource (T030) |
+| `build-tools/validate-seed/*` | Frozen seed manifest generation and validation (T032) |
+| `ops/bin/*.sh` | Lifecycle operator commands (T037) |
+| `docs/release/g01-g26-closure-matrix.md` | Per-task source vs runtime closure status (T046) |
 | `docs/04-spoolin-techdoc.md` | Authoritative design for lifecycle, MCP approval, durable work |
 
 ## Simplified Implementation Examples
@@ -258,12 +291,18 @@ Repository evidence (independent of this docs site):
 - **T006–T010 (PR #6)** — 32 shell, 40 policy, and 23 account browser cases reported passing;
   Semgrep/Gitleaks/OSV scans configured in the verification map (see PR #6 body for gate
   history during the long-running delivery run).
+- **T006–T026 (PR #8)** — plan docs mark tasks *implementation complete*; PR author deferred full
+  Playwright/browser matrix locally (host resource limits) — re-run on CI or remote host per PR #8 body.
+- **T027–T046 (PR #9)** — unit tests for proposals, review state, draft-sync, audit API, seed
+  validator, and MCP UI meta; `mcp tsc --noEmit` and `validate_manifest.py` pass in lane; Gradle IT,
+  Compose, and client harness runs explicitly skipped until runtime acceptance.
 - Integration tests under `services/*/src/integrationTest/...` enforce per-service foundation
   and crypto/account boundaries.
 
 ## Operations and Observability
 
-- **Commands** — `Makefile` public commands (see techdoc §11) orchestrate start, test, and migration flows.
+- **Commands** — `Makefile` routes `start` to `ops/bin/start.sh`; lifecycle scripts under `ops/bin/`
+  cover backup, restore, seed, key rotation, logs, and connector helpers (PR #9).
 - **Compose** — set `SPOOLIN_INSTALLATION`; Core HTTPS defaults to `127.0.0.1:8443`.
 - **Metrics** — Prometheus scrapes private Actuator endpoints; `ListenerBoundary` requires
   `prometheus` client cert on `/actuator/prometheus`.
@@ -279,6 +318,8 @@ Repository evidence (independent of this docs site):
    modes fail fast instead of at 2 a.m.
 4. **Keep MCP approval on Core’s gateway** — centralizing `McpGatewayService` preserves
    Maintainer authorization even when chat clients change.
+5. **Never put redeemable approval secrets in model-visible structured content** — PR #9 review
+   required stripping binding tokens from tool results and serving UI challenges only via MCP app metadata.
 
 ## Related
 
@@ -293,5 +334,7 @@ Repository evidence (independent of this docs site):
   - [#1 Implement reproducible build, contracts, and private service foundation](https://github.com/okfriansyah-moh/spoolIn/pull/1) (merge `83c40e9`)
   - [#4 Add accessible shell and protected account storage](https://github.com/okfriansyah-moh/spoolIn/pull/4) (merge `1d0f96b`)
   - [#6 Implement account access, effective policy, receipts and scoped admission](https://github.com/okfriansyah-moh/spoolIn/pull/6) (merge `ffcaae5`)
+  - [#8 G04–G16: policy through artwork journeys](https://github.com/okfriansyah-moh/spoolIn/pull/8) (merge `053eb8a`)
+  - [#9 G17–G26: draft recovery through release handoff](https://github.com/okfriansyah-moh/spoolIn/pull/9) (merge `2764ca8`)
 - Design specification: `docs/04-spoolin-techdoc.md` (v1.11, October 2026)
 - Evidence commit cited in PR #1: `12e487f001b66c2f3a5802654c6928849aa47c49`

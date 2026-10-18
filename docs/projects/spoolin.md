@@ -102,14 +102,16 @@ Deep dive: [SpoolIn system architecture](/docs/systems/spoolin-catalog-platform)
 | 2026-10-16 | [PR #5](https://github.com/okfriansyah-moh/spoolIn/pull/5) merged — portable agent workflow **1.2.0** (task delivery harness; 269 tests in PR evidence) |
 | 2026-10-16 | [PR #6](https://github.com/okfriansyah-moh/spoolIn/pull/6) merged — T006–T010 account access wave (sessions, effective policy, receipts, scoped admission, browser journeys) |
 | 2026-10-16 | [PR #7](https://github.com/okfriansyah-moh/spoolIn/pull/7) merged — plan folders renumbered into 26 dependency-ordered stages (workflow **1.2.1**); no API or ATDD ID changes |
-| Next | Catalog browsing mutations, MCP runtime, maintainer management UI (later plan stages) |
+| 2026-10-17 | [PR #8](https://github.com/okfriansyah-moh/spoolIn/pull/8) merged — G04–G16 catalog browse, drafts, maintainer writes, artwork, and archive UI (T006–T026 source closure; formal G26 accept pending) |
+| 2026-10-18 | [PR #9](https://github.com/okfriansyah-moh/spoolIn/pull/9) merged — G17–G26 draft recovery, MCP proposals + review UI, seed/ops tooling, release handoff matrix (runtime acceptance still open) |
+| Next | Full G26 independent review accept, Playwright/visual matrix, live MCP client proofs (Claude Desktop / ChatGPT), Compose-backed runtime drills |
 
 ## Key Decisions
 
 | Decision | Rationale |
 | -------- | --------- |
 | Kotlin/Spring Boot services | Typed enterprise stack with Flyway, gRPC, and future GraphQL |
-| SvelteKit frontend (planned) | Techdoc §3 — static build served by Core |
+| SvelteKit frontend | Merged shell and manage routes (PR #4, #8); static build served by Core |
 | MCP gateway on Core | Central approval and policy enforcement for chat clients |
 | Evidence-first task plan | ATDD + harness gates before claiming feature completeness |
 | Local Compose deployment | Personal installation scope; no managed cloud requirement in v1 design |
@@ -142,5 +144,5 @@ independent codebase.
 ## Sources
 
 - Repository: [okfriansyah-moh/spoolIn](https://github.com/okfriansyah-moh/spoolIn)
-- Pull requests: [#1](https://github.com/okfriansyah-moh/spoolIn/pull/1)–[#7](https://github.com/okfriansyah-moh/spoolIn/pull/7) (foundation through account-access wave and plan renumbering)
+- Pull requests: [#1](https://github.com/okfriansyah-moh/spoolIn/pull/1)–[#9](https://github.com/okfriansyah-moh/spoolIn/pull/9) (foundation through G17–G26 source closure)
 - Technical design: `docs/04-spoolin-techdoc.md`

@@ -97,14 +97,16 @@ Kedalaman teknis: [Arsitektur sistem SpoolIn](/id/docs/systems/spoolin-catalog-p
 | 2026-10-16 | [PR #5](https://github.com/okfriansyah-moh/spoolIn/pull/5) digabung — alur agen portabel **1.2.0** |
 | 2026-10-16 | [PR #6](https://github.com/okfriansyah-moh/spoolIn/pull/6) digabung — gelombang akses akun T006–T010 |
 | 2026-10-16 | [PR #7](https://github.com/okfriansyah-moh/spoolIn/pull/7) digabung — penomoran ulang 26 tahap rencana (workflow **1.2.1**) |
-| Berikutnya | Mutasi katalog, runtime MCP, UI manajemen maintainer (tahap rencana berikutnya) |
+| 2026-10-17 | [PR #8](https://github.com/okfriansyah-moh/spoolIn/pull/8) digabung — G04–G16 jelajah katalog, draft, tulisan maintainer, artwork, UI arsip (T006–T026; penerimaan G26 tertunda) |
+| 2026-10-18 | [PR #9](https://github.com/okfriansyah-moh/spoolIn/pull/9) digabung — G17–G26 pemulihan draft, proposal MCP + UI tinjauan, alat seed/ops, matriks serah terima (penerimaan runtime masih terbuka) |
+| Berikutnya | Penerimaan review independen G26 penuh, matriks Playwright/visual, bukti klien MCP hidup, latihan runtime berbasis Compose |
 
 ## Keputusan Kunci
 
 | Keputusan | Alasan |
 | --------- | ------ |
 | Layanan Kotlin/Spring Boot | Stack enterprise bertipe dengan Flyway, gRPC, dan GraphQL mendatang |
-| Frontend SvelteKit (direncanakan) | Techdoc §3 — build statis disajikan Core |
+| Frontend SvelteKit | Shell dan rute manage digabung (PR #4, #8); build statis disajikan Core |
 | Gateway MCP di Core | Penegakan persetujuan dan kebijakan terpusat untuk klien chat |
 | Rencana tugas berbasis bukti | ATDD + gerbang harness sebelum klaim fitur lengkap |
 | Deployment Compose lokal | Lingkup instalasi pribadi; tanpa cloud terkelola di desain v1 |
@@ -132,5 +134,5 @@ basis kode independen.
 ## Sumber
 
 - Repositori: [okfriansyah-moh/spoolIn](https://github.com/okfriansyah-moh/spoolIn)
-- Pull request: [#1](https://github.com/okfriansyah-moh/spoolIn/pull/1)–[#7](https://github.com/okfriansyah-moh/spoolIn/pull/7)
+- Pull request: [#1](https://github.com/okfriansyah-moh/spoolIn/pull/1)–[#9](https://github.com/okfriansyah-moh/spoolIn/pull/9)
 - Desain teknis: `docs/04-spoolin-techdoc.md`

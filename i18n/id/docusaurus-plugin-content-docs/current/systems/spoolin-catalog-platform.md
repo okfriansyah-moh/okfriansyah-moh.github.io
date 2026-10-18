@@ -34,10 +34,11 @@ Merge berikutnya memperluas stack di atas fondasi backend:
 
 - [PR #4](https://github.com/okfriansyah-moh/spoolIn/pull/4) (T004–T005) — **shell aplikasi SvelteKit** bersama dengan navigasi bertema dan aksesibel serta **penyimpanan akun terlindungi** di Core (identitas terenkripsi, hashing kredensial Argon2, tes integrasi PostgreSQL).
 - [PR #6](https://github.com/okfriansyah-moh/spoolIn/pull/6) (T006–T010, cakupan T007) — **registrasi dan sesi otoritatif**, semantik **kebijakan input efektif**, **tanda terima pemilik** dengan bukti mutasi atomik, **identitas layanan ber-scope dan admission bersama** di Core/Catalog/Media, plus perjalanan browser daftar/masuk/keluar.
+- [PR #8](https://github.com/okfriansyah-moh/spoolIn/pull/8) (T006–T026, G04–G16) — **baca katalog publik dan UI discovery**, **draft terenkripsi** dengan kontroler browser, **tulisan film/orang/kredit otoritatif** dan editor maintainer, **alur unggah artwork** dengan hold dan lampiran, plus **siklus hidup arsip/pulihkan** dan UI progres artwork (tugas rencana *implementasi selesai*; penerimaan seleksi formal ditunda ke G26).
+- [PR #9](https://github.com/okfriansyah-moh/spoolIn/pull/9) (T027–T046, G17–G26) — **pemulihan draft di editor** (`draft-sync`), **transport HTTP MCP yang dapat distream**, **proposal film immutable** dengan **ikatan persetujuan eksak** (tantangan UI hanya di `_meta.ui` MCP, bukan dari teks model), **sumber daya tinjauan dalam chat tepercaya**, UI **audit hanya-baca**, **manifest seed 100+100 beku** dengan CLI replay, **diagnostik JSON aman**, skrip **ops siklus hidup** yang dapat direproduksi, dan matriks **serah terima rilis** (`docs/release/g01-g26-closure-matrix.md`). Review independen menutup temuan sumber wajib; **penerimaan runtime** (matriks Playwright, klien MCP hidup, stack Compose) masih terbuka menurut bukti PR.
 
-Mutasi katalog, runtime adaptor MCP, dan UI manajemen maintainer penuh masih di techdoc; artikel
-ini membedakan **bukti implementasi yang sudah digabung** dari **target desain yang masih terbuka
-di rencana**.
+Artikel ini membedakan **bukti sumber yang sudah digabung** dari **bukti runtime yang masih tertunda**
+di matriks penutupan G01–G26.
 
 ## Masalah
 
@@ -108,7 +109,10 @@ flowchart TD
 PR #1 menyampaikan tiga aplikasi backend, pipeline generasi kontrak, image Postgres, dan wiring
 Compose. PR #4 menambahkan shell frontend statis yang disajikan Core; PR #6 menghubungkan operasi
 GraphQL sesi, komponen panduan kebijakan, dan admission lintas layanan lewat pustaka identitas
-`backend-support`.
+`backend-support`. PR #8 menghubungkan penjelajahan katalog, jalur tulis maintainer, draft, dan
+perjalanan artwork end-to-end di sumber. PR #9 menutup jalur proposal MCP → tinjauan →
+setujui/tolak gateway di kode dan menambahkan alat seed/ops — dengan celah eksplisit untuk token
+konektor dari host dan penerimaan klien penuh (T038–T039).
 
 ## Alur Eksekusi
 
@@ -157,13 +161,36 @@ GraphQL sesi, komponen panduan kebijakan, dan admission lintas layanan lewat pus
 2. **Kebijakan input efektif** mengembalikan panduan per field (`PolicyGuidance`) agar klien menampilkan semantik yang sama dengan penegakan server Core.
 3. **Tanda terima pemilik** mengikat mutasi katalog ke bukti durable dalam transaksi basis data yang sama dengan tulisan domain.
 4. `libraries/backend-support` menandatangani **assertion aktor**; Catalog dan Media memverifikasi izin ber-scope sebelum RPC terlindungi.
-5. Menu sesi dan rute manage menghubungkan shell ke state sesi Core (perjalanan registrasi/masuk digabung; pemulihan draft terinterupsi positif ditunda ke T015/T016 menurut catatan PR #6).
+5. Menu sesi dan rute manage menghubungkan shell ke state sesi Core.
 
-### 8. Urutan baca/mutasi katalog (desain — techdoc §2.3)
+### 8. Jelajah katalog, draft, dan tulisan maintainer (T011–T026 — PR #8)
 
-Dirinci untuk tugas fitur mendatang: mutasi browser → Core → Catalog `CheckActor` → transaksi lokal
-→ rekonsiliasi `GetOperation` jika respons hilang. Plumbing tanda terima dan admission dari PR #6
-menyiapkan jalur ini; mutasi katalog maintainer penuh ada di tahap rencana berikutnya.
+1. Baca GraphQL publik (`titles`, `title`, `people`) mem-proxy lewat Core ke gRPC Catalog dengan aturan visibilitas.
+2. **Draft terlindungi** menyimpan WIP maintainer terenkripsi; helper browser mengisolasi draft per akun.
+3. **Tulisan film, orang, dan kredit** di Catalog dengan tanda terima pemilik; rute manage SvelteKit menghubungkan editor ke GraphQL terkelola.
+4. **Artwork** mengalirkan unggahan ke Media, mengoordinasikan hold/reservasi, dan menampilkan progres di shell.
+5. RPC **arsip/pulihkan/hapus** berpasangan dengan UI konfirmasi di rute manage.
+
+### 9. Pemulihan draft di editor (T027 — PR #9)
+
+1. Modul `draft-sync.ts` merekonsiliasi state editor lokal dengan draft server setelah gangguan (panel film, orang, kredit).
+2. Tes unit mengunci bentuk pemulihan yang diharapkan; bukti pemulihan browser penuh masih *tertunda* di matriks penutupan.
+
+### 10. MCP propose → persetujuan eksak → UI tinjauan (T028–T030 — PR #9)
+
+1. Gateway MCP TypeScript mengekspos stub transport **HTTP dapat distream** dan penanganan bearer konektor.
+2. **`ProposalWrites`** Catalog menyimpan baris proposal immutable; **`ExactApprovalBinding`** mengikat aksi setujui ke tantangan UI terikat.
+3. Hasil alat `propose_movie` **menghapus** `ui_binding_token` dari konten terstruktur model; tantangan hanya di `_meta.ui` dengan `visibility: app`.
+4. Frame tinjauan (`mcp/src/review/*`) mengambil tantangan via token ikatan; Core menambahkan `/gateway/approve_movie` dan `/gateway/reject_movie` dengan verifikasi bearer konektor.
+5. **Belum dibuktikan di lane:** penandatanganan `MCP_UI_ASSERTION`, forward gRPC hidup MCP ke gateway, harness klien Claude Desktop / ChatGPT.
+
+### 11. Seed, audit, diagnostik, dan ops siklus hidup (T031–T037 — PR #9)
+
+1. **Baca audit** mengekspos hasil hanya-baca; rute `manage/audit` memakai GraphQL `audit`.
+2. **`data/seed/manifest.json`** membekukan 100 film + 100 serial; `validate_manifest.py` memvalidasi jumlah di CI/lane.
+3. **`CatalogSeedLoader`** dan `ops/bin/seed.sh` mendukung init/replay dengan semantik tanda terima.
+4. **`SafeJsonDiagnostics`** dan konverter log meredaksi token ikatan dari log JSON.
+5. Skrip **`ops/bin/`** (`start`, `stop`, `backup`, `restore`, `rotate-keys`, `logs`, …); `make start` gagal tertutup tanpa `SPOOLIN_LOCK_DIR`.
 
 ## Komponen Penting
 
@@ -182,6 +209,13 @@ menyiapkan jalur ini; mutasi katalog maintainer penuh ada di tahap rencana berik
 | `ops/compose.yaml` | Jaringan privat, rahasia, profil migrator, publish port loopback |
 | `MigrationRunner` / `SchemaReadiness` | Migrasi terserialisasi dan gerbang serving |
 | `ServiceIdentityInterceptor` | Identitas mTLS ke allowlist metode |
+| `frontend/src/lib/features/catalog/*` | UI discovery dan baca katalog publik (T012–T013) |
+| `frontend/src/lib/features/*/draft-sync.ts` | Pemulihan draft editor setelah gangguan (T027) |
+| `services/catalog/.../ProposalWrites.kt` | Proposal film MCP immutable dan ikatan persetujuan eksak (T029) |
+| `mcp/src/review/*` | Sumber daya tinjauan dalam chat tepercaya (T030) |
+| `build-tools/validate-seed/*` | Generasi dan validasi manifest seed beku (T032) |
+| `ops/bin/*.sh` | Perintah operator siklus hidup (T037) |
+| `docs/release/g01-g26-closure-matrix.md` | Status penutupan sumber vs runtime per tugas (T046) |
 | `docs/04-spoolin-techdoc.md` | Desain otoritatif untuk siklus hidup, persetujuan MCP, pekerjaan durable |
 
 ## Contoh Implementasi yang Disederhanakan
@@ -245,10 +279,13 @@ Bukti repositori:
   17 unit + 25 tes perlindungan akun PostgreSQL (menurut tabel bukti PR).
 - **T006–T010 (PR #6)** — 32 shell, 40 kebijakan, dan 23 kasus browser akun dilaporkan lulus;
   pemindaian Semgrep/Gitleaks/OSV dikonfigurasi di peta verifikasi.
+- **T006–T026 (PR #8)** — dokumen rencana menandai tugas *implementasi selesai*; penulis PR menunda matriks Playwright/browser penuh secara lokal (batas resource host).
+- **T027–T046 (PR #9)** — tes unit untuk proposal, state tinjauan, draft-sync, API audit, validator seed, dan meta UI MCP; `mcp tsc --noEmit` dan `validate_manifest.py` lulus di lane; IT Gradle, Compose, dan harness klien secara eksplisit dilewati sampai penerimaan runtime.
 
 ## Operasi dan Observabilitas
 
-- **Perintah** — perintah publik `Makefile` (techdoc §11).
+- **Perintah** — `Makefile` mengarahkan `start` ke `ops/bin/start.sh`; skrip siklus hidup di `ops/bin/`
+  mencakup backup, restore, seed, rotasi kunci, log, dan helper konektor (PR #9).
 - **Compose** — set `SPOOLIN_INSTALLATION`; HTTPS Core default `127.0.0.1:8443`.
 - **Metrik** — Prometheus mengikis Actuator privat; `/actuator/prometheus` memerlukan sertifikat `prometheus`.
 
@@ -258,6 +295,7 @@ Bukti repositori:
 2. **Anggap kontrak sebagai artefak yang dapat dikompilasi** — generasi + tes konsumen menangkap drift lebih awal.
 3. **Enkode invarian keamanan di blok `require` startup** — bentuk URL JDBC dan mode file rahasia gagal cepat.
 4. **Pertahankan persetujuan MCP di gateway Core** — memusatkan `McpGatewayService` menjaga otorisasi Maintainer.
+5. **Jangan taruh rahasia persetujuan yang dapat ditukar di konten terstruktur yang terlihat model** — review PR #9 mewajibkan menghapus token ikatan dari hasil alat dan hanya menyajikan tantangan UI lewat metadata aplikasi MCP.
 
 ## Terkait
 
@@ -272,5 +310,7 @@ Bukti repositori:
   - [#1](https://github.com/okfriansyah-moh/spoolIn/pull/1) (merge `83c40e9`)
   - [#4](https://github.com/okfriansyah-moh/spoolIn/pull/4) (merge `1d0f96b`)
   - [#6](https://github.com/okfriansyah-moh/spoolIn/pull/6) (merge `ffcaae5`)
+  - [#8](https://github.com/okfriansyah-moh/spoolIn/pull/8) (merge `053eb8a`)
+  - [#9](https://github.com/okfriansyah-moh/spoolIn/pull/9) (merge `2764ca8`)
 - Spesifikasi desain: `docs/04-spoolin-techdoc.md` (v1.11, Oktober 2026)
 - Commit bukti PR #1: `12e487f001b66c2f3a5802654c6928849aa47c49`

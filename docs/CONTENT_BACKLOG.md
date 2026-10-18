@@ -21,6 +21,12 @@ to update an existing page or create a new one.
 `spoolIn` PRs #4–#7 (application shell, protected accounts, account-access wave, workflow/plan
 renumbering).
 
+## Status Summary (2026-10-18)
+
+**Updated in 2026-10-18 automation run:** SpoolIn system + project articles refreshed for merged
+`spoolIn` PRs #8–#9 (G04–G16 catalog/artwork wave, G17–G26 MCP proposals, seed/ops, release
+handoff matrix; runtime acceptance explicitly still open).
+
 ## Status Summary (2026-08-20)
 
 | Status | Count | Notes |
