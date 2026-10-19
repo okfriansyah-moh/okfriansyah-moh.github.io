@@ -36,9 +36,12 @@ Merge berikutnya memperluas stack di atas fondasi backend:
 - [PR #6](https://github.com/okfriansyah-moh/spoolIn/pull/6) (T006–T010, cakupan T007) — **registrasi dan sesi otoritatif**, semantik **kebijakan input efektif**, **tanda terima pemilik** dengan bukti mutasi atomik, **identitas layanan ber-scope dan admission bersama** di Core/Catalog/Media, plus perjalanan browser daftar/masuk/keluar.
 - [PR #8](https://github.com/okfriansyah-moh/spoolIn/pull/8) (T006–T026, G04–G16) — **baca katalog publik dan UI discovery**, **draft terenkripsi** dengan kontroler browser, **tulisan film/orang/kredit otoritatif** dan editor maintainer, **alur unggah artwork** dengan hold dan lampiran, plus **siklus hidup arsip/pulihkan** dan UI progres artwork (tugas rencana *implementasi selesai*; penerimaan seleksi formal ditunda ke G26).
 - [PR #9](https://github.com/okfriansyah-moh/spoolIn/pull/9) (T027–T046, G17–G26) — **pemulihan draft di editor** (`draft-sync`), **transport HTTP MCP yang dapat distream**, **proposal film immutable** dengan **ikatan persetujuan eksak** (tantangan UI hanya di `_meta.ui` MCP, bukan dari teks model), **sumber daya tinjauan dalam chat tepercaya**, UI **audit hanya-baca**, **manifest seed 100+100 beku** dengan CLI replay, **diagnostik JSON aman**, skrip **ops siklus hidup** yang dapat direproduksi, dan matriks **serah terima rilis** (`docs/release/g01-g26-closure-matrix.md`). Review independen menutup temuan sumber wajib; **penerimaan runtime** (matriks Playwright, klien MCP hidup, stack Compose) masih terbuka menurut bukti PR.
+- [PR #10](https://github.com/okfriansyah-moh/spoolIn/pull/10) — **README instalasi pemula** (Windows/WSL2, macOS, Ubuntu), panduan stakeholder bergambar, alur **`local-*` Make** di Docker dengan kredensial/data yang dipertahankan, **penyegaran presentasi** sesuai mockup gelap/terang yang disetujui, **perbaikan UUID string audit GraphQL** (History tidak lagi mengembalikan objek UUID Java mentah), dan **routing fallback HTML** untuk deep link `/manage/`. Termasuk **jalur penerimaan remote parsial** di Ubuntu ter-host GitHub (replay seed, jalur MCP stdio→HTTP→mTLS, asersi monitoring) yang masih gagal satu kasus Playwright dan menunda gerbang delivery yang lebih luas.
+- [PR #11](https://github.com/okfriansyah-moh/spoolIn/pull/11) — **pengerasan UX katalog maintainer**: filter dari judul aktif, viewport katalog stabil saat filter berubah, pencarian daftar manajemen dengan paginasi, **panel kembali setelah rekaman dibuat**, navigasi **Cast and creators** terpisah, **PersonSearchSelect** terpadu, **resize/siapkan artwork** di klien dengan penolakan dimensi terminal, **pemulihan scroll pencarian daftar** lewat token session storage yang tervalidasi, **`make local-repair-accounts`**, dan alur **Simpan film / Simpan orang** terkonfirmasi dengan isu field dari server.
+- [PR #12](https://github.com/okfriansyah-moh/spoolIn/pull/12) — **walkthrough Maintainer di README** dan tangkapan layar disegarkan agar sesuai UI yang sudah digabung (hanya dokumentasi di repositori aplikasi).
 
 Artikel ini membedakan **bukti sumber yang sudah digabung** dari **bukti runtime yang masih tertunda**
-di matriks penutupan G01–G26.
+di matriks penutupan G01–G26 (termasuk jalur parsial dari PR #10).
 
 ## Masalah
 
@@ -192,6 +195,26 @@ konektor dari host dan penerimaan klien penuh (T038–T039).
 4. **`SafeJsonDiagnostics`** dan konverter log meredaksi token ikatan dari log JSON.
 5. Skrip **`ops/bin/`** (`start`, `stop`, `backup`, `restore`, `rotate-keys`, `logs`, …); `make start` gagal tertutup tanpa `SPOOLIN_LOCK_DIR`.
 
+### 12. Dok instalasi, presentasi, dan perbaikan penerimaan (PR #10)
+
+1. `README.md` root menambahkan jalur instalasi per platform, walkthrough tangkapan sintetis, dan target `local-*` yang membangun toolchain terpin di Docker sambil menjaga cache dependensi host di volume.
+2. Token/layout frontend menyelaraskan hero katalog publik, grid poster, dan workspace manajemen dengan mockup yang disetujui tanpa mengubah kontrak GraphQL.
+3. Resolver audit GraphQL mengembalikan **UUID string** untuk `subjectId` dan `operationId`; Core menyajikan catch-all SPA untuk navigasi HTML di `/manage/` sementara rute rekaman tetap otoritatif.
+4. Bukti jalur remote (Actions di Ubuntu) mereplay jumlah seed beku, menjalankan jalur konektor MCP nyata, dan melaporkan satu kegagalan browser (`Create movie` masih aktif setelah simpan) plus batas Bubblewrap/proc mount — bukan penerimaan G26 penuh.
+
+### 13. Alur kerja maintainer dan stabilitas katalog (PR #11)
+
+1. **CatalogFilters** menurunkan pilihan genre/tahun/bulan dari judul aktif; riwayat shallow menghindari lompatan scroll saat hasil menyusut.
+2. Kontroler daftar **Movies / Manage people** menambahkan pencarian berlabel, Enter, pencocokan partial case-insensitive, dan `Load more` tanpa mencuri fokus.
+3. Alur buat film melalui **Add cast and creators**; **CreditPanel** + **PersonSearchSelect** menyatukan pemilih orang; peran kustom di belakang **RoleCreator** opsional.
+4. **ArtworkUploadField** mendekode dengan `createImageBitmap`, mengecilkan dalam batas byte/dimensi di klien, dan memetakan penolakan Media terminal ke alasan yang terlihat operator.
+5. Token **list-return.ts** di session storage memulihkan pencarian draft, kedalaman muatan, dan scroll setelah perjalanan kredit/simpan; kegagalan kembali ke navigasi biasa.
+6. **`make local-repair-accounts`** meng-hash ulang kata sandi Viewer/Maintainer dari manifest yang disiapkan dalam satu transaksi sambil mencabut sesi (startup tetap mempertahankan kata sandi).
+
+### 14. Penyegaran dokumentasi maintainer (PR #12)
+
+1. `README.md` di repositori sumber memperbarui langkah Maintainer (penempatan artwork, halaman kredit, kontrol orang dapat dicari) dan mengganti aset PNG walkthrough — tanpa perubahan perilaku Kotlin/TypeScript.
+
 ## Komponen Penting
 
 | Komponen | Tanggung jawab |
@@ -217,6 +240,11 @@ konektor dari host dan penerimaan klien penuh (T038–T039).
 | `ops/bin/*.sh` | Perintah operator siklus hidup (T037) |
 | `docs/release/g01-g26-closure-matrix.md` | Status penutupan sumber vs runtime per tugas (T046) |
 | `docs/04-spoolin-techdoc.md` | Desain otoritatif untuk siklus hidup, persetujuan MCP, pekerjaan durable |
+| `frontend/src/lib/components/CatalogFilters.svelte` | Pilihan filter dari judul aktif dan navigasi katalog stabil (PR #11) |
+| `frontend/src/lib/features/credit/PersonSearchSelect.svelte` | Pemilih orang dapat dicari terpadu untuk kredit (PR #11) |
+| `frontend/src/lib/features/movie/list-return.ts` | Token kembali session storage untuk pemulihan scroll/pencarian daftar (PR #11) |
+| `frontend/src/lib/features/artwork/prepare-file.ts` | Resize/dekode klien sebelum unggah artwork (PR #11) |
+| `Makefile` (`local-repair-accounts`) | Perbaikan kata sandi operator terikat manifest yang disiapkan (PR #11) |
 
 ## Contoh Implementasi yang Disederhanakan
 
@@ -281,6 +309,9 @@ Bukti repositori:
   pemindaian Semgrep/Gitleaks/OSV dikonfigurasi di peta verifikasi.
 - **T006–T026 (PR #8)** — dokumen rencana menandai tugas *implementasi selesai*; penulis PR menunda matriks Playwright/browser penuh secara lokal (batas resource host).
 - **T027–T046 (PR #9)** — tes unit untuk proposal, state tinjauan, draft-sync, API audit, validator seed, dan meta UI MCP; `mcp tsc --noEmit` dan `validate_manifest.py` lulus di lane; IT Gradle, Compose, dan harness klien secara eksplisit dilewati sampai penerimaan runtime.
+- **PR #10** — verifikasi Docker macOS (jelajah, edit, artwork, persistensi restart); `make local-test` melaporkan 42 pemeriksaan helper, 387 tes frontend, 76 tes MCP, dan tes Gradle lulus; jalur remote parsial menjalankan seed/MCP/monitoring dengan satu kegagalan Playwright dan melewati gerbang delivery yang lebih luas.
+- **PR #11** — diff frontend/kontroler besar; bukti PR menyebut suite unit lulus dan walkthrough manual macOS untuk filter katalog, pencarian manajemen, navigasi kredit, dan persiapan artwork (tanpa perubahan skema publik).
+- **PR #12** — hanya pemeriksaan kata dokumentasi; tangkapan layar disegarkan terhadap UI yang digabung.
 
 ## Operasi dan Observabilitas
 
@@ -312,5 +343,8 @@ Bukti repositori:
   - [#6](https://github.com/okfriansyah-moh/spoolIn/pull/6) (merge `ffcaae5`)
   - [#8](https://github.com/okfriansyah-moh/spoolIn/pull/8) (merge `053eb8a`)
   - [#9](https://github.com/okfriansyah-moh/spoolIn/pull/9) (merge `2764ca8`)
+  - [#10](https://github.com/okfriansyah-moh/spoolIn/pull/10) (merge `71430bd`)
+  - [#11](https://github.com/okfriansyah-moh/spoolIn/pull/11) (merge `929bfdb`)
+  - [#12](https://github.com/okfriansyah-moh/spoolIn/pull/12) (merge `0b5348b`)
 - Spesifikasi desain: `docs/04-spoolin-techdoc.md` (v1.11, Oktober 2026)
 - Commit bukti PR #1: `12e487f001b66c2f3a5802654c6928849aa47c49`

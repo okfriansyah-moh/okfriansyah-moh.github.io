@@ -543,10 +543,16 @@
         "okfriansyah-moh/spoolIn#8",
         "okfriansyah-moh/spoolIn@053eb8af7d0d1f5baaf049d254db0f7cf57f1535",
         "okfriansyah-moh/spoolIn#9",
-        "okfriansyah-moh/spoolIn@2764ca8bcdb5ee182852e2bdb26c95247c81c5ed"
+        "okfriansyah-moh/spoolIn@2764ca8bcdb5ee182852e2bdb26c95247c81c5ed",
+        "okfriansyah-moh/spoolIn#10",
+        "okfriansyah-moh/spoolIn@71430bdf9f9558dd93e9998d9b0787ed18fbadb3",
+        "okfriansyah-moh/spoolIn#11",
+        "okfriansyah-moh/spoolIn@929bfdb58a88479d164dc5f24cf12836565196c1",
+        "okfriansyah-moh/spoolIn#12",
+        "okfriansyah-moh/spoolIn@0b5348bb0f23728bb7d764de56c9415d9ac8c9bc"
       ],
       "repos": ["okfriansyah-moh/spoolIn"],
-      "learning_objective": "Design a local three-service catalog platform with maintainer catalog UI, MCP exact-approval proposals, seed replay, and lifecycle ops — while separating merged source evidence from pending runtime acceptance",
+      "learning_objective": "Design a local three-service catalog platform with maintainer catalog UI, MCP exact-approval proposals, seed replay, lifecycle ops, and hardened maintainer workflows — while separating merged source evidence from pending runtime acceptance",
       "covered_capabilities": [
         "reproducible-build-foundation",
         "shared-wire-contract-generation",
@@ -581,7 +587,23 @@
         "frozen-seed-manifest-replay",
         "safe-json-diagnostics",
         "reproducible-lifecycle-ops-scripts",
-        "g01-g26-release-closure-matrix"
+        "g01-g26-release-closure-matrix",
+        "beginner-install-readme-local-make",
+        "presentation-mockup-alignment",
+        "graphql-audit-uuid-string-fix",
+        "manage-html-spa-fallback",
+        "partial-remote-acceptance-lane",
+        "active-title-catalog-filters",
+        "catalog-viewport-stable-navigation",
+        "management-list-search-pagination",
+        "created-record-return-feedback",
+        "person-search-select-control",
+        "client-artwork-resize-prepare",
+        "list-return-scroll-restoration",
+        "movie-credits-navigation-split",
+        "confirmed-save-completion-flows",
+        "local-repair-accounts-command",
+        "maintainer-readme-walkthrough-refresh"
       ]
     },
     "spoolin:project-overview": {
@@ -598,10 +620,13 @@
         "okfriansyah-moh/spoolIn#6",
         "okfriansyah-moh/spoolIn#7",
         "okfriansyah-moh/spoolIn#8",
-        "okfriansyah-moh/spoolIn#9"
+        "okfriansyah-moh/spoolIn#9",
+        "okfriansyah-moh/spoolIn#10",
+        "okfriansyah-moh/spoolIn#11",
+        "okfriansyah-moh/spoolIn#12"
       ],
       "repos": ["okfriansyah-moh/spoolIn"],
-      "learning_objective": "Follow SpoolIn's product scope, evidence-driven plan, and milestones from foundation through G17–G26 source closure (runtime acceptance still open)",
+      "learning_objective": "Follow SpoolIn's product scope, evidence-driven plan, and milestones from foundation through maintainer UX hardening (G26 runtime acceptance still open)",
       "covered_capabilities": [
         "project-roadmap-status",
         "product-scope-overview",
@@ -614,7 +639,10 @@
         "plan-stage-renumbering-26-stages",
         "g04-g16-catalog-artwork-wave",
         "g17-g26-mcp-seed-ops-wave",
-        "g26-runtime-acceptance-pending"
+        "g26-runtime-acceptance-pending",
+        "install-readme-and-local-docker-wave",
+        "maintainer-ux-hardening-wave",
+        "maintainer-docs-screenshot-refresh"
       ]
     },
     "padu:codex-game-audio-synthesis": {

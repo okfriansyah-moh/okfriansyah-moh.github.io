@@ -99,7 +99,10 @@ Kedalaman teknis: [Arsitektur sistem SpoolIn](/id/docs/systems/spoolin-catalog-p
 | 2026-10-16 | [PR #7](https://github.com/okfriansyah-moh/spoolIn/pull/7) digabung — penomoran ulang 26 tahap rencana (workflow **1.2.1**) |
 | 2026-10-17 | [PR #8](https://github.com/okfriansyah-moh/spoolIn/pull/8) digabung — G04–G16 jelajah katalog, draft, tulisan maintainer, artwork, UI arsip (T006–T026; penerimaan G26 tertunda) |
 | 2026-10-18 | [PR #9](https://github.com/okfriansyah-moh/spoolIn/pull/9) digabung — G17–G26 pemulihan draft, proposal MCP + UI tinjauan, alat seed/ops, matriks serah terima (penerimaan runtime masih terbuka) |
-| Berikutnya | Penerimaan review independen G26 penuh, matriks Playwright/visual, bukti klien MCP hidup, latihan runtime berbasis Compose |
+| 2026-10-18 | [PR #10](https://github.com/okfriansyah-moh/spoolIn/pull/10) digabung — README instalasi pemula, alur Docker `local-*`, penyegaran presentasi, perbaikan UUID History, jalur penerimaan remote parsial (bukan penerimaan G26 penuh) |
+| 2026-10-18 | [PR #11](https://github.com/okfriansyah-moh/spoolIn/pull/11) digabung — UX katalog/manajemen maintainer (filter, pencarian, navigasi kredit, persiapan artwork, alur simpan, `local-repair-accounts`) |
+| 2026-10-18 | [PR #12](https://github.com/okfriansyah-moh/spoolIn/pull/12) digabung — walkthrough Maintainer README + tangkapan layar selaras UI saat ini (hanya dokumen) |
+| Berikutnya | Tutup gerbang runtime G26 yang tersisa (matriks Playwright, klien MCP hidup, review delivery), membangun bukti jalur parsial PR #10 |
 
 ## Keputusan Kunci
 
@@ -134,5 +137,5 @@ basis kode independen.
 ## Sumber
 
 - Repositori: [okfriansyah-moh/spoolIn](https://github.com/okfriansyah-moh/spoolIn)
-- Pull request: [#1](https://github.com/okfriansyah-moh/spoolIn/pull/1)–[#9](https://github.com/okfriansyah-moh/spoolIn/pull/9)
+- Pull request: [#1](https://github.com/okfriansyah-moh/spoolIn/pull/1)–[#12](https://github.com/okfriansyah-moh/spoolIn/pull/12)
 - Desain teknis: `docs/04-spoolin-techdoc.md`

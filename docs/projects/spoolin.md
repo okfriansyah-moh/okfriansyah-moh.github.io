@@ -104,7 +104,10 @@ Deep dive: [SpoolIn system architecture](/docs/systems/spoolin-catalog-platform)
 | 2026-10-16 | [PR #7](https://github.com/okfriansyah-moh/spoolIn/pull/7) merged — plan folders renumbered into 26 dependency-ordered stages (workflow **1.2.1**); no API or ATDD ID changes |
 | 2026-10-17 | [PR #8](https://github.com/okfriansyah-moh/spoolIn/pull/8) merged — G04–G16 catalog browse, drafts, maintainer writes, artwork, and archive UI (T006–T026 source closure; formal G26 accept pending) |
 | 2026-10-18 | [PR #9](https://github.com/okfriansyah-moh/spoolIn/pull/9) merged — G17–G26 draft recovery, MCP proposals + review UI, seed/ops tooling, release handoff matrix (runtime acceptance still open) |
-| Next | Full G26 independent review accept, Playwright/visual matrix, live MCP client proofs (Claude Desktop / ChatGPT), Compose-backed runtime drills |
+| 2026-10-18 | [PR #10](https://github.com/okfriansyah-moh/spoolIn/pull/10) merged — beginner install README, `local-*` Docker workflow, presentation refresh, History UUID fix, partial remote acceptance lane (still not full G26 accept) |
+| 2026-10-18 | [PR #11](https://github.com/okfriansyah-moh/spoolIn/pull/11) merged — maintainer catalog/management UX (filters, search, credits navigation, artwork prep, save completion flows, `local-repair-accounts`) |
+| 2026-10-18 | [PR #12](https://github.com/okfriansyah-moh/spoolIn/pull/12) merged — Maintainer README walkthrough + screenshots aligned to current UI (docs only) |
+| Next | Close remaining G26 runtime gates (Playwright matrix, live MCP clients, delivery review), building on PR #10 partial lane evidence |
 
 ## Key Decisions
 
@@ -144,5 +147,5 @@ independent codebase.
 ## Sources
 
 - Repository: [okfriansyah-moh/spoolIn](https://github.com/okfriansyah-moh/spoolIn)
-- Pull requests: [#1](https://github.com/okfriansyah-moh/spoolIn/pull/1)–[#9](https://github.com/okfriansyah-moh/spoolIn/pull/9) (foundation through G17–G26 source closure)
+- Pull requests: [#1](https://github.com/okfriansyah-moh/spoolIn/pull/1)–[#12](https://github.com/okfriansyah-moh/spoolIn/pull/12) (foundation through maintainer UX wave; G26 runtime accept still open)
 - Technical design: `docs/04-spoolin-techdoc.md`

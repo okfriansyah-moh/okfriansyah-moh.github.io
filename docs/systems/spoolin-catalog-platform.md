@@ -36,9 +36,12 @@ Follow-on merges extended the stack beyond the backend foundation:
 - [PR #6](https://github.com/okfriansyah-moh/spoolIn/pull/6) (T006–T010, T007 scope) — **registration and authoritative sessions**, **effective input policy** semantics, **owner receipts** with atomic mutation evidence, **scoped service identity and shared admission** across Core/Catalog/Media, plus connected register/sign-in/sign-out browser journeys.
 - [PR #8](https://github.com/okfriansyah-moh/spoolIn/pull/8) (T006–T026, G04–G16) — **public catalog reads and discovery UI**, **encrypted drafts** with browser controllers, **authoritative movie/person/credit writes** and maintainer editors, **artwork upload streams** with holds and attachment, plus **archive/restore lifecycle** and artwork progress UI (plan tasks marked *implementation complete*; formal selection accept deferred to G26).
 - [PR #9](https://github.com/okfriansyah-moh/spoolIn/pull/9) (T027–T046, G17–G26) — **editor draft recovery** (`draft-sync`), **MCP streamable HTTP transport** and connector identity, **immutable movie proposals** with **exact-approval binding** (UI challenge only in MCP `_meta.ui`, not redeemable from model text), **trusted in-chat review resource**, read-only **audit UI**, **frozen 100+100 seed manifest** with replay CLI, **safe JSON diagnostics**, reproducible **lifecycle ops scripts**, and **release handoff** matrix (`docs/release/g01-g26-closure-matrix.md`). Independent review resolved required source findings; **runtime acceptance** (Playwright matrix, live MCP clients, Compose stacks) remains open per PR evidence.
+- [PR #10](https://github.com/okfriansyah-moh/spoolIn/pull/10) — **beginner install README** (Windows/WSL2, macOS, Ubuntu), illustrated stakeholder guide, **`local-*` Make workflow** in Docker with preserved credentials/data, **presentation refresh** aligned to approved dark/light mockups, **GraphQL audit UUID string fix** (History no longer returns raw Java UUID objects), and **HTML fallback routing** for `/manage/` deep links. Includes a **partial remote acceptance lane** on GitHub-hosted Ubuntu (seed replay, MCP stdio→HTTP→mTLS path, monitoring assertions) that still failed one Playwright case and left broader delivery gates pending.
+- [PR #11](https://github.com/okfriansyah-moh/spoolIn/pull/11) — **maintainer catalog UX hardening**: active-title-derived filters, stable catalog viewport during filter changes, management list search with pagination, **created-record return panels**, split **Cast and creators** navigation, unified **PersonSearchSelect**, client-side **artwork resize/prepare** with terminal dimension rejection, **list return scroll restoration** via validated session-storage tokens, **`make local-repair-accounts`**, and confirmed **Save movie / Save person** completion flows with server-reported field issues.
+- [PR #12](https://github.com/okfriansyah-moh/spoolIn/pull/12) — **Maintainer README walkthrough** and screenshots refreshed to match merged UI (documentation-only in the application repository).
 
 This article separates **merged source evidence** from **runtime proof still pending** in the
-G01–G26 closure matrix.
+G01–G26 closure matrix (including partial lanes from PR #10).
 
 ## The Problem
 
@@ -197,6 +200,26 @@ explicit gaps for host-supplied connector tokens and full client acceptance (T03
 4. **`SafeJsonDiagnostics`** and log converters redact binding tokens from JSON logs.
 5. **`ops/bin/`** scripts (`start`, `stop`, `backup`, `restore`, `rotate-keys`, `logs`, …) document reproducible lifecycle commands; `make start` fails closed without `SPOOLIN_LOCK_DIR`.
 
+### 12. Install docs, presentation, and acceptance repairs (PR #10)
+
+1. Root `README.md` adds platform install paths, synthetic screenshot walkthroughs, and `local-*` targets that build pinned toolchains inside Docker while keeping host dependency caches in volumes.
+2. Frontend tokens/layouts align public catalog hero, poster grid, and management workspaces with approved mockups without changing GraphQL contracts.
+3. Audit GraphQL resolver returns **string UUIDs** for `subjectId` and `operationId`; Core serves the SPA catch-all for HTML navigation under `/manage/` while record routes stay authoritative.
+4. Remote lane evidence (Actions run on Ubuntu) replayed frozen seed counts, exercised real MCP connector paths, and reported a single browser failure (`Create movie` still enabled after save) plus Bubblewrap/proc mount limits — not a full G26 accept.
+
+### 13. Maintainer workflows and catalog stability (PR #11)
+
+1. **CatalogFilters** derive genre/year/month choices from active titles; shallow history updates avoid scroll jumps when results shrink.
+2. **Movies / Manage people** list controllers add labeled search, Enter submission, case-insensitive partial matching, and `Load more` without stealing focus.
+3. Movie create flows route through **Add cast and creators**; **CreditPanel** + **PersonSearchSelect** consolidate person pickers; custom roles sit behind optional **RoleCreator**.
+4. **ArtworkUploadField** decodes with `createImageBitmap`, resizes within byte/dimension limits client-side, and maps terminal Media rejections to operator-visible reasons.
+5. **list-return.ts** tokens in session storage restore draft search, loaded depth, and scroll after credits or save journeys; failures fall back to ordinary navigation.
+6. **`make local-repair-accounts`** re-hashes Viewer/Maintainer passwords from the prepared manifest in one transaction while revoking sessions (startup still preserves passwords).
+
+### 14. Maintainer documentation refresh (PR #12)
+
+1. Source-repo `README.md` updates Maintainer steps (artwork placement, credits page, searchable person control) and replaces PNG walkthrough assets — no Kotlin/TypeScript behavior changes.
+
 ## Important Components
 
 | Component | Responsibility |
@@ -222,6 +245,11 @@ explicit gaps for host-supplied connector tokens and full client acceptance (T03
 | `ops/bin/*.sh` | Lifecycle operator commands (T037) |
 | `docs/release/g01-g26-closure-matrix.md` | Per-task source vs runtime closure status (T046) |
 | `docs/04-spoolin-techdoc.md` | Authoritative design for lifecycle, MCP approval, durable work |
+| `frontend/src/lib/components/CatalogFilters.svelte` | Active-title filter choices and stable catalog navigation (PR #11) |
+| `frontend/src/lib/features/credit/PersonSearchSelect.svelte` | Unified searchable person picker for credits (PR #11) |
+| `frontend/src/lib/features/movie/list-return.ts` | Session-storage return tokens for list scroll/search restore (PR #11) |
+| `frontend/src/lib/features/artwork/prepare-file.ts` | Client resize/decode before artwork upload (PR #11) |
+| `Makefile` (`local-repair-accounts`) | Operator password repair bound to prepared manifest (PR #11) |
 
 ## Simplified Implementation Examples
 
@@ -296,6 +324,13 @@ Repository evidence (independent of this docs site):
 - **T027–T046 (PR #9)** — unit tests for proposals, review state, draft-sync, audit API, seed
   validator, and MCP UI meta; `mcp tsc --noEmit` and `validate_manifest.py` pass in lane; Gradle IT,
   Compose, and client harness runs explicitly skipped until runtime acceptance.
+- **PR #10** — macOS Docker verification (browse, edits, artwork, restart persistence); `make local-test`
+  reported 42 helper checks, 387 frontend tests, 76 MCP tests, and Gradle tests passing; partial remote
+  lane exercised seed/MCP/monitoring with one Playwright failure and skipped broader delivery gates.
+- **PR #11** — large frontend/controller diff; PR evidence cites passing unit suites and manual macOS
+  walkthrough of catalog filters, management search, credits navigation, and artwork preparation (no new
+  public schema changes).
+- **PR #12** — documentation wording check only; screenshots refreshed against merged UI.
 - Integration tests under `services/*/src/integrationTest/...` enforce per-service foundation
   and crypto/account boundaries.
 
@@ -336,5 +371,8 @@ Repository evidence (independent of this docs site):
   - [#6 Implement account access, effective policy, receipts and scoped admission](https://github.com/okfriansyah-moh/spoolIn/pull/6) (merge `ffcaae5`)
   - [#8 G04–G16: policy through artwork journeys](https://github.com/okfriansyah-moh/spoolIn/pull/8) (merge `053eb8a`)
   - [#9 G17–G26: draft recovery through release handoff](https://github.com/okfriansyah-moh/spoolIn/pull/9) (merge `2764ca8`)
+  - [#10 Remote acceptance lane + install/README refresh](https://github.com/okfriansyah-moh/spoolIn/pull/10) (merge `71430bd`)
+  - [#11 Catalog management and saved-record workflows](https://github.com/okfriansyah-moh/spoolIn/pull/11) (merge `929bfdb`)
+  - [#12 Maintainer walkthrough screenshots](https://github.com/okfriansyah-moh/spoolIn/pull/12) (merge `0b5348b`)
 - Design specification: `docs/04-spoolin-techdoc.md` (v1.11, October 2026)
 - Evidence commit cited in PR #1: `12e487f001b66c2f3a5802654c6928849aa47c49`
