@@ -11,6 +11,7 @@ const sidebars: SidebarsConfig = {
         'systems/polymarket-trading-agent',
         'systems/shorts-generator-pipeline',
         'systems/human-atlas-research-workspace',
+        'systems/spoolin-catalog-platform',
       ],
     },
     {
@@ -41,6 +42,7 @@ const sidebars: SidebarsConfig = {
         'projects/data-structure-and-algorithm',
         'projects/ai-job-search',
         'projects/human-atlas',
+        'projects/spoolin',
       ],
     },
   ],
