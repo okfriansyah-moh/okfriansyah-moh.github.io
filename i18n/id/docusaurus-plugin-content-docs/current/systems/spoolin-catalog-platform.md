@@ -39,6 +39,7 @@ Merge berikutnya memperluas stack di atas fondasi backend:
 - [PR #10](https://github.com/okfriansyah-moh/spoolIn/pull/10) — **README instalasi pemula** (Windows/WSL2, macOS, Ubuntu), panduan stakeholder bergambar, alur **`local-*` Make** di Docker dengan kredensial/data yang dipertahankan, **penyegaran presentasi** sesuai mockup gelap/terang yang disetujui, **perbaikan UUID string audit GraphQL** (History tidak lagi mengembalikan objek UUID Java mentah), dan **routing fallback HTML** untuk deep link `/manage/`. Termasuk **jalur penerimaan remote parsial** di Ubuntu ter-host GitHub (replay seed, jalur MCP stdio→HTTP→mTLS, asersi monitoring) yang masih gagal satu kasus Playwright dan menunda gerbang delivery yang lebih luas.
 - [PR #11](https://github.com/okfriansyah-moh/spoolIn/pull/11) — **pengerasan UX katalog maintainer**: filter dari judul aktif, viewport katalog stabil saat filter berubah, pencarian daftar manajemen dengan paginasi, **panel kembali setelah rekaman dibuat**, navigasi **Cast and creators** terpisah, **PersonSearchSelect** terpadu, **resize/siapkan artwork** di klien dengan penolakan dimensi terminal, **pemulihan scroll pencarian daftar** lewat token session storage yang tervalidasi, **`make local-repair-accounts`**, dan alur **Simpan film / Simpan orang** terkonfirmasi dengan isu field dari server.
 - [PR #12](https://github.com/okfriansyah-moh/spoolIn/pull/12) — **walkthrough Maintainer di README** dan tangkapan layar disegarkan agar sesuai UI yang sudah digabung (hanya dokumentasi di repositori aplikasi).
+- [PR #13](https://github.com/okfriansyah-moh/spoolIn/pull/13) — **modul kontroler reaktif Svelte 5** untuk delapan alur sesi/katalog/maintainer: kontroler pindah ke kelas `*.svelte.ts` dengan snapshot `$state.raw`, rute mengikat lewat `$derived` alih-alih loop subscribe/salin manual, dan `dispose()` eksplisit tetap ada. Tanpa perubahan Python, GraphQL, atau desain visual; bukti PR melaporkan tangkapan layar sebelum/sesudah identik piksel dan cakupan unit/DOM yang diperluas.
 
 Artikel ini membedakan **bukti sumber yang sudah digabung** dari **bukti runtime yang masih tertunda**
 di matriks penutupan G01–G26 (termasuk jalur parsial dari PR #10).
@@ -215,6 +216,13 @@ konektor dari host dan penerimaan klien penuh (T038–T039).
 
 1. `README.md` di repositori sumber memperbarui langkah Maintainer (penempatan artwork, halaman kredit, kontrol orang dapat dicari) dan mengganti aset PNG walkthrough — tanpa perubahan perilaku Kotlin/TypeScript.
 
+### 15. Kontroler reaktif Svelte 5 (PR #13)
+
+1. Delapan kontroler browser berganti nama menjadi modul `*.svelte.ts` (sesi, draft, jelajah katalog, daftar/editor film, daftar/editor orang, unggah artwork) sehingga **state reaktif hidup di dalam kelas kontroler** lewat `$state.raw`, dengan getter `snapshot` hanya-baca.
+2. Rute SvelteKit dan komponen fitur **menderivasikan state UI** dengan `$derived(controller?.snapshot ?? INITIAL_…)` alih-alih memelihara salinan `$state` paralel yang diisi listener `subscribe`.
+3. Hook penyelesaian (`onSaved`, `onCredentialReset`) menggantikan beberapa jalur unsubscribe; `onMount` tetap membangun kontroler dan memanggil `dispose()` saat teardown agar abort controller GraphQL yang sedang berjalan tetap terbatas.
+4. Ekstraksi kecil (`uploadMessage`, `preparationError`, helper `list-return`) membersihkan pemblokir tipe/lint frontend; ESLint memperlakukan `**/*.svelte.ts` seperti sumber Svelte. Kontrak transport, data tersimpan, dan tata letak yang dirender tidak berubah menurut catatan blast-radius PR.
+
 ## Komponen Penting
 
 | Komponen | Tanggung jawab |
@@ -245,6 +253,7 @@ konektor dari host dan penerimaan klien penuh (T038–T039).
 | `frontend/src/lib/features/movie/list-return.ts` | Token kembali session storage untuk pemulihan scroll/pencarian daftar (PR #11) |
 | `frontend/src/lib/features/artwork/prepare-file.ts` | Resize/dekode klien sebelum unggah artwork (PR #11) |
 | `Makefile` (`local-repair-accounts`) | Perbaikan kata sandi operator terikat manifest yang disiapkan (PR #11) |
+| `frontend/src/lib/features/*/*.svelte.ts` | Modul kontroler reaktif Svelte 5 dengan `snapshot` + `dispose()` (PR #13) |
 
 ## Contoh Implementasi yang Disederhanakan
 
@@ -266,6 +275,21 @@ fun ready(): Boolean {
     flyway.info().pending().isEmpty() &&
     flyway.validateWithResult().validationSuccessful
 }
+```
+
+Contoh ikatan kontroler Svelte 5 (dari `ArtworkUploadField.svelte` setelah PR #13):
+
+```typescript
+// controller.svelte.ts — snapshot reaktif di dalam kelas
+export class ArtworkUploadController {
+  private view = $state.raw(INITIAL_ARTWORK_UPLOAD_VIEW);
+  get snapshot() {
+    return this.view;
+  }
+}
+
+// komponen — derived alih-alih subscribe + salin
+const view = $derived(controller?.snapshot ?? INITIAL_ARTWORK_UPLOAD_VIEW);
 ```
 
 ## Keandalan dan Idempotensi
@@ -312,6 +336,7 @@ Bukti repositori:
 - **PR #10** — verifikasi Docker macOS (jelajah, edit, artwork, persistensi restart); `make local-test` melaporkan 42 pemeriksaan helper, 387 tes frontend, 76 tes MCP, dan tes Gradle lulus; jalur remote parsial menjalankan seed/MCP/monitoring dengan satu kegagalan Playwright dan melewati gerbang delivery yang lebih luas.
 - **PR #11** — diff frontend/kontroler besar; bukti PR menyebut suite unit lulus dan walkthrough manual macOS untuk filter katalog, pencarian manajemen, navigasi kredit, dan persiapan artwork (tanpa perubahan skema publik).
 - **PR #12** — hanya pemeriksaan kata dokumentasi; tangkapan layar disegarkan terhadap UI yang digabung.
+- **PR #13** — 157 tes unit/DOM terfokus di 24 berkas plus delapan kasus smoke browser dengan fixture GraphQL terkontrol; tipe, lint, build, dan pemindaian dependensi lulus menurut bukti PR; enam tangkapan layar representatif dilaporkan identik piksel.
 
 ## Operasi dan Observabilitas
 
@@ -327,6 +352,7 @@ Bukti repositori:
 3. **Enkode invarian keamanan di blok `require` startup** — bentuk URL JDBC dan mode file rahasia gagal cepat.
 4. **Pertahankan persetujuan MCP di gateway Core** — memusatkan `McpGatewayService` menjaga otorisasi Maintainer.
 5. **Jangan taruh rahasia persetujuan yang dapat ditukar di konten terstruktur yang terlihat model** — review PR #9 mewajibkan menghapus token ikatan dari hasil alat dan hanya menyajikan tantangan UI lewat metadata aplikasi MCP.
+6. **Biarkan kontroler memiliki state reaktif di Svelte 5** — PR #13 menunjukkan snapshot `$derived` mengalahkan set listener buatan tangan saat UI harus identik dengan batas siklus hidup yang lebih jelas.
 
 ## Terkait
 
@@ -346,5 +372,6 @@ Bukti repositori:
   - [#10](https://github.com/okfriansyah-moh/spoolIn/pull/10) (merge `71430bd`)
   - [#11](https://github.com/okfriansyah-moh/spoolIn/pull/11) (merge `929bfdb`)
   - [#12](https://github.com/okfriansyah-moh/spoolIn/pull/12) (merge `0b5348b`)
+  - [#13](https://github.com/okfriansyah-moh/spoolIn/pull/13) (merge `d4b21d1`)
 - Spesifikasi desain: `docs/04-spoolin-techdoc.md` (v1.11, Oktober 2026)
 - Commit bukti PR #1: `12e487f001b66c2f3a5802654c6928849aa47c49`

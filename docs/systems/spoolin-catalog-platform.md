@@ -39,6 +39,7 @@ Follow-on merges extended the stack beyond the backend foundation:
 - [PR #10](https://github.com/okfriansyah-moh/spoolIn/pull/10) — **beginner install README** (Windows/WSL2, macOS, Ubuntu), illustrated stakeholder guide, **`local-*` Make workflow** in Docker with preserved credentials/data, **presentation refresh** aligned to approved dark/light mockups, **GraphQL audit UUID string fix** (History no longer returns raw Java UUID objects), and **HTML fallback routing** for `/manage/` deep links. Includes a **partial remote acceptance lane** on GitHub-hosted Ubuntu (seed replay, MCP stdio→HTTP→mTLS path, monitoring assertions) that still failed one Playwright case and left broader delivery gates pending.
 - [PR #11](https://github.com/okfriansyah-moh/spoolIn/pull/11) — **maintainer catalog UX hardening**: active-title-derived filters, stable catalog viewport during filter changes, management list search with pagination, **created-record return panels**, split **Cast and creators** navigation, unified **PersonSearchSelect**, client-side **artwork resize/prepare** with terminal dimension rejection, **list return scroll restoration** via validated session-storage tokens, **`make local-repair-accounts`**, and confirmed **Save movie / Save person** completion flows with server-reported field issues.
 - [PR #12](https://github.com/okfriansyah-moh/spoolIn/pull/12) — **Maintainer README walkthrough** and screenshots refreshed to match merged UI (documentation-only in the application repository).
+- [PR #13](https://github.com/okfriansyah-moh/spoolIn/pull/13) — **Svelte 5 reactive controller modules** for eight maintainer/session/catalog flows: controllers move to `*.svelte.ts` classes with `$state.raw` snapshots, routes bind through `$derived` instead of manual subscribe/copy loops, and lifecycle `dispose()` stays explicit. No Python, GraphQL, or visual design changes; PR evidence reports pixel-identical before/after screenshots and expanded unit/DOM coverage.
 
 This article separates **merged source evidence** from **runtime proof still pending** in the
 G01–G26 closure matrix (including partial lanes from PR #10).
@@ -220,6 +221,13 @@ explicit gaps for host-supplied connector tokens and full client acceptance (T03
 
 1. Source-repo `README.md` updates Maintainer steps (artwork placement, credits page, searchable person control) and replaces PNG walkthrough assets — no Kotlin/TypeScript behavior changes.
 
+### 15. Svelte 5 reactive controllers (PR #13)
+
+1. Eight browser controllers rename to `*.svelte.ts` modules (session, draft, catalog browse, movie list/editor, person list/editor, artwork upload) so **reactive state lives inside the controller class** via `$state.raw`, exposing a read-only `snapshot` getter.
+2. Svelte routes and feature components **derive UI state** with `$derived(controller?.snapshot ?? INITIAL_…)` instead of maintaining parallel `$state` copies fed by `subscribe` listeners.
+3. Completion hooks (`onSaved`, `onCredentialReset`) replace some unsubscribe paths; `onMount` still constructs controllers and calls `dispose()` on teardown so in-flight GraphQL abort controllers stay bounded.
+4. Small extractions (`uploadMessage`, `preparationError`, `list-return` helpers) clear frontend type/lint blockers; ESLint treats `**/*.svelte.ts` like Svelte sources. Transport contracts, persisted data, and rendered layouts remain unchanged per PR blast-radius notes.
+
 ## Important Components
 
 | Component | Responsibility |
@@ -250,6 +258,7 @@ explicit gaps for host-supplied connector tokens and full client acceptance (T03
 | `frontend/src/lib/features/movie/list-return.ts` | Session-storage return tokens for list scroll/search restore (PR #11) |
 | `frontend/src/lib/features/artwork/prepare-file.ts` | Client resize/decode before artwork upload (PR #11) |
 | `Makefile` (`local-repair-accounts`) | Operator password repair bound to prepared manifest (PR #11) |
+| `frontend/src/lib/features/*/*.svelte.ts` | Svelte 5 reactive controller modules with `snapshot` + `dispose()` (PR #13) |
 
 ## Simplified Implementation Examples
 
@@ -272,6 +281,21 @@ fun ready(): Boolean {
     flyway.info().pending().isEmpty() &&
     flyway.validateWithResult().validationSuccessful
 }
+```
+
+Simplified Svelte 5 controller binding (from `ArtworkUploadField.svelte` after PR #13):
+
+```typescript
+// controller.svelte.ts — reactive snapshot inside the class
+export class ArtworkUploadController {
+  private view = $state.raw(INITIAL_ARTWORK_UPLOAD_VIEW);
+  get snapshot() {
+    return this.view;
+  }
+}
+
+// component — derive instead of subscribe + copy
+const view = $derived(controller?.snapshot ?? INITIAL_ARTWORK_UPLOAD_VIEW);
 ```
 
 ## Reliability and Idempotency
@@ -331,6 +355,9 @@ Repository evidence (independent of this docs site):
   walkthrough of catalog filters, management search, credits navigation, and artwork preparation (no new
   public schema changes).
 - **PR #12** — documentation wording check only; screenshots refreshed against merged UI.
+- **PR #13** — 157 focused unit/DOM tests across 24 files plus eight browser smoke cases with
+  controlled GraphQL fixtures; types, lint, build, and dependency scans pass in PR evidence;
+  six representative before/after screenshots reported pixel-identical.
 - Integration tests under `services/*/src/integrationTest/...` enforce per-service foundation
   and crypto/account boundaries.
 
@@ -355,6 +382,8 @@ Repository evidence (independent of this docs site):
    Maintainer authorization even when chat clients change.
 5. **Never put redeemable approval secrets in model-visible structured content** — PR #9 review
    required stripping binding tokens from tool results and serving UI challenges only via MCP app metadata.
+6. **Let controllers own reactive state in Svelte 5** — PR #13 shows that `$derived` snapshots beat
+   hand-rolled listener sets when you need identical UI with clearer lifecycle boundaries.
 
 ## Related
 
@@ -374,5 +403,6 @@ Repository evidence (independent of this docs site):
   - [#10 Remote acceptance lane + install/README refresh](https://github.com/okfriansyah-moh/spoolIn/pull/10) (merge `71430bd`)
   - [#11 Catalog management and saved-record workflows](https://github.com/okfriansyah-moh/spoolIn/pull/11) (merge `929bfdb`)
   - [#12 Maintainer walkthrough screenshots](https://github.com/okfriansyah-moh/spoolIn/pull/12) (merge `0b5348b`)
+  - [#13 Svelte 5 reactive controllers](https://github.com/okfriansyah-moh/spoolIn/pull/13) (merge `d4b21d1`)
 - Design specification: `docs/04-spoolin-techdoc.md` (v1.11, October 2026)
 - Evidence commit cited in PR #1: `12e487f001b66c2f3a5802654c6928849aa47c49`

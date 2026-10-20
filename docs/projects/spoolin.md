@@ -107,6 +107,7 @@ Deep dive: [SpoolIn system architecture](/docs/systems/spoolin-catalog-platform)
 | 2026-10-18 | [PR #10](https://github.com/okfriansyah-moh/spoolIn/pull/10) merged — beginner install README, `local-*` Docker workflow, presentation refresh, History UUID fix, partial remote acceptance lane (still not full G26 accept) |
 | 2026-10-18 | [PR #11](https://github.com/okfriansyah-moh/spoolIn/pull/11) merged — maintainer catalog/management UX (filters, search, credits navigation, artwork prep, save completion flows, `local-repair-accounts`) |
 | 2026-10-18 | [PR #12](https://github.com/okfriansyah-moh/spoolIn/pull/12) merged — Maintainer README walkthrough + screenshots aligned to current UI (docs only) |
+| 2026-10-19 | [PR #13](https://github.com/okfriansyah-moh/spoolIn/pull/13) merged — Svelte 5 reactive `*.svelte.ts` controllers for session/catalog/maintainer flows (UI unchanged; broader unit/DOM coverage) |
 | Next | Close remaining G26 runtime gates (Playwright matrix, live MCP clients, delivery review), building on PR #10 partial lane evidence |
 
 ## Key Decisions
@@ -147,5 +148,5 @@ independent codebase.
 ## Sources
 
 - Repository: [okfriansyah-moh/spoolIn](https://github.com/okfriansyah-moh/spoolIn)
-- Pull requests: [#1](https://github.com/okfriansyah-moh/spoolIn/pull/1)–[#12](https://github.com/okfriansyah-moh/spoolIn/pull/12) (foundation through maintainer UX wave; G26 runtime accept still open)
+- Pull requests: [#1](https://github.com/okfriansyah-moh/spoolIn/pull/1)–[#13](https://github.com/okfriansyah-moh/spoolIn/pull/13) (foundation through Svelte 5 controller refactor; G26 runtime accept still open)
 - Technical design: `docs/04-spoolin-techdoc.md`

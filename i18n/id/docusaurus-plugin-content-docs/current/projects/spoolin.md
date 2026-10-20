@@ -102,6 +102,7 @@ Kedalaman teknis: [Arsitektur sistem SpoolIn](/id/docs/systems/spoolin-catalog-p
 | 2026-10-18 | [PR #10](https://github.com/okfriansyah-moh/spoolIn/pull/10) digabung — README instalasi pemula, alur Docker `local-*`, penyegaran presentasi, perbaikan UUID History, jalur penerimaan remote parsial (bukan penerimaan G26 penuh) |
 | 2026-10-18 | [PR #11](https://github.com/okfriansyah-moh/spoolIn/pull/11) digabung — UX katalog/manajemen maintainer (filter, pencarian, navigasi kredit, persiapan artwork, alur simpan, `local-repair-accounts`) |
 | 2026-10-18 | [PR #12](https://github.com/okfriansyah-moh/spoolIn/pull/12) digabung — walkthrough Maintainer README + tangkapan layar selaras UI saat ini (hanya dokumen) |
+| 2026-10-19 | [PR #13](https://github.com/okfriansyah-moh/spoolIn/pull/13) digabung — kontroler reaktif `*.svelte.ts` Svelte 5 untuk alur sesi/katalog/maintainer (UI tidak berubah; cakupan unit/DOM lebih luas) |
 | Berikutnya | Tutup gerbang runtime G26 yang tersisa (matriks Playwright, klien MCP hidup, review delivery), membangun bukti jalur parsial PR #10 |
 
 ## Keputusan Kunci
@@ -137,5 +138,5 @@ basis kode independen.
 ## Sumber
 
 - Repositori: [okfriansyah-moh/spoolIn](https://github.com/okfriansyah-moh/spoolIn)
-- Pull request: [#1](https://github.com/okfriansyah-moh/spoolIn/pull/1)–[#12](https://github.com/okfriansyah-moh/spoolIn/pull/12)
+- Pull request: [#1](https://github.com/okfriansyah-moh/spoolIn/pull/1)–[#13](https://github.com/okfriansyah-moh/spoolIn/pull/13)
 - Desain teknis: `docs/04-spoolin-techdoc.md`

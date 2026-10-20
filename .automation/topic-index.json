@@ -549,10 +549,12 @@
         "okfriansyah-moh/spoolIn#11",
         "okfriansyah-moh/spoolIn@929bfdb58a88479d164dc5f24cf12836565196c1",
         "okfriansyah-moh/spoolIn#12",
-        "okfriansyah-moh/spoolIn@0b5348bb0f23728bb7d764de56c9415d9ac8c9bc"
+        "okfriansyah-moh/spoolIn@0b5348bb0f23728bb7d764de56c9415d9ac8c9bc",
+        "okfriansyah-moh/spoolIn#13",
+        "okfriansyah-moh/spoolIn@d4b21d120ba5e1f62785f41b5de96ab3bb7ca737"
       ],
       "repos": ["okfriansyah-moh/spoolIn"],
-      "learning_objective": "Design a local three-service catalog platform with maintainer catalog UI, MCP exact-approval proposals, seed replay, lifecycle ops, and hardened maintainer workflows — while separating merged source evidence from pending runtime acceptance",
+      "learning_objective": "Design a local three-service catalog platform with maintainer catalog UI, MCP exact-approval proposals, seed replay, lifecycle ops, hardened maintainer workflows, and Svelte 5 reactive controllers — while separating merged source evidence from pending runtime acceptance",
       "covered_capabilities": [
         "reproducible-build-foundation",
         "shared-wire-contract-generation",
@@ -603,7 +605,10 @@
         "movie-credits-navigation-split",
         "confirmed-save-completion-flows",
         "local-repair-accounts-command",
-        "maintainer-readme-walkthrough-refresh"
+        "maintainer-readme-walkthrough-refresh",
+        "svelte5-reactive-controller-modules",
+        "derived-ui-state-from-controller-snapshot",
+        "controller-dispose-lifecycle-without-listeners"
       ]
     },
     "spoolin:project-overview": {
@@ -623,10 +628,11 @@
         "okfriansyah-moh/spoolIn#9",
         "okfriansyah-moh/spoolIn#10",
         "okfriansyah-moh/spoolIn#11",
-        "okfriansyah-moh/spoolIn#12"
+        "okfriansyah-moh/spoolIn#12",
+        "okfriansyah-moh/spoolIn#13"
       ],
       "repos": ["okfriansyah-moh/spoolIn"],
-      "learning_objective": "Follow SpoolIn's product scope, evidence-driven plan, and milestones from foundation through maintainer UX hardening (G26 runtime acceptance still open)",
+      "learning_objective": "Follow SpoolIn's product scope, evidence-driven plan, and milestones from foundation through Svelte 5 frontend controller refactor (G26 runtime acceptance still open)",
       "covered_capabilities": [
         "project-roadmap-status",
         "product-scope-overview",
@@ -642,7 +648,8 @@
         "g26-runtime-acceptance-pending",
         "install-readme-and-local-docker-wave",
         "maintainer-ux-hardening-wave",
-        "maintainer-docs-screenshot-refresh"
+        "maintainer-docs-screenshot-refresh",
+        "svelte5-reactive-controller-wave"
       ]
     },
     "padu:codex-game-audio-synthesis": {
