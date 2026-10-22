@@ -40,6 +40,7 @@ Merge berikutnya memperluas stack di atas fondasi backend:
 - [PR #11](https://github.com/okfriansyah-moh/spoolIn/pull/11) — **pengerasan UX katalog maintainer**: filter dari judul aktif, viewport katalog stabil saat filter berubah, pencarian daftar manajemen dengan paginasi, **panel kembali setelah rekaman dibuat**, navigasi **Cast and creators** terpisah, **PersonSearchSelect** terpadu, **resize/siapkan artwork** di klien dengan penolakan dimensi terminal, **pemulihan scroll pencarian daftar** lewat token session storage yang tervalidasi, **`make local-repair-accounts`**, dan alur **Simpan film / Simpan orang** terkonfirmasi dengan isu field dari server.
 - [PR #12](https://github.com/okfriansyah-moh/spoolIn/pull/12) — **walkthrough Maintainer di README** dan tangkapan layar disegarkan agar sesuai UI yang sudah digabung (hanya dokumentasi di repositori aplikasi).
 - [PR #13](https://github.com/okfriansyah-moh/spoolIn/pull/13) — **modul kontroler reaktif Svelte 5** untuk delapan alur sesi/katalog/maintainer: kontroler pindah ke kelas `*.svelte.ts` dengan snapshot `$state.raw`, rute mengikat lewat `$derived` alih-alih loop subscribe/salin manual, dan `dispose()` eksplisit tetap ada. Tanpa perubahan Python, GraphQL, atau desain visual; bukti PR melaporkan tangkapan layar sebelum/sesudah identik piksel dan cakupan unit/DOM yang diperluas.
+- [PR #14](https://github.com/okfriansyah-moh/spoolIn/pull/14) — **poster film yang disiapkan**, **kredit pemeran/kru opsional pada proposal**, dan **antrean tinjauan gabungan MCP/browser** (`movie_review_queue`) di mana setiap film tertunda menampilkan poster, kontrol keputusan revisi eksak, dan status penyelesaian. Kredit masuk **digest proposal immutable** (proposal tanpa kredit mempertahankan hash sebelumnya); orang dan kredit baru ditulis saat persetujuan Maintainer dalam transaksi film. Maintainer browser meninjau payload immutable yang sama di sesi masuk dengan **perlindungan CSRF**. Migrasi Catalog **V023–V025** menambah tabel persiapan poster dan kolom kredit; skema JSON MCP mengekspos bentuk antrean untuk penemuan alat. Commit lanjutan mendaftarkan **`ListMovieProposals`** dengan autentikasi aktor Catalog dan skrip perbaikan operator terbatas untuk film tersimpan lama (jalur perbaikan data, bukan backfill otomatis).
 
 Artikel ini membedakan **bukti sumber yang sudah digabung** dari **bukti runtime yang masih tertunda**
 di matriks penutupan G01–G26 (termasuk jalur parsial dari PR #10).
@@ -223,6 +224,16 @@ konektor dari host dan penerimaan klien penuh (T038–T039).
 3. Hook penyelesaian (`onSaved`, `onCredentialReset`) menggantikan beberapa jalur unsubscribe; `onMount` tetap membangun kontroler dan memanggil `dispose()` saat teardown agar abort controller GraphQL yang sedang berjalan tetap terbatas.
 4. Ekstraksi kecil (`uploadMessage`, `preparationError`, helper `list-return`) membersihkan pemblokir tipe/lint frontend; ESLint memperlakukan `**/*.svelte.ts` seperti sumber Svelte. Kontrak transport, data tersimpan, dan tata letak yang dirender tidak berubah menurut catatan blast-radius PR.
 
+### 16. Poster, kredit proposal, dan tinjauan gabungan (PR #14)
+
+1. **`prepare_movie_poster`** (MCP) menyimpan kandidat artwork; **`propose_movie`** melampirkan metadata, kredit opsional, dan referensi poster yang disiapkan sebelum antrean tinjauan.
+2. **`PreparedMoviePosters`** dan **`ProposalCredits`** di Catalog memperluas baris draft/proposal; Flyway **V023–V025** memigrasikan kolom poster dan kredit dengan catatan rollback aditif di PR.
+3. Digest **`ProposalContent`** mencakup kredit yang dinormalisasi; proposal **tanpa kredit** mempertahankan hash kompatibel dengan revisi sebelumnya agar persetujuan basi tidak mengikat payload yang berubah.
+4. **`movie_review_queue`** MCP mengembalikan proposal milik yang persisten bersama — setiap entri membawa pratinjau poster, kontrol persetujuan eksak per film, dan metadata penyelesaian privat; skema output antrean disematkan untuk penemuan alat MCP.
+5. Tinjauan dalam chat (`mcp/src/review/*`) dan browser **`/manage/proposals/[id]`** merender isi proposal immutable yang sama; aksi browser memakai cookie sesi Maintainer plus token CSRF pada mutasi tinjauan.
+6. Saat disetujui, Catalog menulis **orang dan kredit dalam transaksi film**, lalu menyelesaikan lampiran poster aman-retry pada operasi yang persisten; proposal kedaluwarsa menghormati **TTL 24 jam** di gelombang ini.
+7. **`ListMovieProposals`** terdaftar di gRPC Catalog dengan pola autentikasi aktor yang sama seperti RPC proposal terlindungi lainnya (lanjutan `65f594ec`).
+
 ## Komponen Penting
 
 | Komponen | Tanggung jawab |
@@ -254,6 +265,13 @@ konektor dari host dan penerimaan klien penuh (T038–T039).
 | `frontend/src/lib/features/artwork/prepare-file.ts` | Resize/dekode klien sebelum unggah artwork (PR #11) |
 | `Makefile` (`local-repair-accounts`) | Perbaikan kata sandi operator terikat manifest yang disiapkan (PR #11) |
 | `frontend/src/lib/features/*/*.svelte.ts` | Modul kontroler reaktif Svelte 5 dengan `snapshot` + `dispose()` (PR #13) |
+| `mcp/src/tools/poster-import.ts` / `poster-output.ts` | Persiapan poster MCP dan field poster terstruktur pada hasil alat (PR #14) |
+| `services/catalog/.../PreparedMoviePosters.kt` | Menyimpan handle artwork yang disiapkan sebelum persetujuan proposal (PR #14) |
+| `services/catalog/.../ProposalCredits.kt` | Baris pemeran/kru dinormalisasi terikat proposal immutable (PR #14) |
+| `mcp/src/review/presentation.ts` | Tata letak antrean gabungan dengan krom keputusan per film (PR #14) |
+| `frontend/src/lib/features/proposal/api.ts` | Klien GraphQL Maintainer untuk tinjauan proposal browser (PR #14) |
+| `frontend/src/routes/manage/proposals/[id]/+page.svelte` | UI tinjauan proposal masuk dengan aksi sadar CSRF (PR #14) |
+| `contracts/json/mcp-outputs.schema.json` | Definisi skema `movie_review_queue` untuk penemuan MCP (PR #14) |
 
 ## Contoh Implementasi yang Disederhanakan
 
@@ -298,6 +316,8 @@ const view = $derived(controller?.snapshot ?? INITIAL_ARTWORK_UPLOAD_VIEW);
 - **Kesiapan** — kesehatan gRPC menjadi `SERVING` hanya saat validasi skema berhasil.
 - **Pekerjaan durable (desain)** — techdoc §7 mendefinisikan job tersimpan untuk efek lintas layanan tanpa transaksi terdistribusi.
 - **Operasi klien idempoten (desain)** — mutasi GraphQL membawa UUID operasi untuk submit ulang aman setelah jaringan putus.
+- **Kredit proposal (PR #14)** — kredit memengaruhi digest immutable hanya saat tertunda; baris orang/kredit yang disetujui dikomit atomik dengan film agar publikasi parsial tidak meninggalkan pemeran yatim.
+- **Lampiran poster (PR #14)** — handle poster yang disiapkan direkonsiliasi lewat jalur receipt operasi persisten sehingga retry setelah persetujuan tidak membuat tautan artwork duplikat.
 
 ## Mode Kegagalan
 
@@ -309,6 +329,9 @@ const view = $derived(controller?.snapshot ?? INITIAL_ARTWORK_UPLOAD_VIEW);
 | Pemanggil gRPC tidak sah | `PERMISSION_DENIED` | Rotasi sertifikat; perbaiki SAN |
 | Izin file rahasia | `requireProtectedFile` gagal | chmod `600`, rahasia satu baris |
 | Media tidak tersedia saat baca (desain) | Core menurunkan URL artwork | Metadata katalog tetap kembali |
+| Persiapan poster gagal sebelum propose (PR #14) | Alat MCP mengembalikan kegagalan terstruktur | Operator perbaiki sumber artwork; proposal tidak diantrekan |
+| Proposal kedaluwarsa (PR #14) | TTL habis pada baris antrean | Maintainer harus propose ulang; digest mencegah reuse diam-diam |
+| Ketidakcocokan digest kredit (PR #14) | Ikatan persetujuan eksak menolak UI basi | Buka ulang entri antrean; tidak ada publikasi saat hash bergeser |
 
 ## Trade-off dan Alternatif yang Ditolak
 
@@ -337,6 +360,7 @@ Bukti repositori:
 - **PR #11** — diff frontend/kontroler besar; bukti PR menyebut suite unit lulus dan walkthrough manual macOS untuk filter katalog, pencarian manajemen, navigasi kredit, dan persiapan artwork (tanpa perubahan skema publik).
 - **PR #12** — hanya pemeriksaan kata dokumentasi; tangkapan layar disegarkan terhadap UI yang digabung.
 - **PR #13** — 157 tes unit/DOM terfokus di 24 berkas plus delapan kasus smoke browser dengan fixture GraphQL terkontrol; tipe, lint, build, dan pemindaian dependensi lulus menurut bukti PR; enam tangkapan layar representatif dilaporkan identik piksel.
+- **PR #14** — penulis PR melaporkan **tidak ada suite tes, lint, atau typecheck otomatis** yang dijalankan untuk merge ini; bukti mengandalkan review sumber independen, migrasi Catalog V025 lokal, rebuild image Docker, dan verifikasi MCP/browser manual pada tujuh proposal tertunda. Anggap cakupan runtime **belum diverifikasi** terhadap target 80% baris berubah repositori.
 
 ## Operasi dan Observabilitas
 
@@ -353,6 +377,8 @@ Bukti repositori:
 4. **Pertahankan persetujuan MCP di gateway Core** — memusatkan `McpGatewayService` menjaga otorisasi Maintainer.
 5. **Jangan taruh rahasia persetujuan yang dapat ditukar di konten terstruktur yang terlihat model** — review PR #9 mewajibkan menghapus token ikatan dari hasil alat dan hanya menyajikan tantangan UI lewat metadata aplikasi MCP.
 6. **Biarkan kontroler memiliki state reaktif di Svelte 5** — PR #13 menunjukkan snapshot `$derived` mengalahkan set listener buatan tangan saat UI harus identik dengan batas siklus hidup yang lebih jelas.
+7. **Masukkan kredit ke digest proposal sejak awal** — PR #14 menjaga hash stabil untuk proposal tanpa kredit sambil tetap membiarkan maintainer meninjau pemeran/kru sebelum katalog publik.
+8. **Satu antrean untuk chat dan browser** — berbagi bentuk `movie_review_queue` antara alat MCP dan UI Maintainer menghindari cerita persetujuan yang berbeda untuk payload immutable yang sama.
 
 ## Terkait
 
@@ -373,5 +399,6 @@ Bukti repositori:
   - [#11](https://github.com/okfriansyah-moh/spoolIn/pull/11) (merge `929bfdb`)
   - [#12](https://github.com/okfriansyah-moh/spoolIn/pull/12) (merge `0b5348b`)
   - [#13](https://github.com/okfriansyah-moh/spoolIn/pull/13) (merge `d4b21d1`)
+  - [#14 Poster MCP, kredit, dan tinjauan proposal gabungan](https://github.com/okfriansyah-moh/spoolIn/pull/14) (merge `6470702`)
 - Spesifikasi desain: `docs/04-spoolin-techdoc.md` (v1.11, Oktober 2026)
 - Commit bukti PR #1: `12e487f001b66c2f3a5802654c6928849aa47c49`

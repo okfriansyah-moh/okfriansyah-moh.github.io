@@ -103,6 +103,7 @@ Kedalaman teknis: [Arsitektur sistem SpoolIn](/id/docs/systems/spoolin-catalog-p
 | 2026-10-18 | [PR #11](https://github.com/okfriansyah-moh/spoolIn/pull/11) digabung — UX katalog/manajemen maintainer (filter, pencarian, navigasi kredit, persiapan artwork, alur simpan, `local-repair-accounts`) |
 | 2026-10-18 | [PR #12](https://github.com/okfriansyah-moh/spoolIn/pull/12) digabung — walkthrough Maintainer README + tangkapan layar selaras UI saat ini (hanya dokumen) |
 | 2026-10-19 | [PR #13](https://github.com/okfriansyah-moh/spoolIn/pull/13) digabung — kontroler reaktif `*.svelte.ts` Svelte 5 untuk alur sesi/katalog/maintainer (UI tidak berubah; cakupan unit/DOM lebih luas) |
+| 2026-10-21 | [PR #14](https://github.com/okfriansyah-moh/spoolIn/pull/14) digabung — **poster yang disiapkan** dan **kredit proposal** MCP, **`movie_review_queue`** gabungan untuk tinjauan dalam chat, halaman proposal Maintainer browser dengan CSRF, migrasi Catalog V023–V025, dan kedaluwarsa proposal 24 jam (cakupan tes otomatis tidak dijalankan menurut bukti PR) |
 | Berikutnya | Tutup gerbang runtime G26 yang tersisa (matriks Playwright, klien MCP hidup, review delivery), membangun bukti jalur parsial PR #10 |
 
 ## Keputusan Kunci
@@ -138,5 +139,5 @@ basis kode independen.
 ## Sumber
 
 - Repositori: [okfriansyah-moh/spoolIn](https://github.com/okfriansyah-moh/spoolIn)
-- Pull request: [#1](https://github.com/okfriansyah-moh/spoolIn/pull/1)–[#13](https://github.com/okfriansyah-moh/spoolIn/pull/13)
+- Pull request: [#1](https://github.com/okfriansyah-moh/spoolIn/pull/1)–[#14](https://github.com/okfriansyah-moh/spoolIn/pull/14)
 - Desain teknis: `docs/04-spoolin-techdoc.md`

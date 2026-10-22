@@ -40,6 +40,7 @@ Follow-on merges extended the stack beyond the backend foundation:
 - [PR #11](https://github.com/okfriansyah-moh/spoolIn/pull/11) — **maintainer catalog UX hardening**: active-title-derived filters, stable catalog viewport during filter changes, management list search with pagination, **created-record return panels**, split **Cast and creators** navigation, unified **PersonSearchSelect**, client-side **artwork resize/prepare** with terminal dimension rejection, **list return scroll restoration** via validated session-storage tokens, **`make local-repair-accounts`**, and confirmed **Save movie / Save person** completion flows with server-reported field issues.
 - [PR #12](https://github.com/okfriansyah-moh/spoolIn/pull/12) — **Maintainer README walkthrough** and screenshots refreshed to match merged UI (documentation-only in the application repository).
 - [PR #13](https://github.com/okfriansyah-moh/spoolIn/pull/13) — **Svelte 5 reactive controller modules** for eight maintainer/session/catalog flows: controllers move to `*.svelte.ts` classes with `$state.raw` snapshots, routes bind through `$derived` instead of manual subscribe/copy loops, and lifecycle `dispose()` stays explicit. No Python, GraphQL, or visual design changes; PR evidence reports pixel-identical before/after screenshots and expanded unit/DOM coverage.
+- [PR #14](https://github.com/okfriansyah-moh/spoolIn/pull/14) — **prepared movie posters**, **optional cast/crew credits on proposals**, and a **combined MCP/browser review queue** (`movie_review_queue`) where each pending movie shows its poster, exact-revision decision controls, and completion status. Credits join the **immutable proposal digest** (empty-credit proposals keep prior hashes); people and credits persist only on Maintainer approval inside the movie transaction. Browser maintainers review the same immutable payload under a signed-in session with **CSRF protection**. Catalog migrations **V023–V025** add poster preparation tables and credit columns; MCP JSON schemas expose queue shapes for tool discovery. Follow-up commits register **`ListMovieProposals`** with Catalog actor authentication and add bounded operator repair scripts for legacy saved movies (data repair lane, not automatic backfill).
 
 This article separates **merged source evidence** from **runtime proof still pending** in the
 G01–G26 closure matrix (including partial lanes from PR #10).
@@ -228,6 +229,16 @@ explicit gaps for host-supplied connector tokens and full client acceptance (T03
 3. Completion hooks (`onSaved`, `onCredentialReset`) replace some unsubscribe paths; `onMount` still constructs controllers and calls `dispose()` on teardown so in-flight GraphQL abort controllers stay bounded.
 4. Small extractions (`uploadMessage`, `preparationError`, `list-return` helpers) clear frontend type/lint blockers; ESLint treats `**/*.svelte.ts` like Svelte sources. Transport contracts, persisted data, and rendered layouts remain unchanged per PR blast-radius notes.
 
+### 16. Posters, proposal credits, and combined review (PR #14)
+
+1. **`prepare_movie_poster`** (MCP) stores artwork candidates; **`propose_movie`** attaches metadata, optional credits, and a prepared poster reference before enqueueing review.
+2. Catalog **`PreparedMoviePosters`** and **`ProposalCredits`** extend draft/proposal rows; Flyway **V023–V025** migrate poster and credit columns while keeping additive rollback constraints documented in the PR merge-danger note.
+3. **`ProposalContent`** digest hashing includes normalized credits; proposals with **no credits** preserve hashes compatible with earlier revisions so stale approvals cannot bind to altered payloads.
+4. MCP **`movie_review_queue`** returns owned, persisted proposals together — each entry carries poster preview, per-movie exact-approval controls, and private completion metadata; queue output schemas are embedded for MCP tool discovery.
+5. In-chat review (`mcp/src/review/*`) and browser **`/manage/proposals/[id]`** render the same immutable proposal body; browser actions use Maintainer session cookies plus CSRF tokens on review mutations.
+6. On approval, Catalog writes **people and credits inside the movie transaction**, then completes retry-safe poster attachment on the persisted operation; expired proposals honor the **24-hour TTL** introduced in this wave.
+7. **`ListMovieProposals`** registers on Catalog gRPC with the same actor authentication pattern as other protected proposal RPCs (follow-up `65f594ec`).
+
 ## Important Components
 
 | Component | Responsibility |
@@ -259,6 +270,13 @@ explicit gaps for host-supplied connector tokens and full client acceptance (T03
 | `frontend/src/lib/features/artwork/prepare-file.ts` | Client resize/decode before artwork upload (PR #11) |
 | `Makefile` (`local-repair-accounts`) | Operator password repair bound to prepared manifest (PR #11) |
 | `frontend/src/lib/features/*/*.svelte.ts` | Svelte 5 reactive controller modules with `snapshot` + `dispose()` (PR #13) |
+| `mcp/src/tools/poster-import.ts` / `poster-output.ts` | MCP poster preparation and structured poster fields on tool results (PR #14) |
+| `services/catalog/.../PreparedMoviePosters.kt` | Stores prepared artwork handles before proposal approval (PR #14) |
+| `services/catalog/.../ProposalCredits.kt` | Normalized cast/crew rows bound to immutable proposals (PR #14) |
+| `mcp/src/review/presentation.ts` | Combined queue layout with per-movie decision chrome (PR #14) |
+| `frontend/src/lib/features/proposal/api.ts` | Maintainer GraphQL client for browser proposal review (PR #14) |
+| `frontend/src/routes/manage/proposals/[id]/+page.svelte` | Signed-in proposal review UI with CSRF-aware actions (PR #14) |
+| `contracts/json/mcp-outputs.schema.json` | `movie_review_queue` schema definitions for MCP discovery (PR #14) |
 
 ## Simplified Implementation Examples
 
@@ -309,6 +327,11 @@ const view = $derived(controller?.snapshot ?? INITIAL_ARTWORK_UPLOAD_VIEW);
   with `GetOperation` style receipts after timeouts.
 - **Idempotent client ops (design)** — GraphQL mutations carry operation UUIDs so browsers can
   resubmit safely after network loss.
+- **Proposal credits (PR #14)** — credits affect the immutable digest only while pending; approved
+  people/credit rows commit atomically with the movie so partial publication cannot leave orphan
+  cast records.
+- **Poster attachment (PR #14)** — prepared poster handles reconcile through the persisted operation
+  receipt path so retries after approval do not create duplicate artwork links.
 
 ## Failure Modes
 
@@ -320,6 +343,9 @@ const view = $derived(controller?.snapshot ?? INITIAL_ARTWORK_UPLOAD_VIEW);
 | Unauthorized gRPC caller | `PERMISSION_DENIED` | Rotate certs; fix SAN mapping |
 | Secret file permissions | `requireProtectedFile` throws | chmod `600`, single-line secret |
 | Media unavailable during read (design) | Core degrades artwork URLs | Catalog metadata still returns |
+| Poster prep fails before propose (PR #14) | MCP tool returns structured failure | Operator fixes artwork source; proposal not enqueued |
+| Expired proposal (PR #14) | TTL elapsed on queue row | Maintainer must re-propose; digest prevents silent reuse |
+| Credit digest mismatch (PR #14) | Exact-approval binding rejects stale UI | Re-open queue entry; no publish on hash drift |
 
 ## Trade-offs and Rejected Alternatives
 
@@ -358,6 +384,10 @@ Repository evidence (independent of this docs site):
 - **PR #13** — 157 focused unit/DOM tests across 24 files plus eight browser smoke cases with
   controlled GraphQL fixtures; types, lint, build, and dependency scans pass in PR evidence;
   six representative before/after screenshots reported pixel-identical.
+- **PR #14** — PR author reports **no automated test, lint, or typecheck suites executed** for
+  this merge; evidence relies on independent source review, local Catalog migration V025, Docker
+  image rebuilds, and manual MCP/browser verification on seven pending proposals. Treat runtime
+  coverage as **unverified** against the repository’s 80% changed-line target.
 - Integration tests under `services/*/src/integrationTest/...` enforce per-service foundation
   and crypto/account boundaries.
 
@@ -384,6 +414,10 @@ Repository evidence (independent of this docs site):
    required stripping binding tokens from tool results and serving UI challenges only via MCP app metadata.
 6. **Let controllers own reactive state in Svelte 5** — PR #13 shows that `$derived` snapshots beat
    hand-rolled listener sets when you need identical UI with clearer lifecycle boundaries.
+7. **Fold credits into the proposal digest early** — PR #14 keeps empty-credit proposals hash-stable
+   while still letting maintainers review cast/crew before anything hits the public catalog.
+8. **One queue for chat and browser** — sharing `movie_review_queue` shapes between MCP tools and
+   Maintainer UI avoids divergent approval stories for the same immutable payload.
 
 ## Related
 
@@ -404,5 +438,6 @@ Repository evidence (independent of this docs site):
   - [#11 Catalog management and saved-record workflows](https://github.com/okfriansyah-moh/spoolIn/pull/11) (merge `929bfdb`)
   - [#12 Maintainer walkthrough screenshots](https://github.com/okfriansyah-moh/spoolIn/pull/12) (merge `0b5348b`)
   - [#13 Svelte 5 reactive controllers](https://github.com/okfriansyah-moh/spoolIn/pull/13) (merge `d4b21d1`)
+  - [#14 MCP posters, credits, and combined proposal review](https://github.com/okfriansyah-moh/spoolIn/pull/14) (merge `6470702`)
 - Design specification: `docs/04-spoolin-techdoc.md` (v1.11, October 2026)
 - Evidence commit cited in PR #1: `12e487f001b66c2f3a5802654c6928849aa47c49`

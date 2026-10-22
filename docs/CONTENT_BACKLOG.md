@@ -27,6 +27,10 @@ renumbering).
 `spoolIn` PRs #8–#9 (G04–G16 catalog/artwork wave, G17–G26 MCP proposals, seed/ops, release
 handoff matrix; runtime acceptance explicitly still open).
 
+## Status Summary (2026-10-22)
+
+**Updated in 2026-10-22 automation run:** SpoolIn system + project articles refreshed for merged [spoolIn#14](https://github.com/okfriansyah-moh/spoolIn/pull/14) (MCP prepared posters, proposal credits, combined `movie_review_queue`, browser CSRF review).
+
 ## Status Summary (2026-08-20)
 
 | Status | Count | Notes |

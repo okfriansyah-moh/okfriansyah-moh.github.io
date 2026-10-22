@@ -108,6 +108,7 @@ Deep dive: [SpoolIn system architecture](/docs/systems/spoolin-catalog-platform)
 | 2026-10-18 | [PR #11](https://github.com/okfriansyah-moh/spoolIn/pull/11) merged — maintainer catalog/management UX (filters, search, credits navigation, artwork prep, save completion flows, `local-repair-accounts`) |
 | 2026-10-18 | [PR #12](https://github.com/okfriansyah-moh/spoolIn/pull/12) merged — Maintainer README walkthrough + screenshots aligned to current UI (docs only) |
 | 2026-10-19 | [PR #13](https://github.com/okfriansyah-moh/spoolIn/pull/13) merged — Svelte 5 reactive `*.svelte.ts` controllers for session/catalog/maintainer flows (UI unchanged; broader unit/DOM coverage) |
+| 2026-10-21 | [PR #14](https://github.com/okfriansyah-moh/spoolIn/pull/14) merged — MCP **prepared posters** and **proposal credits**, combined **`movie_review_queue`** for in-chat review, matching Maintainer browser proposal pages with CSRF, Catalog migrations V023–V025, and 24-hour proposal expiry (automated test coverage not run per PR evidence) |
 | Next | Close remaining G26 runtime gates (Playwright matrix, live MCP clients, delivery review), building on PR #10 partial lane evidence |
 
 ## Key Decisions
@@ -148,5 +149,5 @@ independent codebase.
 ## Sources
 
 - Repository: [okfriansyah-moh/spoolIn](https://github.com/okfriansyah-moh/spoolIn)
-- Pull requests: [#1](https://github.com/okfriansyah-moh/spoolIn/pull/1)–[#13](https://github.com/okfriansyah-moh/spoolIn/pull/13) (foundation through Svelte 5 controller refactor; G26 runtime accept still open)
+- Pull requests: [#1](https://github.com/okfriansyah-moh/spoolIn/pull/1)–[#14](https://github.com/okfriansyah-moh/spoolIn/pull/14) (foundation through combined proposal review queue; G26 runtime accept still open)
 - Technical design: `docs/04-spoolin-techdoc.md`
