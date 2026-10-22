@@ -7,6 +7,30 @@ This backlog ranks article opportunities discovered from public repositories own
 `okfriansyah-moh`. The daily automation should consult this file when deciding whether
 to update an existing page or create a new one.
 
+## Status Summary (2026-10-16)
+
+| Status | Count | Notes |
+|--------|------:|-------|
+| Complete (full template) | 20 | Includes new SpoolIn system + project pair (EN + ID) |
+
+**Completed in 2026-10-16 automation run:** SpoolIn catalog platform system article and SpoolIn project overview (new public repo `spoolIn`, foundation PR #1).
+
+## Status Summary (2026-10-17)
+
+**Updated in 2026-10-17 automation run:** SpoolIn system + project articles refreshed for merged
+`spoolIn` PRs #4–#7 (application shell, protected accounts, account-access wave, workflow/plan
+renumbering).
+
+## Status Summary (2026-10-18)
+
+**Updated in 2026-10-18 automation run:** SpoolIn system + project articles refreshed for merged
+`spoolIn` PRs #8–#9 (G04–G16 catalog/artwork wave, G17–G26 MCP proposals, seed/ops, release
+handoff matrix; runtime acceptance explicitly still open).
+
+## Status Summary (2026-10-22)
+
+**Updated in 2026-10-22 automation run:** SpoolIn system + project articles refreshed for merged [spoolIn#14](https://github.com/okfriansyah-moh/spoolIn/pull/14) (MCP prepared posters, proposal credits, combined `movie_review_queue`, browser CSRF review).
+
 ## Status Summary (2026-08-20)
 
 | Status | Count | Notes |
