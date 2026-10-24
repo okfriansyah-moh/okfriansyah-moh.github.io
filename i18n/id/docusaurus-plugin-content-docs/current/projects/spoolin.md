@@ -65,7 +65,7 @@ SpoolIn adalah **buku besar home theater yang dikurasi**:
 | Metadata TV read-only | Techdoc §1 |
 | Mutasi hanya maintainer | Tabel aktor techdoc §1.1 |
 | Tanggung jawab operator lokal | Terpisah dari peran browser Maintainer |
-| Alur agen portabel | `.ai/bundles/` (diperbarui ke 1.1.1 di PR #2) |
+| Alur agen portabel | `.ai/bundles/` — 1.1.1 (PR #2), 1.2.0 (PR #5), 1.2.1 (PR #7), **1.3.0** (PR #15) dengan admission perangkat eksekusi bersama |
 | Presentasi publik mandiri | Pembersihan dokumentasi PR #3 |
 | Shell aplikasi + akun | [PR #4](https://github.com/okfriansyah-moh/spoolIn/pull/4) (shell) dan [PR #6](https://github.com/okfriansyah-moh/spoolIn/pull/6) (sesi, kebijakan, tanda terima, admission) digabung |
 
@@ -104,6 +104,8 @@ Kedalaman teknis: [Arsitektur sistem SpoolIn](/id/docs/systems/spoolin-catalog-p
 | 2026-10-18 | [PR #12](https://github.com/okfriansyah-moh/spoolIn/pull/12) digabung — walkthrough Maintainer README + tangkapan layar selaras UI saat ini (hanya dokumen) |
 | 2026-10-19 | [PR #13](https://github.com/okfriansyah-moh/spoolIn/pull/13) digabung — kontroler reaktif `*.svelte.ts` Svelte 5 untuk alur sesi/katalog/maintainer (UI tidak berubah; cakupan unit/DOM lebih luas) |
 | 2026-10-21 | [PR #14](https://github.com/okfriansyah-moh/spoolIn/pull/14) digabung — **poster yang disiapkan** dan **kredit proposal** MCP, **`movie_review_queue`** gabungan untuk tinjauan dalam chat, halaman proposal Maintainer browser dengan CSRF, migrasi Catalog V023–V025, dan kedaluwarsa proposal 24 jam (cakupan tes otomatis tidak dijalankan menurut bukti PR) |
+| 2026-10-21 | [PR #15](https://github.com/okfriansyah-moh/spoolIn/pull/15) digabung — bundle **agent-workflow 1.3.0**: satu prosedur delivery untuk Codex/Cursor/Claude/Copilot, **admission sumber daya perangkat eksekusi** bersama di runner gerbang, 74 skill selaras, ambang kualitas dipertahankan |
+| 2026-10-23 | [PR #16](https://github.com/okfriansyah-moh/spoolIn/pull/16) digabung — `docs/prompts/` terpadu, modul `list-return` bersama, helper MCP/Catalog tidak terpakai dihapus, cek **repository-hygiene**, refresh bundle untuk [kebijakan reuse berbasis implementasi](https://github.com/okfriansyah-moh/agentic-workflow/pull/1) (suite static frontend penuh tertunda menurut bukti tekanan memori PR) |
 | Berikutnya | Tutup gerbang runtime G26 yang tersisa (matriks Playwright, klien MCP hidup, review delivery), membangun bukti jalur parsial PR #10 |
 
 ## Keputusan Kunci
@@ -135,9 +137,10 @@ basis kode independen.
 
 - [Arsitektur sistem SpoolIn](/id/docs/systems/spoolin-catalog-platform)
 - [Guardrail LLM](/id/docs/concepts/llm-guardrails)
+- [Reuse berbasis implementasi dan pembersihan berbasis bukti](/id/docs/concepts/implementation-first-reuse-and-cleanup)
 
 ## Sumber
 
 - Repositori: [okfriansyah-moh/spoolIn](https://github.com/okfriansyah-moh/spoolIn)
-- Pull request: [#1](https://github.com/okfriansyah-moh/spoolIn/pull/1)–[#14](https://github.com/okfriansyah-moh/spoolIn/pull/14)
+- Pull request: [#1](https://github.com/okfriansyah-moh/spoolIn/pull/1)–[#16](https://github.com/okfriansyah-moh/spoolIn/pull/16)
 - Desain teknis: `docs/04-spoolin-techdoc.md`

@@ -31,6 +31,16 @@ handoff matrix; runtime acceptance explicitly still open).
 
 **Updated in 2026-10-22 automation run:** SpoolIn system + project articles refreshed for merged [spoolIn#14](https://github.com/okfriansyah-moh/spoolIn/pull/14) (MCP prepared posters, proposal credits, combined `movie_review_queue`, browser CSRF review).
 
+## Status Summary (2026-10-24)
+
+| Status | Count | Notes |
+|--------|------:|-------|
+| Complete (full template) | 19 | Added concept: implementation-first reuse (agentic-workflow) |
+| Stubs remaining | 0 | — |
+| Missing pages | 0 | — |
+
+**Updated in 2026-10-24 automation run:** New concept `implementation-first-reuse-and-cleanup` (agentic-workflow#1); SpoolIn system + project refreshed for PR #15 (workflow 1.3.0) and PR #16 (hygiene refactor).
+
 ## Status Summary (2026-08-20)
 
 | Status | Count | Notes |

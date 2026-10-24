@@ -1,12 +1,20 @@
 {
   "items": [
     {
+      "title": "Implementation-First Reuse and Evidence-Based Cleanup",
+      "description": "How the shared agentic-workflow delivery policy prioritizes extending existing owners, links one document per topic, and deletes unused code only after consumer evidence.",
+      "link": "/docs/concepts/implementation-first-reuse-and-cleanup",
+      "type": "concept",
+      "date": "2026-10-24",
+      "readingTime": 6
+    },
+    {
       "title": "SpoolIn: Multi-Service Catalog Platform Architecture",
       "description": "How SpoolIn splits Core, Catalog, and Media across generated wire contracts, per-service PostgreSQL databases, mTLS identities, and migration readiness gates.",
       "link": "/docs/systems/spoolin-catalog-platform",
       "type": "system",
       "date": "2026-10-16",
-      "readingTime": 20
+      "readingTime": 21
     },
     {
       "title": "SpoolIn",
@@ -14,7 +22,7 @@
       "link": "/docs/projects/spoolin",
       "type": "project",
       "date": "2026-10-16",
-      "readingTime": 5
+      "readingTime": 6
     },
     {
       "title": "Visual Identity Before Development: Lessons from Padu",

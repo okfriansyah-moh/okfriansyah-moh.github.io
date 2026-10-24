@@ -25,6 +25,7 @@ const sidebars: SidebarsConfig = {
         'concepts/ai-capabilities-and-limitations',
         'concepts/ai-document-coherence',
         'concepts/deterministic-agentic-orchestrator',
+        'concepts/implementation-first-reuse-and-cleanup',
         'concepts/leetcode-patterns',
         'concepts/codex-game-audio-synthesis',
         'concepts/visual-identity-before-development',

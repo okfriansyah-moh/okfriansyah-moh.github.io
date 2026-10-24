@@ -41,6 +41,7 @@ Merge berikutnya memperluas stack di atas fondasi backend:
 - [PR #12](https://github.com/okfriansyah-moh/spoolIn/pull/12) — **walkthrough Maintainer di README** dan tangkapan layar disegarkan agar sesuai UI yang sudah digabung (hanya dokumentasi di repositori aplikasi).
 - [PR #13](https://github.com/okfriansyah-moh/spoolIn/pull/13) — **modul kontroler reaktif Svelte 5** untuk delapan alur sesi/katalog/maintainer: kontroler pindah ke kelas `*.svelte.ts` dengan snapshot `$state.raw`, rute mengikat lewat `$derived` alih-alih loop subscribe/salin manual, dan `dispose()` eksplisit tetap ada. Tanpa perubahan Python, GraphQL, atau desain visual; bukti PR melaporkan tangkapan layar sebelum/sesudah identik piksel dan cakupan unit/DOM yang diperluas.
 - [PR #14](https://github.com/okfriansyah-moh/spoolIn/pull/14) — **poster film yang disiapkan**, **kredit pemeran/kru opsional pada proposal**, dan **antrean tinjauan gabungan MCP/browser** (`movie_review_queue`) di mana setiap film tertunda menampilkan poster, kontrol keputusan revisi eksak, dan status penyelesaian. Kredit masuk **digest proposal immutable** (proposal tanpa kredit mempertahankan hash sebelumnya); orang dan kredit baru ditulis saat persetujuan Maintainer dalam transaksi film. Maintainer browser meninjau payload immutable yang sama di sesi masuk dengan **perlindungan CSRF**. Migrasi Catalog **V023–V025** menambah tabel persiapan poster dan kolom kredit; skema JSON MCP mengekspos bentuk antrean untuk penemuan alat. Commit lanjutan mendaftarkan **`ListMovieProposals`** dengan autentikasi aktor Catalog dan skrip perbaikan operator terbatas untuk film tersimpan lama (jalur perbaikan data, bukan backfill otomatis).
+- [PR #16](https://github.com/okfriansyah-moh/spoolIn/pull/16) — **hygiene repositori tanpa redesign produk**: keempat prompt proyek berada di `docs/prompts/` (pohon lama `docs/prompt/` dihapus), modul review MCP dan helper seed Catalog yang tidak terpakai dihapus setelah cek konsumen, dan **state list-return bersama** dikonsolidasikan ke `frontend/src/lib/state/list-return.ts` untuk alur maintainer film dan person. SpoolIn mem-pin **bundle agent-workflow 1.3.0** (termasuk [kebijakan reuse berbasis implementasi](https://github.com/okfriansyah-moh/agentic-workflow/blob/main/docs/DELIVERY.md#reuse-and-evidence-based-cleanup) bersama) lewat updater resmi; skill lokal menautkan kebijakan itu alih-alih menyalin aturan pembersihan. Verifikasi baru `repository-hygiene.mjs` mengodekan penempatan prompt dan aturan tautan lokal. Bukti PR melaporkan hygiene dan empat kasus regresi lulus; suite static/type frontend penuh **terblokir tekanan memori host** saat merge.
 
 Artikel ini membedakan **bukti sumber yang sudah digabung** dari **bukti runtime yang masih tertunda**
 di matriks penutupan G01–G26 (termasuk jalur parsial dari PR #10).
@@ -379,12 +380,15 @@ Bukti repositori:
 6. **Biarkan kontroler memiliki state reaktif di Svelte 5** — PR #13 menunjukkan snapshot `$derived` mengalahkan set listener buatan tangan saat UI harus identik dengan batas siklus hidup yang lebih jelas.
 7. **Masukkan kredit ke digest proposal sejak awal** — PR #14 menjaga hash stabil untuk proposal tanpa kredit sambil tetap membiarkan maintainer meninjau pemeran/kru sebelum katalog publik.
 8. **Satu antrean untuk chat dan browser** — berbagi bentuk `movie_review_queue` antara alat MCP dan UI Maintainer menghindari cerita persetujuan yang berbeda untuk payload immutable yang sama.
+9. **Sentralisasi state UI lintas fitur sebelum menduplikasi helper** — PR #16 menunjukkan pemulihan scroll list-return cocok di satu modul dengan wrapper tipis per fitur.
+10. **Tautkan kebijakan agent bersama, jangan fork** — bundle 1.3.0 membawa aturan reuse `DELIVERY.md`; teks khusus SpoolIn terbatas pada path prompt dan cek hygiene.
 
 ## Terkait
 
 - [Ringkasan proyek SpoolIn](/id/docs/projects/spoolin)
 - [Mesin status berbasis basis data](/id/docs/concepts/database-state-machines)
 - [Guardrail LLM](/id/docs/concepts/llm-guardrails)
+- [Reuse berbasis implementasi dan pembersihan berbasis bukti](/id/docs/concepts/implementation-first-reuse-and-cleanup)
 
 ## Sumber
 
@@ -400,5 +404,6 @@ Bukti repositori:
   - [#12](https://github.com/okfriansyah-moh/spoolIn/pull/12) (merge `0b5348b`)
   - [#13](https://github.com/okfriansyah-moh/spoolIn/pull/13) (merge `d4b21d1`)
   - [#14 Poster MCP, kredit, dan tinjauan proposal gabungan](https://github.com/okfriansyah-moh/spoolIn/pull/14) (merge `6470702`)
+  - [#16 Konsolidasi prompt dan hapus kode SpoolIn tidak terpakai](https://github.com/okfriansyah-moh/spoolIn/pull/16) (merge `5498f51`)
 - Spesifikasi desain: `docs/04-spoolin-techdoc.md` (v1.11, Oktober 2026)
 - Commit bukti PR #1: `12e487f001b66c2f3a5802654c6928849aa47c49`

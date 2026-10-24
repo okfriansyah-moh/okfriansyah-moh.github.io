@@ -553,10 +553,12 @@
         "okfriansyah-moh/spoolIn#13",
         "okfriansyah-moh/spoolIn@d4b21d120ba5e1f62785f41b5de96ab3bb7ca737",
         "okfriansyah-moh/spoolIn#14",
-        "okfriansyah-moh/spoolIn@64707028c6de1924a3e9e2148fc33da371a36452"
+        "okfriansyah-moh/spoolIn@64707028c6de1924a3e9e2148fc33da371a36452",
+        "okfriansyah-moh/spoolIn#16",
+        "okfriansyah-moh/spoolIn@5498f51239855836a92b85dc9bb8a5d76ddb0909"
       ],
       "repos": ["okfriansyah-moh/spoolIn"],
-      "learning_objective": "Design a local three-service catalog platform with maintainer catalog UI, MCP exact-approval proposals, prepared posters and proposal credits, combined review queues, seed replay, lifecycle ops, hardened maintainer workflows, and Svelte 5 reactive controllers — while separating merged source evidence from pending runtime acceptance",
+      "learning_objective": "Design a local three-service catalog platform with maintainer catalog UI, MCP exact-approval proposals, prepared posters and proposal credits, combined review queues, shared frontend list-return state, repository hygiene checks, seed replay, lifecycle ops, hardened maintainer workflows, and Svelte 5 reactive controllers — while separating merged source evidence from pending runtime acceptance",
       "covered_capabilities": [
         "reproducible-build-foundation",
         "shared-wire-contract-generation",
@@ -618,7 +620,12 @@
         "browser-proposal-review-csrf",
         "mcp-poster-import-tools",
         "proposal-expiry-ttl",
-        "catalog-migration-v023-v025"
+        "catalog-migration-v023-v025",
+        "unified-prompt-directory",
+        "shared-list-return-state-module",
+        "repository-hygiene-verification",
+        "mcp-review-dead-code-removal",
+        "agent-workflow-bundle-1-3-0-reuse-policy"
       ]
     },
     "spoolin:project-overview": {
@@ -640,10 +647,12 @@
         "okfriansyah-moh/spoolIn#11",
         "okfriansyah-moh/spoolIn#12",
         "okfriansyah-moh/spoolIn#13",
-        "okfriansyah-moh/spoolIn#14"
+        "okfriansyah-moh/spoolIn#14",
+        "okfriansyah-moh/spoolIn#15",
+        "okfriansyah-moh/spoolIn#16"
       ],
       "repos": ["okfriansyah-moh/spoolIn"],
-      "learning_objective": "Follow SpoolIn's product scope, evidence-driven plan, and milestones from foundation through combined MCP/browser proposal review with posters and credits (G26 runtime acceptance still open)",
+      "learning_objective": "Follow SpoolIn's product scope, evidence-driven plan, and milestones from foundation through agent-workflow 1.3.0 adoption, repository hygiene refactors, and combined MCP/browser proposal review (G26 runtime acceptance still open)",
       "covered_capabilities": [
         "project-roadmap-status",
         "product-scope-overview",
@@ -661,7 +670,33 @@
         "maintainer-ux-hardening-wave",
         "maintainer-docs-screenshot-refresh",
         "svelte5-reactive-controller-wave",
-        "mcp-poster-credits-review-wave"
+        "mcp-poster-credits-review-wave",
+        "portable-agent-workflow-1-3-0",
+        "execution-device-resource-admission",
+        "repository-hygiene-refactor-wave"
+      ]
+    },
+    "agentic-workflow:reuse-and-cleanup-policy": {
+      "document": {
+        "en": "docs/concepts/implementation-first-reuse-and-cleanup.md",
+        "id": "i18n/id/docusaurus-plugin-content-docs/current/concepts/implementation-first-reuse-and-cleanup.md"
+      },
+      "sources": [
+        "okfriansyah-moh/agentic-workflow#1",
+        "okfriansyah-moh/spoolIn#16"
+      ],
+      "repos": [
+        "okfriansyah-moh/agentic-workflow",
+        "okfriansyah-moh/spoolIn"
+      ],
+      "learning_objective": "Apply shared implementation-first reuse and evidence-based cleanup rules from agentic-workflow DELIVERY.md across skills, adapters, and consuming product repositories",
+      "covered_capabilities": [
+        "implementation-first-reuse",
+        "evidence-based-cleanup",
+        "single-owning-document-per-topic",
+        "consumer-evidence-before-deletion",
+        "skill-policy-linking",
+        "repository-hygiene-automation"
       ]
     },
     "padu:codex-game-audio-synthesis": {

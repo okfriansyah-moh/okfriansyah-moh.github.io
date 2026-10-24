@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "last_successful_scan_at": "2026-10-22T02:00:43+00:00",
+  "last_successful_scan_at": "2026-10-24T02:00:59+00:00",
   "processed_pull_requests": [
     "okfriansyah-moh/shorts-generator#8@bootstrap",
     "okfriansyah-moh/shorts-generator#10@bootstrap",
@@ -37,7 +37,10 @@
     "okfriansyah-moh/spoolIn#11@929bfdb58a88479d164dc5f24cf12836565196c1",
     "okfriansyah-moh/spoolIn#12@0b5348bb0f23728bb7d764de56c9415d9ac8c9bc",
     "okfriansyah-moh/spoolIn#13@d4b21d120ba5e1f62785f41b5de96ab3bb7ca737",
-    "okfriansyah-moh/spoolIn#14@64707028c6de1924a3e9e2148fc33da371a36452"
+    "okfriansyah-moh/spoolIn#14@64707028c6de1924a3e9e2148fc33da371a36452",
+    "okfriansyah-moh/spoolIn#15@846308b396ed30cd8cdf353dd7fc01ee3764b20d",
+    "okfriansyah-moh/spoolIn#16@5498f51239855836a92b85dc9bb8a5d76ddb0909",
+    "okfriansyah-moh/agentic-workflow#1@da9ca07d765b605e4ad90b678496f7b21bd32ec4"
   ],
   "processed_commits": [
     "okfriansyah-moh/the-foundry@58632a0",

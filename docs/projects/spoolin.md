@@ -70,7 +70,7 @@ SpoolIn is a **curated home theater ledger**:
 | Television metadata read-only | Techdoc §1 |
 | Maintainer-only mutations | Actor table techdoc §1.1 |
 | Local operator responsibilities | Separate from Maintainer browser role |
-| Portable agent workflow | `.ai/bundles/` — 1.1.1 (PR #2), 1.2.0 (PR #5), 1.2.1 + staged plan layout (PR #7) |
+| Portable agent workflow | `.ai/bundles/` — 1.1.1 (PR #2), 1.2.0 (PR #5), 1.2.1 (PR #7), **1.3.0** (PR #15) with shared execution-device admission |
 | Public standalone presentation | PR #3 documentation cleanup |
 | Application shell + accounts | Merged [PR #4](https://github.com/okfriansyah-moh/spoolIn/pull/4) (shell) and [PR #6](https://github.com/okfriansyah-moh/spoolIn/pull/6) (sessions, policy, receipts, admission) |
 
@@ -109,6 +109,8 @@ Deep dive: [SpoolIn system architecture](/docs/systems/spoolin-catalog-platform)
 | 2026-10-18 | [PR #12](https://github.com/okfriansyah-moh/spoolIn/pull/12) merged — Maintainer README walkthrough + screenshots aligned to current UI (docs only) |
 | 2026-10-19 | [PR #13](https://github.com/okfriansyah-moh/spoolIn/pull/13) merged — Svelte 5 reactive `*.svelte.ts` controllers for session/catalog/maintainer flows (UI unchanged; broader unit/DOM coverage) |
 | 2026-10-21 | [PR #14](https://github.com/okfriansyah-moh/spoolIn/pull/14) merged — MCP **prepared posters** and **proposal credits**, combined **`movie_review_queue`** for in-chat review, matching Maintainer browser proposal pages with CSRF, Catalog migrations V023–V025, and 24-hour proposal expiry (automated test coverage not run per PR evidence) |
+| 2026-10-21 | [PR #15](https://github.com/okfriansyah-moh/spoolIn/pull/15) merged — **agent-workflow 1.3.0** bundle: one delivery procedure across Codex/Cursor/Claude/Copilot, shared **execution-device resource admission** in the gate runner, 74 aligned skills, and preserved quality thresholds (movie-app coverage gates unchanged) |
+| 2026-10-23 | [PR #16](https://github.com/okfriansyah-moh/spoolIn/pull/16) merged — unified `docs/prompts/`, shared `list-return` module, removed unused MCP/Catalog helpers, **repository-hygiene** checks, and bundle refresh to pick up [implementation-first reuse policy](https://github.com/okfriansyah-moh/agentic-workflow/pull/1) (full frontend static suites pending per PR memory-pressure evidence) |
 | Next | Close remaining G26 runtime gates (Playwright matrix, live MCP clients, delivery review), building on PR #10 partial lane evidence |
 
 ## Key Decisions
@@ -145,9 +147,10 @@ independent codebase.
 
 - [SpoolIn system architecture](/docs/systems/spoolin-catalog-platform)
 - [LLM guardrails](/docs/concepts/llm-guardrails)
+- [Implementation-first reuse and cleanup](/docs/concepts/implementation-first-reuse-and-cleanup)
 
 ## Sources
 
 - Repository: [okfriansyah-moh/spoolIn](https://github.com/okfriansyah-moh/spoolIn)
-- Pull requests: [#1](https://github.com/okfriansyah-moh/spoolIn/pull/1)–[#14](https://github.com/okfriansyah-moh/spoolIn/pull/14) (foundation through combined proposal review queue; G26 runtime accept still open)
+- Pull requests: [#1](https://github.com/okfriansyah-moh/spoolIn/pull/1)–[#16](https://github.com/okfriansyah-moh/spoolIn/pull/16) (foundation through hygiene/refactor; G26 runtime accept still open)
 - Technical design: `docs/04-spoolin-techdoc.md`

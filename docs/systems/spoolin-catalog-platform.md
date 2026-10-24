@@ -41,6 +41,7 @@ Follow-on merges extended the stack beyond the backend foundation:
 - [PR #12](https://github.com/okfriansyah-moh/spoolIn/pull/12) — **Maintainer README walkthrough** and screenshots refreshed to match merged UI (documentation-only in the application repository).
 - [PR #13](https://github.com/okfriansyah-moh/spoolIn/pull/13) — **Svelte 5 reactive controller modules** for eight maintainer/session/catalog flows: controllers move to `*.svelte.ts` classes with `$state.raw` snapshots, routes bind through `$derived` instead of manual subscribe/copy loops, and lifecycle `dispose()` stays explicit. No Python, GraphQL, or visual design changes; PR evidence reports pixel-identical before/after screenshots and expanded unit/DOM coverage.
 - [PR #14](https://github.com/okfriansyah-moh/spoolIn/pull/14) — **prepared movie posters**, **optional cast/crew credits on proposals**, and a **combined MCP/browser review queue** (`movie_review_queue`) where each pending movie shows its poster, exact-revision decision controls, and completion status. Credits join the **immutable proposal digest** (empty-credit proposals keep prior hashes); people and credits persist only on Maintainer approval inside the movie transaction. Browser maintainers review the same immutable payload under a signed-in session with **CSRF protection**. Catalog migrations **V023–V025** add poster preparation tables and credit columns; MCP JSON schemas expose queue shapes for tool discovery. Follow-up commits register **`ListMovieProposals`** with Catalog actor authentication and add bounded operator repair scripts for legacy saved movies (data repair lane, not automatic backfill).
+- [PR #16](https://github.com/okfriansyah-moh/spoolIn/pull/16) — **repository hygiene without product redesign**: all four project prompts live under `docs/prompts/` (the legacy `docs/prompt/` tree removed), unused MCP review modules and Catalog seed helpers deleted after consumer checks, and **shared list-return state** consolidated into `frontend/src/lib/state/list-return.ts` for movie and person maintainer flows. SpoolIn pins **agent-workflow bundle 1.3.0** (including the shared [implementation-first reuse policy](https://github.com/okfriansyah-moh/agentic-workflow/blob/main/docs/DELIVERY.md#reuse-and-evidence-based-cleanup)) via the official updater; local skills link to that policy instead of copying cleanup rules. New `repository-hygiene.mjs` verification encodes prompt placement and local-link rules. PR evidence reports hygiene and four regression cases passing; full frontend static/type suites were **blocked by host memory pressure** at merge time.
 
 This article separates **merged source evidence** from **runtime proof still pending** in the
 G01–G26 closure matrix (including partial lanes from PR #10).
@@ -418,12 +419,18 @@ Repository evidence (independent of this docs site):
    while still letting maintainers review cast/crew before anything hits the public catalog.
 8. **One queue for chat and browser** — sharing `movie_review_queue` shapes between MCP tools and
    Maintainer UI avoids divergent approval stories for the same immutable payload.
+9. **Centralize cross-feature UI state before duplicating helpers** — PR #16 shows list-return
+   scroll restoration belongs in one module with feature-specific thin wrappers.
+10. **Link shared agent policy, do not fork it** — bundle 1.3.0 carries `DELIVERY.md` reuse rules;
+    SpoolIn-specific text stays limited to prompt paths and hygiene checks.
 
 ## Related
 
 - [SpoolIn project overview](/docs/projects/spoolin)
 - [Database-backed state machines](/docs/concepts/database-state-machines)
 - [LLM guardrails](/docs/concepts/llm-guardrails) — analogous approval boundaries for AI inputs
+- [Implementation-first reuse and cleanup](/docs/concepts/implementation-first-reuse-and-cleanup) —
+  shared agent-workflow policy adopted in PR #16
 
 ## Sources
 
@@ -439,5 +446,6 @@ Repository evidence (independent of this docs site):
   - [#12 Maintainer walkthrough screenshots](https://github.com/okfriansyah-moh/spoolIn/pull/12) (merge `0b5348b`)
   - [#13 Svelte 5 reactive controllers](https://github.com/okfriansyah-moh/spoolIn/pull/13) (merge `d4b21d1`)
   - [#14 MCP posters, credits, and combined proposal review](https://github.com/okfriansyah-moh/spoolIn/pull/14) (merge `6470702`)
+  - [#16 Consolidate prompts and remove unused SpoolIn code](https://github.com/okfriansyah-moh/spoolIn/pull/16) (merge `5498f51`)
 - Design specification: `docs/04-spoolin-techdoc.md` (v1.11, October 2026)
 - Evidence commit cited in PR #1: `12e487f001b66c2f3a5802654c6928849aa47c49`
