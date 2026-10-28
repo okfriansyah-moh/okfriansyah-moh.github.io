@@ -1,6 +1,6 @@
 ---
 title: "SpoolIn: Arsitektur Platform Katalog Multi-Layanan"
-description: "Bagaimana SpoolIn memisahkan Core, Catalog, dan Media lewat kontrak wire yang dihasilkan, basis data PostgreSQL per layanan, identitas mTLS, dan gerbang kesiapan migrasi."
+description: "Bagaimana SpoolIn memisahkan Core, Catalog, dan Media lewat kontrak wire yang dihasilkan, basis data PostgreSQL per layanan, identitas mTLS, gerbang kesiapan migrasi, gate kualitas komponen, dan observabilitas lokal opsional."
 sidebar_position: 6
 tags:
   - sistem terdistribusi
@@ -42,6 +42,8 @@ Merge berikutnya memperluas stack di atas fondasi backend:
 - [PR #13](https://github.com/okfriansyah-moh/spoolIn/pull/13) — **modul kontroler reaktif Svelte 5** untuk delapan alur sesi/katalog/maintainer: kontroler pindah ke kelas `*.svelte.ts` dengan snapshot `$state.raw`, rute mengikat lewat `$derived` alih-alih loop subscribe/salin manual, dan `dispose()` eksplisit tetap ada. Tanpa perubahan Python, GraphQL, atau desain visual; bukti PR melaporkan tangkapan layar sebelum/sesudah identik piksel dan cakupan unit/DOM yang diperluas.
 - [PR #14](https://github.com/okfriansyah-moh/spoolIn/pull/14) — **poster film yang disiapkan**, **kredit pemeran/kru opsional pada proposal**, dan **antrean tinjauan gabungan MCP/browser** (`movie_review_queue`) di mana setiap film tertunda menampilkan poster, kontrol keputusan revisi eksak, dan status penyelesaian. Kredit masuk **digest proposal immutable** (proposal tanpa kredit mempertahankan hash sebelumnya); orang dan kredit baru ditulis saat persetujuan Maintainer dalam transaksi film. Maintainer browser meninjau payload immutable yang sama di sesi masuk dengan **perlindungan CSRF**. Migrasi Catalog **V023–V025** menambah tabel persiapan poster dan kolom kredit; skema JSON MCP mengekspos bentuk antrean untuk penemuan alat. Commit lanjutan mendaftarkan **`ListMovieProposals`** dengan autentikasi aktor Catalog dan skrip perbaikan operator terbatas untuk film tersimpan lama (jalur perbaikan data, bukan backfill otomatis).
 - [PR #16](https://github.com/okfriansyah-moh/spoolIn/pull/16) — **hygiene repositori tanpa redesign produk**: keempat prompt proyek berada di `docs/prompts/` (pohon lama `docs/prompt/` dihapus), modul review MCP dan helper seed Catalog yang tidak terpakai dihapus setelah cek konsumen, dan **state list-return bersama** dikonsolidasikan ke `frontend/src/lib/state/list-return.ts` untuk alur maintainer film dan person. SpoolIn mem-pin **bundle agent-workflow 1.3.0** (termasuk [kebijakan reuse berbasis implementasi](https://github.com/okfriansyah-moh/agentic-workflow/blob/main/docs/DELIVERY.md#reuse-and-evidence-based-cleanup) bersama) lewat updater resmi; skill lokal menautkan kebijakan itu alih-alih menyalin aturan pembersihan. Verifikasi baru `repository-hygiene.mjs` mengodekan penempatan prompt dan aturan tautan lokal. Bukti PR melaporkan hygiene dan empat kasus regresi lulus; suite static/type frontend penuh **terblokir tekanan memori host** saat merge.
+- [PR #17](https://github.com/okfriansyah-moh/spoolIn/pull/17) — **guardrail kualitas komponen permanen** selaras [agentic-workflow 1.4.0](https://github.com/okfriansyah-moh/agentic-workflow/pull/2): enam komponen runtime (frontend, Core, Catalog, Media, backend-support, MCP) masing-masing mempublikasikan laporan unit **Docker-only** dengan ambang **≥80%** garis native/analyzer dan hitungan **tepat nol** untuk security, reliability, baris duplikasi, dan blok duplikasi. Modul bersama transport Core/Catalog, receipt, dan pemetaan SQL mengurangi duplikasi sambil mempertahankan otorisasi, transaksi, row lock, sparse update, retry, dan konteks navigasi. **Identitas namespace/nama SHA-256** mempertahankan ID lama bila terindeks. Bukti PR menyebut **4.328 tes unit** lulus pada revisi produk `1d3f0bd` dan publikasi Sonar ber tanggal 2026-10-26; **penerimaan delivery penuh** untuk fitur baru tetap bergantung bukti terdaftar sesuai kebijakan workflow.
+- [PR #18](https://github.com/okfriansyah-moh/spoolIn/pull/18) — **observabilitas lokal opsional** terpisah dari startup aplikasi: `make observability` (dan target start/stop/restart/status/logs) menyediakan **Prometheus**, **Grafana** (HTTPS loopback), **cAdvisor**, **exporter PostgreSQL**, **Loki**, dan **Alloy** dengan proxy log terbatas agar operator dapat mencari log kontainer proyek tanpa mengekspos kolektor ke publik. Empat dashboard Grafana mencakup operasi, sumber daya Docker, PostgreSQL, dan log; riwayat metrik bertahan setelah stop/restart lewat volume. Bukti PR melaporkan **67 tes regresi lokal** lulus dan dashboard terverifikasi browser; **bukti delivery penuh** untuk perubahan monitoring masih tertunda menurut isi PR.
 
 Artikel ini membedakan **bukti sumber yang sudah digabung** dari **bukti runtime yang masih tertunda**
 di matriks penutupan G01–G26 (termasuk jalur parsial dari PR #10).
@@ -362,13 +364,31 @@ Bukti repositori:
 - **PR #12** — hanya pemeriksaan kata dokumentasi; tangkapan layar disegarkan terhadap UI yang digabung.
 - **PR #13** — 157 tes unit/DOM terfokus di 24 berkas plus delapan kasus smoke browser dengan fixture GraphQL terkontrol; tipe, lint, build, dan pemindaian dependensi lulus menurut bukti PR; enam tangkapan layar representatif dilaporkan identik piksel.
 - **PR #14** — penulis PR melaporkan **tidak ada suite tes, lint, atau typecheck otomatis** yang dijalankan untuk merge ini; bukti mengandalkan review sumber independen, migrasi Catalog V025 lokal, rebuild image Docker, dan verifikasi MCP/browser manual pada tujuh proposal tertunda. Anggap cakupan runtime **belum diverifikasi** terhadap target 80% baris berubah repositori.
+- **PR #17** — bukti PR melaporkan **4.328 tes unit** tanpa kegagalan/skip, enam gate Sonar komponen dengan hitungan isu **tepat nol**, cakupan baris berubah di atas 80% pada berkas produksi yang disentuh, **166** kasus PostgreSQL/mTLS/replay receipt, dan **delapan** kasus smoke browser akhir. Adopsi workflow ke **1.4.0** didokumentasikan terpisah di [agentic-workflow#2](https://github.com/okfriansyah-moh/agentic-workflow/pull/2); merge ini tidak mengklaim pass produk segar pasca-adopsi.
+- **PR #18** — **67** tes regresi lokal (aturan Prometheus, pipeline Alloy, cek hygiene), modul Python di atas 80% cakupan baris pada jalur terukur, dan verifikasi browser/dashboard; penerimaan fitur penuh masih terblokir pada pemetaan admission yang lebih luas menurut isi PR.
 
 ## Operasi dan Observabilitas
 
 - **Perintah** — `Makefile` mengarahkan `start` ke `ops/bin/start.sh`; skrip siklus hidup di `ops/bin/`
   mencakup backup, restore, seed, rotasi kunci, log, dan helper konektor (PR #9).
 - **Compose** — set `SPOOLIN_INSTALLATION`; HTTPS Core default `127.0.0.1:8443`.
-- **Metrik** — Prometheus mengikis Actuator privat; `/actuator/prometheus` memerlukan sertifikat `prometheus`.
+- **Metrik in-process (selalu)** — Prometheus mengikis Actuator privat; `/actuator/prometheus` memerlukan sertifikat `prometheus`.
+- **Stack monitoring opsional (PR #18)** — siklus hidup terpisah lewat `make observability*`:
+
+```mermaid
+flowchart LR
+  App[Layanan SpoolIn] -->|Metrik Actuator| Prom[Prometheus]
+  Docker[cAdvisor] --> Prom
+  PG[Exporter PostgreSQL] --> Prom
+  Logs[Kontainer proyek] --> Proxy[Proxy log terbatas]
+  Proxy --> Alloy[Alloy]
+  Alloy --> Loki[Loki]
+  Prom --> Grafana[Grafana HTTPS loopback]
+  Loki --> Grafana
+```
+
+  Kolektor tetap di luar jaringan publik; Grafana menyajikan HTTPS terautentikasi di loopback. Menghentikan monitoring mempertahankan volume metrik/log tanpa menyentuh data aplikasi.
+- **Log** — techdoc §12 mendefinisikan kontrak log JSON; PR #18 menambahkan pencarian terpusat lewat Loki/Grafana dengan filter baris kredensial dan label proyek terbatas.
 
 ## Pelajaran yang Dipetik
 
@@ -382,6 +402,8 @@ Bukti repositori:
 8. **Satu antrean untuk chat dan browser** — berbagi bentuk `movie_review_queue` antara alat MCP dan UI Maintainer menghindari cerita persetujuan yang berbeda untuk payload immutable yang sama.
 9. **Sentralisasi state UI lintas fitur sebelum menduplikasi helper** — PR #16 menunjukkan pemulihan scroll list-return cocok di satu modul dengan wrapper tipis per fitur.
 10. **Tautkan kebijakan agent bersama, jangan fork** — bundle 1.3.0 membawa aturan reuse `DELIVERY.md`; teks khusus SpoolIn terbatas pada path prompt dan cek hygiene.
+11. **Ukur setiap komponen runtime secara independen** — PR #17 menunjukkan enam laporan unit Docker mengalahkan satu persentase campuran saat duplikasi dan hitungan keamanan Sonar harus tepat nol.
+12. **Observabilitas tidak harus menguasai siklus hidup aplikasi** — PR #18 memungkinkan operator menghentikan Grafana/Prometheus tanpa me-restart Core/Catalog/Media, penting di laptop dengan memori terbatas.
 
 ## Terkait
 
@@ -405,5 +427,7 @@ Bukti repositori:
   - [#13](https://github.com/okfriansyah-moh/spoolIn/pull/13) (merge `d4b21d1`)
   - [#14 Poster MCP, kredit, dan tinjauan proposal gabungan](https://github.com/okfriansyah-moh/spoolIn/pull/14) (merge `6470702`)
   - [#16 Konsolidasi prompt dan hapus kode SpoolIn tidak terpakai](https://github.com/okfriansyah-moh/spoolIn/pull/16) (merge `5498f51`)
+  - [#17 Enforce 80% coverage, zero Sonar, workflow 1.4.0](https://github.com/okfriansyah-moh/spoolIn/pull/17) (merge `b01cbfe`)
+  - [#18 Observabilitas Grafana dan log lokal opsional](https://github.com/okfriansyah-moh/spoolIn/pull/18) (merge `4e9c254`)
 - Spesifikasi desain: `docs/04-spoolin-techdoc.md` (v1.11, Oktober 2026)
 - Commit bukti PR #1: `12e487f001b66c2f3a5802654c6928849aa47c49`

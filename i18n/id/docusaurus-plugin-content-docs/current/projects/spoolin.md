@@ -106,7 +106,9 @@ Kedalaman teknis: [Arsitektur sistem SpoolIn](/id/docs/systems/spoolin-catalog-p
 | 2026-10-21 | [PR #14](https://github.com/okfriansyah-moh/spoolIn/pull/14) digabung — **poster yang disiapkan** dan **kredit proposal** MCP, **`movie_review_queue`** gabungan untuk tinjauan dalam chat, halaman proposal Maintainer browser dengan CSRF, migrasi Catalog V023–V025, dan kedaluwarsa proposal 24 jam (cakupan tes otomatis tidak dijalankan menurut bukti PR) |
 | 2026-10-21 | [PR #15](https://github.com/okfriansyah-moh/spoolIn/pull/15) digabung — bundle **agent-workflow 1.3.0**: satu prosedur delivery untuk Codex/Cursor/Claude/Copilot, **admission sumber daya perangkat eksekusi** bersama di runner gerbang, 74 skill selaras, ambang kualitas dipertahankan |
 | 2026-10-23 | [PR #16](https://github.com/okfriansyah-moh/spoolIn/pull/16) digabung — `docs/prompts/` terpadu, modul `list-return` bersama, helper MCP/Catalog tidak terpakai dihapus, cek **repository-hygiene**, refresh bundle untuk [kebijakan reuse berbasis implementasi](https://github.com/okfriansyah-moh/agentic-workflow/pull/1) (suite static frontend penuh tertunda menurut bukti tekanan memori PR) |
-| Berikutnya | Tutup gerbang runtime G26 yang tersisa (matriks Playwright, klien MCP hidup, review delivery), membangun bukti jalur parsial PR #10 |
+| 2026-10-27 | [PR #17](https://github.com/okfriansyah-moh/spoolIn/pull/17) digabung — adopsi **agent-workflow 1.4.0**, gate kualitas **80% / Sonar tepat nol** enam komponen, modul transport/receipt/SQL bersama, preservasi identitas SHA-256; **4.328** tes unit dikutip pada revisi `1d3f0bd` (snapshot Sonar 2026-10-26) |
+| 2026-10-27 | [PR #18](https://github.com/okfriansyah-moh/spoolIn/pull/18) digabung — stack **`make observability`** opsional (Prometheus, Grafana, Loki, cAdvisor, exporter) dengan dashboard loopback dan riwayat yang dipertahankan; penerimaan delivery penuh untuk monitoring masih tertunda menurut bukti PR |
+| Berikutnya | Tutup gerbang runtime G26 dan bukti **delivery penuh** yang tersisa (admission resource, pemetaan stack) sambil menjaga monitoring opsional terpisah dari restart aplikasi |
 
 ## Keputusan Kunci
 
@@ -142,5 +144,5 @@ basis kode independen.
 ## Sumber
 
 - Repositori: [okfriansyah-moh/spoolIn](https://github.com/okfriansyah-moh/spoolIn)
-- Pull request: [#1](https://github.com/okfriansyah-moh/spoolIn/pull/1)–[#16](https://github.com/okfriansyah-moh/spoolIn/pull/16)
+- Pull request: [#1](https://github.com/okfriansyah-moh/spoolIn/pull/1)–[#18](https://github.com/okfriansyah-moh/spoolIn/pull/18)
 - Desain teknis: `docs/04-spoolin-techdoc.md`

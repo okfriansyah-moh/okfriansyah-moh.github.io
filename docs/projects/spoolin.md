@@ -111,7 +111,9 @@ Deep dive: [SpoolIn system architecture](/docs/systems/spoolin-catalog-platform)
 | 2026-10-21 | [PR #14](https://github.com/okfriansyah-moh/spoolIn/pull/14) merged — MCP **prepared posters** and **proposal credits**, combined **`movie_review_queue`** for in-chat review, matching Maintainer browser proposal pages with CSRF, Catalog migrations V023–V025, and 24-hour proposal expiry (automated test coverage not run per PR evidence) |
 | 2026-10-21 | [PR #15](https://github.com/okfriansyah-moh/spoolIn/pull/15) merged — **agent-workflow 1.3.0** bundle: one delivery procedure across Codex/Cursor/Claude/Copilot, shared **execution-device resource admission** in the gate runner, 74 aligned skills, and preserved quality thresholds (movie-app coverage gates unchanged) |
 | 2026-10-23 | [PR #16](https://github.com/okfriansyah-moh/spoolIn/pull/16) merged — unified `docs/prompts/`, shared `list-return` module, removed unused MCP/Catalog helpers, **repository-hygiene** checks, and bundle refresh to pick up [implementation-first reuse policy](https://github.com/okfriansyah-moh/agentic-workflow/pull/1) (full frontend static suites pending per PR memory-pressure evidence) |
-| Next | Close remaining G26 runtime gates (Playwright matrix, live MCP clients, delivery review), building on PR #10 partial lane evidence |
+| 2026-10-27 | [PR #17](https://github.com/okfriansyah-moh/spoolIn/pull/17) merged — **agent-workflow 1.4.0** adoption, six-component **80% / Sonar exact-zero** quality gates, shared transport/receipt/SQL modules, SHA-256 identity preservation; **4,328** unit tests cited at revision `1d3f0bd` (dated 2026-10-26 Sonar snapshot) |
+| 2026-10-27 | [PR #18](https://github.com/okfriansyah-moh/spoolIn/pull/18) merged — optional **`make observability`** stack (Prometheus, Grafana, Loki, cAdvisor, exporters) with loopback dashboards and retained history; full delivery acceptance for monitoring still pending per PR evidence |
+| Next | Close remaining G26 runtime gates and outstanding **full delivery** proofs (resource admission, stack mapping) while keeping optional monitoring independent of app restarts |
 
 ## Key Decisions
 
@@ -152,5 +154,5 @@ independent codebase.
 ## Sources
 
 - Repository: [okfriansyah-moh/spoolIn](https://github.com/okfriansyah-moh/spoolIn)
-- Pull requests: [#1](https://github.com/okfriansyah-moh/spoolIn/pull/1)–[#16](https://github.com/okfriansyah-moh/spoolIn/pull/16) (foundation through hygiene/refactor; G26 runtime accept still open)
+- Pull requests: [#1](https://github.com/okfriansyah-moh/spoolIn/pull/1)–[#18](https://github.com/okfriansyah-moh/spoolIn/pull/18) (foundation through observability; G26 runtime accept and some delivery proofs still open)
 - Technical design: `docs/04-spoolin-techdoc.md`

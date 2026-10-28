@@ -6,7 +6,7 @@
       "link": "/docs/concepts/implementation-first-reuse-and-cleanup",
       "type": "concept",
       "date": "2026-10-24",
-      "readingTime": 6
+      "readingTime": 8
     },
     {
       "title": "SpoolIn: Multi-Service Catalog Platform Architecture",
@@ -14,7 +14,7 @@
       "link": "/docs/systems/spoolin-catalog-platform",
       "type": "system",
       "date": "2026-10-16",
-      "readingTime": 21
+      "readingTime": 23
     },
     {
       "title": "SpoolIn",

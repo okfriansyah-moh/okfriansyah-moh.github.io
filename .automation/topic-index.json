@@ -555,10 +555,14 @@
         "okfriansyah-moh/spoolIn#14",
         "okfriansyah-moh/spoolIn@64707028c6de1924a3e9e2148fc33da371a36452",
         "okfriansyah-moh/spoolIn#16",
-        "okfriansyah-moh/spoolIn@5498f51239855836a92b85dc9bb8a5d76ddb0909"
+        "okfriansyah-moh/spoolIn@5498f51239855836a92b85dc9bb8a5d76ddb0909",
+        "okfriansyah-moh/spoolIn#17",
+        "okfriansyah-moh/spoolIn@b01cbfe04909545fdd9ec8a603b13581e0466528",
+        "okfriansyah-moh/spoolIn#18",
+        "okfriansyah-moh/spoolIn@4e9c25486d389efe90664c468f37bbf13e0eea1d"
       ],
       "repos": ["okfriansyah-moh/spoolIn"],
-      "learning_objective": "Design a local three-service catalog platform with maintainer catalog UI, MCP exact-approval proposals, prepared posters and proposal credits, combined review queues, shared frontend list-return state, repository hygiene checks, seed replay, lifecycle ops, hardened maintainer workflows, and Svelte 5 reactive controllers — while separating merged source evidence from pending runtime acceptance",
+      "learning_objective": "Design a local three-service catalog platform with maintainer catalog UI, MCP exact-approval proposals, prepared posters and proposal credits, combined review queues, shared frontend list-return state, repository hygiene checks, six-component quality gates, optional local observability, seed replay, lifecycle ops, hardened maintainer workflows, and Svelte 5 reactive controllers — while separating merged source evidence from pending runtime acceptance",
       "covered_capabilities": [
         "reproducible-build-foundation",
         "shared-wire-contract-generation",
@@ -625,7 +629,15 @@
         "shared-list-return-state-module",
         "repository-hygiene-verification",
         "mcp-review-dead-code-removal",
-        "agent-workflow-bundle-1-3-0-reuse-policy"
+        "agent-workflow-bundle-1-3-0-reuse-policy",
+        "six-component-eighty-percent-sonar-zero-gates",
+        "docker-unit-only-component-reports",
+        "shared-transport-receipt-sql-modules",
+        "sha256-namespace-identity-preservation",
+        "agent-workflow-bundle-1-4-0-quality-guardrails",
+        "optional-local-observability-stack",
+        "prometheus-grafana-loki-alloy-pipeline",
+        "make-observability-lifecycle"
       ]
     },
     "spoolin:project-overview": {
@@ -649,10 +661,12 @@
         "okfriansyah-moh/spoolIn#13",
         "okfriansyah-moh/spoolIn#14",
         "okfriansyah-moh/spoolIn#15",
-        "okfriansyah-moh/spoolIn#16"
+        "okfriansyah-moh/spoolIn#16",
+        "okfriansyah-moh/spoolIn#17",
+        "okfriansyah-moh/spoolIn#18"
       ],
       "repos": ["okfriansyah-moh/spoolIn"],
-      "learning_objective": "Follow SpoolIn's product scope, evidence-driven plan, and milestones from foundation through agent-workflow 1.3.0 adoption, repository hygiene refactors, and combined MCP/browser proposal review (G26 runtime acceptance still open)",
+      "learning_objective": "Follow SpoolIn's product scope, evidence-driven plan, and milestones from foundation through agent-workflow 1.4.0 quality gates, optional local observability, repository hygiene refactors, and combined MCP/browser proposal review (G26 runtime acceptance and some delivery proofs still open)",
       "covered_capabilities": [
         "project-roadmap-status",
         "product-scope-overview",
@@ -673,7 +687,10 @@
         "mcp-poster-credits-review-wave",
         "portable-agent-workflow-1-3-0",
         "execution-device-resource-admission",
-        "repository-hygiene-refactor-wave"
+        "repository-hygiene-refactor-wave",
+        "portable-agent-workflow-1-4-0",
+        "six-component-quality-gate-wave",
+        "optional-observability-stack-wave"
       ]
     },
     "agentic-workflow:reuse-and-cleanup-policy": {
@@ -683,20 +700,28 @@
       },
       "sources": [
         "okfriansyah-moh/agentic-workflow#1",
-        "okfriansyah-moh/spoolIn#16"
+        "okfriansyah-moh/agentic-workflow#2",
+        "okfriansyah-moh/spoolIn#16",
+        "okfriansyah-moh/spoolIn#17"
       ],
       "repos": [
         "okfriansyah-moh/agentic-workflow",
         "okfriansyah-moh/spoolIn"
       ],
-      "learning_objective": "Apply shared implementation-first reuse and evidence-based cleanup rules from agentic-workflow DELIVERY.md across skills, adapters, and consuming product repositories",
+      "learning_objective": "Apply shared implementation-first reuse, evidence-based cleanup, and permanent per-component quality guardrails from agentic-workflow DELIVERY.md across skills, adapters, and consuming product repositories",
       "covered_capabilities": [
         "implementation-first-reuse",
         "evidence-based-cleanup",
         "single-owning-document-per-topic",
         "consumer-evidence-before-deletion",
         "skill-policy-linking",
-        "repository-hygiene-automation"
+        "repository-hygiene-automation",
+        "permanent-quality-guardrails",
+        "workflow-bundle-1-4-0",
+        "per-component-docker-coverage-reports",
+        "eighty-percent-coverage-sonar-zero-publication",
+        "registered-full-delivery-evidence",
+        "scaffold-gating-until-configured"
       ]
     },
     "padu:codex-game-audio-synthesis": {

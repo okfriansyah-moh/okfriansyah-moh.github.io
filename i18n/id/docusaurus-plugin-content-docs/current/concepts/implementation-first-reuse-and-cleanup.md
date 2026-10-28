@@ -1,6 +1,6 @@
 ---
 title: "Reuse Berbasis Implementasi dan Pembersihan Berbasis Bukti"
-description: "Bagaimana kebijakan delivery agentic-workflow bersama memprioritaskan perluasan pemilik yang ada, satu dokumen per topik, dan penghapusan kode hanya setelah bukti konsumen."
+description: "Bagaimana kebijakan delivery agentic-workflow bersama memprioritaskan perluasan pemilik yang ada, satu dokumen per topik, penghapusan kode hanya setelah bukti konsumen, dan guardrail kualitas permanen per komponen di bundle 1.4.0."
 sidebar_position: 7
 tags:
   - agentic development
@@ -29,6 +29,15 @@ Produk turunan (misalnya [SpoolIn PR #16](https://github.com/okfriansyah-moh/spo
 mem-pin bundle **1.3.0** dan menautkan prompt lokal ke kebijakan bersama alih-alih menduplikasi
 panduan pembersihan di setiap repositori.
 
+[PR #2 yang digabung](https://github.com/okfriansyah-moh/agentic-workflow/pull/2) (2026-10-28)
+mengirim **bundle 1.4.0** dengan **guardrail kualitas permanen**: setiap komponen runtime harus
+menghasilkan laporan tes Docker milik komponen, memenuhi cakupan unit dan baris executable berubah
+**≥80%**, mempublikasikan Sonar dengan cakupan combined/line **≥80%**, dan menunjukkan hitungan
+**tepat nol** untuk security, reliability, baris duplikasi, dan blok duplikasi sebelum penerimaan
+fitur selesai. Skill, adapter, dan alur planning/implementasi/verifikasi mereferensikan kebijakan
+yang sama; scaffold tetap terblokir sampai dikonfigurasi. [SpoolIn PR #17](https://github.com/okfriansyah-moh/spoolIn/pull/17)
+mengadopsi 1.4.0 di repositori produk dan mendemonstrasikan matriks gate enam komponen.
+
 ## Masalah
 
 Repositori berbantuan agent menumpuk helper duplikat, direktori prompt paralel, dan commit
@@ -39,6 +48,8 @@ Repositori berbantuan agent menumpuk helper duplikat, direktori prompt paralel, 
 3. **Penghapusan adalah tebakan** — referensi teks yang hilang atau hash yang cocok dianggap bukti
    modul tidak terpakai.
 4. **Reviewer tidak selaras** — skill implementasi dan kualitas mengutip standar pembersihan berbeda.
+5. **Penerimaan meluncur ke cek cepat** — tanpa metrik komponen terdaftar, agent dapat mengklaim
+   “selesai” sementara layanan individual masih gagal cakupan, duplikasi, atau analizer keamanan.
 
 ## Mengapa Masalah Ini Sulit
 
@@ -50,6 +61,8 @@ Repositori berbantuan agent menumpuk helper duplikat, direktori prompt paralel, 
 3. **Insentif model** — model lebih suka file “bersih” karena lebih mudah diproses dalam satu giliran.
 4. **Bundle lintas repo** — salinan `.ai/bundles/` yang di-pin harus tetap selaras digest-nya saat
    kebijakan upstream berubah.
+5. **Penerimaan akhir read-only** — bundle 1.4.0 memvalidasi ulang bukti full-gate terdaftar dan
+   output tes yang disimpan tanpa menjalankan suite secara diam-diam; artefak basi atau hilang harus gagal tertutup.
 
 ## Model Mental untuk Pemula
 
@@ -59,6 +72,8 @@ Anggap repositori seperti perpustakaan dengan **katalog kartu** (`DELIVERY.md`):
 - Jika topik sudah punya buku, **tambahkan catatan kaki** alih-alih memfotokopi bab ke binder lain.
 - Sebelum membuang buku, **periksa siapa yang masih meminjam** (impor, tes, skrip ops, konfigurasi),
   bukan hanya apakah catatan Anda lupa menyebutkannya.
+- Sebelum mencap “disetujui,” **kumpulkan rapor dari setiap kelas** (frontend, Core, Catalog,
+  Media, layanan pendukung, MCP) — bukan satu nilai rata-rata untuk seluruh sekolah.
 
 ## Persyaratan dan Kendala
 
@@ -70,6 +85,10 @@ Anggap repositori seperti perpustakaan dengan **katalog kartu** (`DELIVERY.md`):
 | Bukti konsumen | Impor, tes, generasi, titik masuk ops, persyaratan — bukan tebakan hash saja |
 | Keselarasan review | Reviewer gabungan memeriksa batas reuse dan konsumen penghapusan |
 | Tanpa mandat path global | Direktori proyek tetap konvensi proyek |
+| Laporan Docker per komponen | Setiap komponen runtime mempublikasikan input terukur (bundle 1.4.0) |
+| Lantai cakupan dan Sonar | ≥80% unit/baris berubah dan combined/line analyzer; hitungan isu tepat nol |
+| Bukti delivery terdaftar | Penerimaan akhir membaca output yang disimpan; bukti hilang/basi memblokir |
+| Gating scaffold | Komponen belum dikonfigurasi tidak dapat lulus penerimaan sampai laporan ada |
 
 ## Gambaran Arsitektur
 
@@ -101,6 +120,10 @@ flowchart TD
    skrip ops; kandidat tidak pasti tetap di ledger temuan.
 6. Reviewer gabungan memvalidasi batas reuse, konsumen penghapusan, dan perilaku terdampak setelah
    cek yang disepakati dijalankan.
+7. Untuk bundle **1.4.0**, setiap komponen runtime menjalankan suite unit Docker dan mempublikasikan
+   input cakupan/Sonar; runner gerbang memblokir penyelesaian jika komponen di bawah ambang atau
+   melaporkan counter security/reliability/duplikasi bukan nol.
+8. Penerimaan akhir membaca ulang artefak full-delivery terdaftar — tidak menjalankan suite secara diam-diam.
 
 ## Komponen Penting
 
@@ -111,7 +134,9 @@ flowchart TD
 | `skills/code-quality/SKILL.md` | Mengarahkan reviewer ke kebijakan yang sama |
 | `adapters/AGENTS.md` | Menyalurkan agent proyek melalui teks delivery bersama |
 | `manifest.json` | Digest skill tetap selaras saat bagian kebijakan berubah |
-| `.ai/bundles/<version>/` proyek | Salinan ter-pin yang dikonsumsi repo produk (mis. SpoolIn 1.3.0) |
+| `.ai/bundles/<version>/` proyek | Salinan ter-pin yang dikonsumsi repo produk (mis. SpoolIn 1.4.0) |
+| Kebijakan kualitas bundle **1.4.0** | Laporan Docker per komponen, lantai cakupan, publikasi Sonar tepat nol |
+| Runner gerbang / skill penerimaan | Gagal tertutup pada bukti komponen hilang, basi, atau lemah |
 
 ## Contoh Implementasi yang Disederhanakan
 
@@ -159,6 +184,11 @@ kontras pendukung), cek wording/whitespace, instal/update/doctor global terisola
 nyata dengan output doctor sehat. SpoolIn PR #16 menambahkan `repository-hygiene.mjs` dengan kasus
 regresi untuk penempatan prompt dan aturan tautan lokal.
 
+Bukti PR #2 melaporkan **375** tes runtime/schema/installer pada run penuh akhir plus **12** tes
+batas penerimaan terfokus; adopsi movie-app menambahkan cek adapter/bootstrap dan laporan Docker.
+SpoolIn PR #17 mengutip **4.328** tes unit dan enam gate Sonar lulus pada revisi produk `1d3f0bd`
+(snapshot ber tanggal — bukan klaim bahwa setiap repo turunan hijau).
+
 ## Operasi dan Observabilitas
 
 Operator memasang atau memperbarui bundle workflow lewat CLI yang didokumentasikan (`doctor`
@@ -174,18 +204,26 @@ mengklaim delivery.
 3. **Skill harus mengutip kebijakan, bukan parafrasa** — menjaga implementer dan reviewer selaras.
 4. **Cek hygiene mengodekan kesalahan berulang** — aturan penempatan prompt masuk tes otomatis setelah
    rusak dua kali.
+5. **Guardrail permanen mengalahkan metrik hero sekali jalan** — bundle 1.4.0 membuat komponen lemah
+   memblokir seluruh delivery, lebih ketat daripada satu persentase cakupan campuran.
 
 ## Terkait
 
 - [Orchestrator agentik deterministik](/docs/concepts/deterministic-agentic-orchestrator) — loop tugas
   dengan checkpoint di skeleton-parallel
-- [Ringkasan proyek SpoolIn](/docs/projects/spoolin) — mem-pin workflow 1.3.0 dan menerapkan hygiene
-  setelah PR #16
+- [Ringkasan proyek SpoolIn](/id/docs/projects/spoolin) — mengadopsi workflow **1.4.0** dan
+  mendemonstrasikan gate kualitas enam komponen (PR #17)
+- [Arsitektur sistem SpoolIn](/id/docs/systems/spoolin-catalog-platform) — stack observabilitas
+  lokal opsional (PR #18)
 - [LLM guardrails](/docs/concepts/llm-guardrails) — pola validasi output yang melengkapi
 
 ## Sumber
 
 - Repositori: [okfriansyah-moh/agentic-workflow](https://github.com/okfriansyah-moh/agentic-workflow)
-- Pull request: [#1 Share implementation-first reuse and cleanup guidance](https://github.com/okfriansyah-moh/agentic-workflow/pull/1) (merge `da9ca07`)
-- File kebijakan: `docs/DELIVERY.md` (bagian Reuse and evidence-based cleanup)
-- Contoh adopsi: [okfriansyah-moh/spoolIn#16](https://github.com/okfriansyah-moh/spoolIn/pull/16) (pin bundle 1.3.0)
+- Pull request:
+  - [#1 Share implementation-first reuse and cleanup guidance](https://github.com/okfriansyah-moh/agentic-workflow/pull/1) (merge `da9ca07`)
+  - [#2 Enforce permanent quality guardrails in workflow 1.4.0](https://github.com/okfriansyah-moh/agentic-workflow/pull/2) (merge `8fbc985`)
+- File kebijakan: `docs/DELIVERY.md` (bagian reuse/cleanup dan guardrail kualitas)
+- Contoh adopsi:
+  - [okfriansyah-moh/spoolIn#16](https://github.com/okfriansyah-moh/spoolIn/pull/16) (pin bundle 1.3.0 + hygiene)
+  - [okfriansyah-moh/spoolIn#17](https://github.com/okfriansyah-moh/spoolIn/pull/17) (gate kualitas bundle 1.4.0)

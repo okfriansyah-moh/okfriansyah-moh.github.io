@@ -1,6 +1,6 @@
 ---
 title: "SpoolIn: Multi-Service Catalog Platform Architecture"
-description: "How SpoolIn splits Core, Catalog, and Media across generated wire contracts, per-service PostgreSQL databases, mTLS identities, and migration readiness gates."
+description: "How SpoolIn splits Core, Catalog, and Media across generated wire contracts, per-service PostgreSQL databases, mTLS identities, migration readiness gates, component quality gates, and optional local observability."
 sidebar_position: 6
 tags:
   - distributed systems
@@ -42,6 +42,8 @@ Follow-on merges extended the stack beyond the backend foundation:
 - [PR #13](https://github.com/okfriansyah-moh/spoolIn/pull/13) — **Svelte 5 reactive controller modules** for eight maintainer/session/catalog flows: controllers move to `*.svelte.ts` classes with `$state.raw` snapshots, routes bind through `$derived` instead of manual subscribe/copy loops, and lifecycle `dispose()` stays explicit. No Python, GraphQL, or visual design changes; PR evidence reports pixel-identical before/after screenshots and expanded unit/DOM coverage.
 - [PR #14](https://github.com/okfriansyah-moh/spoolIn/pull/14) — **prepared movie posters**, **optional cast/crew credits on proposals**, and a **combined MCP/browser review queue** (`movie_review_queue`) where each pending movie shows its poster, exact-revision decision controls, and completion status. Credits join the **immutable proposal digest** (empty-credit proposals keep prior hashes); people and credits persist only on Maintainer approval inside the movie transaction. Browser maintainers review the same immutable payload under a signed-in session with **CSRF protection**. Catalog migrations **V023–V025** add poster preparation tables and credit columns; MCP JSON schemas expose queue shapes for tool discovery. Follow-up commits register **`ListMovieProposals`** with Catalog actor authentication and add bounded operator repair scripts for legacy saved movies (data repair lane, not automatic backfill).
 - [PR #16](https://github.com/okfriansyah-moh/spoolIn/pull/16) — **repository hygiene without product redesign**: all four project prompts live under `docs/prompts/` (the legacy `docs/prompt/` tree removed), unused MCP review modules and Catalog seed helpers deleted after consumer checks, and **shared list-return state** consolidated into `frontend/src/lib/state/list-return.ts` for movie and person maintainer flows. SpoolIn pins **agent-workflow bundle 1.3.0** (including the shared [implementation-first reuse policy](https://github.com/okfriansyah-moh/agentic-workflow/blob/main/docs/DELIVERY.md#reuse-and-evidence-based-cleanup)) via the official updater; local skills link to that policy instead of copying cleanup rules. New `repository-hygiene.mjs` verification encodes prompt placement and local-link rules. PR evidence reports hygiene and four regression cases passing; full frontend static/type suites were **blocked by host memory pressure** at merge time.
+- [PR #17](https://github.com/okfriansyah-moh/spoolIn/pull/17) — **permanent component quality guardrails** aligned with [agentic-workflow 1.4.0](https://github.com/okfriansyah-moh/agentic-workflow/pull/2): six runtime components (frontend, Core, Catalog, Media, backend-support, MCP) each publish **Docker unit-only** coverage and Sonar reports with **≥80% native and analyzer line thresholds** and **exact-zero** security, reliability, duplication line, and duplication block counts. Shared **list-return**, Core/Catalog transport, receipt, and SQL mapping modules reduce duplication while preserving authorization, transactions, row locks, sparse updates, retries, and navigation context. **SHA-256 namespace/name identity** preserves legacy IDs when indexed. PR evidence cites **4,328 passing unit tests** at product revision `1d3f0bd` and dated Sonar publication on 2026-10-26; **full delivery acceptance** for new features remains gated on registered evidence per workflow policy.
+- [PR #18](https://github.com/okfriansyah-moh/spoolIn/pull/18) — **optional local observability** decoupled from application startup: `make observability` (and start/stop/restart/status/logs targets) provisions **Prometheus**, **Grafana** (loopback HTTPS), **cAdvisor**, **PostgreSQL exporter**, **Loki**, and **Alloy** with a restricted log proxy so operators can search project container logs without exposing collectors publicly. Four Grafana dashboards cover operations, Docker resources, PostgreSQL, and logs; metrics history survives stop/restart via retained volumes. PR evidence reports **67 local regression tests** passing and browser-verified dashboards; **full delivery proof** for the monitoring change set remains pending per PR body (resource-admission and stack mapping debt).
 
 This article separates **merged source evidence** from **runtime proof still pending** in the
 G01–G26 closure matrix (including partial lanes from PR #10).
@@ -389,6 +391,13 @@ Repository evidence (independent of this docs site):
   this merge; evidence relies on independent source review, local Catalog migration V025, Docker
   image rebuilds, and manual MCP/browser verification on seven pending proposals. Treat runtime
   coverage as **unverified** against the repository’s 80% changed-line target.
+- **PR #17** — PR evidence reports **4,328 unit tests** with zero failures/skips, six component
+  Sonar gates at **exact zero** issue counts, changed-line coverage above 80% on touched production
+  files, **166** PostgreSQL/mTLS/receipt replay cases, and **eight** final browser smoke cases.
+  Workflow adoption to **1.4.0** is documented separately in [agentic-workflow#2](https://github.com/okfriansyah-moh/agentic-workflow/pull/2); this merge does not claim a fresh post-adoption product pass.
+- **PR #18** — **67** local regression tests (Prometheus rules, Alloy pipeline, hygiene checks),
+  Python modules above 80% line coverage in measured paths, and browser/dashboard verification;
+  full feature acceptance still blocked on broader admission mapping per PR body.
 - Integration tests under `services/*/src/integrationTest/...` enforce per-service foundation
   and crypto/account boundaries.
 
@@ -397,9 +406,26 @@ Repository evidence (independent of this docs site):
 - **Commands** — `Makefile` routes `start` to `ops/bin/start.sh`; lifecycle scripts under `ops/bin/`
   cover backup, restore, seed, key rotation, logs, and connector helpers (PR #9).
 - **Compose** — set `SPOOLIN_INSTALLATION`; Core HTTPS defaults to `127.0.0.1:8443`.
-- **Metrics** — Prometheus scrapes private Actuator endpoints; `ListenerBoundary` requires
-  `prometheus` client cert on `/actuator/prometheus`.
-- **Logs** — techdoc §12 specifies JSON log contracts for later operational hardening.
+- **In-process metrics (always)** — Prometheus scrapes private Actuator endpoints; `ListenerBoundary`
+  requires `prometheus` client cert on `/actuator/prometheus`.
+- **Optional monitoring stack (PR #18)** — independent lifecycle via `make observability*`:
+
+```mermaid
+flowchart LR
+  App[SpoolIn services] -->|Actuator metrics| Prom[Prometheus]
+  Docker[cAdvisor] --> Prom
+  PG[PostgreSQL exporter] --> Prom
+  Logs[Project containers] --> Proxy[Restricted log proxy]
+  Proxy --> Alloy[Alloy]
+  Alloy --> Loki[Loki]
+  Prom --> Grafana[Grafana loopback HTTPS]
+  Loki --> Grafana
+```
+
+  Collectors stay off the public network; Grafana serves authenticated HTTPS on loopback. Stopping
+  monitoring retains metric/log volumes so history survives restarts without touching application data.
+- **Logs** — techdoc §12 specifies JSON log contracts; PR #18 adds centralized search via Loki/Grafana
+  with credential-line filtering and scoped project labels.
 
 ## Lessons Learned
 
@@ -423,6 +449,10 @@ Repository evidence (independent of this docs site):
    scroll restoration belongs in one module with feature-specific thin wrappers.
 10. **Link shared agent policy, do not fork it** — bundle 1.3.0 carries `DELIVERY.md` reuse rules;
     SpoolIn-specific text stays limited to prompt paths and hygiene checks.
+11. **Measure each runtime component independently** — PR #17 shows six Docker unit reports beat one
+    blended percentage when Sonar duplication and security counts must hit exact zero.
+12. **Observability should not own the app lifecycle** — PR #18 lets operators stop Grafana/Prometheus
+    without restarting Core/Catalog/Media, which matters on memory-constrained laptops.
 
 ## Related
 
@@ -430,7 +460,7 @@ Repository evidence (independent of this docs site):
 - [Database-backed state machines](/docs/concepts/database-state-machines)
 - [LLM guardrails](/docs/concepts/llm-guardrails) — analogous approval boundaries for AI inputs
 - [Implementation-first reuse and cleanup](/docs/concepts/implementation-first-reuse-and-cleanup) —
-  shared agent-workflow policy adopted in PR #16
+  shared agent-workflow policy (reuse in PR #16; permanent quality guardrails in 1.4.0)
 
 ## Sources
 
@@ -447,5 +477,7 @@ Repository evidence (independent of this docs site):
   - [#13 Svelte 5 reactive controllers](https://github.com/okfriansyah-moh/spoolIn/pull/13) (merge `d4b21d1`)
   - [#14 MCP posters, credits, and combined proposal review](https://github.com/okfriansyah-moh/spoolIn/pull/14) (merge `6470702`)
   - [#16 Consolidate prompts and remove unused SpoolIn code](https://github.com/okfriansyah-moh/spoolIn/pull/16) (merge `5498f51`)
+  - [#17 Enforce 80% coverage, zero Sonar issues, workflow 1.4.0](https://github.com/okfriansyah-moh/spoolIn/pull/17) (merge `b01cbfe`)
+  - [#18 Optional local Grafana metrics and log monitoring](https://github.com/okfriansyah-moh/spoolIn/pull/18) (merge `4e9c254`)
 - Design specification: `docs/04-spoolin-techdoc.md` (v1.11, October 2026)
 - Evidence commit cited in PR #1: `12e487f001b66c2f3a5802654c6928849aa47c49`

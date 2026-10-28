@@ -6,7 +6,7 @@
       "link": "/docs/concepts/implementation-first-reuse-and-cleanup",
       "type": "concept",
       "date": "2026-10-24",
-      "readingTime": 5
+      "readingTime": 7
     },
     {
       "title": "SpoolIn: Arsitektur Platform Katalog Multi-Layanan",
@@ -14,7 +14,7 @@
       "link": "/docs/systems/spoolin-catalog-platform",
       "type": "system",
       "date": "2026-10-16",
-      "readingTime": 20
+      "readingTime": 22
     },
     {
       "title": "SpoolIn",
@@ -22,7 +22,7 @@
       "link": "/docs/projects/spoolin",
       "type": "project",
       "date": "2026-10-16",
-      "readingTime": 5
+      "readingTime": 6
     },
     {
       "title": "Identitas Visual Sebelum Pengembangan: Pelajaran dari Padu",
