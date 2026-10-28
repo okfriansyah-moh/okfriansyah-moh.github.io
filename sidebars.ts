@@ -11,6 +11,7 @@ const sidebars: SidebarsConfig = {
         'systems/polymarket-trading-agent',
         'systems/shorts-generator-pipeline',
         'systems/human-atlas-research-workspace',
+        'systems/spoolin-catalog-platform',
       ],
     },
     {
@@ -24,6 +25,7 @@ const sidebars: SidebarsConfig = {
         'concepts/ai-capabilities-and-limitations',
         'concepts/ai-document-coherence',
         'concepts/deterministic-agentic-orchestrator',
+        'concepts/implementation-first-reuse-and-cleanup',
         'concepts/leetcode-patterns',
         'concepts/codex-game-audio-synthesis',
         'concepts/visual-identity-before-development',
@@ -41,6 +43,7 @@ const sidebars: SidebarsConfig = {
         'projects/data-structure-and-algorithm',
         'projects/ai-job-search',
         'projects/human-atlas',
+        'projects/spoolin',
       ],
     },
   ],
