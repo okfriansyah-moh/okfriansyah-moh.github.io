@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "last_successful_scan_at": "2026-08-20T02:02:33+00:00",
+  "last_successful_scan_at": "2026-10-29T02:03:52+00:00",
   "processed_pull_requests": [
     "okfriansyah-moh/shorts-generator#8@bootstrap",
     "okfriansyah-moh/shorts-generator#10@bootstrap",
@@ -23,7 +23,28 @@
     "okfriansyah-moh/the-foundry#13@97a0dc09ac8c00683dbd83132e1f112a87812892",
     "okfriansyah-moh/shorts-generator#12@7477e448626ff3d4fd9b4451eb36ed4f43a4ea7f",
     "okfriansyah-moh/the-foundry#14@5b015620a5a676c47dfe806486e82137b7801834",
-    "okfriansyah-moh/the-foundry#15@58053fe379007e4eef1a2b4a784792d1776355ce"
+    "okfriansyah-moh/the-foundry#15@58053fe379007e4eef1a2b4a784792d1776355ce",
+    "okfriansyah-moh/spoolIn#1@83c40e9dc01b30970b94db66e1150934c52b344c",
+    "okfriansyah-moh/spoolIn#2@f4cad509abc6c0f01c069bef82a00857f2d81991",
+    "okfriansyah-moh/spoolIn#3@790472285c92341c05cd3662d6569bd104cc4f2a",
+    "okfriansyah-moh/spoolIn#4@1d0f96b0a21f6042733037b702f22b6584b6595e",
+    "okfriansyah-moh/spoolIn#5@9530207b8c20221692c0a89ec1fa694ae1d17c15",
+    "okfriansyah-moh/spoolIn#6@ffcaae535b55d75b94256946c4c340e30c509048",
+    "okfriansyah-moh/spoolIn#7@9fbdd89b65e9769b765a808eecf95ef21d4f47ef",
+    "okfriansyah-moh/spoolIn#8@053eb8af7d0d1f5baaf049d254db0f7cf57f1535",
+    "okfriansyah-moh/spoolIn#9@2764ca8bcdb5ee182852e2bdb26c95247c81c5ed",
+    "okfriansyah-moh/spoolIn#10@71430bdf9f9558dd93e9998d9b0787ed18fbadb3",
+    "okfriansyah-moh/spoolIn#11@929bfdb58a88479d164dc5f24cf12836565196c1",
+    "okfriansyah-moh/spoolIn#12@0b5348bb0f23728bb7d764de56c9415d9ac8c9bc",
+    "okfriansyah-moh/spoolIn#13@d4b21d120ba5e1f62785f41b5de96ab3bb7ca737",
+    "okfriansyah-moh/spoolIn#14@64707028c6de1924a3e9e2148fc33da371a36452",
+    "okfriansyah-moh/spoolIn#15@846308b396ed30cd8cdf353dd7fc01ee3764b20d",
+    "okfriansyah-moh/spoolIn#16@5498f51239855836a92b85dc9bb8a5d76ddb0909",
+    "okfriansyah-moh/agentic-workflow#1@da9ca07d765b605e4ad90b678496f7b21bd32ec4",
+    "okfriansyah-moh/spoolIn#17@b01cbfe04909545fdd9ec8a603b13581e0466528",
+    "okfriansyah-moh/spoolIn#18@4e9c25486d389efe90664c468f37bbf13e0eea1d",
+    "okfriansyah-moh/agentic-workflow#2@8fbc985029b3b9e6733ef572311bf2eeceb0e196",
+    "okfriansyah-moh/spoolIn#19@53875f493fb05b6598498f6f15a77cc3dbdabfd9"
   ],
   "processed_commits": [
     "okfriansyah-moh/the-foundry@58632a0",
