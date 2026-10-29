@@ -559,7 +559,9 @@
         "okfriansyah-moh/spoolIn#17",
         "okfriansyah-moh/spoolIn@b01cbfe04909545fdd9ec8a603b13581e0466528",
         "okfriansyah-moh/spoolIn#18",
-        "okfriansyah-moh/spoolIn@4e9c25486d389efe90664c468f37bbf13e0eea1d"
+        "okfriansyah-moh/spoolIn@4e9c25486d389efe90664c468f37bbf13e0eea1d",
+        "okfriansyah-moh/spoolIn#19",
+        "okfriansyah-moh/spoolIn@53875f493fb05b6598498f6f15a77cc3dbdabfd9"
       ],
       "repos": ["okfriansyah-moh/spoolIn"],
       "learning_objective": "Design a local three-service catalog platform with maintainer catalog UI, MCP exact-approval proposals, prepared posters and proposal credits, combined review queues, shared frontend list-return state, repository hygiene checks, six-component quality gates, optional local observability, seed replay, lifecycle ops, hardened maintainer workflows, and Svelte 5 reactive controllers — while separating merged source evidence from pending runtime acceptance",
@@ -637,7 +639,15 @@
         "agent-workflow-bundle-1-4-0-quality-guardrails",
         "optional-local-observability-stack",
         "prometheus-grafana-loki-alloy-pipeline",
-        "make-observability-lifecycle"
+        "make-observability-lifecycle",
+        "public-catalog-six-way-sort",
+        "signed-keyset-title-cursors",
+        "catalog-prev-next-page-navigation",
+        "catalog-return-context-preservation",
+        "bounded-artwork-read-queue",
+        "read-admission-rate-limit-recovery",
+        "read-profile-default-budget-increase",
+        "catalog-migration-v027-ordering-indexes"
       ]
     },
     "spoolin:project-overview": {
@@ -663,7 +673,8 @@
         "okfriansyah-moh/spoolIn#15",
         "okfriansyah-moh/spoolIn#16",
         "okfriansyah-moh/spoolIn#17",
-        "okfriansyah-moh/spoolIn#18"
+        "okfriansyah-moh/spoolIn#18",
+        "okfriansyah-moh/spoolIn#19"
       ],
       "repos": ["okfriansyah-moh/spoolIn"],
       "learning_objective": "Follow SpoolIn's product scope, evidence-driven plan, and milestones from foundation through agent-workflow 1.4.0 quality gates, optional local observability, repository hygiene refactors, and combined MCP/browser proposal review (G26 runtime acceptance and some delivery proofs still open)",
@@ -690,7 +701,8 @@
         "repository-hygiene-refactor-wave",
         "portable-agent-workflow-1-4-0",
         "six-component-quality-gate-wave",
-        "optional-observability-stack-wave"
+        "optional-observability-stack-wave",
+        "public-catalog-sort-navigation-wave"
       ]
     },
     "agentic-workflow:reuse-and-cleanup-policy": {

@@ -44,6 +44,7 @@ Merge berikutnya memperluas stack di atas fondasi backend:
 - [PR #16](https://github.com/okfriansyah-moh/spoolIn/pull/16) — **hygiene repositori tanpa redesign produk**: keempat prompt proyek berada di `docs/prompts/` (pohon lama `docs/prompt/` dihapus), modul review MCP dan helper seed Catalog yang tidak terpakai dihapus setelah cek konsumen, dan **state list-return bersama** dikonsolidasikan ke `frontend/src/lib/state/list-return.ts` untuk alur maintainer film dan person. SpoolIn mem-pin **bundle agent-workflow 1.3.0** (termasuk [kebijakan reuse berbasis implementasi](https://github.com/okfriansyah-moh/agentic-workflow/blob/main/docs/DELIVERY.md#reuse-and-evidence-based-cleanup) bersama) lewat updater resmi; skill lokal menautkan kebijakan itu alih-alih menyalin aturan pembersihan. Verifikasi baru `repository-hygiene.mjs` mengodekan penempatan prompt dan aturan tautan lokal. Bukti PR melaporkan hygiene dan empat kasus regresi lulus; suite static/type frontend penuh **terblokir tekanan memori host** saat merge.
 - [PR #17](https://github.com/okfriansyah-moh/spoolIn/pull/17) — **guardrail kualitas komponen permanen** selaras [agentic-workflow 1.4.0](https://github.com/okfriansyah-moh/agentic-workflow/pull/2): enam komponen runtime (frontend, Core, Catalog, Media, backend-support, MCP) masing-masing mempublikasikan laporan unit **Docker-only** dengan ambang **≥80%** garis native/analyzer dan hitungan **tepat nol** untuk security, reliability, baris duplikasi, dan blok duplikasi. Modul bersama transport Core/Catalog, receipt, dan pemetaan SQL mengurangi duplikasi sambil mempertahankan otorisasi, transaksi, row lock, sparse update, retry, dan konteks navigasi. **Identitas namespace/nama SHA-256** mempertahankan ID lama bila terindeks. Bukti PR menyebut **4.328 tes unit** lulus pada revisi produk `1d3f0bd` dan publikasi Sonar ber tanggal 2026-10-26; **penerimaan delivery penuh** untuk fitur baru tetap bergantung bukti terdaftar sesuai kebijakan workflow.
 - [PR #18](https://github.com/okfriansyah-moh/spoolIn/pull/18) — **observabilitas lokal opsional** terpisah dari startup aplikasi: `make observability` (dan target start/stop/restart/status/logs) menyediakan **Prometheus**, **Grafana** (HTTPS loopback), **cAdvisor**, **exporter PostgreSQL**, **Loki**, dan **Alloy** dengan proxy log terbatas agar operator dapat mencari log kontainer proyek tanpa mengekspos kolektor ke publik. Empat dashboard Grafana mencakup operasi, sumber daya Docker, PostgreSQL, dan log; riwayat metrik bertahan setelah stop/restart lewat volume. Bukti PR melaporkan **67 tes regresi lokal** lulus dan dashboard terverifikasi browser; **bukti delivery penuh** untuk perubahan monitoring masih tertunda menurut isi PR.
+- [PR #19](https://github.com/okfriansyah-moh/spoolIn/pull/19) — **sortir, paging, dan pemulihan baca katalog publik**: enam urutan server-side **`TitleSort`** (rilis, judul, waktu ditambahkan asli — masing-masing naik/turun), navigasi **Sebelumnya / Berikutnya** pada halaman 24 judul dengan konteks filter/pencarian dipertahankan, **kursor keyset bertanda** (`TitleOrdering`, `TitleCursorValue`) dan migrasi aditif **V027**, modul **return-context** dan **page-history** agar Back browser, reload, dan kembali dari detail judul memulihkan grid yang sama, **antrean baca artwork terbatas** (dekat viewport, maks dua unduhan poster bersamaan, perubahan sort digabung), dan **pemulihan admission baca** (`read-recovery.ts`) yang menjeda baca publik dan retry setelah batas sementara. Default profil **READ** naik dari **120 menjadi 2.400 permintaan per 60 detik** (baca poster ikut anggaran yang sama); kuota sign-in, registrasi, dan tulis tidak berubah. Bukti PR menyebut paging hidup 1→8→1, enam sort cepat dengan **348 respons baca tanpa kegagalan**, dan regresi frontend/Catalog/integrasi terfokus lulus; gerbang penerimaan delivery extended masih tertunda menurut isi PR.
 
 Artikel ini membedakan **bukti sumber yang sudah digabung** dari **bukti runtime yang masih tertunda**
 di matriks penutupan G01–G26 (termasuk jalur parsial dari PR #10).
@@ -237,6 +238,15 @@ konektor dari host dan penerimaan klien penuh (T038–T039).
 6. Saat disetujui, Catalog menulis **orang dan kredit dalam transaksi film**, lalu menyelesaikan lampiran poster aman-retry pada operasi yang persisten; proposal kedaluwarsa menghormati **TTL 24 jam** di gelombang ini.
 7. **`ListMovieProposals`** terdaftar di gRPC Catalog dengan pola autentikasi aktor yang sama seperti RPC proposal terlindungi lainnya (lanjutan `65f594ec`).
 
+### 17. Sortir, paging, dan pemulihan baca katalog publik (PR #19)
+
+1. GraphQL **`TitleSort`** dan gRPC **`Search.sort`** meneruskan urutan pengunjung ke Catalog **`TitleSearchSql`** dengan predikat keyset **`TitleOrdering`** (`NULLS LAST`, tie-break `t.id` stabil).
+2. **`catalog/controller.svelte.ts`** melacak indeks halaman, sort, filter, dan stack **page-history** agar Sebelumnya/Berikutnya mengganti grid tanpa menghapus teks pencarian atau filter genre/tahun.
+3. **`return-context.ts`** menserialisasi state daftar untuk navigasi detail judul; kembali dari judul memulihkan halaman dan sort dalam tab; URL bersama mempertahankan kriteria tetapi reset ke halaman satu sesuai desain.
+4. **`read-queue.ts`** + **`CatalogArtwork.svelte`** menunda fetch poster dekat viewport, membatasi konkurensi dua, dan membatalkan baca usang saat sort atau halaman berubah cepat.
+5. **`read-recovery.ts`** mengoordinasikan **`deferPublicReads`** / **`awaitPublicRead`** sehingga jeda admission seperti HTTP 429 menampilkan pesan menunggu, retry otomatis, dan halaman saat ini tetap utuh saat kegagalan persisten.
+6. Operator menerapkan **V027** sebelum rolling Catalog; segarkan perjanjian kebijakan rate yang dilindungi dan restart replika Core serta MCP bersama saat menimpa env **`RATE_LIMIT_READ_*`**.
+
 ## Komponen Penting
 
 | Komponen | Tanggung jawab |
@@ -275,6 +285,14 @@ konektor dari host dan penerimaan klien penuh (T038–T039).
 | `frontend/src/lib/features/proposal/api.ts` | Klien GraphQL Maintainer untuk tinjauan proposal browser (PR #14) |
 | `frontend/src/routes/manage/proposals/[id]/+page.svelte` | UI tinjauan proposal masuk dengan aksi sadar CSRF (PR #14) |
 | `contracts/json/mcp-outputs.schema.json` | Definisi skema `movie_review_queue` untuk penemuan MCP (PR #14) |
+| `services/catalog/.../TitleOrdering.kt` | Enam urutan sort publik dengan ORDER BY + SQL keyset `after` bersama (PR #19) |
+| `services/catalog/.../TitleCursorValue.kt` | Payload kursor bertanda untuk sort rilis dan waktu ditambahkan multi-kolom (PR #19) |
+| `services/catalog/.../db/migration/V027__public_title_ordering.sql` | Indeks aditif untuk mendukung pengurutan judul publik (PR #19) |
+| `frontend/src/lib/features/catalog/page-history.ts` | Stack halaman Sebelumnya/Berikutnya dengan konteks filter dipertahankan (PR #19) |
+| `frontend/src/lib/features/catalog/return-context.ts` | Token kembali detail judul untuk pemulihan grid katalog (PR #19) |
+| `frontend/src/lib/features/artwork/read-queue.ts` | Penjadwalan unduhan poster terbatas dan digabung (PR #19) |
+| `frontend/src/lib/transport/read-recovery.ts` | Jeda/subscribe/retry baca publik setelah batas admission (PR #19) |
+| `libraries/backend-support/.../Configuration.kt` | Anggaran default profil READ 2.400 req / 60 dtk (PR #19) |
 
 ## Contoh Implementasi yang Disederhanakan
 
@@ -321,6 +339,8 @@ const view = $derived(controller?.snapshot ?? INITIAL_ARTWORK_UPLOAD_VIEW);
 - **Operasi klien idempoten (desain)** — mutasi GraphQL membawa UUID operasi untuk submit ulang aman setelah jaringan putus.
 - **Kredit proposal (PR #14)** — kredit memengaruhi digest immutable hanya saat tertunda; baris orang/kredit yang disetujui dikomit atomik dengan film agar publikasi parsial tidak meninggalkan pemeran yatim.
 - **Lampiran poster (PR #14)** — handle poster yang disiapkan direkonsiliasi lewat jalur receipt operasi persisten sehingga retry setelah persetujuan tidak membuat tautan artwork duplikat.
+- **Paging katalog (PR #19)** — kursor tidak valid atau kedaluwarsa kembali ke halaman satu sambil mempertahankan filter aktif; kursor urutan default yang valid tetap kompatibel antar deploy.
+- **Admission baca (PR #19)** — jeda global **`deferPublicReads`** dibagi antara baca katalog dan detail judul agar ledakan poster tidak menyerbu Core/Catalog setelah perubahan sort.
 
 ## Mode Kegagalan
 
@@ -335,6 +355,9 @@ const view = $derived(controller?.snapshot ?? INITIAL_ARTWORK_UPLOAD_VIEW);
 | Persiapan poster gagal sebelum propose (PR #14) | Alat MCP mengembalikan kegagalan terstruktur | Operator perbaiki sumber artwork; proposal tidak diantrekan |
 | Proposal kedaluwarsa (PR #14) | TTL habis pada baris antrean | Maintainer harus propose ulang; digest mencegah reuse diam-diam |
 | Ketidakcocokan digest kredit (PR #14) | Ikatan persetujuan eksak menolak UI basi | Buka ulang entri antrean; tidak ada publikasi saat hash bergeser |
+| Sort/paging cepat memicu batas READ (PR #19) | Pesan menunggu + baca ditunda | Retry otomatis; operator dapat menaikkan profil READ lewat env + refresh kebijakan |
+| Fetch poster usang setelah navigasi (PR #19) | AbortError dari antrean baca | Unduhan dibatalkan; grid mempertahankan slot artwork sebelumnya sampai baca berhasil berikutnya |
+| Baca halaman gagal di tengah stack (PR #19) | Kontroler menampilkan error arah | Retry arah yang sama atau mulai ulang dari halaman satu tanpa menghapus filter |
 
 ## Trade-off dan Alternatif yang Ditolak
 
@@ -366,6 +389,7 @@ Bukti repositori:
 - **PR #14** — penulis PR melaporkan **tidak ada suite tes, lint, atau typecheck otomatis** yang dijalankan untuk merge ini; bukti mengandalkan review sumber independen, migrasi Catalog V025 lokal, rebuild image Docker, dan verifikasi MCP/browser manual pada tujuh proposal tertunda. Anggap cakupan runtime **belum diverifikasi** terhadap target 80% baris berubah repositori.
 - **PR #17** — bukti PR melaporkan **4.328 tes unit** tanpa kegagalan/skip, enam gate Sonar komponen dengan hitungan isu **tepat nol**, cakupan baris berubah di atas 80% pada berkas produksi yang disentuh, **166** kasus PostgreSQL/mTLS/replay receipt, dan **delapan** kasus smoke browser akhir. Adopsi workflow ke **1.4.0** didokumentasikan terpisah di [agentic-workflow#2](https://github.com/okfriansyah-moh/agentic-workflow/pull/2); merge ini tidak mengklaim pass produk segar pasca-adopsi.
 - **PR #18** — **67** tes regresi lokal (aturan Prometheus, pipeline Alloy, cek hygiene), modul Python di atas 80% cakupan baris pada jalur terukur, dan verifikasi browser/dashboard; penerimaan fitur penuh masih terblokir pada pemetaan admission yang lebih luas menurut isi PR.
+- **PR #19** — Bukti PR melaporkan suite unit/DOM frontend terfokus, **`TitleOrderingRulesTest`** dan **`CatalogSortingBoundaryTest`** Catalog, regresi konfigurasi/admission MCP, alur browser **`catalog-interaction.spec.ts`**, dan verifikasi hidup paging 1→8→1 plus enam sort cepat dengan **348** respons baca berhasil tanpa poster tidak tersedia; gerbang kualitas, keamanan, cakupan, dan penerimaan penuh extended masih **tertunda** menurut isi PR (postur bukti terbatas yang sama dengan gelombang sebelumnya).
 
 ## Operasi dan Observabilitas
 
@@ -404,6 +428,7 @@ flowchart LR
 10. **Tautkan kebijakan agent bersama, jangan fork** — bundle 1.3.0 membawa aturan reuse `DELIVERY.md`; teks khusus SpoolIn terbatas pada path prompt dan cek hygiene.
 11. **Ukur setiap komponen runtime secara independen** — PR #17 menunjukkan enam laporan unit Docker mengalahkan satu persentase campuran saat duplikasi dan hitungan keamanan Sonar harus tepat nol.
 12. **Observabilitas tidak harus menguasai siklus hidup aplikasi** — PR #18 memungkinkan operator menghentikan Grafana/Prometheus tanpa me-restart Core/Catalog/Media, penting di laptop dengan memori terbatas.
+13. **Anggap baca poster bagian dari paging katalog** — PR #19 menunjukkan perubahan sort/halaman plus fetch artwork berbagi satu anggaran READ; gabungkan unduhan dan naikkan default sebelum pengguna melihat badai 429.
 
 ## Terkait
 
@@ -429,5 +454,6 @@ flowchart LR
   - [#16 Konsolidasi prompt dan hapus kode SpoolIn tidak terpakai](https://github.com/okfriansyah-moh/spoolIn/pull/16) (merge `5498f51`)
   - [#17 Enforce 80% coverage, zero Sonar, workflow 1.4.0](https://github.com/okfriansyah-moh/spoolIn/pull/17) (merge `b01cbfe`)
   - [#18 Observabilitas Grafana dan log lokal opsional](https://github.com/okfriansyah-moh/spoolIn/pull/18) (merge `4e9c254`)
+  - [#19 Perbaiki sortir katalog, navigasi halaman, dan pemulihan baca](https://github.com/okfriansyah-moh/spoolIn/pull/19) (merge `53875f4`)
 - Spesifikasi desain: `docs/04-spoolin-techdoc.md` (v1.11, Oktober 2026)
 - Commit bukti PR #1: `12e487f001b66c2f3a5802654c6928849aa47c49`

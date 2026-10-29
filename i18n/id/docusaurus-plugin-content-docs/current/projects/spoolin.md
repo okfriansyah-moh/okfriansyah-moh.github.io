@@ -108,6 +108,7 @@ Kedalaman teknis: [Arsitektur sistem SpoolIn](/id/docs/systems/spoolin-catalog-p
 | 2026-10-23 | [PR #16](https://github.com/okfriansyah-moh/spoolIn/pull/16) digabung — `docs/prompts/` terpadu, modul `list-return` bersama, helper MCP/Catalog tidak terpakai dihapus, cek **repository-hygiene**, refresh bundle untuk [kebijakan reuse berbasis implementasi](https://github.com/okfriansyah-moh/agentic-workflow/pull/1) (suite static frontend penuh tertunda menurut bukti tekanan memori PR) |
 | 2026-10-27 | [PR #17](https://github.com/okfriansyah-moh/spoolIn/pull/17) digabung — adopsi **agent-workflow 1.4.0**, gate kualitas **80% / Sonar tepat nol** enam komponen, modul transport/receipt/SQL bersama, preservasi identitas SHA-256; **4.328** tes unit dikutip pada revisi `1d3f0bd` (snapshot Sonar 2026-10-26) |
 | 2026-10-27 | [PR #18](https://github.com/okfriansyah-moh/spoolIn/pull/18) digabung — stack **`make observability`** opsional (Prometheus, Grafana, Loki, cAdvisor, exporter) dengan dashboard loopback dan riwayat yang dipertahankan; penerimaan delivery penuh untuk monitoring masih tertunda menurut bukti PR |
+| 2026-10-29 | [PR #19](https://github.com/okfriansyah-moh/spoolIn/pull/19) digabung — **sort katalog publik** (enam urutan), paging **Sebelumnya/Berikutnya** dengan konteks kembali, **antrean baca poster terbatas**, **pemulihan admission baca**, migrasi **V027**, dan default READ **2.400 req/menit** (penerimaan delivery extended masih tertunda menurut bukti PR) |
 | Berikutnya | Tutup gerbang runtime G26 dan bukti **delivery penuh** yang tersisa (admission resource, pemetaan stack) sambil menjaga monitoring opsional terpisah dari restart aplikasi |
 
 ## Keputusan Kunci
@@ -144,5 +145,5 @@ basis kode independen.
 ## Sumber
 
 - Repositori: [okfriansyah-moh/spoolIn](https://github.com/okfriansyah-moh/spoolIn)
-- Pull request: [#1](https://github.com/okfriansyah-moh/spoolIn/pull/1)–[#18](https://github.com/okfriansyah-moh/spoolIn/pull/18)
+- Pull request: [#1](https://github.com/okfriansyah-moh/spoolIn/pull/1)–[#19](https://github.com/okfriansyah-moh/spoolIn/pull/19)
 - Desain teknis: `docs/04-spoolin-techdoc.md`

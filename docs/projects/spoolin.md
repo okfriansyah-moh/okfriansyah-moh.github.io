@@ -113,6 +113,7 @@ Deep dive: [SpoolIn system architecture](/docs/systems/spoolin-catalog-platform)
 | 2026-10-23 | [PR #16](https://github.com/okfriansyah-moh/spoolIn/pull/16) merged — unified `docs/prompts/`, shared `list-return` module, removed unused MCP/Catalog helpers, **repository-hygiene** checks, and bundle refresh to pick up [implementation-first reuse policy](https://github.com/okfriansyah-moh/agentic-workflow/pull/1) (full frontend static suites pending per PR memory-pressure evidence) |
 | 2026-10-27 | [PR #17](https://github.com/okfriansyah-moh/spoolIn/pull/17) merged — **agent-workflow 1.4.0** adoption, six-component **80% / Sonar exact-zero** quality gates, shared transport/receipt/SQL modules, SHA-256 identity preservation; **4,328** unit tests cited at revision `1d3f0bd` (dated 2026-10-26 Sonar snapshot) |
 | 2026-10-27 | [PR #18](https://github.com/okfriansyah-moh/spoolIn/pull/18) merged — optional **`make observability`** stack (Prometheus, Grafana, Loki, cAdvisor, exporters) with loopback dashboards and retained history; full delivery acceptance for monitoring still pending per PR evidence |
+| 2026-10-29 | [PR #19](https://github.com/okfriansyah-moh/spoolIn/pull/19) merged — **public catalog sort** (six orders), **Previous/Next paging** with return context, **bounded poster read queue**, **read-admission recovery**, migration **V027**, and READ default **2,400 req/min** (extended delivery acceptance still pending per PR evidence) |
 | Next | Close remaining G26 runtime gates and outstanding **full delivery** proofs (resource admission, stack mapping) while keeping optional monitoring independent of app restarts |
 
 ## Key Decisions
@@ -154,5 +155,5 @@ independent codebase.
 ## Sources
 
 - Repository: [okfriansyah-moh/spoolIn](https://github.com/okfriansyah-moh/spoolIn)
-- Pull requests: [#1](https://github.com/okfriansyah-moh/spoolIn/pull/1)–[#18](https://github.com/okfriansyah-moh/spoolIn/pull/18) (foundation through observability; G26 runtime accept and some delivery proofs still open)
+- Pull requests: [#1](https://github.com/okfriansyah-moh/spoolIn/pull/1)–[#19](https://github.com/okfriansyah-moh/spoolIn/pull/19) (foundation through catalog sort/navigation; G26 runtime accept and some delivery proofs still open)
 - Technical design: `docs/04-spoolin-techdoc.md`

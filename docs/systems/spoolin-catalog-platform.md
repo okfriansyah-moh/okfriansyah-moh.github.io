@@ -44,6 +44,7 @@ Follow-on merges extended the stack beyond the backend foundation:
 - [PR #16](https://github.com/okfriansyah-moh/spoolIn/pull/16) — **repository hygiene without product redesign**: all four project prompts live under `docs/prompts/` (the legacy `docs/prompt/` tree removed), unused MCP review modules and Catalog seed helpers deleted after consumer checks, and **shared list-return state** consolidated into `frontend/src/lib/state/list-return.ts` for movie and person maintainer flows. SpoolIn pins **agent-workflow bundle 1.3.0** (including the shared [implementation-first reuse policy](https://github.com/okfriansyah-moh/agentic-workflow/blob/main/docs/DELIVERY.md#reuse-and-evidence-based-cleanup)) via the official updater; local skills link to that policy instead of copying cleanup rules. New `repository-hygiene.mjs` verification encodes prompt placement and local-link rules. PR evidence reports hygiene and four regression cases passing; full frontend static/type suites were **blocked by host memory pressure** at merge time.
 - [PR #17](https://github.com/okfriansyah-moh/spoolIn/pull/17) — **permanent component quality guardrails** aligned with [agentic-workflow 1.4.0](https://github.com/okfriansyah-moh/agentic-workflow/pull/2): six runtime components (frontend, Core, Catalog, Media, backend-support, MCP) each publish **Docker unit-only** coverage and Sonar reports with **≥80% native and analyzer line thresholds** and **exact-zero** security, reliability, duplication line, and duplication block counts. Shared **list-return**, Core/Catalog transport, receipt, and SQL mapping modules reduce duplication while preserving authorization, transactions, row locks, sparse updates, retries, and navigation context. **SHA-256 namespace/name identity** preserves legacy IDs when indexed. PR evidence cites **4,328 passing unit tests** at product revision `1d3f0bd` and dated Sonar publication on 2026-10-26; **full delivery acceptance** for new features remains gated on registered evidence per workflow policy.
 - [PR #18](https://github.com/okfriansyah-moh/spoolIn/pull/18) — **optional local observability** decoupled from application startup: `make observability` (and start/stop/restart/status/logs targets) provisions **Prometheus**, **Grafana** (loopback HTTPS), **cAdvisor**, **PostgreSQL exporter**, **Loki**, and **Alloy** with a restricted log proxy so operators can search project container logs without exposing collectors publicly. Four Grafana dashboards cover operations, Docker resources, PostgreSQL, and logs; metrics history survives stop/restart via retained volumes. PR evidence reports **67 local regression tests** passing and browser-verified dashboards; **full delivery proof** for the monitoring change set remains pending per PR body (resource-admission and stack mapping debt).
+- [PR #19](https://github.com/okfriansyah-moh/spoolIn/pull/19) — **public catalog sorting, paging, and read recovery**: six server-side **`TitleSort`** orders (release, title, original added time — each asc/desc), **Previous / Next** navigation on 24-title pages with filter/search context retained, **signed keyset cursors** (`TitleOrdering`, `TitleCursorValue`) and additive migration **V027**, **return-context** and **page-history** modules so browser Back, reload, and title-detail return restore the same grid, **bounded artwork read queue** (viewport-aware, two concurrent poster downloads, coalesced sort changes), and **read-admission recovery** (`read-recovery.ts`) that pauses public reads and retries after temporary limits. The shared **READ** profile default rises from **120 to 2,400 requests per 60 seconds** (poster reads count toward the same budget); sign-in, registration, and write quotas stay unchanged. PR evidence cites live paging 1→8→1, six rapid sorts with **348 read responses and zero failures**, and focused frontend/Catalog/integration regressions passing; extended delivery acceptance gates remain pending per PR body.
 
 This article separates **merged source evidence** from **runtime proof still pending** in the
 G01–G26 closure matrix (including partial lanes from PR #10).
@@ -242,6 +243,15 @@ explicit gaps for host-supplied connector tokens and full client acceptance (T03
 6. On approval, Catalog writes **people and credits inside the movie transaction**, then completes retry-safe poster attachment on the persisted operation; expired proposals honor the **24-hour TTL** introduced in this wave.
 7. **`ListMovieProposals`** registers on Catalog gRPC with the same actor authentication pattern as other protected proposal RPCs (follow-up `65f594ec`).
 
+### 17. Public catalog sort, paging, and read recovery (PR #19)
+
+1. GraphQL **`TitleSort`** and gRPC **`Search.sort`** propagate the visitor’s chosen order to Catalog **`TitleSearchSql`** with **`TitleOrdering`** keyset predicates (`NULLS LAST`, stable `t.id` tie-break).
+2. **`catalog/controller.svelte.ts`** tracks page index, sort, filters, and **page-history** stacks so Previous/Next replace the grid without dropping search text or genre/year filters.
+3. **`return-context.ts`** serializes list state for title-detail navigation; returning from a title restores page and sort in-tab; shared URLs keep criteria but reset to page one by design.
+4. **`read-queue.ts`** + **`CatalogArtwork.svelte`** defer poster fetches near the viewport, cap concurrency at two, and cancel obsolete reads when sorts or pages change quickly.
+5. **`read-recovery.ts`** coordinates **`deferPublicReads`** / **`awaitPublicRead`** so HTTP 429-style admission pauses show a waiting message, retry automatically, and leave the current page intact on persistent failure.
+6. Operators apply **V027** before rolling Catalog; refresh the protected rate-policy agreement and restart Core replicas and MCP together when overriding **`RATE_LIMIT_READ_*`** env vars.
+
 ## Important Components
 
 | Component | Responsibility |
@@ -280,6 +290,14 @@ explicit gaps for host-supplied connector tokens and full client acceptance (T03
 | `frontend/src/lib/features/proposal/api.ts` | Maintainer GraphQL client for browser proposal review (PR #14) |
 | `frontend/src/routes/manage/proposals/[id]/+page.svelte` | Signed-in proposal review UI with CSRF-aware actions (PR #14) |
 | `contracts/json/mcp-outputs.schema.json` | `movie_review_queue` schema definitions for MCP discovery (PR #14) |
+| `services/catalog/.../TitleOrdering.kt` | Six public sort orders with shared ORDER BY + keyset `after` SQL (PR #19) |
+| `services/catalog/.../TitleCursorValue.kt` | Signed cursor payloads for multi-column release and added-time sorts (PR #19) |
+| `services/catalog/.../db/migration/V027__public_title_ordering.sql` | Additive indexes supporting public title ordering (PR #19) |
+| `frontend/src/lib/features/catalog/page-history.ts` | Previous/Next page stacks with retained filter context (PR #19) |
+| `frontend/src/lib/features/catalog/return-context.ts` | Title-detail return tokens for catalog grid restoration (PR #19) |
+| `frontend/src/lib/features/artwork/read-queue.ts` | Bounded, coalesced poster download scheduling (PR #19) |
+| `frontend/src/lib/transport/read-recovery.ts` | Public-read pause/subscribe/retry after admission limits (PR #19) |
+| `libraries/backend-support/.../Configuration.kt` | READ profile default budget 2,400 req / 60s (PR #19) |
 
 ## Simplified Implementation Examples
 
@@ -335,6 +353,10 @@ const view = $derived(controller?.snapshot ?? INITIAL_ARTWORK_UPLOAD_VIEW);
   cast records.
 - **Poster attachment (PR #14)** — prepared poster handles reconcile through the persisted operation
   receipt path so retries after approval do not create duplicate artwork links.
+- **Catalog paging (PR #19)** — invalid or expired cursors fall back to restarting at page one while
+  keeping active filters; valid default-order cursors remain compatible across deploys.
+- **Read admission (PR #19)** — global **`deferPublicReads`** pause is shared across catalog and title-detail
+  reads so poster bursts do not stampede Core/Catalog after sort changes.
 
 ## Failure Modes
 
@@ -349,6 +371,9 @@ const view = $derived(controller?.snapshot ?? INITIAL_ARTWORK_UPLOAD_VIEW);
 | Poster prep fails before propose (PR #14) | MCP tool returns structured failure | Operator fixes artwork source; proposal not enqueued |
 | Expired proposal (PR #14) | TTL elapsed on queue row | Maintainer must re-propose; digest prevents silent reuse |
 | Credit digest mismatch (PR #14) | Exact-approval binding rejects stale UI | Re-open queue entry; no publish on hash drift |
+| Rapid sort/paging triggers READ limit (PR #19) | Waiting message + deferred reads | Automatic retry; operator may raise READ profile via env + policy refresh |
+| Obsolete poster fetch after navigation (PR #19) | AbortError from read queue | Cancelled download; grid keeps prior artwork slot until next successful read |
+| Page read fails mid-stack (PR #19) | Controller surfaces direction error | Retry same direction or restart from page one without clearing filters |
 
 ## Trade-offs and Rejected Alternatives
 
@@ -398,6 +423,11 @@ Repository evidence (independent of this docs site):
 - **PR #18** — **67** local regression tests (Prometheus rules, Alloy pipeline, hygiene checks),
   Python modules above 80% line coverage in measured paths, and browser/dashboard verification;
   full feature acceptance still blocked on broader admission mapping per PR body.
+- **PR #19** — PR evidence reports focused frontend unit/DOM suites, Catalog **`TitleOrderingRulesTest`**
+  and **`CatalogSortingBoundaryTest`**, configuration/MCP admission regressions, browser flow
+  **`catalog-interaction.spec.ts`**, and live verification of paging 1→8→1 plus six rapid sorts with
+  **348** successful read responses and zero unavailable posters; extended quality, security, coverage,
+  and full acceptance gates remain **pending** per PR body (same bounded-evidence posture as prior waves).
 - Integration tests under `services/*/src/integrationTest/...` enforce per-service foundation
   and crypto/account boundaries.
 
@@ -453,6 +483,8 @@ flowchart LR
     blended percentage when Sonar duplication and security counts must hit exact zero.
 12. **Observability should not own the app lifecycle** — PR #18 lets operators stop Grafana/Prometheus
     without restarting Core/Catalog/Media, which matters on memory-constrained laptops.
+13. **Treat poster reads as part of catalog paging** — PR #19 shows sort/page changes plus artwork
+    fetches share one READ budget; coalesce downloads and raise defaults before users see 429 storms.
 
 ## Related
 
@@ -479,5 +511,6 @@ flowchart LR
   - [#16 Consolidate prompts and remove unused SpoolIn code](https://github.com/okfriansyah-moh/spoolIn/pull/16) (merge `5498f51`)
   - [#17 Enforce 80% coverage, zero Sonar issues, workflow 1.4.0](https://github.com/okfriansyah-moh/spoolIn/pull/17) (merge `b01cbfe`)
   - [#18 Optional local Grafana metrics and log monitoring](https://github.com/okfriansyah-moh/spoolIn/pull/18) (merge `4e9c254`)
+  - [#19 Improve catalog sorting, page navigation, and read recovery](https://github.com/okfriansyah-moh/spoolIn/pull/19) (merge `53875f4`)
 - Design specification: `docs/04-spoolin-techdoc.md` (v1.11, October 2026)
 - Evidence commit cited in PR #1: `12e487f001b66c2f3a5802654c6928849aa47c49`
